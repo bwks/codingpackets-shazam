@@ -1,0 +1,6 @@
+{% macro link_to(link, description="") %}
+<div class="">
+  <a class="no-underline hover:underline" href="{{ link }}">{{ description if description else link }}</a>
+</div>
+{% endmacro %}
+{% set alias = link_to %}

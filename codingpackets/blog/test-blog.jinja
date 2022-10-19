@@ -1,0 +1,17 @@
+{% extends "layouts/blog.jinja" %}
+{% block page_content %}
+  <div class="px-5 text-lg text-gray-800">
+    {% include "includes/lorem-ipsum.jinja" %}
+  </div>
+  <div class="px-5 py-3">
+    <pre><code class="language-rust hljs">
+fn main() {
+    // Print text to the console
+    println!("Hello World!");
+}
+    </code></pre>
+  </div>
+{% endblock page_content %}
+{% block page_footer %}
+  {{ link_to(link="/blog", description="Back to blogs") }}
+{% endblock page_footer %}

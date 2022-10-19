@@ -1,0 +1,46 @@
+{% from "macros/page-header.jinja" import page_header %}
+{% from "macros/link-to.jinja" import link_to %}
+{% from "macros/tags.jinja" import tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="/js/app.js"></script>
+
+    <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/tokyo-night-dark.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+
+    <!-- Initialize highlight.js -->
+    <script>hljs.highlightAll();</script>
+
+    <title>{{ project }}</title>
+  </head>
+
+  <body class="antiailiased grid place-items-center">
+    {% block page_header %}
+      {{ page_header(heading=project + " Site") }}
+    {% endblock page_header %}
+
+    <div class="w-3/4 px-10">
+      {% block page_content %}
+      {% endblock page_content %}
+    </div>
+
+    {% block page_tags %}
+    {% endblock page_tags %}
+  </body>
+
+  <footer>
+    <div class="text-lg text-indigo-500">
+      {% block page_footer %}
+        {% include "includes/footer.jinja" %}
+      {% endblock page_footer %}
+    </div>
+  </footer>
+</html>

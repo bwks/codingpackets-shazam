@@ -1,0 +1,13 @@
+{% extends "layouts/site.jinja" %}
+{% block page_content %}
+  <div class="grid place-items-center">
+    <h3 class="font-medium text-2xl">Super Awesome Post Categories</h3>
+  </div>
+  {% for content in config.content_dirs %}
+    <div class="py-2">
+      <div class="block p-4 rounded-lg shadow-lg bg-white border-2">
+        <a class="text-fuchsia-500 font-semibold text-xl no-underline hover:underline" href="/{{ content }}/">{{ content | capitalize }}</a>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock page_content %}
