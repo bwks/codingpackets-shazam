@@ -1,13 +1,29 @@
 {% extends "layouts/site.jinja" %}
+
+{% block page_header %}
+  {{ page_header(heading="whoami") | lower }}
+{% endblock page_header %}
+
 {% block page_content %}
-  <div class="grid place-items-center">
-    <h3 class="font-medium text-2xl">Super Awesome Post Categories</h3>
+<div class="">
+  <div class="">
+    <img class="" src="/img/me-round.png" width="150px" alt="me">
   </div>
-  {% for content in config.content_dirs %}
-    <div class="py-2">
-      <div class="block p-4 rounded-lg shadow-lg bg-white border-2">
-        <a class="text-fuchsia-500 font-semibold text-xl no-underline hover:underline" href="/{{ content }}/">{{ content | capitalize }}</a>
-      </div>
-    </div>
-  {% endfor %}
+  <div class="">
+    <p class="py-3">
+      Hey you 👋 thanks for visiting my little corner of the wild wild web 🤠.
+      I'm Brad, a bag of meat and bones from Brisbane, Australia 🪃.
+      I have a background in networking, but somewhere along the way I learned
+      how to code 🤯.
+      At ${JOB} I work with customers as a solution architect in 
+      the Network Detection and Response (NDR) field.
+      Here at
+      <a href="">codingpackets.com</a>,
+      I write about my adventures in networking, security, cloud and devops 
+      as I attempt to automate all the stuff and things! 
+      If you would like to reach me, I can maybe, possibly be contacted 
+      through the links in the footer down there 👇
+    </p>
+  </div>
+</div>
 {% endblock page_content %}

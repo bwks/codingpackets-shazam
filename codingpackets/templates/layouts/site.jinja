@@ -22,25 +22,25 @@
     <title>{{ project }}</title>
   </head>
 
-  <body class="antiailiased grid place-items-center">
+  <body>
+
+  {% include "includes/navbar.jinja" %}
+
+  <div class="antiailiased grid place-items-center pt-16">
     {% block page_header %}
       {{ page_header(heading=project + " Site") }}
     {% endblock page_header %}
 
-    <div class="w-3/4 px-10">
+    <div class="w-3/5 px-10 text-xl text-gray-800">
       {% block page_content %}
       {% endblock page_content %}
     </div>
 
     {% block page_tags %}
     {% endblock page_tags %}
+  
+  </div>
   </body>
 
-  <footer>
-    <div class="text-lg text-indigo-500">
-      {% block page_footer %}
-        {% include "includes/footer.jinja" %}
-      {% endblock page_footer %}
-    </div>
-  </footer>
+  {% include "includes/footer.jinja" %}
 </html>
