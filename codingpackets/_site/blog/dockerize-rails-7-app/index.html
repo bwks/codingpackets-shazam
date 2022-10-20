@@ -1,0 +1,611 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/app.css">
+    
+
+    <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/tokyo-night-dark.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+
+    <!-- Initialize highlight.js -->
+    <script>hljs.highlightAll();</script>
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="">
+
+  <nav class="w-full py-3 bg-zinc-900 text-zinc-200 shadow-lg fixed inset-x-0 top-0">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-white font-semibold opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-white font-semibold opacity-60 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-white font-semibold opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-white font-semibold opacity-60 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-white font-semibold opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-white font-semibold opacity-60 p-0">|</p>
+    </div>
+    <div>
+      <img class="opacity-100 hover:opacity-60 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+    </div>
+  </div>  
+</nav>
+
+  <div class="grid place-items-center pt-16">
+    
+  
+    
+<div class="pt-5 text-center">
+  <h1>Dockerize Rails 7 App</h1>
+  <div class="">
+    
+    
+      <p class="text-gray-400 text-lg italic">
+        published: 2nd of October 2022
+      </p>
+    
+  </div>
+</div>
+
+  
+
+
+    <div class="w-3/5 min-w-full md:min-w-0 px-10 text-xl text-gray-800 font-medium">
+      
+
+<h3>Intro</h3>
+<p>
+  In this post, I will show you how to Dockerize your Rails 7 app in 
+  a development environment. We will be using Tailwind for the CSS and 
+  PostgreSQL for the database. This setup includes file syncing of assets on 
+  file changes between the host and container which is super nice.
+</p>
+
+<h3>Software used in this post</h3>
+<ul>
+  <li>Docker - 20.10.18, build b40c2f6</li>
+  <li>Ruby - 3.1.2p20</li>
+  <li>Rails - 7.0.4</li>
+  <li>PostgreSQL - 14.1</li>
+</ul>
+
+<h3>Code Repository</h3>
+<p>
+  The code for this blog can be found on Github 
+  
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>here</a>
+
+</p>
+
+<h3>Environment Variables</h3>
+<p>
+  Before we begin, add some environment variables to your 
+  <span class="emphasize-text-darkmode">rc</span> file. This 
+  allows your user and group ID's to be used within the 
+  containers.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">~/.zshrc</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-bash hljs">export UID=$(id -u)
+export GID=$(id -g)</code></pre>
+  </div>
+</div>
+
+
+<h3>Dockerfiles</h3>
+<p>
+  Create the following <span class="emphasize-text-darkmode">Dockerfile</span>
+  which is used to create our application container images.
+</p>
+
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">Dockerfile.rails</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-Dockerfile hljs">################## RAILS BUILD IMAGE ################## 
+# Use this to generate a new rails application
+FROM ruby:3.1.2-alpine3.16 AS build
+
+# ARGs are passed in via the `--build-arg ` CLI argument
+ARG APP_NAME
+ARG APP_USER
+ARG APP_USER_ID
+ARG APP_GROUP_ID
+ENV APP_NAME ${APP_NAME}
+ENV APP_USER ${APP_USER}
+ENV APP_USER_ID ${APP_USER_ID}
+ENV APP_GROUP_ID ${APP_GROUP_ID}
+
+# Static variables
+ARG BUILD_PACKAGES="build-base"
+
+# Install build deps
+RUN echo "http://dl-4.alpinelinux.org/alpine/v3.16/main" >> /etc/apk/repositories \
+  && echo "http://dl-4.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \
+  && apk update \
+  && apk add ${BUILD_PACKAGES}
+
+# Set working directory
+WORKDIR /opt
+
+# Install Rails
+RUN gem install rails bundler --no-document
+
+# Create new Rails app
+RUN rails new \
+  --skip-bundle \
+  --skip-git \
+  --database=postgresql \
+  --css=tailwind \
+  ${APP_NAME}
+
+WORKDIR /opt/${APP_NAME}
+
+################## RAILS BASE IMAGE ################## 
+FROM ruby:3.1.2-alpine3.16 AS rails-base
+
+ARG APP_NAME
+ARG APP_USER
+ARG APP_USER_ID
+ARG APP_GROUP_ID
+ENV APP_NAME ${APP_NAME}
+ENV APP_USER ${APP_USER}
+ENV APP_USER_ID ${APP_USER_ID}
+ENV APP_GROUP_ID ${APP_GROUP_ID}
+
+ARG RUN_PACKAGES="build-base tzdata postgresql-dev postgresql-client nodejs yarn"
+
+RUN echo "http://dl-4.alpinelinux.org/alpine/v3.12/main" >> /etc/apk/repositories \
+  && echo "http://dl-4.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories \
+  && apk update \
+  && apk add --no-cache $RUN_PACKAGES
+
+# Default directory
+RUN mkdir -p /opt/${APP_NAME}
+WORKDIR /opt/${APP_NAME}
+
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /opt/${APP_NAME} /opt/${APP_NAME}
+COPY config/Gemfile Gemfile
+
+RUN bundle install \
+  && bin/rails tailwindcss:install
+
+COPY config/Procfile.dev Procfile.dev
+COPY config/database.yml config/database.yml
+COPY config/environments-development.rb config/environments/development.rb
+COPY config/bin-dev bin/dev
+RUN chmod +x bin/dev
+
+# Cleanup cache
+RUN bundle clean --force \
+  && rm -rf /usr/local/bundle/cache/*.gem \
+  && find /usr/local/bundle/gems/ -name "*.c" -delete \
+  && find /usr/local/bundle/gems/ -name "*.o" -delete
+
+# Create app user and group
+RUN addgroup -S ${APP_USER} -g ${APP_GROUP_ID}  && adduser -u ${APP_USER_ID} -S ${APP_USER} -G ${APP_USER}
+
+# Set directory ownership
+RUN chown -R ${APP_USER_ID}:${APP_GROUP_ID} /opt/${APP_NAME}
+
+USER ${APP_USER}
+
+# Add a script to be executed every time the container starts.
+EXPOSE 3000
+CMD ["bin/dev"]</code></pre>
+  </div>
+</div>
+
+
+<p>
+  The following base <span class="emphasize-text-darkmode">docker-compose.yaml</span> 
+  file is used for all stages of development.
+</p>
+
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">docker-compose.yaml</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-yaml hljs">version: "3.9"
+services:
+  db:
+    image: postgres:14.1
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_USER=${PGS_USER}"
+      - "POSTGRES_PASSWORD=${PGS_PASS}"
+  app:
+    build:
+      context: .
+      dockerDockerfile
+    image: rails-base
+    user: ${APP_USER_ID}:${APP_GROUP_ID}
+    volumes:
+      - ./${APP_NAME}:/opt/${APP_NAME}
+    depends_on:
+      - db
+    environment:
+      - "APP_NAME=${APP_NAME}"
+      - "APP_USER_ID=${APP_USER_ID}"
+      - "APP_GROUP_ID=${APP_GROUP_ID}"
+      - "PGS_HOST=${PGS_HOST}"
+      - "PGS_USER=${PGS_USER}"
+      - "PGS_PASS=${PGS_PASS}"
+      - "RAILS_ENV=${RAILS_ENV}"</code></pre>
+  </div>
+</div>
+
+
+<p>
+  The <span class="emphasize-text-darkmode">docker-compose-dev.yaml</span> 
+  file is used for the development environment.
+</p>
+
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">docker-compose-dev.yaml</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-yaml hljs">version: "3.9"
+services:
+  app:
+    user: ${APP_USER_ID}:${APP_GROUP_ID}
+    command: sh -c "bin/rails db:create && bin/rails db:migrate && rm -f tmp/pids/server.pid && bundle exec bin/dev"
+    ports:
+      - "3000:3000"</code></pre>
+  </div>
+</div>
+
+
+<p>
+  The <span class="emphasize-text-darkmode">.env.dev</span> file 
+  is used to pass environment variables to containers.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">.env.dev</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-shell hljs">APP_NAME=&lt;app-name&gt;
+APP_USER=$USER
+APP_USER_ID=$UID
+APP_GROUP_ID=$GID
+PGS_HOST=db
+PGS_USER=$USER
+PGS_PASS=$USER
+RAILS_ENV=development</code></pre>
+  </div>
+</div>
+
+
+<h3>Configuration Files</h3>
+<p>
+  To get our Rails environment working well with Docker, we need 
+  to alter some of the configuration files. The alterations are 
+  explained below.
+</p>
+<p>
+  The configuration files can be found found in 
+  the Github 
+    
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>
+
+  in the <span class="emphasize-text-darkmode">config</span>
+  directory.
+</p>
+
+<p>
+  The <span class="emphasize-text-darkmode">Gemfile</span> file 
+  has the <span class="emphasize-text-darkmode">foreman</span> gem
+  added which is used to run the Procfile.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">Gemfile</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-ruby hljs">source "https://rubygems.org"
+gem "foreman", "~> 0.87.2"
+# ... rest of file</code></pre>
+  </div>
+</div>
+
+
+<p>
+  The <span class="emphasize-text-darkmode">config/database.yml</span> file 
+  is altered to pull data from environment variables.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">config/database.yml</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-ruby hljs">default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("PGS_HOST") { "db" } %>
+  username: <%= ENV.fetch("PGS_USER") { "postgres" } %>
+  password: <%= ENV.fetch("PGS_PASS") { "postgres" } %>
+
+development:
+  <<: *default
+  database: <%= "#{ENV.fetch('APP_NAME')}_development" %>
+
+test:
+  <<: *default
+  database: <%= "#{ENV.fetch('APP_NAME')}_test" %>
+
+production:
+  <<: *default
+  database: <%= "#{ENV.fetch('APP_NAME')}_production" %></code></pre>
+  </div>
+</div>
+
+
+<p>
+  The <span class="emphasize-text-darkmode">config/environments-development.rb</span> file 
+  is altered to allow access to IPv4/6 address and any hostname for development mode. 
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">config/application-development.yml</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-ruby hljs">Rails.application.configure do
+
+  # Allow access from any IPv4/6 address
+  config.web_console.whitelisted_ips = ['0.0.0.0/0', '::/0']
+
+  # Allow access from any hostname
+  config.hosts.clear
+
+  # ... rest of file
+end</code></pre>
+  </div>
+</div>
+
+
+<p>
+  Alpine linux does not have the 
+  <span class="emphasize-text-darkmode">bash</span> shell.
+  The <span class="emphasize-text-darkmode">shebang</span> line 
+  of the <span class="emphasize-text-darkmode">bin/dev</span> 
+  file is updated to use the <span class="emphasize-text-darkmode">sh</span> shell.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">bin/dev</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-shell hljs">#!/usr/bin/env sh
+# ... rest of file</code></pre>
+  </div>
+</div>
+
+
+<p>
+  The <span class="emphasize-text-darkmode">Procfile.dev</span>
+  file is updated to bind to all IPv4 addresses 
+  <span class="emphasize-text-darkmode">(0.0.0.0)</span> instead of 
+  <span class="emphasize-text-darkmode">localhost</span>.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">Procfile.dev</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">web: bin/rails server -b "0.0.0.0" -p 3000
+# ... rest of file</code></pre>
+  </div>
+</div>
+
+
+<h3>Build Containers</h3>
+<p>
+  Build the <span class="emphasize-text-darkmode">rails-base</span> 
+  container image.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">cmd</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  build \
+    --build-arg APP_NAME=&lt;app-name&gt; \
+    --build-arg APP_USER_ID=$UID \
+    --build-arg APP_GROUP_ID=$GID \
+    --build-arg APP_USER=$USER</code></pre>
+  </div>
+</div>
+
+
+<h3>Generate Rails App</h3>
+<p>
+  Generate a new Rails app using the <span class="emphasize-text-darkmode">rails-base</span> 
+  container image.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">cmd</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">export APP_NAME="&lt;app-name&gt;" \
+  && docker container run -itd --name=rails-tmp rails-base sh \
+  && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \
+  && docker container kill rails-tmp \
+  && docker container rm rails-tmp</code></pre>
+  </div>
+</div>
+
+
+<p>
+  This generates a Rails application in the <span class="emphasize-text-darkmode">&lt;app-name&gt;</span> 
+  directory.
+</p>
+
+<h3>Run Containers</h3>
+<p>
+  Bring up the application containers.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">cmd</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  up</code></pre>
+  </div>
+</div>
+
+
+<p>
+  Bring down the application containers.
+</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">cmd</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  down</code></pre>
+  </div>
+</div>
+
+
+<p>Run a generator.</p>
+
+<div class="py-2">
+  <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold shadow-xl">
+    <span class="">cmd</span>
+  </div>
+  <div class="rounded-b-md bg-white border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+    <pre><code class="language-text hljs">docker compose run \
+  --user $UID:$GID \
+  app \
+  bin/rails generate scaffold device name:string</code></pre>
+  </div>
+</div>
+
+
+<h3>Outro</h3>
+<p>
+  In this post I showed you how to configure a Docker environment 
+  for Ruby on Rails application development. It's a bit of a process 
+  but works well when all the peices are together. Look out for a 
+  future post where I build a production deployment.
+</p>
+
+    </div>
+
+    
+  
+    
+
+  <div class="py-3">
+    
+      <div class="inline-block px-2.5 py-1 bg-rose-100 text-rose-700 text-base font-semibold italic leading-tight lowercase rounded shadow-md">rails</div>
+    
+      <div class="inline-block px-2.5 py-1 bg-rose-100 text-rose-700 text-base font-semibold italic leading-tight lowercase rounded shadow-md">docker</div>
+    
+  </div>
+
+
+  
+
+
+    
+      <div class="">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+    
+  
+  </div>
+  </body>
+
+  <footer class="fixed inset-x-0 bottom-0">
+  <nav class="w-full py-3 bg-zinc-900 text-zinc-200 shadow-lg">
+    <div class="flex justify-center py-1">
+      <div>
+        <a class="text-white opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/">Me</a>
+      </div>
+      <div class="px-4">
+        <p class="text-white opacity-60 p-0">|</p>
+      </div>
+      <div>
+        <a class="text-white opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/blog/">Blog</a>
+      </div>
+      <div class="px-4">
+        <p class="text-white opacity-60 p-0">|</p>
+      </div>
+      <div>
+        <a class="text-white opacity-60 hover:opacity-100 focus:opacity-100 p-0" href="/blog/recent/">Recent</a>
+      </div>
+    </div>
+  </nav>
+</footer>
+</html>

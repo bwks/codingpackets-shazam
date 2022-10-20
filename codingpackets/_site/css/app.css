@@ -622,6 +622,37 @@ html {
   font-family: "Ubuntu";
 }
 
+h1 {
+  padding-bottom: 0.75rem;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 900;
+  --tw-text-opacity: 1;
+  color: rgb(24 24 27 / var(--tw-text-opacity));
+}
+
+h2 {
+  padding-bottom: 0.5rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 900;
+  --tw-text-opacity: 1;
+  color: rgb(24 24 27 / var(--tw-text-opacity));
+}
+
+h3 {
+  padding-bottom: 0.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 900;
+  --tw-text-opacity: 1;
+  color: rgb(24 24 27 / var(--tw-text-opacity));
+}
+
+p {
+  padding-bottom: 0.5rem;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -763,6 +794,40 @@ html {
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .fixed {
   position: fixed;
 }
@@ -794,10 +859,6 @@ html {
 
 .grid {
   display: grid;
-}
-
-.h-full {
-  height: 100%;
 }
 
 .h-28 {
@@ -925,21 +986,12 @@ html {
   padding-right: 0.5rem;
 }
 
-.px-3 {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-}
-
 .pt-16 {
   padding-top: 4rem;
 }
 
 .pt-5 {
   padding-top: 1.25rem;
-}
-
-.pb-3 {
-  padding-bottom: 0.75rem;
 }
 
 .pb-2 {
@@ -954,11 +1006,6 @@ html {
   font-family: Ubuntu Mono;
 }
 
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
-}
-
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
@@ -969,18 +1016,14 @@ html {
   line-height: 2rem;
 }
 
-.text-base {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
 
-.font-black {
-  font-weight: 900;
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .font-semibold {
@@ -1017,11 +1060,6 @@ html {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-zinc-900 {
-  --tw-text-opacity: 1;
-  color: rgb(24 24 27 / var(--tw-text-opacity));
-}
-
 .text-gray-800 {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
@@ -1040,11 +1078,6 @@ html {
 .text-rose-700 {
   --tw-text-opacity: 1;
   color: rgb(190 18 60 / var(--tw-text-opacity));
-}
-
-.text-gray-500 {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
 .no-underline {
@@ -1068,6 +1101,12 @@ html {
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 

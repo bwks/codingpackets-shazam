@@ -1,9 +1,10 @@
 {% from "macros/page-header.jinja" import page_header %}
 {% from "macros/link-to.jinja" import link_to %}
+{% from "macros/elink-to.jinja" import elink_to %}
 {% from "macros/tags.jinja" import tags %}
 {% from "macros/code-block.jinja" import code_block %}
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +33,7 @@
       {{ page_header(heading=project + " Site") }}
     {% endblock page_header %}
 
-    <div class="w-3/5 min-w-full md:min-w-0 px-10 text-xl text-gray-800">
+    <div class="w-3/5 min-w-full md:min-w-0 px-10 text-xl text-gray-800 font-medium">
       {% block page_content %}
       {% endblock page_content %}
     </div>
