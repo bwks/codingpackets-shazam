@@ -1,5 +1,5 @@
 {% macro code_block(header, language, code) %}
-<div class="">
+<div class="py-2">
   <div class="rounded-t-md bg-white border-2 border-b-0 border-zinc-800 py-1 text-center font-bold">
     <span class="">{{ header }}</span>
   </div>
@@ -7,6 +7,5 @@
     <pre><code class="language-{{ language }} hljs">{{ code | safe }}</code></pre>
   </div>
 </div>
-
 {% endmacro %}
 {% set alias = code_block %}
