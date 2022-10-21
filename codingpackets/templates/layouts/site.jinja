@@ -10,42 +10,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/css/app.css">
-    {# <link rel="stylesheet" href="/css/font.css"> #}
+    {% block favicon %}
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    {% endblock favicon %}
+    
+    {% block css_vendor %}
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    {% endblock css_vendor %}
 
-    <link rel="stylesheet"
-      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/tokyo-night-dark.min.css">
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+    {% block css_app %}
+      <link rel="stylesheet" href="/css/app.css">
+    {% endblock css_app %}
 
-    <!-- Initialize highlight.js -->
-    <script>hljs.highlightAll();</script>
+    {% block js_vendor %}
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    {% endblock js_vendor %}
+
+    {% block js_app %}
+      {# <script defer src="/js/custom/back-to-top.js"></script> #}
+      {# <script defer src="/js/custom/switch.js"></script> #}
+    {% endblock js_app %}
+
+    {% block js_init %}
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    {% endblock js_init %}
+
+    {% block js_page_local %}
+    {% endblock js_page_local %}
 
     <title>{{ project }}.com</title>
   </head>
 
-  <body class="">
+  <body class="bg-stone-50">
 
-  {% include "includes/navbar.jinja" %}
+    {% include "includes/navbar.jinja" %}
 
-  <div class="grid place-items-center pt-16">
-    {% block page_header %}
-      {{ page_header(heading=project + " Site") }}
-    {% endblock page_header %}
+    <div class="grid place-items-center pt-16">
+      {% block page_header %}
+        {{ page_header(heading=project + " Site") }}
+      {% endblock page_header %}
 
-    <div class="w-3/5 min-w-full md:min-w-0 px-10 text-xl text-gray-800 font-medium">
-      {% block page_content %}
-      {% endblock page_content %}
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 font-medium">
+        {% block page_content %}
+        {% endblock page_content %}
+      </div>
+
+      {% block page_tags %}
+      {% endblock page_tags %}
+
+      {% block blank_page %}
+        {% include "includes/blank-page.jinja" %}
+      {% endblock blank_page %}
     </div>
 
-    {% block page_tags %}
-    {% endblock page_tags %}
-
-    {% block blank_page %}
-      {% include "includes/blank-page.jinja" %}
-    {% endblock blank_page %}
-  
-  </div>
   </body>
 
   {% include "includes/footer.jinja" %}
