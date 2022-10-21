@@ -6,28 +6,8 @@
 
 
 (function () {
-  const selectors = [
-    ".bg",
-    ".badge",
-    ".boxed-img",
-    ".breadcrumb",
-    ".category-tag",
-    ".code-block-caption",
-    ".code-block-left",
-    ".code-block-title",
-    ".date",
-    ".emphasize-text",
-    ".important",
-    ".kbd",
-    ".note",
-    ".text",
-    ".text-th",
-    ".thead",
-    ".tip",
-    ".warning",
-  ];
 
-  let lightSwitch = document.getElementById("lightSwitch");
+  let lightSwitch = document.getElementById("light-switch");
   if (!lightSwitch) {
     return;
   }
@@ -38,16 +18,17 @@
    * Basically, replaces/toggles every CSS class that has '-lightmode' class with '-darkmode'
    */
   function darkMode() {
-    for (selector of selectors) {
-      document.querySelectorAll(`${selector}-lightmode`).forEach((element) => {
-        element.className = element.className.replace(/-lightmode/g, "-darkmode");
-      });
-    }
+    // for (selector of selectors) {
+    //   document.querySelectorAll(`${selector}-lightmode`).forEach((element) => {
+    //     element.className = element.className.replace(/-lightmode/g, "-darkmode");
+    //   });
+    // }
     // set light switch input to true
     if (!lightSwitch.checked) {
       lightSwitch.checked = true;
     }
-    localStorage.setItem("lightSwitch", "dark");
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("light-switch", "dark");
   }
 
   /**
@@ -55,15 +36,16 @@
    * @summary: changes the theme to 'light mode' and save settings to local stroage.
    */
   function lightMode() {
-    for (selector of selectors) {
-      document.querySelectorAll(`${selector}-darkmode`).forEach((element) => {
-        element.className = element.className.replace(/-darkmode/g, "-lightmode");
-      });
-    }
+    // for (selector of selectors) {
+    //   document.querySelectorAll(`${selector}-darkmode`).forEach((element) => {
+    //     element.className = element.className.replace(/-darkmode/g, "-lightmode");
+    //   });
+    // }
     if (lightSwitch.checked) {
       lightSwitch.checked = false;
     }
-    localStorage.setItem("lightSwitch", "light");
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("light-switch", "light");
   }
 
   /**
@@ -91,7 +73,7 @@
   }
 
   function setup() {
-    var settings = localStorage.getItem("lightSwitch");
+    var settings = localStorage.getItem("light-switch");
     if (settings == null) {
       settings = getSystemDefaultTheme();
     }

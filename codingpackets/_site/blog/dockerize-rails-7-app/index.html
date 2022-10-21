@@ -4,7 +4,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,7 @@
 
     
       <link rel="stylesheet" href="/css/app.css">
+      
     
 
     
@@ -31,7 +32,7 @@
 
     
       
-      
+      <script defer src="/js/custom/light-switch.js"></script>
     
 
     
@@ -47,30 +48,34 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50">
+  <body class="bg-stone-50 dark:bg-black">
 
-    <nav class="w-full py-3 bg-zinc-900 text-zinc-200 shadow-lg fixed inset-x-0 top-0">
+    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0">
   <div class="flex justify-center items-center py-1">
     <div>
-      <a class="text-white font-medium opacity-60 hover:opacity-90 focus:opacity-90 p-0" href="/">Me</a>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
     <div class="px-4">
-      <p class="text-white font-medium opacity-60 p-0">|</p>
+      <p class="text-neutral-400 p-0">|</p>
     </div>
     <div>
-      <a class="text-white font-medium opacity-60 hover:opacity-90 focus:opacity-90 p-0" href="/blog/">Blog</a>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
     </div>
     <div class="px-4">
-      <p class="text-white font-medium opacity-60 p-0">|</p>
+      <p class="text-neutral-400 p-0">|</p>
     </div>
     <div>
-      <a class="text-white font-medium opacity-60 hover:opacity-90 focus:opacity-90 p-0" href="/blog/recent/">Recent</a>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
     </div>
     <div class="px-4">
-      <p class="text-white font-medium opacity-60 p-0">|</p>
+      <p class="text-neutral-400 p-0">|</p>
     </div>
-    <div>
-      <img class="opacity-90 hover:opacity-60 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+    <div class="-mb-4">
+      <label class="relative inline-block w-7 h-3.5 rounded-full">
+        <input id="light-switch" type="checkbox" class="peer opacity-0 w-0 h-0">
+        <span class="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-neutral-400 rounded-full duration-300 before:content-[''] before:absolute before:w-3.5 before:h-3.5 before:bottom-0 before:left-0 before:rounded-full
+            before:bg-neutral-100 before:duration-300 peer-checked:before:translate-x-3.5 peer-checked:bg-amber-500"></span>
+      </label>
     </div>
   </div>  
 </nav>
@@ -84,7 +89,7 @@
   <div class="">
     
     
-      <p class="text-gray-400 text-lg italic p-0">
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
         published: 2nd of October 2022
       </p>
     
@@ -94,7 +99,7 @@
   
 
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         
 <h3>Intro</h3>
 <p>
@@ -116,7 +121,7 @@
 <h3>Code Repository</h3>
 <p>
   The code for this blog can be found on Github 
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>here</a>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>here</a>.
 </p>
 
 <h3>Environment Variables</h3>
@@ -128,10 +133,10 @@
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">~/.zshrc</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-bash hljs px-5">export UID=$(id -u)
 export GID=$(id -g)</code></pre>
   </div>
@@ -146,10 +151,10 @@ export GID=$(id -g)</code></pre>
 
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">Dockerfile.rails</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-Dockerfile hljs px-5">################## RAILS BUILD IMAGE ################## 
 # Use this to generate a new rails application
 FROM ruby:3.1.2-alpine3.16 AS build
@@ -253,10 +258,10 @@ CMD ["bin/dev"]</code></pre>
 
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">docker-compose.yaml</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-yaml hljs px-5">version: "3.9"
 services:
   db:
@@ -295,10 +300,10 @@ services:
 
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">docker-compose-dev.yaml</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-yaml hljs px-5">version: "3.9"
 services:
   app:
@@ -316,10 +321,10 @@ services:
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">.env.dev</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-shell hljs px-5">APP_NAME=&lt;app-name&gt;
 APP_USER=$USER
 APP_USER_ID=$UID
@@ -341,7 +346,7 @@ RAILS_ENV=development</code></pre>
 <p>
   The configuration files can be found found in 
   the Github 
-    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>.
   in the <span class="emphasize-text-darkmode">config</span>
   directory.
 </p>
@@ -353,10 +358,10 @@ RAILS_ENV=development</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">Gemfile</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-ruby hljs px-5">source "https://rubygems.org"
 gem "foreman", "~> 0.87.2"
 # ... rest of file</code></pre>
@@ -370,10 +375,10 @@ gem "foreman", "~> 0.87.2"
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">config/database.yml</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-ruby hljs px-5">default: &default
   adapter: postgresql
   encoding: unicode
@@ -405,10 +410,10 @@ production:
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">config/application-development.yml</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-ruby hljs px-5">Rails.application.configure do
 
   # Allow access from any IPv4/6 address
@@ -432,10 +437,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">bin/dev</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-shell hljs px-5">#!/usr/bin/env sh
 # ... rest of file</code></pre>
   </div>
@@ -450,10 +455,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">Procfile.dev</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">web: bin/rails server -b "0.0.0.0" -p 3000
 # ... rest of file</code></pre>
   </div>
@@ -467,10 +472,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">cmd</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
@@ -491,10 +496,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">cmd</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">export APP_NAME="&lt;app-name&gt;" \
   && docker container run -itd --name=rails-tmp rails-base sh \
   && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \
@@ -515,10 +520,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">cmd</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
@@ -533,10 +538,10 @@ end</code></pre>
 </p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">cmd</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
@@ -549,10 +554,10 @@ end</code></pre>
 <p>Run a generator.</p>
 
 <div class="py-2">
-  <div class="rounded-t-md border-2 border-b-0 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
+  <div class="rounded-t-md border-4 border-zinc-800 py-1 text-center font-bold font-mono shadow-xl">
     <span class="">cmd</span>
   </div>
-  <div class="rounded-b-md border-2 border-t-0 border-zinc-800 font-mono shadow-xl">
+  <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
     <pre><code class="language-text hljs px-5">docker compose run \
   --user $UID:$GID \
   app \
@@ -579,11 +584,11 @@ end</code></pre>
   <div class="py-3">
     
       <div class="inline-block pr-1.5">
-        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 text-base font-semibold italic leading-tight lowercase rounded shadow-md">rails</div>
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">rails</div>
       </div>
     
       <div class="inline-block pr-1.5">
-        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 text-base font-semibold italic leading-tight lowercase rounded shadow-md">docker</div>
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">docker</div>
       </div>
     
   </div>
@@ -615,10 +620,10 @@ end</code></pre>
   <nav class="w-full py-3 bg-zinc-900 shadow-lg">
     <div class="flex justify-center py-1">
       <div class="text-center ">
-        <a class="px-2 text-white font-semibold opacity-60 hover:opacity-90" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
-        <a class="px-2 text-white font-semibold opacity-60 hover:opacity-90" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
-        <a class="px-2 text-white font-semibold opacity-60 hover:opacity-90" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
-        <a class="px-2 text-white font-semibold opacity-60 hover:opacity-90" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
       </div>
     </div>
   </nav>

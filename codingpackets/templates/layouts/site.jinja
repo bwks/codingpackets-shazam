@@ -4,7 +4,7 @@
 {% from "macros/tags.jinja" import tags %}
 {% from "macros/code-block.jinja" import code_block %}
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,7 @@
 
     {% block css_app %}
       <link rel="stylesheet" href="/css/app.css">
+      {# <link rel="stylesheet" href="/css/light-switch.css"> #}
     {% endblock css_app %}
 
     {% block js_vendor %}
@@ -31,7 +32,7 @@
 
     {% block js_app %}
       {# <script defer src="/js/custom/back-to-top.js"></script> #}
-      {# <script defer src="/js/custom/switch.js"></script> #}
+      <script defer src="/js/custom/light-switch.js"></script>
     {% endblock js_app %}
 
     {% block js_init %}
@@ -47,7 +48,7 @@
     <title>{{ project }}.com</title>
   </head>
 
-  <body class="bg-stone-50">
+  <body class="bg-stone-50 dark:bg-black">
 
     {% include "includes/navbar.jinja" %}
 
@@ -56,7 +57,7 @@
         {{ page_header(heading=project + " Site") }}
       {% endblock page_header %}
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         {% block page_content %}
         {% endblock page_content %}
       </div>
