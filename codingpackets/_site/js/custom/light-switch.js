@@ -11,6 +11,7 @@
   if (!lightSwitch) {
     return;
   }
+  let lightBulb = document.getElementById("light-bulb");
 
   /**
    * @function darkmode
@@ -18,16 +19,12 @@
    * Basically, replaces/toggles every CSS class that has '-lightmode' class with '-darkmode'
    */
   function darkMode() {
-    // for (selector of selectors) {
-    //   document.querySelectorAll(`${selector}-lightmode`).forEach((element) => {
-    //     element.className = element.className.replace(/-lightmode/g, "-darkmode");
-    //   });
-    // }
     // set light switch input to true
     if (!lightSwitch.checked) {
       lightSwitch.checked = true;
     }
     document.documentElement.classList.add("dark");
+    lightBulb.src = "/img/light-bulb-64-dark.png";
     localStorage.setItem("light-switch", "dark");
   }
 
@@ -36,15 +33,12 @@
    * @summary: changes the theme to 'light mode' and save settings to local stroage.
    */
   function lightMode() {
-    // for (selector of selectors) {
-    //   document.querySelectorAll(`${selector}-darkmode`).forEach((element) => {
-    //     element.className = element.className.replace(/-darkmode/g, "-lightmode");
-    //   });
-    // }
+
     if (lightSwitch.checked) {
       lightSwitch.checked = false;
     }
     document.documentElement.classList.remove("dark");
+    lightBulb.src = "/img/light-bulb-64-light.png";
     localStorage.setItem("light-switch", "light");
   }
 
