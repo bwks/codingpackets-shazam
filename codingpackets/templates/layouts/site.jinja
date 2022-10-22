@@ -22,7 +22,6 @@
 
     {% block css_app %}
       <link rel="stylesheet" href="/css/app.css">
-      {# <link rel="stylesheet" href="/css/light-switch.css"> #}
     {% endblock css_app %}
 
     {% block js_vendor %}
@@ -32,7 +31,7 @@
     {% endblock js_vendor %}
 
     {% block js_app %}
-      {# <script defer src="/js/custom/back-to-top.js"></script> #}
+      <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
     {% endblock js_app %}
 
@@ -70,6 +69,8 @@
         {% include "includes/blank-page.jinja" %}
       {% endblock blank_page %}
     </div>
+
+    {% include "includes/back-to-top.jinja" %}
 
   </body>
 
