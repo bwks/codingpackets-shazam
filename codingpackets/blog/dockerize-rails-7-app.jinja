@@ -27,7 +27,7 @@
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
-  <span class="emphasize-text-darkmode">rc</span> file. This 
+  {{ emphasize("rc") }} file. This 
   allows your user and group ID's to be used within the 
   containers.
 </p>
@@ -40,7 +40,7 @@ export GID=$(id -g)'
 
 <h3>Dockerfiles</h3>
 <p>
-  Create the following <span class="emphasize-text-darkmode">Dockerfile</span>
+  Create the following {{ emphasize("Dockerfile") }}
   which is used to create our application container images.
 </p>
 
@@ -142,7 +142,7 @@ CMD ["bin/dev"]'
 ) }}
 
 <p>
-  The following base <span class="emphasize-text-darkmode">docker-compose.yaml</span> 
+  The following base {{ emphasize("docker-compose.yaml") }} 
   file is used for all stages of development.
 </p>
 
@@ -179,7 +179,7 @@ services:
 ) }}
 
 <p>
-  The <span class="emphasize-text-darkmode">docker-compose-dev.yaml</span> 
+  The {{ emphasize("docker-compose-dev.yaml") }} 
   file is used for the development environment.
 </p>
 
@@ -196,7 +196,7 @@ services:
 ) }}
 
 <p>
-  The <span class="emphasize-text-darkmode">.env.dev</span> file 
+  The {{ emphasize(".env.dev") }} file 
   is used to pass environment variables to containers.
 </p>
 {{ code_block(
@@ -222,13 +222,13 @@ RAILS_ENV=development'
   The configuration files can be found found in 
   the Github 
   {{ elink_to(path="https://github.com/bwks/docker-rails", description="repo") }}.
-  in the <span class="emphasize-text-darkmode">config</span>
+  in the {{ emphasize("config") }}
   directory.
 </p>
 
 <p>
-  The <span class="emphasize-text-darkmode">Gemfile</span> file 
-  has the <span class="emphasize-text-darkmode">foreman</span> gem
+  The {{ emphasize("Gemfile") }} file 
+  has the {{ emphasize("foreman") }} gem
   added which is used to run the Procfile.
 </p>
 {{ code_block(
@@ -240,7 +240,7 @@ gem "foreman", "~> 0.87.2"
 ) }}
 
 <p>
-  The <span class="emphasize-text-darkmode">config/database.yml</span> file 
+  The {{ emphasize("config/database.yml") }} file 
   is altered to pull data from environment variables.
 </p>
 {{ code_block(
@@ -270,7 +270,7 @@ production:
 ) }}
 
 <p>
-  The <span class="emphasize-text-darkmode">config/environments-development.rb</span> file 
+  The {{ emphasize("config/environments-development.rb") }} file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
 {{ code_block(
@@ -290,10 +290,10 @@ end'
 
 <p>
   Alpine linux does not have the 
-  <span class="emphasize-text-darkmode">bash</span> shell.
-  The <span class="emphasize-text-darkmode">shebang</span> line 
-  of the <span class="emphasize-text-darkmode">bin/dev</span> 
-  file is updated to use the <span class="emphasize-text-darkmode">sh</span> shell.
+  {{ emphasize("bash") }} shell.
+  The {{ emphasize("shebang") }} line 
+  of the {{ emphasize("bin/dev") }} 
+  file is updated to use the {{ emphasize("sh") }} shell.
 </p>
 {{ code_block(
   header="bin/dev",
@@ -303,10 +303,10 @@ end'
 ) }}
 
 <p>
-  The <span class="emphasize-text-darkmode">Procfile.dev</span>
+  The {{ emphasize("Procfile.dev") }}
   file is updated to bind to all IPv4 addresses 
-  <span class="emphasize-text-darkmode">(0.0.0.0)</span> instead of 
-  <span class="emphasize-text-darkmode">localhost</span>.
+  {{ emphasize("(0.0.0.0)") }} instead of 
+  {{ emphasize("localhost") }}.
 </p>
 {{ code_block(
   header="Procfile.dev",
@@ -317,7 +317,7 @@ end'
 
 <h3>Build Containers</h3>
 <p>
-  Build the <span class="emphasize-text-darkmode">rails-base</span> 
+  Build the {{ emphasize("rails-base") }} 
   container image.
 </p>
 {{ code_block(
@@ -336,7 +336,7 @@ end'
 
 <h3>Generate Rails App</h3>
 <p>
-  Generate a new Rails app using the <span class="emphasize-text-darkmode">rails-base</span> 
+  Generate a new Rails app using the {{ emphasize("rails-base") }} 
   container image.
 </p>
 {{ code_block(
@@ -350,7 +350,7 @@ end'
 ) }}
 
 <p>
-  This generates a Rails application in the <span class="emphasize-text-darkmode">&lt;app-name&gt;</span> 
+  This generates a Rails application in the {{ emphasize("&lt;app-name&gt;") }} 
   directory.
 </p>
 

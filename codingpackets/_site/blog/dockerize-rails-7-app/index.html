@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -98,7 +99,7 @@
   
 
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         
 <h3>Intro</h3>
 <p>
@@ -126,7 +127,7 @@
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
-  <span class="emphasize-text-darkmode">rc</span> file. This 
+  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rc</span></span> file. This 
   allows your user and group ID's to be used within the 
   containers.
 </p>
@@ -144,7 +145,7 @@ export GID=$(id -g)</code></pre>
 
 <h3>Dockerfiles</h3>
 <p>
-  Create the following <span class="emphasize-text-darkmode">Dockerfile</span>
+  Create the following <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Dockerfile</span></span>
   which is used to create our application container images.
 </p>
 
@@ -251,7 +252,7 @@ CMD ["bin/dev"]</code></pre>
 
 
 <p>
-  The following base <span class="emphasize-text-darkmode">docker-compose.yaml</span> 
+  The following base <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">docker-compose.yaml</span></span> 
   file is used for all stages of development.
 </p>
 
@@ -293,7 +294,7 @@ services:
 
 
 <p>
-  The <span class="emphasize-text-darkmode">docker-compose-dev.yaml</span> 
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">docker-compose-dev.yaml</span></span> 
   file is used for the development environment.
 </p>
 
@@ -315,7 +316,7 @@ services:
 
 
 <p>
-  The <span class="emphasize-text-darkmode">.env.dev</span> file 
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">.env.dev</span></span> file 
   is used to pass environment variables to containers.
 </p>
 
@@ -346,13 +347,13 @@ RAILS_ENV=development</code></pre>
   The configuration files can be found found in 
   the Github 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>.
-  in the <span class="emphasize-text-darkmode">config</span>
+  in the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config</span></span>
   directory.
 </p>
 
 <p>
-  The <span class="emphasize-text-darkmode">Gemfile</span> file 
-  has the <span class="emphasize-text-darkmode">foreman</span> gem
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Gemfile</span></span> file 
+  has the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">foreman</span></span> gem
   added which is used to run the Procfile.
 </p>
 
@@ -369,7 +370,7 @@ gem "foreman", "~> 0.87.2"
 
 
 <p>
-  The <span class="emphasize-text-darkmode">config/database.yml</span> file 
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config/database.yml</span></span> file 
   is altered to pull data from environment variables.
 </p>
 
@@ -404,7 +405,7 @@ production:
 
 
 <p>
-  The <span class="emphasize-text-darkmode">config/environments-development.rb</span> file 
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config/environments-development.rb</span></span> file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
 
@@ -429,10 +430,10 @@ end</code></pre>
 
 <p>
   Alpine linux does not have the 
-  <span class="emphasize-text-darkmode">bash</span> shell.
-  The <span class="emphasize-text-darkmode">shebang</span> line 
-  of the <span class="emphasize-text-darkmode">bin/dev</span> 
-  file is updated to use the <span class="emphasize-text-darkmode">sh</span> shell.
+  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">bash</span></span> shell.
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">shebang</span></span> line 
+  of the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">bin/dev</span></span> 
+  file is updated to use the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">sh</span></span> shell.
 </p>
 
 <div class="py-2">
@@ -447,10 +448,10 @@ end</code></pre>
 
 
 <p>
-  The <span class="emphasize-text-darkmode">Procfile.dev</span>
+  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Procfile.dev</span></span>
   file is updated to bind to all IPv4 addresses 
-  <span class="emphasize-text-darkmode">(0.0.0.0)</span> instead of 
-  <span class="emphasize-text-darkmode">localhost</span>.
+  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">(0.0.0.0)</span></span> instead of 
+  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">localhost</span></span>.
 </p>
 
 <div class="py-2">
@@ -466,7 +467,7 @@ end</code></pre>
 
 <h3>Build Containers</h3>
 <p>
-  Build the <span class="emphasize-text-darkmode">rails-base</span> 
+  Build the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rails-base</span></span> 
   container image.
 </p>
 
@@ -490,7 +491,7 @@ end</code></pre>
 
 <h3>Generate Rails App</h3>
 <p>
-  Generate a new Rails app using the <span class="emphasize-text-darkmode">rails-base</span> 
+  Generate a new Rails app using the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rails-base</span></span> 
   container image.
 </p>
 
@@ -509,7 +510,7 @@ end</code></pre>
 
 
 <p>
-  This generates a Rails application in the <span class="emphasize-text-darkmode">&lt;app-name&gt;</span> 
+  This generates a Rails application in the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">&lt;app-name&gt;</span></span> 
   directory.
 </p>
 

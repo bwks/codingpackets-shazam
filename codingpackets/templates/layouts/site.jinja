@@ -3,6 +3,7 @@
 {% from "macros/elink-to.jinja" import elink_to %}
 {% from "macros/tags.jinja" import tags %}
 {% from "macros/code-block.jinja" import code_block %}
+{% from "macros/emphasize.jinja" import emphasize %}
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -57,7 +58,7 @@
         {{ page_header(heading=project + " Site") }}
       {% endblock page_header %}
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         {% block page_content %}
         {% endblock page_content %}
       </div>
