@@ -1,0 +1,9 @@
+{% macro boxed_image(path, width="", height="") %}
+<div class="text-center">
+  <p>
+    <img class="boxed-img-darkmode" {% if width %}width="{{ width }}"{% endif %} {% if height %}height="{{ height }}"{% endif %}
+         src="/img/{{ path }}" alt="{{ path }}">
+  </p>
+</div>
+{% endmacro %}
+{% set alias = boxed_image %}

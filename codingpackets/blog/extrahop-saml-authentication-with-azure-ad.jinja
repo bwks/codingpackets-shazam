@@ -1,0 +1,799 @@
+{% extends "layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3>Intro</h3>
+<p>
+  I was recently working with a customer to configure Azure AD 
+  as the SAML provider for their ExtraHop appliances. Although 
+  the process is pretty well documented in the ExtraHop docs, 
+  it is spread out in a few locations and there are a couple of 
+  gotchas we ran into. 
+</p>
+<p>
+  In this post, I will show you the process to configure your 
+  ExtraHop appliances for SAML authentication using Azure AD as 
+  the Identity Provider (IdP).
+</p>
+
+<h3>Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>ExtraHop Sensor (EDA) - 8.9.0</li>
+</ul>
+
+<h3>SAML Terminology</h3>
+<p>
+  Some important terminology to be aware about SAML is as follows.
+</p>
+
+<ul>
+  <li>Identity Provider (IdP) - Authenticates users and provides user identity</li>
+  <li>Service Privider (SP) - Provides authorized access to resources based on identity from the IdP</li>
+  <li>Claim - Information about the user.</li>
+  <li>Token - Group of claims.</li>
+</ul>
+
+<h3>SAML Login Flow</h3>
+<p>
+  The image below is directly from the Microsoft 
+    {{ elink_to(
+    path="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/auth-saml", 
+    description="docs")
+  }} <sup>[1]</sup>
+</p>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png", 
+  width="600px"
+) }}
+
+<h3>IdP SAML Requirements</h3>
+<p>
+  In order for ExtraHop to use an IdP SAML authentication, the IdP must meet 
+  the following requirements.
+</p>
+
+<h4>SAML 2.0 Compliant</h4>
+<p>
+  The IdP MUST support the SAML 2.0 standard
+</p>
+
+<h4>SP-initiated login flows</h4>
+<p>
+  The IdP MUST support SP-initiated login flows. IdP initiated login flows are NOT supported.
+</p>
+
+<h4>Signed SAML Responses</h4>
+<p>
+  The IdP MUST support signed SAML responses. Unsigned SAML responses are NOT supported.
+</p>
+
+<h3>Prerequisites</h3>
+<p>
+  There are a couple of items to square away in both ExtraHop and Azure before we begin.
+</p>
+
+<h4>ExtraHop</h4>
+<p>
+  Update the hostname to the FQDN and re-generate the SSL certificate.
+  This ensures that we have the correct 
+  {{ emphasize("ACS URL") }} in the SP Metadata configuration.
+</p>
+<h5>Hostname</h5>
+<p>
+  On the {{ emphasize("Admin") }} panel, 
+  browse to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>Connectivity</li>
+    <li>Change Settings</li>
+  </ul>
+</div>
+<p>
+  Update the hostname to the FQDN and hit {{ emphasize("Save") }}.
+</p>
+
+<h5>SSL Certificate</h5>
+<p>
+  Browse to: 
+  {{ emphasize("Admin") }} panel.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>SSL Certificate</li>
+    <li>Manage Certificates</li>
+    <li>Build SSL self-signed certificate based on hostname</li>
+  </ul>
+</div>
+<p>
+  Hit {{ emphasize("OK") }} on the prompt that asks 
+  if you would like to regenerate the certificate.
+</p>
+
+{{ note_block('
+    The web interface will restart at this step, but this does not effect 
+    the capture process so data will continue to be ingested and analyzed. 
+') }}
+
+<h4>Azure</h4>
+<p>
+  Add the Azure AD SAML ExtraHop application to enable SAML based authentication. 
+</p>
+
+<h5>SAML Application</h5>
+<p>
+  In the Azure Portal browse to
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>New application</li>
+  </ul>
+</div>
+<p>
+  Search for {{ emphasize("Azure AD SAML Toolkit") }} 
+  in the search bar. Select the application and rename it to 
+  {{ emphasize("Azure AD SAML ExtraHop") }}
+   then hit {{ emphasize("Create") }}
+</p>
+
+{{ note_block('
+    This post assumes that the Users/Groups are already created in Azure or 
+    synced to Azure from on-prem AD.  
+') }}
+
+<h3>SAML Configuration</h3>
+<h4>ExtraHop - SP Metadata</h4>
+<p>
+  To complete the Azure side we need to SP metadata from the ExtraHop appliance.
+  On the ExtraHop admin portal, browse to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>Remote Authentication</li>
+  </ul>
+</div>
+<p>
+  Select {{ emphasize("SAML") }} from 
+  the dropdown and hit {{ emphasize("Continue") }}.
+</p>
+<p>
+  On the next screen select {{ emphasize("View SP Metadata") }}.
+  You will need to note down the
+  {{ emphasize("ACS URL") }}
+  and the 
+  {{ emphasize("Entity ID") }}.
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png", 
+  width="600px"
+) }}
+
+<p>
+  Once you have that information browse to the SAML application 
+  in Azure AD to complete the configuration on the Azure side.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>Azure AD SAML</li>
+    <li>Single sign-on</li>
+  </ul>
+</div>
+
+<p>
+  There are 3 steps to complete.
+</p>
+<ol>
+  <li>Basic SAML Configuration</li>
+  <li>Attributes & Claims</li>
+  <li>SAML Certificates</li>
+</ol>
+
+<h4>Azure - Basic SAML Configuration</h4>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>Azure AD SAML</li>
+    <li>Single sign-on</li>
+    <li>Basic SAML Configuration</li>
+    <li>Edit</li>
+  </ul>
+</div>
+<p>
+  The table below lists the parameters and values that are required 
+  for the SAML configuration. The parameters are obtained from the 
+  ExtraHop SP metadata in the previous step.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Parameter</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Identifier (Entity ID)</td>
+    <td>urn:extrahop:saml:&lt;entity-id-string&gt;</td>
+  </tr>
+  <tr>
+    <td>Reply URL (Assertion Consumer Service URL)</td>
+    <td>https://&lt;extrahop-fqdn&gt;/admin/sso/saml/acs/</td>
+  </tr>
+  <tr>
+    <td>Sign on URL</td>
+    <td>https://&lt;extrahop-fqdn&gt;/</td>
+  </tr>
+</table>
+
+<p>
+  The image below shows an example configuration.
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png", 
+  width="600px"
+) }}
+
+
+<h4>Azure - Attributes & Claims</h4>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>Azure AD SAML</li>
+    <li>Single sign-on</li>
+    <li>Attributes & Claims</li>
+    <li>Edit</li>
+  </ul>
+</div>
+<p>
+  The tables below list the parameters and values that are required 
+  for the SAML attributes and claims configuration.
+</p>
+<h5>Required Claims - UUID</h5>
+
+  <p>
+    The first claim is used as a unique identifier for users 
+    within the ExtraHop platform.  
+  </p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Claim Name</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Unique User Identifier (Name ID)</td>
+    <td>user.userprincipalname</td>
+  </tr>
+</table>
+
+<h5>Additional Claims - Identity</h5>
+<p>
+  These next three claims are required by the ExtraHop 
+  platform. They MUST be sent in the SAML response or 
+  authorization will fail.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Claim Name</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>urn:oid:0.9.2342.19200300.100.1.3</td>
+    <td>user.userprincipalname</td>
+  </tr>
+  <tr>
+    <td>urn:oid:2.5.4.42</td>
+    <td>user.givenname</td>
+  </tr>
+  <tr>
+    <td>urn:oid:2.5.4.4</td>
+    <td>user.surname</td>
+  </tr>
+</table>
+
+<h5>Additional Claims - Authorization</h5>
+<p>
+  These next set of claims define the authorization groups.
+</p>
+{{ note_block('
+    For the authorization claims, both the claim name and value can be 
+    any user defined value. However, these names and values MUST exactly 
+    match what is configured in the ExtraHop SAML configuration.
+') }}
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Claim Name</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>user-level</td>
+    <td>Multiple Conditions</td>
+  </tr>
+  <tr>
+    <td>packets-level</td>
+    <td>Multiple Conditions</td>
+  </tr>
+  <tr>
+    <td>detections-level</td>
+    <td>Multiple Conditions</td>
+  </tr>
+</table>
+
+<p>
+  The multiple conditions for the authorization claims are as follows.
+</p>
+
+<h5>Claim Name: {{ emphasize("user-level") }}</h5>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>User Type</th>
+    <th>Scoped Groups</th>
+    <th>Source</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>full-write</td>
+  </tr>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>unlimited</td>
+  </tr>
+</table>
+
+
+<h5>Claim Name: {{ emphasize("packets-level") }}</h5>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>User Type</th>
+    <th>Scoped Groups</th>
+    <th>Source</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>full-write</td>
+  </tr>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>unlimited</td>
+  </tr>
+</table>
+
+<h5>Claim Name: {{ emphasize("detections-level") }}</h5>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>User Type</th>
+    <th>Scoped Groups</th>
+    <th>Source</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Any</td>
+    <td>List of User Groups</td>
+    <td>Attribute</td>
+    <td>unlimited</td>
+  </tr>
+</table>
+
+{{ important_block('
+    The ordering of the conditions within a claim is important. 
+    The LAST condition that is matched will be sent in the SAML response.
+    For example, in the 
+    {{ emphasize("user-level") }} claim, if a user 
+    is a member of a {{ emphasize("scoped group") }}
+    in both the 
+    {{ emphasize("full-write") }} and 
+    {{ emphasize("unlimited") }} claims, the user 
+    will be granted {{ emphasize("unlimited") }}
+    privileges.
+') }}
+
+<p>
+  The image below shows all the attributes and claims from the tables above.
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/claims-1.png", 
+  width="600px"
+) }}
+
+<p>
+  The image below shows the detailed view of the 
+  {{ emphasize("user-level") }} claim.
+  The other claims are configured in a similar manner.
+</p>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/claims-2.png", 
+  width="600px"
+) }}
+
+
+<h4>Azure - SAML Signing Certificate</h4>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>Azure AD SAML</li>
+    <li>Single sign-on</li>
+    <li>SAML Signing Certificate</li>
+    <li>Edit</li>
+  </ul>
+</div>
+<p>
+  By default, the SAML application in Azure AD does not sign SAML responses.
+  Change the {{ emphasize("Signing Option") }}
+  dropdown to {{ emphasize("Sign SAML response and assertion") }}.  
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png", 
+  width="600px"
+) }}
+
+{{ important_block('
+    The IdP MUST support signed SAML responses to be compatible 
+    with the ExtraHop platform.
+') }}
+
+<p>
+  Download the SAML certificate: {{ emphasize(" Certificate (Base64)") }}. 
+  This will be used in the ExtraHop SAML configuration in a future step.  
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png", 
+  width="600px"
+) }}
+
+<h4>Azure - Set up Azure AD SAML ExtraHop</h4>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Azure Active Directory</li>
+    <li>Enterprise applications</li>
+    <li>Azure AD SAML</li>
+    <li>Single sign-on</li>
+    <li>Set up Azure AD SAML ExtraHop</li>
+  </ul>
+</div>
+<p>
+  The details in the image below are required for the ExtraHop configuration.
+</p>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png", 
+  width="600px"
+) }}
+
+<h4>ExtraHop - IdP SAML Configuration</h4>
+<p>
+  The table below shows how the parameters in the Azure configuration map to the 
+  parameters in the ExtraHop configuration.
+</p>
+
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Azure Value</th>
+    <th>ExtraHop Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Login URL</td>
+    <td>SSO URL</td>
+  </tr>
+  <tr>
+    <td>Azure AD Identifier</td>
+    <td>Entity ID</td>
+  </tr>
+</table>
+
+<p>
+  On the ExtraHop appliance, browse to the SAML configuration and 
+  add an identity provider.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>Remote Authentication</li>
+    <li>SAML</li>
+    <li>Continue</li>
+    <li>Add Identity Provider</li>
+  </ul>
+</div>
+
+<h5>Identity Provider</h5>
+<p>
+  The table below list the configuration parameters for the 
+  identity provider section.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>Parameter</th>
+    <th>Value</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Provider Name</td>
+    <td>AzureAD</td>
+  </tr>
+  <tr>
+    <td>Entity ID</td>
+    <td>&lt;Azure AD Identifier&gt;</td>
+  </tr>
+  <tr>
+    <td>SSO URL</td>
+    <td>&lt;Azure Login URL&gt;</td>
+  </tr>
+  <tr>
+    <td>Public Certifiate</td>
+    <td>&lt;Azure BASE 64 certificate&gt;</td>
+  </tr>
+  <tr>
+    <td>Auto-provision users</td>
+    <td>tick</td>
+  </tr>
+  <tr>
+    <td>Enable this identity provider</td>
+    <td>tick</td>
+  </tr>
+</table>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png", 
+  width="600px"
+) }}
+
+<p>
+  The certificate MUST be in the following format to be valid.
+</p>
+{{ code_block(
+  header="x509 certificate",
+  language="text",
+  code='-----BEGIN CERTIFICATE-----<br>
+&lt;BASE64 ENCODING&gt;<br>
+-----END CERTIFICATE-----<br>'
+) }}
+
+<h5>Privilege Levels</h5>
+<p>
+  Details around the user privilege levels and what they allow 
+  access to in the ExtraHop platform can be found in the docs 
+  {{ elink_to(
+    path="https://docs.extrahop.com/current/users-overview/#user-privileges", 
+    description="here")
+  }}. How these group mappings are decided is based on the organizations 
+  security policy.
+</p>
+
+<p>
+  The next 3 sections MUST exactly match what is configured in the SAML 
+  claims seciton in Azure.
+</p>
+
+<h5>User Privilege Attributes</h5>
+<p>
+  The following table lists the permissions mappings 
+  for the {{ emphasize("user-level") }} 
+  attribute.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>ExtraHop Privilege Level</th>
+    <th>SAML Claim</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Unlimited privileges</td>
+    <td>unlimited</td>
+  </tr>
+  <tr>
+    <td>Full write privileges</td>
+    <td>full-write</td>
+  </tr>
+  <tr>
+    <td>Full read-only privileges</td>
+    <td>read-only</td>
+  </tr>
+</table>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png", 
+  width="600px"
+) }}
+
+<h5>Packets and Session Keys</h5>
+<p>
+  The following table lists the permissions mappings 
+  for the {{ emphasize("packets-level") }} 
+  attribute.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>ExtraHop Privilege Level</th>
+    <th>SAML Claim</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>Packets and session keys</td>
+    <td>unlimited</td>
+  </tr>
+</table>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png", 
+  width="600px"
+) }}
+
+<h5>Detections Access</h5>
+<p>
+  The following table lists the permissions mappings 
+  for the {{ emphasize("detections-level") }} 
+  attribute.
+</p>
+<table class="table table-bordered border-dark table-sm table-bordered">
+  <thead class="text-center thead-darkmode text-th-darkmode">
+  <tr>
+    <th>ExtraHop Privilege Level</th>
+    <th>SAML Claim</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>All detections</td>
+    <td>unlimited</td>
+  </tr>
+</table>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png", 
+  width="600px"
+) }}
+
+<p>
+  Finally, hit the {{ emphasize("Save") }} button
+  to complete the configuration. 
+</p>
+<p>
+  With that done, the configuration is completed, and we can now test our ability 
+  to login and access the ExtraHop platform.
+</p>
+
+<h3>Testing Access</h3>
+{{ tip_block('
+  You can use the {{ emphasize("SAML Tracer") }}
+  Firefox/Chrome plugin to monitor the flow of requests to and from the IdP.
+  I recommend you install it and open its debug window prior to loggin in.
+') }}
+
+<p>
+  To test your access, open a private browser window to your ExtraHop appliance.
+  You will see an option to login with 
+  {{ emphasize("AzureAD") }}
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png", 
+  width="400px"
+) }}
+
+<p>
+  When you press the {{ emphasize("Log in with AzureAD") }}
+  button, you will be redirected to the Microsoft login portal.
+  Once authenticated, you will be signed in with SSO across all you other 
+  SSO enabled applications.
+</p>
+
+<p>
+  The image below from SAML tracer confirms that the details send back in the 
+  SAML response are the same details we have configured throughout this post.
+</p>
+
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png", 
+  width="600px"
+) }}
+<p>
+  The privilege assignments can also be confirmed by looking in the audit log.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>Audit Log</li>
+  </ul>
+</div>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png", 
+  width="600px"
+) }}
+
+<p>
+  Finally, confirm that the user is created in the local users configuration.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>Admin</li>
+    <li>Users</li>
+  </ul>
+</div>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png", 
+  width="600px"
+) }}
+
+<h3>Troubleshooting</h3>
+<p>
+  A couple of common issues I have run into and their resolution 
+  is below.
+</p>
+
+<h4>Required Claims Not Presented</h4>
+<p>
+  This error occurs when ALL the required claims are not 
+  present in the SAML response.
+</p>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png", 
+  width="600px"
+) }}
+<h4>Resolution</h4>
+<p>
+  Ensure ALL the required claims are configured in the IdP.
+</p>
+
+<h4>Unsigned SAML Response</h4>
+<p>
+  ExtraHop requires the SAML reponses to be signed. If they are 
+  not, you will see the following error.
+</p>
+{{ boxed_image(
+  path="blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png", 
+  width="600px"
+) }}
+<h4>Resolution</h4>
+<p>
+  Ensure the IdP is configured to sign SAML responses.
+</p>
+
+<h3>Outro</h3>
+<p>
+  In this post, I showed you how to configure your ExtraHop appliances 
+  to use SAML authentication with Azure AD as an IdP. Please enjoy your 
+  SSO experience now with 100% more ExtraHop.
+</p>
+{% endblock page_content %}

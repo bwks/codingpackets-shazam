@@ -1,0 +1,31 @@
+{% macro note_block(text) %}
+  <div class="note-darkmode">
+    <p><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></p>
+    <p>{{ text | safe }}</p>
+  </div>
+{% endmacro %}
+{% set alias = note_block %}
+
+{% macro important_block(text) %}
+  <div class="important-darkmode">
+    <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></p>
+    <p>{{ text | safe }}</p>
+  </div>
+{% endmacro %}
+{% set alias = important_block %}
+
+{% macro warning_block(text) %}
+  <div class="warning-darkmode">
+    <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Warning</b></p>
+    <p>{{ text | safe }}</p>
+  </div>
+{% endmacro %}
+{% set alias = warning_block %}
+
+{% macro tip_block(text) %}
+  <div class="tip-darkmode">
+    <p><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></p>
+    <p>{{ text | safe }}</p>
+  </div>
+{% endmacro %}
+{% set alias = tip_block %}
