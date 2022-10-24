@@ -10,6 +10,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -56,7 +57,7 @@
 
   <body class="bg-stone-50 dark:bg-black">
 
-    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0">
+    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -104,8 +105,9 @@
   
 
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         
+
 <h3>Intro</h3>
 <p>
   I was recently working with a customer to configure Azure AD 
@@ -146,11 +148,10 @@
     <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/auth-saml" target=_blank>docs</a> <sup>[1]</sup>
 </p>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png">
 </div>
 
 
@@ -184,49 +185,89 @@
 <p>
   Update the hostname to the FQDN and re-generate the SSL certificate.
   This ensures that we have the correct 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">ACS URL</span></span> in the SP Metadata configuration.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">ACS URL</span></span> in the SP Metadata configuration.
 </p>
 <h5>Hostname</h5>
 <p>
-  On the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Admin</span></span> panel, 
+  On the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Admin</span></span> panel, 
   browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Connectivity</li>
-    <li>Change Settings</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Connectivity</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Change Settings</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
-  Update the hostname to the FQDN and hit <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Save</span></span>.
+  Update the hostname to the FQDN and hit <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Save</span></span>.
 </p>
 
 <h5>SSL Certificate</h5>
 <p>
   Browse to: 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Admin</span></span> panel.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Admin</span></span> panel.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>SSL Certificate</li>
-    <li>Manage Certificates</li>
-    <li>Build SSL self-signed certificate based on hostname</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">SSL Certificate</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Manage Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Build SSL self-signed certificate based on hostname</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
-  Hit <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">OK</span></span> on the prompt that asks 
+  Hit <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">OK</span></span> on the prompt that asks 
   if you would like to regenerate the certificate.
 </p>
 
 
-  <div class="note-darkmode">
-    <p><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-sky-100 rounded border-l-8 border-l-sky-900 dark:bg-sky-800 dark:border-l-sky-300">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
     The web interface will restart at this step, but this does not effect 
     the capture process so data will continue to be ingested and analyzed. 
-</p>
+</div>
+    </div>
   </div>
 
 
@@ -237,29 +278,48 @@
 
 <h5>SAML Application</h5>
 <p>
-  In the Azure Portal browse to
+  In the Azure Portal browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>New application</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">New application</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
-  Search for <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Azure AD SAML Toolkit</span></span> 
+  Search for <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Azure AD SAML Toolkit</span></span> 
   in the search bar. Select the application and rename it to 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Azure AD SAML ExtraHop</span></span>
-   then hit <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Create</span></span>
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Azure AD SAML ExtraHop</span></span>
+   then hit <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Create</span></span>
 </p>
 
 
-  <div class="note-darkmode">
-    <p><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-sky-100 rounded border-l-8 border-l-sky-900 dark:bg-sky-800 dark:border-l-sky-300">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
     This post assumes that the Users/Groups are already created in Azure or 
     synced to Azure from on-prem AD.  
-</p>
+</div>
+    </div>
   </div>
 
 
@@ -269,30 +329,42 @@
   To complete the Azure side we need to SP metadata from the ExtraHop appliance.
   On the ExtraHop admin portal, browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Remote Authentication</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Remote Authentication</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
-  Select <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">SAML</span></span> from 
-  the dropdown and hit <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Continue</span></span>.
+  Select <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">SAML</span></span> from 
+  the dropdown and hit <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Continue</span></span>.
 </p>
 <p>
-  On the next screen select <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">View SP Metadata</span></span>.
+  On the next screen select <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">View SP Metadata</span></span>.
   You will need to note down the
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">ACS URL</span></span>
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">ACS URL</span></span>
   and the 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Entity ID</span></span>.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Entity ID</span></span>.
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png" alt="blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png" alt="blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png">
 </div>
 
 
@@ -300,14 +372,34 @@
   Once you have that information browse to the SAML application 
   in Azure AD to complete the configuration on the Azure side.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure AD SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Single sign-on</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
 
 <p>
   There are 3 steps to complete.
@@ -319,16 +411,45 @@
 </ol>
 
 <h4>Azure - Basic SAML Configuration</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Basic SAML Configuration</li>
-    <li>Edit</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure AD SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Single sign-on</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Basic SAML Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Edit</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
   The table below lists the parameters and values that are required 
   for the SAML configuration. The parameters are obtained from the 
@@ -360,26 +481,53 @@
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png">
 </div>
 
 
 
 <h4>Azure - Attributes & Claims</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Attributes & Claims</li>
-    <li>Edit</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure AD SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Single sign-on</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Attributes & Claims</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Edit</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
 <p>
   The tables below list the parameters and values that are required 
   for the SAML attributes and claims configuration.
@@ -435,13 +583,15 @@
   These next set of claims define the authorization groups.
 </p>
 
-  <div class="note-darkmode">
-    <p><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-sky-100 rounded border-l-8 border-l-sky-900 dark:bg-sky-800 dark:border-l-sky-300">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
     For the authorization claims, both the claim name and value can be 
     any user defined value. However, these names and values MUST exactly 
     match what is configured in the ExtraHop SAML configuration.
-</p>
+</div>
+    </div>
   </div>
 
 <table class="table table-bordered border-dark table-sm table-bordered">
@@ -469,7 +619,7 @@
   The multiple conditions for the authorization claims are as follows.
 </p>
 
-<h5>Claim Name: <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">user-level</span></span></h5>
+<h5>Claim Name: <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">user-level</span></span></h5>
 <table class="table table-bordered border-dark table-sm table-bordered">
   <thead class="text-center thead-darkmode text-th-darkmode">
   <tr>
@@ -500,7 +650,7 @@
 </table>
 
 
-<h5>Claim Name: <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">packets-level</span></span></h5>
+<h5>Claim Name: <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">packets-level</span></span></h5>
 <table class="table table-bordered border-dark table-sm table-bordered">
   <thead class="text-center thead-darkmode text-th-darkmode">
   <tr>
@@ -524,7 +674,7 @@
   </tr>
 </table>
 
-<h5>Claim Name: <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">detections-level</span></span></h5>
+<h5>Claim Name: <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">detections-level</span></span></h5>
 <table class="table table-bordered border-dark table-sm table-bordered">
   <thead class="text-center thead-darkmode text-th-darkmode">
   <tr>
@@ -543,20 +693,16 @@
 </table>
 
 
-  <div class="important-darkmode">
-    <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-amber-100 rounded border-l-8 border-l-amber-400 dark:bg-amber-600 dark:border-l-amber-300">
+      <div class="px-4 pt-4 pb-2 text-amber-900 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
     The ordering of the conditions within a claim is important. 
     The LAST condition that is matched will be sent in the SAML response.
-    For example, in the 
-    {{ emphasize("user-level") }} claim, if a user 
-    is a member of a {{ emphasize("scoped group") }}
-    in both the 
-    {{ emphasize("full-write") }} and 
-    {{ emphasize("unlimited") }} claims, the user 
-    will be granted {{ emphasize("unlimited") }}
-    privileges.
-</p>
+    For example, in the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">user-level</span></span> claim, if a user is a member of a <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">scoped group</span></span> in both the 
+    <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">full-write</span></span> and <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">unlimited</span></span> claims, the user will be granted <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">unlimited</span></span> privileges.
+</div>
+    </div>
   </div>
 
 
@@ -565,98 +711,150 @@
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/claims-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/claims-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/claims-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/claims-1.png">
 </div>
 
 
 <p>
   The image below shows the detailed view of the 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">user-level</span></span> claim.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">user-level</span></span> claim.
   The other claims are configured in a similar manner.
 </p>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/claims-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/claims-2.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/claims-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/claims-2.png">
 </div>
 
 
 
 <h4>Azure - SAML Signing Certificate</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>SAML Signing Certificate</li>
-    <li>Edit</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure AD SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Single sign-on</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">SAML Signing Certificate</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Edit</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
 <p>
   By default, the SAML application in Azure AD does not sign SAML responses.
-  Change the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Signing Option</span></span>
-  dropdown to <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Sign SAML response and assertion</span></span>.  
+  Change the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Signing Option</span></span>
+  dropdown to <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Sign SAML response and assertion</span></span>.  
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png">
 </div>
 
 
 
-  <div class="important-darkmode">
-    <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-amber-100 rounded border-l-8 border-l-amber-400 dark:bg-amber-600 dark:border-l-amber-300">
+      <div class="px-4 pt-4 pb-2 text-amber-900 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
     The IdP MUST support signed SAML responses to be compatible 
     with the ExtraHop platform.
-</p>
+</div>
+    </div>
   </div>
 
 
 <p>
-  Download the SAML certificate: <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700"> Certificate (Base64)</span></span>. 
+  Download the SAML certificate: <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none"> Certificate (Base64)</span></span>. 
   This will be used in the ExtraHop SAML configuration in a future step.  
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png">
 </div>
 
 
 <h4>Azure - Set up Azure AD SAML ExtraHop</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Set up Azure AD SAML ExtraHop</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure Active Directory</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Enterprise applications</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Azure AD SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Single sign-on</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Set up Azure AD SAML ExtraHop</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
+
+
 <p>
   The details in the image below are required for the ExtraHop configuration.
 </p>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png">
 </div>
 
 
@@ -687,15 +885,39 @@
   On the ExtraHop appliance, browse to the SAML configuration and 
   add an identity provider.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Remote Authentication</li>
-    <li>SAML</li>
-    <li>Continue</li>
-    <li>Add Identity Provider</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Remote Authentication</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">SAML</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Continue</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add Identity Provider</li>
+        
+      
+    </ol>
+  </nav>
 </div>
+
 
 <h5>Identity Provider</h5>
 <p>
@@ -736,11 +958,10 @@
 </table>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png">
 </div>
 
 
@@ -753,7 +974,7 @@
     <span class="">x509 certificate</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">-----BEGIN CERTIFICATE-----<br>
+    <pre><code class="language-text hljs px-5 dark:opacity-80">-----BEGIN CERTIFICATE-----<br>
 &lt;BASE64 ENCODING&gt;<br>
 -----END CERTIFICATE-----<br></code></pre>
   </div>
@@ -776,7 +997,7 @@
 <h5>User Privilege Attributes</h5>
 <p>
   The following table lists the permissions mappings 
-  for the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">user-level</span></span> 
+  for the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">user-level</span></span> 
   attribute.
 </p>
 <table class="table table-bordered border-dark table-sm table-bordered">
@@ -800,18 +1021,17 @@
   </tr>
 </table>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png">
 </div>
 
 
 <h5>Packets and Session Keys</h5>
 <p>
   The following table lists the permissions mappings 
-  for the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">packets-level</span></span> 
+  for the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">packets-level</span></span> 
   attribute.
 </p>
 <table class="table table-bordered border-dark table-sm table-bordered">
@@ -827,18 +1047,17 @@
   </tr>
 </table>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png">
 </div>
 
 
 <h5>Detections Access</h5>
 <p>
   The following table lists the permissions mappings 
-  for the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">detections-level</span></span> 
+  for the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">detections-level</span></span> 
   attribute.
 </p>
 <table class="table table-bordered border-dark table-sm table-bordered">
@@ -854,16 +1073,15 @@
   </tr>
 </table>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png">
 </div>
 
 
 <p>
-  Finally, hit the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Save</span></span> button
+  Finally, hit the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Save</span></span> button
   to complete the configuration. 
 </p>
 <p>
@@ -873,33 +1091,34 @@
 
 <h3>Testing Access</h3>
 
-  <div class="tip-darkmode">
-    <p><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></p>
-    <p>
+  <div class="py-2">
+    <div class="bg-lime-100 rounded border-l-8 border-l-lime-400 dark:bg-lime-700 dark:border-l-lime-300">
+      <div class="px-4 pt-4 pb-2 text-green-800 dark:text-zinc-900"><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
   You can use the {{ emphasize("SAML Tracer") }}
   Firefox/Chrome plugin to monitor the flow of requests to and from the IdP.
   I recommend you install it and open its debug window prior to loggin in.
-</p>
+</div>    
+    </div>
   </div>
 
 
 <p>
   To test your access, open a private browser window to your ExtraHop appliance.
   You will see an option to login with 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">AzureAD</span></span>
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">AzureAD</span></span>
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="400px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="400px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png">
 </div>
 
 
 <p>
-  When you press the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Log in with AzureAD</span></span>
+  When you press the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Log in with AzureAD</span></span>
   button, you will be redirected to the Microsoft login portal.
   Once authenticated, you will be signed in with SSO across all you other 
   SSO enabled applications.
@@ -911,46 +1130,69 @@
 </p>
 
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png">
 </div>
 
 <p>
   The privilege assignments can also be confirmed by looking in the audit log.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Audit Log</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Audit Log</li>
+        
+      
+    </ol>
+  </nav>
 </div>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png">
-  </p>
+
+
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png">
 </div>
 
 
 <p>
   Finally, confirm that the user is created in the local users configuration.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Users</li>
-  </ul>
+
+
+<div class="pb-2 font-mono font-bold text-xl">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 dark:bg-zinc-800">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Admin</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Users</li>
+        
+      
+    </ol>
+  </nav>
 </div>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png">
-  </p>
+
+
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png" alt="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png">
 </div>
 
 
@@ -966,11 +1208,10 @@
   present in the SAML response.
 </p>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png">
 </div>
 
 <h4>Resolution</h4>
@@ -984,11 +1225,10 @@
   not, you will see the following error.
 </p>
 
-<div class="text-center">
-  <p>
-    <img class="boxed-img-darkmode" width="600px" 
-         src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png">
-  </p>
+<div class="py-6 flex justify-center">
+  <img class="bg-white rounded-xl shadow-2xl shadow-zinc-600 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png" alt="blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png">
 </div>
 
 <h4>Resolution</h4>

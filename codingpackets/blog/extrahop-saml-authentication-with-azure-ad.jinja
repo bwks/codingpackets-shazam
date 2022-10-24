@@ -1,6 +1,7 @@
 {% extends "layouts/blog.jinja" %}
 
 {% block page_content %}
+
 <h3>Intro</h3>
 <p>
   I was recently working with a customer to configure Azure AD 
@@ -85,13 +86,13 @@
   On the {{ emphasize("Admin") }} panel, 
   browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Connectivity</li>
-    <li>Change Settings</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "Connectivity",
+  "Change Settings",
+]) }}
+
 <p>
   Update the hostname to the FQDN and hit {{ emphasize("Save") }}.
 </p>
@@ -101,14 +102,14 @@
   Browse to: 
   {{ emphasize("Admin") }} panel.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>SSL Certificate</li>
-    <li>Manage Certificates</li>
-    <li>Build SSL self-signed certificate based on hostname</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "SSL Certificate",
+  "Manage Certificates",
+  "Build SSL self-signed certificate based on hostname",
+]) }}
+
 <p>
   Hit {{ emphasize("OK") }} on the prompt that asks 
   if you would like to regenerate the certificate.
@@ -126,15 +127,15 @@
 
 <h5>SAML Application</h5>
 <p>
-  In the Azure Portal browse to
+  In the Azure Portal browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>New application</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "New application",
+]) }}
+
 <p>
   Search for {{ emphasize("Azure AD SAML Toolkit") }} 
   in the search bar. Select the application and rename it to 
@@ -153,12 +154,12 @@
   To complete the Azure side we need to SP metadata from the ExtraHop appliance.
   On the ExtraHop admin portal, browse to:
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Remote Authentication</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "Remote Authentication",
+]) }}
+
 <p>
   Select {{ emphasize("SAML") }} from 
   the dropdown and hit {{ emphasize("Continue") }}.
@@ -180,14 +181,13 @@
   Once you have that information browse to the SAML application 
   in Azure AD to complete the configuration on the Azure side.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "Azure AD SAML",
+  "Single sign-on",
+]) }}
 
 <p>
   There are 3 steps to complete.
@@ -199,16 +199,16 @@
 </ol>
 
 <h4>Azure - Basic SAML Configuration</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Basic SAML Configuration</li>
-    <li>Edit</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "Azure AD SAML",
+  "Single sign-on",
+  "Basic SAML Configuration",
+  "Edit",
+]) }}
+
 <p>
   The table below lists the parameters and values that are required 
   for the SAML configuration. The parameters are obtained from the 
@@ -246,16 +246,15 @@
 
 
 <h4>Azure - Attributes & Claims</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Attributes & Claims</li>
-    <li>Edit</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "Azure AD SAML",
+  "Single sign-on",
+  "Attributes & Claims",
+  "Edit",
+]) }}
 <p>
   The tables below list the parameters and values that are required 
   for the SAML attributes and claims configuration.
@@ -416,15 +415,13 @@
 {{ important_block('
     The ordering of the conditions within a claim is important. 
     The LAST condition that is matched will be sent in the SAML response.
-    For example, in the 
-    {{ emphasize("user-level") }} claim, if a user 
-    is a member of a {{ emphasize("scoped group") }}
-    in both the 
-    {{ emphasize("full-write") }} and 
-    {{ emphasize("unlimited") }} claims, the user 
-    will be granted {{ emphasize("unlimited") }}
-    privileges.
-') }}
+    For example, in the $1 claim, if a user is a member of a $2 in both the 
+    $3 and $4 claims, the user will be granted $4 privileges.
+') | replace('$1', emphasize("user-level"))
+   | replace('$2', emphasize("scoped group"))
+   | replace('$3', emphasize("full-write"))
+   | replace('$4', emphasize("unlimited")
+) }}
 
 <p>
   The image below shows all the attributes and claims from the tables above.
@@ -447,16 +444,16 @@
 
 
 <h4>Azure - SAML Signing Certificate</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>SAML Signing Certificate</li>
-    <li>Edit</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "Azure AD SAML",
+  "Single sign-on",
+  "SAML Signing Certificate",
+  "Edit",
+]) }}
+
 <p>
   By default, the SAML application in Azure AD does not sign SAML responses.
   Change the {{ emphasize("Signing Option") }}
@@ -484,15 +481,16 @@
 ) }}
 
 <h4>Azure - Set up Azure AD SAML ExtraHop</h4>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Azure Active Directory</li>
-    <li>Enterprise applications</li>
-    <li>Azure AD SAML</li>
-    <li>Single sign-on</li>
-    <li>Set up Azure AD SAML ExtraHop</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Azure Active Directory",
+  "Enterprise applications",
+  "Azure AD SAML",
+  "Single sign-on",
+  "Set up Azure AD SAML ExtraHop",
+]) }}
+
+
 <p>
   The details in the image below are required for the ExtraHop configuration.
 </p>
@@ -528,15 +526,14 @@
   On the ExtraHop appliance, browse to the SAML configuration and 
   add an identity provider.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Remote Authentication</li>
-    <li>SAML</li>
-    <li>Continue</li>
-    <li>Add Identity Provider</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "Remote Authentication",
+  "SAML",
+  "Continue",
+  "Add Identity Provider",
+]) }}
 
 <h5>Identity Provider</h5>
 <p>
@@ -731,12 +728,12 @@
 <p>
   The privilege assignments can also be confirmed by looking in the audit log.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Audit Log</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "Audit Log",
+]) }}
+
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png", 
   width="600px"
@@ -745,12 +742,12 @@
 <p>
   Finally, confirm that the user is created in the local users configuration.
 </p>
-<div>
-  <ul class="breadcrumb-darkmode">
-    <li>Admin</li>
-    <li>Users</li>
-  </ul>
-</div>
+
+{{ breadcrumbs([
+  "Admin",
+  "Users",
+]) }}
+
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png", 
   width="600px"

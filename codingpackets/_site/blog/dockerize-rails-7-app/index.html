@@ -10,6 +10,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -56,7 +57,7 @@
 
   <body class="bg-stone-50 dark:bg-black">
 
-    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0">
+    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -104,7 +105,7 @@
   
 
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
         
 <h3>Intro</h3>
 <p>
@@ -132,7 +133,7 @@
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rc</span></span> file. This 
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">rc</span></span> file. This 
   allows your user and group ID's to be used within the 
   containers.
 </p>
@@ -142,7 +143,7 @@
     <span class="">~/.zshrc</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-bash hljs px-5">export UID=$(id -u)
+    <pre><code class="language-bash hljs px-5 dark:opacity-80">export UID=$(id -u)
 export GID=$(id -g)</code></pre>
   </div>
 </div>
@@ -150,7 +151,7 @@ export GID=$(id -g)</code></pre>
 
 <h3>Dockerfiles</h3>
 <p>
-  Create the following <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Dockerfile</span></span>
+  Create the following <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Dockerfile</span></span>
   which is used to create our application container images.
 </p>
 
@@ -160,7 +161,7 @@ export GID=$(id -g)</code></pre>
     <span class="">Dockerfile.rails</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-Dockerfile hljs px-5">################## RAILS BUILD IMAGE ################## 
+    <pre><code class="language-Dockerfile hljs px-5 dark:opacity-80">################## RAILS BUILD IMAGE ################## 
 # Use this to generate a new rails application
 FROM ruby:3.1.2-alpine3.16 AS build
 
@@ -257,7 +258,7 @@ CMD ["bin/dev"]</code></pre>
 
 
 <p>
-  The following base <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">docker-compose.yaml</span></span> 
+  The following base <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">docker-compose.yaml</span></span> 
   file is used for all stages of development.
 </p>
 
@@ -267,7 +268,7 @@ CMD ["bin/dev"]</code></pre>
     <span class="">docker-compose.yaml</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-yaml hljs px-5">version: "3.9"
+    <pre><code class="language-yaml hljs px-5 dark:opacity-80">version: "3.9"
 services:
   db:
     image: postgres:14.1
@@ -299,7 +300,7 @@ services:
 
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">docker-compose-dev.yaml</span></span> 
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">docker-compose-dev.yaml</span></span> 
   file is used for the development environment.
 </p>
 
@@ -309,7 +310,7 @@ services:
     <span class="">docker-compose-dev.yaml</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-yaml hljs px-5">version: "3.9"
+    <pre><code class="language-yaml hljs px-5 dark:opacity-80">version: "3.9"
 services:
   app:
     user: ${APP_USER_ID}:${APP_GROUP_ID}
@@ -321,7 +322,7 @@ services:
 
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">.env.dev</span></span> file 
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">.env.dev</span></span> file 
   is used to pass environment variables to containers.
 </p>
 
@@ -330,7 +331,7 @@ services:
     <span class="">.env.dev</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-shell hljs px-5">APP_NAME=&lt;app-name&gt;
+    <pre><code class="language-shell hljs px-5 dark:opacity-80">APP_NAME=&lt;app-name&gt;
 APP_USER=$USER
 APP_USER_ID=$UID
 APP_GROUP_ID=$GID
@@ -352,13 +353,13 @@ RAILS_ENV=development</code></pre>
   The configuration files can be found found in 
   the Github 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>.
-  in the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config</span></span>
+  in the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">config</span></span>
   directory.
 </p>
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Gemfile</span></span> file 
-  has the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">foreman</span></span> gem
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Gemfile</span></span> file 
+  has the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">foreman</span></span> gem
   added which is used to run the Procfile.
 </p>
 
@@ -367,7 +368,7 @@ RAILS_ENV=development</code></pre>
     <span class="">Gemfile</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-ruby hljs px-5">source "https://rubygems.org"
+    <pre><code class="language-ruby hljs px-5 dark:opacity-80">source "https://rubygems.org"
 gem "foreman", "~> 0.87.2"
 # ... rest of file</code></pre>
   </div>
@@ -375,7 +376,7 @@ gem "foreman", "~> 0.87.2"
 
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config/database.yml</span></span> file 
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">config/database.yml</span></span> file 
   is altered to pull data from environment variables.
 </p>
 
@@ -384,7 +385,7 @@ gem "foreman", "~> 0.87.2"
     <span class="">config/database.yml</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-ruby hljs px-5">default: &default
+    <pre><code class="language-ruby hljs px-5 dark:opacity-80">default: &default
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
@@ -410,7 +411,7 @@ production:
 
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">config/environments-development.rb</span></span> file 
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">config/environments-development.rb</span></span> file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
 
@@ -419,7 +420,7 @@ production:
     <span class="">config/application-development.yml</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-ruby hljs px-5">Rails.application.configure do
+    <pre><code class="language-ruby hljs px-5 dark:opacity-80">Rails.application.configure do
 
   # Allow access from any IPv4/6 address
   config.web_console.whitelisted_ips = ['0.0.0.0/0', '::/0']
@@ -435,10 +436,10 @@ end</code></pre>
 
 <p>
   Alpine linux does not have the 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">bash</span></span> shell.
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">shebang</span></span> line 
-  of the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">bin/dev</span></span> 
-  file is updated to use the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">sh</span></span> shell.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">bash</span></span> shell.
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">shebang</span></span> line 
+  of the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">bin/dev</span></span> 
+  file is updated to use the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">sh</span></span> shell.
 </p>
 
 <div class="py-2">
@@ -446,17 +447,17 @@ end</code></pre>
     <span class="">bin/dev</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-shell hljs px-5">#!/usr/bin/env sh
+    <pre><code class="language-shell hljs px-5 dark:opacity-80">#!/usr/bin/env sh
 # ... rest of file</code></pre>
   </div>
 </div>
 
 
 <p>
-  The <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">Procfile.dev</span></span>
+  The <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">Procfile.dev</span></span>
   file is updated to bind to all IPv4 addresses 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">(0.0.0.0)</span></span> instead of 
-  <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">localhost</span></span>.
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">(0.0.0.0)</span></span> instead of 
+  <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">localhost</span></span>.
 </p>
 
 <div class="py-2">
@@ -464,7 +465,7 @@ end</code></pre>
     <span class="">Procfile.dev</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">web: bin/rails server -b "0.0.0.0" -p 3000
+    <pre><code class="language-text hljs px-5 dark:opacity-80">web: bin/rails server -b "0.0.0.0" -p 3000
 # ... rest of file</code></pre>
   </div>
 </div>
@@ -472,7 +473,7 @@ end</code></pre>
 
 <h3>Build Containers</h3>
 <p>
-  Build the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rails-base</span></span> 
+  Build the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">rails-base</span></span> 
   container image.
 </p>
 
@@ -481,7 +482,7 @@ end</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">docker compose \
+    <pre><code class="language-text hljs px-5 dark:opacity-80">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
@@ -496,7 +497,7 @@ end</code></pre>
 
 <h3>Generate Rails App</h3>
 <p>
-  Generate a new Rails app using the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">rails-base</span></span> 
+  Generate a new Rails app using the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">rails-base</span></span> 
   container image.
 </p>
 
@@ -505,7 +506,7 @@ end</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">export APP_NAME="&lt;app-name&gt;" \
+    <pre><code class="language-text hljs px-5 dark:opacity-80">export APP_NAME="&lt;app-name&gt;" \
   && docker container run -itd --name=rails-tmp rails-base sh \
   && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \
   && docker container kill rails-tmp \
@@ -515,7 +516,7 @@ end</code></pre>
 
 
 <p>
-  This generates a Rails application in the <span class="px-1"><span class="px-3 py-1 font-mono font-semibold bg-stone-200 text-gray-700 rounded outline outline-1 outline-stone-300 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700">&lt;app-name&gt;</span></span> 
+  This generates a Rails application in the <span class="px-1"><span class="whitespace-nowrap px-3 py-1 font-mono font-semibold bg-white text-gray-700 rounded outline outline-1 outline-stone-300 shadow-md shadow-zinc-500 dark:bg-stone-800 dark:text-neutral-400 dark:outline-stone-700 dark:shadow-none">&lt;app-name&gt;</span></span> 
   directory.
 </p>
 
@@ -529,7 +530,7 @@ end</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">docker compose \
+    <pre><code class="language-text hljs px-5 dark:opacity-80">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
@@ -547,7 +548,7 @@ end</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">docker compose \
+    <pre><code class="language-text hljs px-5 dark:opacity-80">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
@@ -563,7 +564,7 @@ end</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="rounded-b-md border-4 border-t-0 border-zinc-800 font-mono shadow-xl">
-    <pre><code class="language-text hljs px-5">docker compose run \
+    <pre><code class="language-text hljs px-5 dark:opacity-80">docker compose run \
   --user $UID:$GID \
   app \
   bin/rails generate scaffold device name:string</code></pre>
