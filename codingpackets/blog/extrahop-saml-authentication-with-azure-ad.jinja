@@ -192,11 +192,11 @@
 <p>
   There are 3 steps to complete.
 </p>
-<ol>
+<ul>
   <li>Basic SAML Configuration</li>
   <li>Attributes & Claims</li>
   <li>SAML Certificates</li>
-</ol>
+</ul>
 
 <h4>Azure - Basic SAML Configuration</h4>
 
@@ -214,26 +214,15 @@
   for the SAML configuration. The parameters are obtained from the 
   ExtraHop SP metadata in the previous step.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Parameter</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Identifier (Entity ID)</td>
-    <td>urn:extrahop:saml:&lt;entity-id-string&gt;</td>
-  </tr>
-  <tr>
-    <td>Reply URL (Assertion Consumer Service URL)</td>
-    <td>https://&lt;extrahop-fqdn&gt;/admin/sso/saml/acs/</td>
-  </tr>
-  <tr>
-    <td>Sign on URL</td>
-    <td>https://&lt;extrahop-fqdn&gt;/</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["Parameter", "Value"],
+  rows=[
+    ["Identifier (Entity ID)", "urn:extrahop:saml:&lt;entity-id-string&gt;"],
+    ["Reply URL (Assertion Consumer Service URL)", "https://&lt;extrahop-fqdn&gt;/admin/sso/saml/acs/"],
+    ["Sign on URL", "https://&lt;extrahop-fqdn&gt;/"],
+  ],
+) }}
 
 <p>
   The image below shows an example configuration.
@@ -265,18 +254,13 @@
     The first claim is used as a unique identifier for users 
     within the ExtraHop platform.  
   </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Claim Name</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Unique User Identifier (Name ID)</td>
-    <td>user.userprincipalname</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["Claim Name", "Value"],
+  rows=[
+    ["Unique User Identifier (Name ID)", "user.userprincipalname"],
+  ],
+) }}
 
 <h5>Additional Claims - Identity</h5>
 <p>
@@ -284,26 +268,16 @@
   platform. They MUST be sent in the SAML response or 
   authorization will fail.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Claim Name</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>urn:oid:0.9.2342.19200300.100.1.3</td>
-    <td>user.userprincipalname</td>
-  </tr>
-  <tr>
-    <td>urn:oid:2.5.4.42</td>
-    <td>user.givenname</td>
-  </tr>
-  <tr>
-    <td>urn:oid:2.5.4.4</td>
-    <td>user.surname</td>
-  </tr>
-</table>
+
+
+{{ table(
+  headers=["Claim Name", "Value"],
+  rows=[
+    ["urn:oid:0.9.2342.19200300.100.1.3", "user.userprincipalname"],
+    ["urn:oid:2.5.4.42", "user.givenname"],
+    ["urn:oid:2.5.4.4", "user.surname"],
+  ],
+) }}
 
 <h5>Additional Claims - Authorization</h5>
 <p>
@@ -314,103 +288,50 @@
     any user defined value. However, these names and values MUST exactly 
     match what is configured in the ExtraHop SAML configuration.
 ') }}
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Claim Name</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>user-level</td>
-    <td>Multiple Conditions</td>
-  </tr>
-  <tr>
-    <td>packets-level</td>
-    <td>Multiple Conditions</td>
-  </tr>
-  <tr>
-    <td>detections-level</td>
-    <td>Multiple Conditions</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["Claim Name", "Value"],
+  rows=[
+    ["user-level", "Multiple Conditions"],
+    ["packets-level", "Multiple Conditions"],
+    ["detections-level", "Multiple Conditions"],
+  ],
+) }}
 
 <p>
   The multiple conditions for the authorization claims are as follows.
 </p>
 
 <h5>Claim Name: {{ emphasize("user-level") }}</h5>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>User Type</th>
-    <th>Scoped Groups</th>
-    <th>Source</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>read-only</td>
-  </tr>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>full-write</td>
-  </tr>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>unlimited</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+  rows=[
+    ["Any", "List of User Groups", "Attribute", "read-only"],
+    ["Any", "List of User Groups", "Attribute", "full-write"],
+    ["Any", "List of User Groups", "Attribute", "unlimited"],
+  ],
+) }}
+
 
 
 <h5>Claim Name: {{ emphasize("packets-level") }}</h5>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>User Type</th>
-    <th>Scoped Groups</th>
-    <th>Source</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>full-write</td>
-  </tr>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>unlimited</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+  rows=[
+    ["Any", "List of User Groups", "Attribute", "full-write"],
+    ["Any", "List of User Groups", "Attribute", "unlimited"],
+  ],
+) }}
 
 <h5>Claim Name: {{ emphasize("detections-level") }}</h5>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>User Type</th>
-    <th>Scoped Groups</th>
-    <th>Source</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Any</td>
-    <td>List of User Groups</td>
-    <td>Attribute</td>
-    <td>unlimited</td>
-  </tr>
-</table>
+{{ table(
+  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+  rows=[
+    ["Any", "List of User Groups", "Attribute", "unlimited"],
+  ],
+) }}
 
 {{ important_block('
     The ordering of the conditions within a claim is important. 
@@ -505,22 +426,13 @@
   parameters in the ExtraHop configuration.
 </p>
 
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Azure Value</th>
-    <th>ExtraHop Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Login URL</td>
-    <td>SSO URL</td>
-  </tr>
-  <tr>
-    <td>Azure AD Identifier</td>
-    <td>Entity ID</td>
-  </tr>
-</table>
+{{ table(
+  headers=["Azure Value", "ExtraHop Value"],
+  rows=[
+    ["Login URL", "SSO URL"],
+    ["Azure AD Identifier", "Entity ID"],
+  ],
+) }}
 
 <p>
   On the ExtraHop appliance, browse to the SAML configuration and 
@@ -540,38 +452,19 @@
   The table below list the configuration parameters for the 
   identity provider section.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>Parameter</th>
-    <th>Value</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Provider Name</td>
-    <td>AzureAD</td>
-  </tr>
-  <tr>
-    <td>Entity ID</td>
-    <td>&lt;Azure AD Identifier&gt;</td>
-  </tr>
-  <tr>
-    <td>SSO URL</td>
-    <td>&lt;Azure Login URL&gt;</td>
-  </tr>
-  <tr>
-    <td>Public Certifiate</td>
-    <td>&lt;Azure BASE 64 certificate&gt;</td>
-  </tr>
-  <tr>
-    <td>Auto-provision users</td>
-    <td>tick</td>
-  </tr>
-  <tr>
-    <td>Enable this identity provider</td>
-    <td>tick</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["Parameter", "Value"],
+  rows=[
+    ["Provider Name", "AzureAD"],
+    ["Entity ID", "&lt;Azure AD Identifier&gt;"],
+    ["SSO URL", "&lt;Azure Login URL&gt;"],
+    ["Public Certifiate", "&lt;Azure BASE 64 certificate&gt;"],
+    ["Auto-provision users", "<i class='fas fa-check-square'></i>"],
+    ["Enable this identity provider", "<i class='fas fa-check-square'></i>"],
+  ],
+) }}
+
 
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png", 
@@ -611,26 +504,15 @@
   for the {{ emphasize("user-level") }} 
   attribute.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>ExtraHop Privilege Level</th>
-    <th>SAML Claim</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Unlimited privileges</td>
-    <td>unlimited</td>
-  </tr>
-  <tr>
-    <td>Full write privileges</td>
-    <td>full-write</td>
-  </tr>
-  <tr>
-    <td>Full read-only privileges</td>
-    <td>read-only</td>
-  </tr>
-</table>
+{{ table(
+  headers=["ExtraHop Privilege Level", "SAML Claim"],
+  rows=[
+    ["Unlimited privileges", "unlimited"],
+    ["Full write privileges", "full-write"],
+    ["Full read-only privileges", "read-only"],
+  ],
+) }}
+
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png", 
   width="600px"
@@ -642,18 +524,14 @@
   for the {{ emphasize("packets-level") }} 
   attribute.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>ExtraHop Privilege Level</th>
-    <th>SAML Claim</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>Packets and session keys</td>
-    <td>unlimited</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["ExtraHop Privilege Level", "SAML Claim"],
+  rows=[
+    ["Packets and session keys", "unlimited"],
+  ],
+) }}
+
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png", 
   width="600px"
@@ -665,18 +543,14 @@
   for the {{ emphasize("detections-level") }} 
   attribute.
 </p>
-<table class="table table-bordered border-dark table-sm table-bordered">
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr>
-    <th>ExtraHop Privilege Level</th>
-    <th>SAML Claim</th>
-  </tr>
-  </thead>
-  <tr>
-    <td>All detections</td>
-    <td>unlimited</td>
-  </tr>
-</table>
+
+{{ table(
+  headers=["ExtraHop Privilege Level", "SAML Claim"],
+  rows=[
+    ["All detections", "unlimited"],
+  ],
+) }}
+
 {{ boxed_image(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png", 
   width="600px"
@@ -693,10 +567,10 @@
 
 <h3>Testing Access</h3>
 {{ tip_block('
-  You can use the {{ emphasize("SAML Tracer") }}
-  Firefox/Chrome plugin to monitor the flow of requests to and from the IdP.
-  I recommend you install it and open its debug window prior to loggin in.
-') }}
+  You can use the $1 Firefox/Chrome plugin to monitor the flow of requests 
+  to and from the IdP. I recommend you install it and open its debug window 
+  prior to loggin in.
+' | replace("$1", emphasize("SAML Tracer"))) }}
 
 <p>
   To test your access, open a private browser window to your ExtraHop appliance.

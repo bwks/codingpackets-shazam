@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    // 'codingpackets/_site/*.{html,js}',
+    'codingpackets/_site/js/custom/*.js',
     'codingpackets/_site/blog/**/*.html'
   ],
   safelist: [],

@@ -10,6 +10,7 @@
 {% from "macros/note.jinja" import warning_block %}
 {% from "macros/note.jinja" import tip_block %}
 {% from "macros/breadcrumbs.jinja" import breadcrumbs %}
+{% from "macros/table.jinja" import table %}
 
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -64,7 +65,7 @@
         {{ page_header(heading=project + " Site") }}
       {% endblock page_header %}
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-2xl text-gray-800 dark:text-neutral-400 font-medium">
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
         {% block page_content %}
         {% endblock page_content %}
       </div>
