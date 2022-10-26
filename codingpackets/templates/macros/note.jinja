@@ -1,7 +1,7 @@
 {% from "macros/emphasize.jinja" import emphasize %}
 {% macro note_block(text) %}
   <div class="pt-2 pb-4">
-    <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-300 dark:bg-sky-800 dark:shadow-none">
+    <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
       <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
       <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
     </div>
@@ -11,8 +11,8 @@
 
 {% macro important_block(text) %}
   <div class="pt-2 pb-4">
-    <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-l-amber-400 dark:bg-amber-600 dark:border-l-amber-300 dark:shadow-none">
-      <div class="px-4 pt-4 pb-2 text-amber-900 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></div>
+    <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-l-amber-400 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-amber-400 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></div>
       <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
     </div>
   </div>
@@ -21,8 +21,8 @@
 
 {% macro warning_block(text) %}
   <div class="pt-2 pb-4">
-    <div class="shadow-md shadow-zinc-400 bg-rose-100 rounded border-l-8 border-l-rose-400 dark:bg-rose-700 dark:border-l-rose-300 dark:shadow-none">
-      <div class="px-4 pt-4 pb-2 text-rose-800 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Warning</b></div>
+    <div class="shadow-md shadow-zinc-400 bg-rose-100 rounded border-l-8 border-l-rose-700 dark:bg-rose-800 dark:border-l-rose-600 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Warning</b></div>
       <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
     </div>
   </div>
@@ -31,8 +31,8 @@
 
 {% macro tip_block(text) %}
   <div class="pt-2 pb-4">
-    <div class="shadow-md shadow-zinc-400 bg-lime-100 rounded border-l-8 border-l-lime-400 dark:bg-lime-700 dark:border-l-lime-300 dark:shadow-none">
-      <div class="px-4 pt-4 pb-2 text-green-800 dark:text-zinc-900"><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></div>
+    <div class="shadow-md shadow-zinc-400 bg-lime-100 rounded border-l-8 border-l-lime-700 dark:bg-lime-800 dark:border-l-lime-600 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-lime-700 dark:text-zinc-900"><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></div>
       <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
     </div>
   </div>
