@@ -134,7 +134,7 @@
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
-  <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rc</i></span> file. This 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rc</i> file. This 
   allows your user and group ID's to be used within the 
   containers.
 </p>
@@ -154,7 +154,7 @@ export GID=$(id -g)</code></pre>
 
 <h3>Dockerfiles</h3>
 <p>
-  Create the following <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Dockerfile</i></span>
+  Create the following <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Dockerfile</i>
   which is used to create our application container images.
 </p>
 
@@ -263,7 +263,7 @@ CMD ["bin/dev"]</code></pre>
 
 
 <p>
-  The following base <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose.yaml</i></span> 
+  The following base <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose.yaml</i> 
   file is used for all stages of development.
 </p>
 
@@ -307,7 +307,7 @@ services:
 
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose-dev.yaml</i></span> 
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose-dev.yaml</i> 
   file is used for the development environment.
 </p>
 
@@ -331,7 +331,7 @@ services:
 
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">.env.dev</i></span> file 
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">.env.dev</i> file 
   is used to pass environment variables to containers.
 </p>
 
@@ -364,13 +364,13 @@ RAILS_ENV=development</code></pre>
   The configuration files can be found found in 
   the Github 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>repo</a>.
-  in the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config</i></span>
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config</i>
   directory.
 </p>
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Gemfile</i></span> file 
-  has the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">foreman</i></span> gem
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Gemfile</i> file 
+  has the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">foreman</i> gem
   added which is used to run the Procfile.
 </p>
 
@@ -389,7 +389,7 @@ gem "foreman", "~> 0.87.2"
 
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config/database.yml</i></span> file 
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config/database.yml</i> file 
   is altered to pull data from environment variables.
 </p>
 
@@ -426,7 +426,7 @@ production:
 
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config/environments-development.rb</i></span> file 
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config/environments-development.rb</i> file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
 
@@ -453,10 +453,10 @@ end</code></pre>
 
 <p>
   Alpine linux does not have the 
-  <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">bash</i></span> shell.
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">shebang</i></span> line 
-  of the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">bin/dev</i></span> 
-  file is updated to use the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">sh</i></span> shell.
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">bash</i> shell.
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">shebang</i> line 
+  of the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">bin/dev</i> 
+  file is updated to use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">sh</i> shell.
 </p>
 
 <div class="pt-2 pb-4">
@@ -473,10 +473,10 @@ end</code></pre>
 
 
 <p>
-  The <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Procfile.dev</i></span>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Procfile.dev</i>
   file is updated to bind to all IPv4 addresses 
-  <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">(0.0.0.0)</i></span> instead of 
-  <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">localhost</i></span>.
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">(0.0.0.0)</i> instead of 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">localhost</i>.
 </p>
 
 <div class="pt-2 pb-4">
@@ -494,7 +494,7 @@ end</code></pre>
 
 <h3>Build Containers</h3>
 <p>
-  Build the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rails-base</i></span> 
+  Build the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rails-base</i> 
   container image.
 </p>
 
@@ -520,7 +520,7 @@ end</code></pre>
 
 <h3>Generate Rails App</h3>
 <p>
-  Generate a new Rails app using the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rails-base</i></span> 
+  Generate a new Rails app using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">rails-base</i> 
   container image.
 </p>
 
@@ -541,7 +541,7 @@ end</code></pre>
 
 
 <p>
-  This generates a Rails application in the <span class="px-1 break-all"><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">&lt;app-name&gt;</i></span> 
+  This generates a Rails application in the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">&lt;app-name&gt;</i> 
   directory.
 </p>
 
