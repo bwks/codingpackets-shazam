@@ -1,7 +1,7 @@
 {% extends "layouts/site.jinja" %}
 
 {% block page_header %}
-  {{ page_header(heading="whoami") | lower }}
+  {{ text::header(heading="whoami") | lower }}
 {% endblock page_header %}
 
 {% block page_content %}
@@ -23,7 +23,7 @@
       the Network Detection and Response (NDR) field.
     </p>
     <p>
-      Here at {{ link_to(path="#", description="codingpackets.com") }},
+      Here at {{ link::i(path="#", description="codingpackets.com") }},
       I write about my adventures in networking, security, cloud and devops 
       as I attempt to automate all the stuff and things! 
     </p>

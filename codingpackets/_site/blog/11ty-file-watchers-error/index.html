@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+
+    <div class="grid place-items-center pt-16">
+      
+  
+    
+<div class="pt-5 pb-2 px-5 text-center">
+  <h1 class="sm:pb-2 pb-1">11ty File Watchers Error</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 20th of November 2020
+      </p>
+    
+  </div>
+</div>
+
+  
+
+
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+        
+
+<h3>Intro</h3>
+<p>
+  I have come across a file watchers error a couple of 
+  times now with new installs of 11ty and I am documenting 
+  the fix in this post for future me.
+</p>
+
+<h3>The Error</h3>
+<p>
+  When starting a local 11ty dev server with the command: 
+</p>
+
+
+<div class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-shell hljs px-5 dark:opacity-80 rounded-b">npx @11ty/eleventy --serve</code></pre>
+    </div>
+  </div>
+</div>
+
+
+<p>
+  You get the following error:
+</p>
+
+
+<div class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
+      <span class="">error</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Unhandled rejection in promise ([object Promise]): (more in DEBUG output)
+^C> ENOSPC: System limit for number of file watchers reached, watch 'network/vendors/juniper/trace-options.njk'
+
+
+`Error` was thrown:
+    Error: ENOSPC: System limit for number of file watchers reached, watch 'network/vendors/juniper/trace-options.njk'
+        at FSWatcher.<computed> (node:internal/fs/watchers:218:26)
+        at Object.watch (node:fs:1550:34)
+        at createFsWatchInstance (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:119:15)
+        at setFsWatchListener (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:166:15)
+
+        at NodeFsHandler._watchWithNodeFs (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:331:14)
+        at NodeFsHandler._handleFile (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:395:23)
+        at NodeFsHandler._addToNodeFs (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:628:21)
+Unhandled rejection in promise ([object Promise]): (more in DEBUG output)</code></pre>
+    </div>
+  </div>
+</div>
+
+
+
+<h3>The Solution</h3>
+<p>
+  Some quick duck hunting lead me to a github 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/gatsbyjs/gatsby/issues/11406" target=_blank>issue</a> for the gatsby project that looked very similar to my issue.
+</p>
+
+<p>
+  The proposed solution involves upping the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">max_user_watches</i> setting in the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">/etc/sysctl.conf</i> file.
+</p>
+
+
+<div class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-shell hljs px-5 dark:opacity-80 rounded-b">echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p</code></pre>
+    </div>
+  </div>
+</div>
+
+
+<p>
+  If you are interested in the gory details then there is a nice 
+  and helpful article that explains the issue in detail
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers#the-technical-details" target=_blank>here</a>.
+</p>
+
+<p>
+  Long story short. I applied the fix and it works!!! I can now serve my static site without errors.
+</p>
+
+
+      </div>
+
+      
+  
+    
+
+  <div class="py-3">
+    
+      <div class="inline-block pr-1.5">
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">11ty</div>
+      </div>
+    
+      <div class="inline-block pr-1.5">
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">node</div>
+      </div>
+    
+  </div>
+
+
+  
+
+
+      
+        <div class="">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+      
+    </div>
+
+    <div id="back-to-top"
+     class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+
+  </body>
+
+  <footer class="fixed inset-x-0 bottom-0">
+  <nav class="w-full py-3 bg-zinc-900 shadow-lg">
+    <div class="flex justify-center py-1">
+      <div class="text-center ">
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+      </div>
+    </div>
+  </nav>
+</footer>
+</html>

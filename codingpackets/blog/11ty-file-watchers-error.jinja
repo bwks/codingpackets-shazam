@@ -1,0 +1,82 @@
+{% extends "layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3>Intro</h3>
+<p>
+  I have come across a file watchers error a couple of 
+  times now with new installs of 11ty and I am documenting 
+  the fix in this post for future me.
+</p>
+
+<h3>The Error</h3>
+<p>
+  When starting a local 11ty dev server with the command: 
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="shell",
+  code="npx @11ty/eleventy --serve"
+) }}
+
+<p>
+  You get the following error:
+</p>
+
+{{ text::code_block(
+  header="error",
+  language="text",
+  code="Unhandled rejection in promise ([object Promise]): (more in DEBUG output)
+^C> ENOSPC: System limit for number of file watchers reached, watch 'network/vendors/juniper/trace-options.njk'
+
+
+`Error` was thrown:
+    Error: ENOSPC: System limit for number of file watchers reached, watch 'network/vendors/juniper/trace-options.njk'
+        at FSWatcher.<computed> (node:internal/fs/watchers:218:26)
+        at Object.watch (node:fs:1550:34)
+        at createFsWatchInstance (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:119:15)
+        at setFsWatchListener (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:166:15)
+
+        at NodeFsHandler._watchWithNodeFs (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:331:14)
+        at NodeFsHandler._handleFile (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:395:23)
+        at NodeFsHandler._addToNodeFs (/home/bradmin/code/js/codingpackets.com-11ty/node_modules/chokidar/lib/nodefs-handler.js:628:21)
+Unhandled rejection in promise ([object Promise]): (more in DEBUG output)"
+) }}
+
+
+<h3>The Solution</h3>
+<p>
+  Some quick duck hunting lead me to a github 
+  {{ link::e(
+    path="https://github.com/gatsbyjs/gatsby/issues/11406",
+    description="issue"
+  ) }} for the gatsby project that looked very similar to my issue.
+</p>
+
+<p>
+  The proposed solution involves upping the 
+  {{ text::emphasize(text="max_user_watches") }} setting in the 
+  {{ text::emphasize(text="/etc/sysctl.conf") }} file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="shell",
+  code="echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p"
+) }}
+
+<p>
+  If you are interested in the gory details then there is a nice 
+  and helpful article that explains the issue in detail
+  {{ link::e(
+    path="https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers#the-technical-details",
+    description="here"
+  ) }}.
+</p>
+
+<p>
+  Long story short. I applied the fix and it works!!! I can now serve my static site without errors.
+</p>
+
+{% endblock page_content %}

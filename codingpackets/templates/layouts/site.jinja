@@ -1,16 +1,7 @@
-{% from "macros/page-header.jinja" import page_header %}
-{% from "macros/link-to.jinja" import link_to %}
-{% from "macros/elink-to.jinja" import elink_to %}
-{% from "macros/tags.jinja" import tags %}
-{% from "macros/code-block.jinja" import code_block %}
-{% from "macros/emphasize.jinja" import emphasize %}
-{% from "macros/boxed-image.jinja" import boxed_image %}
-{% from "macros/note.jinja" import note_block %}
-{% from "macros/note.jinja" import important_block %}
-{% from "macros/note.jinja" import warning_block %}
-{% from "macros/note.jinja" import tip_block %}
-{% from "macros/breadcrumbs.jinja" import breadcrumbs %}
-{% from "macros/table.jinja" import table %}
+{% import "macros/link.jinja" as link %}
+{% import "macros/text.jinja" as text %}
+{% import "macros/image.jinja" as image %}
+{% import "macros/table.jinja" as table %}
 
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -62,7 +53,7 @@
 
     <div class="grid place-items-center pt-16">
       {% block page_header %}
-        {{ page_header(heading=project + " Site") }}
+        {{ text::header(heading=project) }}
       {% endblock page_header %}
 
       <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">

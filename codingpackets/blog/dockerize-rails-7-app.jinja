@@ -21,30 +21,34 @@
 <h3>Code Repository</h3>
 <p>
   The code for this blog can be found on Github 
-  {{ elink_to(path="https://github.com/bwks/docker-rails", description="here") }}.
+  {{ link::e(path="https://github.com/bwks/docker-rails", description="here") }}.
 </p>
+
 
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
-  {{ emphasize("rc") }} file. This 
+  {{ text::emphasize(text="rc") }} file. This 
   allows your user and group ID's to be used within the 
   containers.
 </p>
-{{ code_block(
+
+{{ text::code_block(
   header="~/.zshrc",
   language="bash",
   code='export UID=$(id -u)
 export GID=$(id -g)'
 ) }}
 
+
 <h3>Dockerfiles</h3>
 <p>
-  Create the following {{ emphasize("Dockerfile") }}
+  Create the following {{ text::emphasize(text="Dockerfile") }}
   which is used to create our application container images.
 </p>
 
-{{ code_block(
+
+{{ text::code_block(
   header="Dockerfile.rails",
   language="Dockerfile",
   code='################## RAILS BUILD IMAGE ################## 
@@ -65,9 +69,9 @@ ENV APP_GROUP_ID ${APP_GROUP_ID}
 ARG BUILD_PACKAGES="build-base"
 
 # Install build deps
-RUN echo "http://dl-4.alpinelinux.org/alpine/v3.16/main" >> /etc/apk/repositories \\
-  && echo "http://dl-4.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \\
-  && apk update \\
+RUN echo "http://dl-4.alpinelinux.org/alpine/v3.16/main" >> /etc/apk/repositories \
+  && echo "http://dl-4.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \
+  && apk update \
   && apk add ${BUILD_PACKAGES}
 
 # Set working directory
@@ -77,11 +81,11 @@ WORKDIR /opt
 RUN gem install rails bundler --no-document
 
 # Create new Rails app
-RUN rails new \\
-  --skip-bundle \\
-  --skip-git \\
-  --database=postgresql \\
-  --css=tailwind \\
+RUN rails new \
+  --skip-bundle \
+  --skip-git \
+  --database=postgresql \
+  --css=tailwind \
   ${APP_NAME}
 
 WORKDIR /opt/${APP_NAME}
@@ -100,9 +104,9 @@ ENV APP_GROUP_ID ${APP_GROUP_ID}
 
 ARG RUN_PACKAGES="build-base tzdata postgresql-dev postgresql-client nodejs yarn"
 
-RUN echo "http://dl-4.alpinelinux.org/alpine/v3.12/main" >> /etc/apk/repositories \\
-  && echo "http://dl-4.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories \\
-  && apk update \\
+RUN echo "http://dl-4.alpinelinux.org/alpine/v3.12/main" >> /etc/apk/repositories \
+  && echo "http://dl-4.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories \
+  && apk update \
   && apk add --no-cache $RUN_PACKAGES
 
 # Default directory
@@ -113,7 +117,7 @@ COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /opt/${APP_NAME} /opt/${APP_NAME}
 COPY config/Gemfile Gemfile
 
-RUN bundle install \\
+RUN bundle install \
   && bin/rails tailwindcss:install
 
 COPY config/Procfile.dev Procfile.dev
@@ -123,9 +127,9 @@ COPY config/bin-dev bin/dev
 RUN chmod +x bin/dev
 
 # Cleanup cache
-RUN bundle clean --force \\
-  && rm -rf /usr/local/bundle/cache/*.gem \\
-  && find /usr/local/bundle/gems/ -name "*.c" -delete \\
+RUN bundle clean --force \
+  && rm -rf /usr/local/bundle/cache/*.gem \
+  && find /usr/local/bundle/gems/ -name "*.c" -delete \
   && find /usr/local/bundle/gems/ -name "*.o" -delete
 
 # Create app user and group
@@ -141,12 +145,14 @@ EXPOSE 3000
 CMD ["bin/dev"]'
 ) }}
 
+
 <p>
-  The following base {{ emphasize("docker-compose.yaml") }} 
+  The following base {{ text::emphasize(text="docker-compose.yaml") }} 
   file is used for all stages of development.
 </p>
 
-{{ code_block(
+
+{{ text::code_block(
   header="docker-compose.yaml",
   language="yaml",
   code='version: "3.9"
@@ -178,12 +184,13 @@ services:
       - "RAILS_ENV=${RAILS_ENV}"'
 ) }}
 
+
 <p>
-  The {{ emphasize("docker-compose-dev.yaml") }} 
+  The {{ text::emphasize(text="docker-compose-dev.yaml") }} 
   file is used for the development environment.
 </p>
 
-{{ code_block(
+{{ text::code_block(
   header="docker-compose-dev.yaml",
   language="yaml",
   code='version: "3.9"
@@ -196,12 +203,13 @@ services:
 ) }}
 
 <p>
-  The {{ emphasize(".env.dev") }} file 
+  The {{ text::emphasize(text=".env.dev") }} file 
   is used to pass environment variables to containers.
 </p>
-{{ code_block(
+
+{{ text::code_block(
   header=".env.dev",
-  language="shell",
+  language="bash",
   code='APP_NAME=&lt;app-name&gt;
 APP_USER=$USER
 APP_USER_ID=$UID
@@ -221,17 +229,17 @@ RAILS_ENV=development'
 <p>
   The configuration files can be found found in 
   the Github 
-  {{ elink_to(path="https://github.com/bwks/docker-rails", description="repo") }}.
-  in the {{ emphasize("config") }}
+  {{ link::e(path="https://github.com/bwks/docker-rails", description="repo") }}.
+  in the {{ text::emphasize(text="config") }}
   directory.
 </p>
 
 <p>
-  The {{ emphasize("Gemfile") }} file 
-  has the {{ emphasize("foreman") }} gem
+  The {{ text::emphasize(text="Gemfile") }} file 
+  has the {{ text::emphasize(text="foreman") }} gem
   added which is used to run the Procfile.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="Gemfile",
   language="ruby",
   code='source "https://rubygems.org"
@@ -240,13 +248,14 @@ gem "foreman", "~> 0.87.2"
 ) }}
 
 <p>
-  The {{ emphasize("config/database.yml") }} file 
+  The {{ text::emphasize(text="config/database.yml") }} file 
   is altered to pull data from environment variables.
 </p>
-{{ code_block(
+
+{{ text::code_block(
   header="config/database.yml",
   language="ruby",
-  code='default: &default
+  code=`default: &default
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
@@ -258,99 +267,102 @@ gem "foreman", "~> 0.87.2"
 
 development:
   <<: *default
-  database: <%= "#{ENV.fetch(\'APP_NAME\')}_development" %>
+  database: <%= "#{ENV.fetch('APP_NAME')}_development" %>
 
 test:
   <<: *default
-  database: <%= "#{ENV.fetch(\'APP_NAME\')}_test" %>
+  database: <%= "#{ENV.fetch('APP_NAME')}_test" %>
 
 production:
   <<: *default
-  database: <%= "#{ENV.fetch(\'APP_NAME\')}_production" %>'
+  database: <%= "#{ENV.fetch('APP_NAME')}_production" %>`
 ) }}
 
+
 <p>
-  The {{ emphasize("config/environments-development.rb") }} file 
+  The {{ text::emphasize(text="config/environments-development.rb") }} file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
-{{ code_block(
-  header="config/application-development.yml",
+{{ text::code_block(
+  header="config/application-development.rb",
   language="ruby",
-  code='Rails.application.configure do
+  code=`Rails.application.configure do
 
   # Allow access from any IPv4/6 address
-  config.web_console.whitelisted_ips = [\'0.0.0.0/0\', \'::/0\']
+  config.web_console.whitelisted_ips = ['0.0.0.0/0', '::/0']
 
   # Allow access from any hostname
   config.hosts.clear
 
   # ... rest of file
-end'
+end`
 ) }}
 
 <p>
   Alpine linux does not have the 
-  {{ emphasize("bash") }} shell.
-  The {{ emphasize("shebang") }} line 
-  of the {{ emphasize("bin/dev") }} 
-  file is updated to use the {{ emphasize("sh") }} shell.
+  {{ text::emphasize(text="bash") }} shell.
+  The {{ text::emphasize(text="shebang") }} line 
+  of the {{ text::emphasize(text="bin/dev") }} 
+  file is updated to use the {{ text::emphasize(text="sh") }} shell.
 </p>
-{{ code_block(
+
+
+{{ text::code_block(
   header="bin/dev",
   language="shell",
-  code='#!/usr/bin/env sh
-# ... rest of file'
+  code=`#!/usr/bin/env sh
+# ... rest of file`
 ) }}
 
 <p>
-  The {{ emphasize("Procfile.dev") }}
+  The {{ text::emphasize(text="Procfile.dev") }}
   file is updated to bind to all IPv4 addresses 
-  {{ emphasize("(0.0.0.0)") }} instead of 
-  {{ emphasize("localhost") }}.
+  {{ text::emphasize(text="(0.0.0.0)") }} instead of 
+  {{ text::emphasize(text="localhost") }}.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="Procfile.dev",
-  language="text",
-  code='web: bin/rails server -b "0.0.0.0" -p 3000
-# ... rest of file'
+  language="yaml",
+  code=`web: bin/rails server -b "0.0.0.0" -p 3000
+# ... rest of file`
 ) }}
 
 <h3>Build Containers</h3>
 <p>
-  Build the {{ emphasize("rails-base") }} 
+  Build the {{ text::emphasize(text="rails-base") }} 
   container image.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="cmd",
   language="text",
-  code='docker compose \\
-  -f docker-compose.yaml \\
-  -f docker-compose-dev.yaml \\
-  --env-file .env.dev \\
-  build \\
-    --build-arg APP_NAME=&lt;app-name&gt; \\
-    --build-arg APP_USER_ID=$UID \\
-    --build-arg APP_GROUP_ID=$GID \\
-    --build-arg APP_USER=$USER'
+  code=`docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  build \
+    --build-arg APP_NAME=&lt;app-name&gt; \
+    --build-arg APP_USER_ID=$UID \
+    --build-arg APP_GROUP_ID=$GID \
+    --build-arg APP_USER=$USER`
 ) }}
 
 <h3>Generate Rails App</h3>
 <p>
-  Generate a new Rails app using the {{ emphasize("rails-base") }} 
+  Generate a new Rails app using the {{ text::emphasize(text="rails-base") }} 
   container image.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="cmd",
   language="text",
-  code='export APP_NAME="&lt;app-name&gt;" \\
-  && docker container run -itd --name=rails-tmp rails-base sh \\
-  && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \\
-  && docker container kill rails-tmp \\
-  && docker container rm rails-tmp'
+  code=`export APP_NAME="&lt;app-name&gt;" \
+  && docker container run -itd --name=rails-tmp rails-base sh \
+  && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \
+  && docker container kill rails-tmp \
+  && docker container rm rails-tmp`
 ) }}
 
 <p>
-  This generates a Rails application in the {{ emphasize("&lt;app-name&gt;") }} 
+  This generates a Rails application in the {{ text::emphasize(text="&lt;app-name&gt;") }} 
   directory.
 </p>
 
@@ -358,37 +370,37 @@ end'
 <p>
   Bring up the application containers.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="cmd",
   language="text",
-  code='docker compose \\
-  -f docker-compose.yaml \\
-  -f docker-compose-dev.yaml \\
-  --env-file .env.dev \\
-  up'
+  code=`docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  up`
 ) }}
 
 <p>
   Bring down the application containers.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="cmd",
   language="text",
-  code='docker compose \\
-  -f docker-compose.yaml \\
-  -f docker-compose-dev.yaml \\
-  --env-file .env.dev \\
-  down'
+  code=`docker compose \
+  -f docker-compose.yaml \
+  -f docker-compose-dev.yaml \
+  --env-file .env.dev \
+  down`
 ) }}
 
 <p>Run a generator.</p>
-{{ code_block(
+{{ text::code_block(
   header="cmd",
   language="text",
-  code='docker compose run \\
-  --user $UID:$GID \\
-  app \\
-  bin/rails generate scaffold device name:string'
+  code=`docker compose run \
+  --user $UID:$GID \
+  app \
+  bin/rails generate scaffold device name:string`
 ) }}
 
 <h3>Outro</h3>

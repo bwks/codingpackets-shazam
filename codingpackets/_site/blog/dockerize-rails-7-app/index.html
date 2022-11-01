@@ -1,17 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -131,6 +117,7 @@
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/docker-rails" target=_blank>here</a>.
 </p>
 
+
 <h3>Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
@@ -138,6 +125,7 @@
   allows your user and group ID's to be used within the 
   containers.
 </p>
+
 
 <div class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -152,11 +140,13 @@ export GID=$(id -g)</code></pre>
 </div>
 
 
+
 <h3>Dockerfiles</h3>
 <p>
   Create the following <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Dockerfile</i>
   which is used to create our application container images.
 </p>
+
 
 
 <div class="pt-2 pb-4">
@@ -262,10 +252,12 @@ CMD ["bin/dev"]</code></pre>
 </div>
 
 
+
 <p>
   The following base <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose.yaml</i> 
   file is used for all stages of development.
 </p>
+
 
 
 <div class="pt-2 pb-4">
@@ -306,6 +298,7 @@ services:
 </div>
 
 
+
 <p>
   The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">docker-compose-dev.yaml</i> 
   file is used for the development environment.
@@ -335,13 +328,14 @@ services:
   is used to pass environment variables to containers.
 </p>
 
+
 <div class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
       <span class="">.env.dev</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-shell hljs px-5 dark:opacity-80 rounded-b">APP_NAME=&lt;app-name&gt;
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">APP_NAME=&lt;app-name&gt;
 APP_USER=$USER
 APP_USER_ID=$UID
 APP_GROUP_ID=$GID
@@ -393,6 +387,7 @@ gem "foreman", "~> 0.87.2"
   is altered to pull data from environment variables.
 </p>
 
+
 <div class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
@@ -425,6 +420,7 @@ production:
 </div>
 
 
+
 <p>
   The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">config/environments-development.rb</i> file 
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
@@ -433,7 +429,7 @@ production:
 <div class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
-      <span class="">config/application-development.yml</span>
+      <span class="">config/application-development.rb</span>
     </div>
     <div class="font-mono">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b">Rails.application.configure do
@@ -458,6 +454,8 @@ end</code></pre>
   of the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">bin/dev</i> 
   file is updated to use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">sh</i> shell.
 </p>
+
+
 
 <div class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -485,7 +483,7 @@ end</code></pre>
       <span class="">Procfile.dev</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">web: bin/rails server -b "0.0.0.0" -p 3000
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">web: bin/rails server -b "0.0.0.0" -p 3000
 # ... rest of file</code></pre>
     </div>
   </div>

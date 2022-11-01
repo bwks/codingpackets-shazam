@@ -2,36 +2,49 @@
 
 {% block page_header %}
   {% if post %}
-    {{ page_header(heading=post.title, published_date=post.published_date, updated_date=post.updated_date) }}
+    {{ text::header(heading=post.title, published_date=post.published_date, updated_date=post.updated_date) }}
   {% else %}
-    {{ page_header(heading="Stuff and Things Blog") }}
+    {{ text::header(heading="Stuff and Things Blog") }}
   {% endif %}
 {% endblock page_header %}
 
 {% block page_content %}
-  {% for post in posts %}
-    <div class="py-2">
-      <div class="block p-4 rounded-lg shadow-lg border-4 border-zinc-800">
-        <div class="pb-2">
-          <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | parameterize }}">{{ post.title | title_case }}</a>
-          <p class="font-medium text-xl">
-            {{ post.description }}
-          </p>
-        </div>
+  <div class="">
+    {% for key, value in posts.by_category %}
+      {% if key %}
+        <div class="pb-4">
+          <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
+            <h3 class="pt-0 pb-1 text-2xl font-normal text-neutral-100 dark:text-neutral-400">{{ key | replace(from="_", to="-") | title_case }}</h3>
+          </div>
+          {% for post in value %}
+            {% if post.publish %}
+              <div>
+                <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-zinc-900 {% if not loop.last %}border-b-0 rounded-b-none{% endif %}">
+                  <div class="">
+                    <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
+                    <p class="font-medium text-xl">
+                      {{ post.description }}
+                    </p>
+                  </div>
 
-        {% include "includes/dates.jinja" %}
+                  {% include "includes/dates.jinja" %}
 
-        <div class="">
-          {{ tags(tags=post.tags) }}
+                  <div class="">
+                    {{ text::tag_block(tags=post.tags) }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}      
         </div>
-      </div>
-    </div>
-  {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock page_content %}
 
 {% block page_tags %}
   {% if post %}
-    {{ tags(tags=post.tags) }}
+    {{ text::tag_block(tags=post.tags) }}
   {% endif %}
 {% endblock page_tags %}
 

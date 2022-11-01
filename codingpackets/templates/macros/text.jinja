@@ -1,0 +1,97 @@
+{% macro header(heading, published_date="", updated_date="") %}
+<div class="pt-5 pb-2 px-5 text-center">
+  <h1 class="sm:pb-2 pb-1">{{ heading | title_case }}</h1>
+  <div class="">
+    {% if updated_date %}
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: {{ updated_date | human_date }}
+      </p>
+    {% endif %}
+    {% if published_date %}
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: {{ published_date | human_date }}
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro code_block(header, language, code) %}
+<div class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
+      <span class="">{{ header }}</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-{{ language }} hljs px-5 dark:opacity-80 rounded-b">{{ code | safe }}</code></pre>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro tag_block(tags) %}
+{% if tags %}
+  <div class="py-3">
+    {% for tag in tags %}
+      <div class="inline-block pr-1.5">
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">{{ tag | replace(from="_", to="-") }}</div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endmacro %}
+
+{% macro breadcrumbs(items) %}
+<div class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-800 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      {% for item in items %}
+        <li class="text-sky-600 dark:text-sky-800">{{ item }}</li>
+        {% if not loop.last %}
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+</div>
+{% endmacro %}
+
+{% macro emphasize(text) %}<i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">{{ text }}</i>{% endmacro %}
+
+{% macro code(text) %}<i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-green-400 dark:text-green-700">{{ text }}</i>{% endmacro %}
+
+{% macro note_block(text) %}
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro important_block(text) %}
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Important</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro warning_block(text) %}
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-rose-100 rounded border-l-8 border-l-rose-700 dark:bg-rose-800 dark:border-l-rose-600 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Warning</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro tip_block(text) %}
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-lime-100 rounded border-l-8 border-l-lime-700 dark:bg-lime-800 dark:border-l-lime-600 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-lime-700 dark:text-zinc-900"><i class="fas fa-asterisk" aria-hidden="true"></i> <b>Hot Tip</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
+    </div>
+  </div>
+{% endmacro %}

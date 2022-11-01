@@ -39,12 +39,14 @@
 <h3>SAML Login Flow</h3>
 <p>
   The image below is directly from the Microsoft 
-    {{ elink_to(
+    {{ link::e(
     path="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/auth-saml", 
     description="docs")
   }} <sup>[1]</sup>
 </p>
-{{ boxed_image(
+
+
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-login-flow.png", 
   width="600px"
 ) }}
@@ -79,31 +81,32 @@
 <p>
   Update the hostname to the FQDN and re-generate the SSL certificate.
   This ensures that we have the correct 
-  {{ emphasize("ACS URL") }} in the SP Metadata configuration.
+  {{ text::emphasize(text="ACS URL") }} in the SP Metadata configuration.
 </p>
 <h5>Hostname</h5>
 <p>
-  On the {{ emphasize("Admin") }} panel, 
+  On the {{ text::emphasize(text="Admin") }} panel, 
   browse to:
 </p>
 
-{{ breadcrumbs([
+
+{{ text::breadcrumbs(items=[
   "Admin",
   "Connectivity",
   "Change Settings",
 ]) }}
 
 <p>
-  Update the hostname to the FQDN and hit {{ emphasize("Save") }}.
+  Update the hostname to the FQDN and hit {{ text::emphasize(text="Save") }}.
 </p>
 
 <h5>SSL Certificate</h5>
 <p>
   Browse to: 
-  {{ emphasize("Admin") }} panel.
+  {{ text::emphasize(text="Admin") }} panel.
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Admin",
   "SSL Certificate",
   "Manage Certificates",
@@ -111,11 +114,11 @@
 ]) }}
 
 <p>
-  Hit {{ emphasize("OK") }} on the prompt that asks 
+  Hit {{ text::emphasize(text="OK") }} on the prompt that asks 
   if you would like to regenerate the certificate.
 </p>
 
-{{ note_block('
+{{ text::note_block(text='
     The web interface will restart at this step, but this does not effect 
     the capture process so data will continue to be ingested and analyzed. 
 ') }}
@@ -130,20 +133,20 @@
   In the Azure Portal browse to:
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "New application",
 ]) }}
 
 <p>
-  Search for {{ emphasize("Azure AD SAML Toolkit") }} 
+  Search for {{ text::emphasize(text="Azure AD SAML Toolkit") }} 
   in the search bar. Select the application and rename it to 
-  {{ emphasize("Azure AD SAML ExtraHop") }}
-   then hit {{ emphasize("Create") }}
+  {{ text::emphasize(text="Azure AD SAML ExtraHop") }}
+   then hit {{ text::emphasize(text="Create") }}
 </p>
 
-{{ note_block('
+{{ text::note_block(text='
     This post assumes that the Users/Groups are already created in Azure or 
     synced to Azure from on-prem AD.  
 ') }}
@@ -155,24 +158,24 @@
   On the ExtraHop admin portal, browse to:
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Admin",
   "Remote Authentication",
 ]) }}
 
 <p>
-  Select {{ emphasize("SAML") }} from 
-  the dropdown and hit {{ emphasize("Continue") }}.
+  Select {{ text::emphasize(text="SAML") }} from 
+  the dropdown and hit {{ text::emphasize(text="Continue") }}.
 </p>
 <p>
-  On the next screen select {{ emphasize("View SP Metadata") }}.
+  On the next screen select {{ text::emphasize(text="View SP Metadata") }}.
   You will need to note down the
-  {{ emphasize("ACS URL") }}
+  {{ text::emphasize(text="ACS URL") }}
   and the 
-  {{ emphasize("Entity ID") }}.
+  {{ text::emphasize(text="Entity ID") }}.
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/sp-metadata.png", 
   width="600px"
 ) }}
@@ -182,7 +185,7 @@
   in Azure AD to complete the configuration on the Azure side.
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "Azure AD SAML",
@@ -200,7 +203,7 @@
 
 <h4>Azure - Basic SAML Configuration</h4>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "Azure AD SAML",
@@ -215,12 +218,12 @@
   ExtraHop SP metadata in the previous step.
 </p>
 
-{{ table(
-  headers=["Parameter", "Value"],
+{{ table::default(
+  header=["Parameter", "Value"],
   rows=[
-    ["Identifier (Entity ID)", "urn:extrahop:saml:&lt;entity-id-string&gt;"],
-    ["Reply URL (Assertion Consumer Service URL)", "https://&lt;extrahop-fqdn&gt;/admin/sso/saml/acs/"],
-    ["Sign on URL", "https://&lt;extrahop-fqdn&gt;/"],
+    "Identifier (Entity ID) | urn:extrahop:saml:&lt;entity-id-string&gt'",
+    "Reply URL (Assertion Consumer Service URL) | https://&lt;extrahop-fqdn&gt'/admin/sso/saml/acs/",
+    "Sign on URL | https://&lt;extrahop-fqdn&gt'/",
   ],
 ) }}
 
@@ -228,7 +231,7 @@
   The image below shows an example configuration.
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/azure-saml-1.png", 
   width="600px"
 ) }}
@@ -236,7 +239,7 @@
 
 <h4>Azure - Attributes & Claims</h4>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "Azure AD SAML",
@@ -255,12 +258,13 @@
     within the ExtraHop platform.  
   </p>
 
-{{ table(
-  headers=["Claim Name", "Value"],
+{{ table::default(
+  header=["Claim Name", "Value"],
   rows=[
-    ["Unique User Identifier (Name ID)", "user.userprincipalname"],
+    "Unique User Identifier (Name ID) | user.userprincipalname",
   ],
 ) }}
+
 
 <h5>Additional Claims - Identity</h5>
 <p>
@@ -270,103 +274,104 @@
 </p>
 
 
-{{ table(
-  headers=["Claim Name", "Value"],
+{{ table::default(
+  header=["Claim Name", "Value"],
   rows=[
-    ["urn:oid:0.9.2342.19200300.100.1.3", "user.userprincipalname"],
-    ["urn:oid:2.5.4.42", "user.givenname"],
-    ["urn:oid:2.5.4.4", "user.surname"],
+    "urn:oid:0.9.2342.19200300.100.1.3 | user.userprincipalname",
+    "urn:oid:2.5.4.42 | user.givenname",
+    "urn:oid:2.5.4.4 | user.surname",
   ],
 ) }}
+
 
 <h5>Additional Claims - Authorization</h5>
 <p>
   These next set of claims define the authorization groups.
 </p>
-{{ note_block('
+{{ text::note_block(text='
     For the authorization claims, both the claim name and value can be 
     any user defined value. However, these names and values MUST exactly 
     match what is configured in the ExtraHop SAML configuration.
 ') }}
 
-{{ table(
-  headers=["Claim Name", "Value"],
+{{ table::default(
+  header=["Claim Name", "Value"],
   rows=[
-    ["user-level", "Multiple Conditions"],
-    ["packets-level", "Multiple Conditions"],
-    ["detections-level", "Multiple Conditions"],
+    "user-level | Multiple Conditions",
+    "packets-level | Multiple Conditions",
+    "detections-level | Multiple Conditions",
   ],
 ) }}
+
 
 <p>
   The multiple conditions for the authorization claims are as follows.
 </p>
 
-<h5>Claim Name: {{ emphasize("user-level") }}</h5>
+<h5>Claim Name: {{ text::emphasize(text="user-level") }}</h5>
 
-{{ table(
-  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+
+{{ table::default(
+  header=["User Type", "Scoped Groups", "Source", "Value" ],
   rows=[
-    ["Any", "List of User Groups", "Attribute", "read-only"],
-    ["Any", "List of User Groups", "Attribute", "full-write"],
-    ["Any", "List of User Groups", "Attribute", "unlimited"],
+    "Any | List of User Groups | Attribute | read-only",
+    "Any | List of User Groups | Attribute | full-write",
+    "Any | List of User Groups | Attribute | unlimited",
   ],
 ) }}
 
 
+<h5>Claim Name: {{ text::emphasize(text="packets-level") }}</h5>
 
-<h5>Claim Name: {{ emphasize("packets-level") }}</h5>
-
-{{ table(
-  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+{{ table::default(
+  header=["User Type", "Scoped Groups", "Source", "Value" ],
   rows=[
-    ["Any", "List of User Groups", "Attribute", "full-write"],
-    ["Any", "List of User Groups", "Attribute", "unlimited"],
+    "Any | List of User Groups | Attribute | full-write",
+    "Any | List of User Groups | Attribute | unlimited",
   ],
 ) }}
 
-<h5>Claim Name: {{ emphasize("detections-level") }}</h5>
-{{ table(
-  headers=["User Type", "Scoped Groups", "Source", "Value" ],
+<h5>Claim Name: {{ text::emphasize(text="detections-level") }}</h5>
+{{ table::default(
+  header=["User Type", "Scoped Groups", "Source", "Value" ],
   rows=[
-    ["Any", "List of User Groups", "Attribute", "unlimited"],
+    "Any | List of User Groups | Attribute | unlimited",
   ],
 ) }}
 
-{{ important_block('
+{{ text::important_block(text='
     The ordering of the conditions within a claim is important. 
     The LAST condition that is matched will be sent in the SAML response.
     For example, in the $1 claim, if a user is a member of a $2 in both the 
     $3 and $4 claims, the user will be granted $4 privileges.
-') | replace('$1', emphasize("user-level"))
-   | replace('$2', emphasize("scoped group"))
-   | replace('$3', emphasize("full-write"))
-   | replace('$4', emphasize("unlimited")
+') | replace(from='$1', to=text::emphasize(text="user-level"))
+   | replace(from='$2', to=text::emphasize(text="scoped group"))
+   | replace(from='$3', to=text::emphasize(text="full-write"))
+   | replace(from='$4', to=text::emphasize(text="unlimited")
 ) }}
 
 <p>
   The image below shows all the attributes and claims from the tables above.
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/claims-1.png", 
   width="600px"
 ) }}
 
 <p>
   The image below shows the detailed view of the 
-  {{ emphasize("user-level") }} claim.
+  {{ text::emphasize(text="user-level") }} claim.
   The other claims are configured in a similar manner.
 </p>
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/claims-2.png", 
   width="600px"
 ) }}
 
-
 <h4>Azure - SAML Signing Certificate</h4>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "Azure AD SAML",
@@ -377,33 +382,33 @@
 
 <p>
   By default, the SAML application in Azure AD does not sign SAML responses.
-  Change the {{ emphasize("Signing Option") }}
-  dropdown to {{ emphasize("Sign SAML response and assertion") }}.  
+  Change the {{ text::emphasize(text="Signing Option") }}
+  dropdown to {{ text::emphasize(text="Sign SAML response and assertion") }}.  
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-1.png", 
   width="600px"
 ) }}
 
-{{ important_block('
+{{ text::important_block(text='
     The IdP MUST support signed SAML responses to be compatible 
     with the ExtraHop platform.
 ') }}
 
 <p>
-  Download the SAML certificate: {{ emphasize(" Certificate (Base64)") }}. 
+  Download the SAML certificate: {{ text::emphasize(text=" Certificate (Base64)") }}. 
   This will be used in the ExtraHop SAML configuration in a future step.  
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-cert-config-2.png", 
   width="600px"
 ) }}
 
 <h4>Azure - Set up Azure AD SAML ExtraHop</h4>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Azure Active Directory",
   "Enterprise applications",
   "Azure AD SAML",
@@ -415,7 +420,7 @@
 <p>
   The details in the image below are required for the ExtraHop configuration.
 </p>
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-sp-config-params-1.png", 
   width="600px"
 ) }}
@@ -426,11 +431,11 @@
   parameters in the ExtraHop configuration.
 </p>
 
-{{ table(
-  headers=["Azure Value", "ExtraHop Value"],
+{{ table::default(
+  header=["Azure Value", "ExtraHop Value"],
   rows=[
-    ["Login URL", "SSO URL"],
-    ["Azure AD Identifier", "Entity ID"],
+    "Login URL | SSO URL",
+    "Azure AD Identifier | Entity ID",
   ],
 ) }}
 
@@ -439,7 +444,7 @@
   add an identity provider.
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Admin",
   "Remote Authentication",
   "SAML",
@@ -453,28 +458,28 @@
   identity provider section.
 </p>
 
-{{ table(
-  headers=["Parameter", "Value"],
+{{ table::default(
+  header=["Parameter", "Value"],
   rows=[
-    ["Provider Name", "AzureAD"],
-    ["Entity ID", "&lt;Azure AD Identifier&gt;"],
-    ["SSO URL", "&lt;Azure Login URL&gt;"],
-    ["Public Certifiate", "&lt;Azure BASE 64 certificate&gt;"],
-    ["Auto-provision users", "<i class='fas fa-check-square'></i>"],
-    ["Enable this identity provider", "<i class='fas fa-check-square'></i>"],
+    "Provider Name | AzureAD",
+    "Entity ID | &lt;Azure AD Identifier&gt;",
+    "SSO URL | &lt;Azure Login URL&gt;",
+    "Public Certifiate | &lt;Azure BASE 64 certificate&gt;",
+    "Auto-provision users | <i class='fas fa-check-square'></i>",
+    "Enable this identity provider | <i class='fas fa-check-square'></i>",
   ],
 ) }}
 
-
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-1.png", 
   width="600px"
 ) }}
 
+
 <p>
   The certificate MUST be in the following format to be valid.
 </p>
-{{ code_block(
+{{ text::code_block(
   header="x509 certificate",
   language="text",
   code='-----BEGIN CERTIFICATE-----<br>
@@ -486,7 +491,7 @@
 <p>
   Details around the user privilege levels and what they allow 
   access to in the ExtraHop platform can be found in the docs 
-  {{ elink_to(
+  {{ link::e(
     path="https://docs.extrahop.com/current/users-overview/#user-privileges", 
     description="here")
   }}. How these group mappings are decided is based on the organizations 
@@ -501,19 +506,22 @@
 <h5>User Privilege Attributes</h5>
 <p>
   The following table lists the permissions mappings 
-  for the {{ emphasize("user-level") }} 
+  for the {{ text::emphasize(text="user-level") }} 
   attribute.
 </p>
-{{ table(
-  headers=["ExtraHop Privilege Level", "SAML Claim"],
+
+{{ table::default(
+  header=["ExtraHop Privilege Level", "SAML Claim"],
   rows=[
-    ["Unlimited privileges", "unlimited"],
-    ["Full write privileges", "full-write"],
-    ["Full read-only privileges", "read-only"],
+    "Unlimited privileges | unlimited",
+    "Full write privileges | full-write",
+    "Full read-only privileges | read-only",
   ],
 ) }}
 
-{{ boxed_image(
+
+
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-2.png", 
   width="600px"
 ) }}
@@ -521,18 +529,18 @@
 <h5>Packets and Session Keys</h5>
 <p>
   The following table lists the permissions mappings 
-  for the {{ emphasize("packets-level") }} 
+  for the {{ text::emphasize(text="packets-level") }} 
   attribute.
 </p>
 
-{{ table(
-  headers=["ExtraHop Privilege Level", "SAML Claim"],
+{{ table::default(
+  header=["ExtraHop Privilege Level", "SAML Claim"],
   rows=[
-    ["Packets and session keys", "unlimited"],
+    "Packets and session keys | unlimited",
   ],
 ) }}
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-3.png", 
   width="600px"
 ) }}
@@ -540,24 +548,24 @@
 <h5>Detections Access</h5>
 <p>
   The following table lists the permissions mappings 
-  for the {{ emphasize("detections-level") }} 
+  for the {{ text::emphasize(text="detections-level") }} 
   attribute.
 </p>
 
-{{ table(
-  headers=["ExtraHop Privilege Level", "SAML Claim"],
+{{ table::default(
+  header=["ExtraHop Privilege Level", "SAML Claim"],
   rows=[
-    ["All detections", "unlimited"],
+    "All detections | unlimited",
   ],
 ) }}
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-identity-provider-config-4.png", 
   width="600px"
 ) }}
 
 <p>
-  Finally, hit the {{ emphasize("Save") }} button
+  Finally, hit the {{ text::emphasize(text="Save") }} button
   to complete the configuration. 
 </p>
 <p>
@@ -566,25 +574,24 @@
 </p>
 
 <h3>Testing Access</h3>
-{{ tip_block('
-  You can use the $1 Firefox/Chrome plugin to monitor the flow of requests 
+{{ text::tip_block(text=`
+  You can use the text::emphasize(text="SAML Tracer") Firefox/Chrome plugin to monitor the flow of requests 
   to and from the IdP. I recommend you install it and open its debug window 
-  prior to loggin in.
-' | replace("$1", emphasize("SAML Tracer"))) }}
+  prior to loggin in.`) }}
 
 <p>
   To test your access, open a private browser window to your ExtraHop appliance.
   You will see an option to login with 
-  {{ emphasize("AzureAD") }}
+  {{ text::emphasize(text="AzureAD") }}
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-login.png", 
   width="400px"
 ) }}
 
 <p>
-  When you press the {{ emphasize("Log in with AzureAD") }}
+  When you press the {{ text::emphasize(text="Log in with AzureAD") }}
   button, you will be redirected to the Microsoft login portal.
   Once authenticated, you will be signed in with SSO across all you other 
   SSO enabled applications.
@@ -595,7 +602,7 @@
   SAML response are the same details we have configured throughout this post.
 </p>
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-response-1.png", 
   width="600px"
 ) }}
@@ -603,12 +610,12 @@
   The privilege assignments can also be confirmed by looking in the audit log.
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Admin",
   "Audit Log",
 ]) }}
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-login-log-1.png", 
   width="600px"
 ) }}
@@ -617,12 +624,12 @@
   Finally, confirm that the user is created in the local users configuration.
 </p>
 
-{{ breadcrumbs([
+{{ text::breadcrumbs(items=[
   "Admin",
   "Users",
 ]) }}
 
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/eh-saml-user.png", 
   width="600px"
 ) }}
@@ -638,7 +645,7 @@
   This error occurs when ALL the required claims are not 
   present in the SAML response.
 </p>
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-error-1.png", 
   width="600px"
 ) }}
@@ -652,7 +659,7 @@
   ExtraHop requires the SAML reponses to be signed. If they are 
   not, you will see the following error.
 </p>
-{{ boxed_image(
+{{ image::boxed(
   path="blog/extrahop-saml-authentication-with-azure-ad/saml-error-2.png", 
   width="600px"
 ) }}
@@ -667,4 +674,5 @@
   to use SAML authentication with Azure AD as an IdP. Please enjoy your 
   SSO experience now with 100% more ExtraHop.
 </p>
-{% endblock page_content %}
+
+{% endblock page_content %} 

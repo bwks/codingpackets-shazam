@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+
+    <div class="grid place-items-center pt-16">
+      
+  
+    
+<div class="pt-5 pb-2 px-5 text-center">
+  <h1 class="sm:pb-2 pb-1">ExtraHop Bridge Triggers</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 27th of February 2022
+      </p>
+    
+  </div>
+</div>
+
+  
+
+
+      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+        
+<h3>Intro</h3>
+<p>
+  Recently, I was working with a customer that wanted to 
+  extract the TCP SYN unanswered in/out metric captured by Extrahop 
+  for a group of web servers, and send that data to Splunk for 
+  their application team to view in a Splunk dashboard.
+</p>
+<p>
+  It was an interesting problem to solve that highlights some 
+  of the programmability that is available on-box in the ExtraHop 
+  platform.
+</p>
+<p>
+  In this post, I will show you how to access Metrics via 
+  Bridge based Triggers within the ExtraHop platform and 
+  send that data to Splunk. 
+</p>
+
+<h3>What Are Bridge Triggers Anyway?</h3>
+<p>
+  To understand Bridge Triggers, first lets find out 
+  what a
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.extrahop.com/current/triggers-overview/" target=_blank>Trigger</a> is.
+</p>
+
+<p>
+  ExtraHop exposes the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">trigger</i>
+  API that allows you to write on-box Javascript code to access, 
+  store, and visualise wire data events and metrics that are 
+  specific to your business requirements.
+</p>
+
+
+<p>
+  This data can be stored as custom metrics, used to build 
+  dashboards, and sent to external systems (such as Splunk) via 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.extrahop.com/current/open-data-streams/" target=_blank>Open Data Stream (ODS)</a>. 
+    It's really powerful stuff.
+</p>
+
+ 
+<p>
+  The main difference between a standard Trigger and a 
+  Bridge Trigger is that:
+</p>
+  <ul>
+    <li>
+      <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Triggers</i> execute on 
+      <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">events</i> during the 
+      <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">wire data capture</i>.
+    </li>
+    <li>
+      <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Bridge Triggers</i> execute 
+      when a <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Metric</i> is computed 
+      and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">commited to the datastore</i>.
+    </li>
+  </ul> 
+
+
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Bridge Triggers</i> are also known as <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Datastore Triggers</i>.
+</div>
+    </div>
+  </div>
+
+
+
+<h3>Metric Catalog</h3>
+<p>
+  To find the details of the Metric we are interested in
+  we can search for it in the Metric Catalog. In my case I am looking 
+  for <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">TCP - Unanswered SYNs In/Out</i>.
+  Lets browse to:
+</p>
+
+
+<div class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-800 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">System Settings (<i class="fas fa-cog"></i>)</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Metrics & Records</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Metric Catalog</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+
+
+
+<p>
+  Now search for <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">unanswered</i> in the 
+  search box and select the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">TCP - Unanswered SYNs In</i> Metric.
+</p>
+
+
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-bridge-triggers/metric-search.png" alt="blog/extrahop-bridge-triggers/metric-search.png">
+</div>
+
+
+<p> 
+  In the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Edit Metric</i> panel on the right, under 
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">REST API Parameters</i>, we can see the details 
+  we need to look for in the Trigger.
+</p>
+
+
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-bridge-triggers/metric-details.png" alt="blog/extrahop-bridge-triggers/metric-details.png">
+</div>
+
+
+<p>
+  This tells me that I can find 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">syn_unanswered_in</i> in the  
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">object_type</i> of 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">device</i> in the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">metric_category</i> of 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">tcp</i>. Take note of this info,
+  we will need it in a future step. 
+</p>
+<p>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">syn_unanswered_out</i> also 
+  lives in the same <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">object_type</i>
+  / <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">metric_category</i>.
+</p>
+
+
+<h3>Bridge Trigger</h3>
+<p>
+  Now that we have the Metric information we need, lets create a 
+  Trigger. Browse to:
+</p>
+
+
+<div class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-800 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">System Settings (<i class="fas fa-cog"></i>)</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Triggers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Create</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+
+
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Events</i> type is 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">METRIC_RECORD_COMMIT</i>. Under 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Show Advanced Options</i>, you will see 
+  that the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Metric types</i> are of 
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Datastore</i> type.
+</p>
+<p>
+  Enter <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">extrahop.device.tcp</i> 
+  as the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Metric Type</i> which 
+  maps to the information we gathered earlier from the Metric 
+  Catalog. Also, set the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Metric cycle</i> to
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">30sec</i>. The 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Metric cycle</i> defines the time 
+  period in which the Metrics SUM is calculated and written to 
+  the datastore.
+</p>
+
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-bridge-triggers/bridge-trigger-create.png" alt="blog/extrahop-bridge-triggers/bridge-trigger-create.png">
+</div>
+
+
+<h3>Trigger Code</h3>
+<p>
+  Now for the fun part. Trigger are written in 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">Javascript</i> and have 
+  access to the exposed Trigger API. 
+</p>
+<p>
+  I only want to collect the metrics for a subset of devices 
+  and send them off to Splunk. Bridge triggers cannot be 
+  assigned to a device group so, I will create an array; 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">devicesOfInterest</i>
+  to hold the ID's of the devices I am interested in.
+</p>
+
+<p>
+  The device ID can be found under:
+</p>
+
+
+<div class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-800 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Assets</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Active Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">&lt;device-name&gt;</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Edit Properties</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">API Properties</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Discovery ID</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+
+
+
+<p>
+  We want to capture the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">syn_unanswered_in/out</i> 
+  fields which are stored on the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">MetricRecord.fields</i> 
+  property. We know these are the fields we are looking for 
+  because we found that information in the Metric Catalog 
+  from a previous step.
+</p>
+
+<p>
+  The Trigger code below captures the data we are looking for 
+  and sends it off to Splunk. Follow along with the code comments 
+  for details.
+</p>
+
+<div class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800">
+      <span class="">javascript</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-javascript hljs px-5 dark:opacity-80 rounded-b">// Array of devices to capture metrics for.
+let devicesOfInterest = [
+    "aabbcc1122330000", // Test server
+    // ... The rest of the servers in the group
+]
+// MetricRecord.object.id is the ID that ExtraHop uses for a discovered device.
+// Continue if "MetricRecord.object.id" is in our "devicesOfInterest" array.
+if (devicesOfInterest.includes(MetricRecord.object.id)) {
+    
+    // Build a record that Splunk can parse that contains:
+    //  - The server IP.
+    //  - The total tcp_syn_unanswered_in/out events per time interval.
+    let splunk_log = `\
+extrahop_event=tcp_syn_unanswered \
+server_ip=${MetricRecord.object.ipaddrs[0]} \
+tcp_syn_unanswered_in=${MetricRecord.fields["syn_unanswered_in"]} \
+tcp_syn_unanswered_out=${MetricRecord.fields["syn_unanswered_out"]}`
+    // Send log message to Splunk with a log level of "info".
+    Remote.Syslog("ods_splunk_target").info(splunk_log);
+}</code></pre>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <div class="pt-2 pb-4">
+    <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+      <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+      <div class="px-4 pb-4 dark:text-zinc-900">
+    A <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">debug()</i> statement can be used to get an array of all 
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">fields</i> that are available for a <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">MetricRecord</i> EG: <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-green-400 dark:text-green-700">debug(Object.keys(MetricRecord.fields))</i>
+</div>
+    </div>
+  </div>
+
+
+<p>
+  And there you have it! In a few lines of code, 
+  we managed to capture the number of 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-neutral-100 dark:text-neutral-400">TCP SYN Unanswerd In/Outbound</i> 
+  events for a group of hosts in a 30 second window, 
+  and send it off to Splunk via ODS as a Syslog formatted message.
+</p>
+
+<p>
+  To round this post out, feast your eyes on the Splunk log 
+  which contains the details sent from the ExtraHop Trigger and becomes 
+  indexed and searchable in Splunk which can also be used in dashboards.
+</p>
+
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/extrahop-bridge-triggers/splunk-log.png" alt="blog/extrahop-bridge-triggers/splunk-log.png">
+</div>
+
+
+
+<h3>Outro</h3>
+<p>
+  In this post, I showed you how to utilise ExtraHop Bridge 
+  (Datastore) Triggers to capture Metric data and send the data 
+  off to Splunk as a syslog message via ODS.
+</p>
+
+      </div>
+
+      
+  
+    
+
+  <div class="py-3">
+    
+      <div class="inline-block pr-1.5">
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">extrahop</div>
+      </div>
+    
+      <div class="inline-block pr-1.5">
+        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">splunk</div>
+      </div>
+    
+  </div>
+
+
+  
+
+
+      
+        <div class="">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+      
+    </div>
+
+    <div id="back-to-top"
+     class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+
+  </body>
+
+  <footer class="fixed inset-x-0 bottom-0">
+  <nav class="w-full py-3 bg-zinc-900 shadow-lg">
+    <div class="flex justify-center py-1">
+      <div class="text-center ">
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+      </div>
+    </div>
+  </nav>
+</footer>
+</html>

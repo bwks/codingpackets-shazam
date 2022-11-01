@@ -1,0 +1,253 @@
+{% extends "layouts/blog.jinja" %}
+{% block page_content %}
+<h3>Intro</h3>
+<p>
+  Recently, I was working with a customer that wanted to 
+  extract the TCP SYN unanswered in/out metric captured by Extrahop 
+  for a group of web servers, and send that data to Splunk for 
+  their application team to view in a Splunk dashboard.
+</p>
+<p>
+  It was an interesting problem to solve that highlights some 
+  of the programmability that is available on-box in the ExtraHop 
+  platform.
+</p>
+<p>
+  In this post, I will show you how to access Metrics via 
+  Bridge based Triggers within the ExtraHop platform and 
+  send that data to Splunk. 
+</p>
+
+<h3>What Are Bridge Triggers Anyway?</h3>
+<p>
+  To understand Bridge Triggers, first lets find out 
+  what a
+    {{ link::e(
+        path="https://docs.extrahop.com/current/triggers-overview/", 
+        description="Trigger"
+    ) }} is.
+</p>
+
+<p>
+  ExtraHop exposes the {{ text::emphasize(text="trigger") }}
+  API that allows you to write on-box Javascript code to access, 
+  store, and visualise wire data events and metrics that are 
+  specific to your business requirements.
+</p>
+
+
+<p>
+  This data can be stored as custom metrics, used to build 
+  dashboards, and sent to external systems (such as Splunk) via 
+  {{ link::e(
+        path="https://docs.extrahop.com/current/open-data-streams/", 
+        description="Open Data Stream (ODS)"
+    ) }}. 
+    It's really powerful stuff.
+</p>
+
+ 
+<p>
+  The main difference between a standard Trigger and a 
+  Bridge Trigger is that:
+</p>
+  <ul>
+    <li>
+      {{ text::emphasize(text="Triggers") }} execute on 
+      {{ text::emphasize(text="events") }} during the 
+      {{ text::emphasize(text="wire data capture") }}.
+    </li>
+    <li>
+      {{ text::emphasize(text="Bridge Triggers") }} execute 
+      when a {{ text::emphasize(text="Metric") }} is computed 
+      and {{ text::emphasize(text="commited to the datastore") }}.
+    </li>
+  </ul> 
+
+{{ text::note_block(text='
+    $1 are also known as $2.
+' | replace(from="$1", to=text::emphasize(text="Bridge Triggers"))
+  | replace(from="$2", to=text::emphasize(text="Datastore Triggers"))
+) }}
+
+
+<h3>Metric Catalog</h3>
+<p>
+  To find the details of the Metric we are interested in
+  we can search for it in the Metric Catalog. In my case I am looking 
+  for {{ text::emphasize(text="TCP - Unanswered SYNs In/Out") }}.
+  Lets browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  'System Settings (<i class="fas fa-cog"></i>)',
+  "Metrics & Records",
+  "Metric Catalog",
+]) }}
+
+
+<p>
+  Now search for {{ text::emphasize(text="unanswered") }} in the 
+  search box and select the 
+  {{ text::emphasize(text="TCP - Unanswered SYNs In") }} Metric.
+</p>
+
+{{ image::boxed(path="blog/extrahop-bridge-triggers/metric-search.png", width="600px") }}
+
+<p> 
+  In the {{ text::emphasize(text="Edit Metric") }} panel on the right, under 
+  the {{ text::emphasize(text="REST API Parameters") }}, we can see the details 
+  we need to look for in the Trigger.
+</p>
+
+{{ image::boxed(path="blog/extrahop-bridge-triggers/metric-details.png", width="600px") }}
+
+<p>
+  This tells me that I can find 
+  {{ text::emphasize(text="syn_unanswered_in") }} in the  
+  {{ text::emphasize(text="object_type") }} of 
+  {{ text::emphasize(text="device") }} in the 
+  {{ text::emphasize(text="metric_category") }} of 
+  {{ text::emphasize(text="tcp") }}. Take note of this info,
+  we will need it in a future step. 
+</p>
+<p>
+  {{ text::emphasize(text="syn_unanswered_out") }} also 
+  lives in the same {{ text::emphasize(text="object_type") }}
+  / {{ text::emphasize(text="metric_category") }}.
+</p>
+
+
+<h3>Bridge Trigger</h3>
+<p>
+  Now that we have the Metric information we need, lets create a 
+  Trigger. Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  'System Settings (<i class="fas fa-cog"></i>)',
+  "Triggers",
+  "Create",
+]) }}
+
+<p>
+  The {{ text::emphasize(text="Events") }} type is 
+  {{ text::emphasize(text="METRIC_RECORD_COMMIT") }}. Under 
+  {{ text::emphasize(text="Show Advanced Options") }}, you will see 
+  that the {{ text::emphasize(text="Metric types") }} are of 
+  the {{ text::emphasize(text="Datastore") }} type.
+</p>
+<p>
+  Enter {{ text::emphasize(text="extrahop.device.tcp") }} 
+  as the {{ text::emphasize(text="Metric Type") }} which 
+  maps to the information we gathered earlier from the Metric 
+  Catalog. Also, set the {{ text::emphasize(text="Metric cycle") }} to
+  {{ text::emphasize(text="30sec") }}. The 
+  {{ text::emphasize(text="Metric cycle") }} defines the time 
+  period in which the Metrics SUM is calculated and written to 
+  the datastore.
+</p>
+{{ image::boxed(path="blog/extrahop-bridge-triggers/bridge-trigger-create.png", width="600px") }}
+
+<h3>Trigger Code</h3>
+<p>
+  Now for the fun part. Trigger are written in 
+  {{ text::emphasize(text="Javascript") }} and have 
+  access to the exposed Trigger API. 
+</p>
+<p>
+  I only want to collect the metrics for a subset of devices 
+  and send them off to Splunk. Bridge triggers cannot be 
+  assigned to a device group so, I will create an array; 
+  {{ text::emphasize(text="devicesOfInterest") }}
+  to hold the ID's of the devices I am interested in.
+</p>
+
+<p>
+  The device ID can be found under:
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Assets",
+    "Devices",
+    "Active Devices",
+    "&lt;device-name&gt;",
+    "Edit Properties",
+    "API Properties",
+    "Discovery ID",
+]) }}
+
+
+<p>
+  We want to capture the 
+  {{ text::emphasize(text="syn_unanswered_in/out") }} 
+  fields which are stored on the 
+  {{ text::emphasize(text="MetricRecord.fields") }} 
+  property. We know these are the fields we are looking for 
+  because we found that information in the Metric Catalog 
+  from a previous step.
+</p>
+
+<p>
+  The Trigger code below captures the data we are looking for 
+  and sends it off to Splunk. Follow along with the code comments 
+  for details.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Array of devices to capture metrics for.
+let devicesOfInterest = [
+    "aabbcc1122330000", // Test server
+    // ... The rest of the servers in the group
+]
+// MetricRecord.object.id is the ID that ExtraHop uses for a discovered device.
+// Continue if "MetricRecord.object.id" is in our "devicesOfInterest" array.
+if (devicesOfInterest.includes(MetricRecord.object.id)) {
+    
+    // Build a record that Splunk can parse that contains:
+    //  - The server IP.
+    //  - The total tcp_syn_unanswered_in/out events per time interval.
+    let splunk_log = `\
+extrahop_event=tcp_syn_unanswered \
+server_ip=${MetricRecord.object.ipaddrs[0]} \
+tcp_syn_unanswered_in=${MetricRecord.fields["syn_unanswered_in"]} \
+tcp_syn_unanswered_out=${MetricRecord.fields["syn_unanswered_out"]}`
+    // Send log message to Splunk with a log level of "info".
+    Remote.Syslog("ods_splunk_target").info(splunk_log);
+}'
+) }}
+
+
+{{ text::note_block(text='
+    A $1 statement can be used to get an array of all 
+    $2 that are available for a $3 EG: $4
+' | replace(from="$1", to=text::emphasize(text="debug()"))
+  | replace(from="$2", to=text::emphasize(text="fields"))
+  | replace(from="$3", to=text::emphasize(text="MetricRecord"))
+  | replace(from="$4", to=text::code(text="debug(Object.keys(MetricRecord.fields))"))
+) }}
+
+<p>
+  And there you have it! In a few lines of code, 
+  we managed to capture the number of 
+  {{ text::emphasize(text="TCP SYN Unanswerd In/Outbound") }} 
+  events for a group of hosts in a 30 second window, 
+  and send it off to Splunk via ODS as a Syslog formatted message.
+</p>
+
+<p>
+  To round this post out, feast your eyes on the Splunk log 
+  which contains the details sent from the ExtraHop Trigger and becomes 
+  indexed and searchable in Splunk which can also be used in dashboards.
+</p>
+{{ image::boxed(path="blog/extrahop-bridge-triggers/splunk-log.png", width="600px") }}
+
+
+<h3>Outro</h3>
+<p>
+  In this post, I showed you how to utilise ExtraHop Bridge 
+  (Datastore) Triggers to capture Metric data and send the data 
+  off to Splunk as a syslog message via ODS.
+</p>
+{% endblock page_content %}

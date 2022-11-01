@@ -1,28 +1,28 @@
-{% macro table(headers=[], rows=[]) %}
-{# rows is a list of lists [[]] #}
+{% macro default(header, rows) %}
 <div class="pt-2 pb-4 text-xl">
-  <div class="rounded-lg shadow-md shadow-zinc-400 border-4 border-zinc-900 dark:shadow-none overflow-auto">
-    <table class="table-auto w-full">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
-        {% for header in headers %}
-          <th class="pt-1 pb-2 px-2">{{ header }}</th>
+        {% for column in header %}
+          <th class="pt-1 pb-2 px-2">{{ column }}</th>
         {% endfor %}
         </tr>
       </thead>
       {% for row in rows %}
+        {% set columns = row | split(pat="|") %}
         {% if loop.last %}
           <tr class="">
         {% else %}
           <tr class="border-b-2 border-zinc-900">
         {% endif %}
-          {% for i in row %}
+          {% for column in columns %}
             {% if loop.first %}
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">{{ i }}</td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">{{ column }}</td>
             {% elif loop.last %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900">{{ i }}</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900">{{ column }}</td>
             {% else %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900">{{ i }}</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900">{{ column }}</td>
             {% endif %}
           {% endfor %}
         </tr>
@@ -31,4 +31,3 @@
   </div>
 </div>
 {% endmacro %}
-{% set alias = table %}

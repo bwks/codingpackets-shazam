@@ -8,5 +8,5 @@ https://stackoverflow.com/questions/28076954/regex-to-find-replace-beginning-and
 
 Replace
 ```
-{{ emphasize("$1") }}
+{{ text::emphasize(text="$1") }}
 ```
