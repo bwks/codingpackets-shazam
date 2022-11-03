@@ -1,0 +1,41 @@
+{% extends "layouts/site.jinja" %}
+
+{% block page_header %}
+  {% if post %}
+    {{ text::header(heading=post.title, published_date="", updated_date="") }}
+  {% endif %}
+{% endblock page_header %}
+
+{% block page_content %}
+  <div class="">
+    {% for year in posts.years | reverse %}
+      {% for post_year, posts in posts.by_year %}
+        {% if post_year == year %}
+          <div class="pb-4">
+            <div class="">
+              <h3 class="pt-0 pb-1">{{ year }} - {{ posts.by_year[year] | length }} {% if posts.by_year[year] | length < 2 %}Post{% else %}Posts{% endif %}</h3>
+            </div>
+            {% for post in posts %}
+              <div class="">
+                <div class="">
+                  <div class="">
+                    <div class="font-medium text-xl">
+                      {{ post.published_date }} &nbsp; 
+                      <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}      
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endblock page_content %}
+
+{% block page_tags %}
+  {% if post %}
+    {{ text::tag_block(tags=post.tags) }}
+  {% endif %}
+{% endblock page_tags %}

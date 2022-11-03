@@ -10,13 +10,13 @@
 
 {% block page_content %}
   <div class="">
-    {% for key, value in posts.by_category %}
-      {% if key %}
+    {% for category, posts in posts.by_category %}
+      {% if category and category != "none" %}
         <div class="pb-4">
           <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
-            <h3 class="pt-0 pb-1 text-2xl font-normal text-neutral-100 dark:text-neutral-400">{{ key | replace(from="_", to="-") | title_case }}</h3>
+            <h3 class="pt-0 pb-1 text-2xl font-normal text-neutral-100 dark:text-neutral-400">{{ category | replace(from="_", to="-") | lower }}</h3>
           </div>
-          {% for post in value %}
+          {% for post in posts %}
             {% if post.publish %}
               <div>
                 <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-zinc-900 {% if not loop.last %}border-b-0 rounded-b-none{% endif %}">
