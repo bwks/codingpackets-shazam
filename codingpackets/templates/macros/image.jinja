@@ -1,7 +1,9 @@
 {% macro boxed(path, width="", height="") %}
+<!-- IMAGE START -->
 <div class="pt-4 pb-6 flex justify-center">
   <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
     {% if width %}width="{{ width }}"{% endif %} {% if height %}height="{{ height }}"{% endif %}
     src="/img/{{ path }}" alt="{{ path }}">
 </div>
+<!-- IMAGE END -->
 {% endmacro %}

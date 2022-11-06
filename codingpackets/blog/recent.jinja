@@ -25,11 +25,17 @@
   <div class="pb-2">
     <p>
       Looking for more? Browse posts by 
-      {{ link::i(path="/blog/", description="category") }}
+      {{ link::i(path="/blog/", description="category") }},
+      {{ link::i(path="/blog/tag/", description="tag") }}
       or search the blog
       {{ link::i(path="/blog/archive/", description="archives") }}.
     </p>
   </div>
 {% endblock page_content %}
+
+{% block blank_page %}
+  {{ spacer::blank_page() }}
+{% endblock blank_page %}
+
 {% block page_toc %}
 {% endblock page_toc %}

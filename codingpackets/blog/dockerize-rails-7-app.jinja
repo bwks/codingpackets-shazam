@@ -1,7 +1,7 @@
 {% extends "layouts/blog.jinja" %}
 
 {% block page_content %}
-<h3>Intro</h3>
+<h3 id="intro">Intro</h3>
 <p>
   In this post, I will show you how to Dockerize your Rails 7 app in 
   a development environment. We will be using Tailwind for the CSS and 
@@ -9,7 +9,7 @@
   file changes between the host and container which is super nice.
 </p>
 
-<h3>Software used in this post</h3>
+<h3 id="software-used-in-this-post">Software used in this post</h3>
 
 <ul>
   <li>Docker - 20.10.18, build b40c2f6</li>
@@ -18,14 +18,14 @@
   <li>PostgreSQL - 14.1</li>
 </ul>
 
-<h3>Code Repository</h3>
+<h3 id="code-repository">Code Repository</h3>
 <p>
   The code for this blog can be found on Github 
   {{ link::e(path="https://github.com/bwks/docker-rails", description="here") }}.
 </p>
 
 
-<h3>Environment Variables</h3>
+<h3 id="environment-variables">Environment Variables</h3>
 <p>
   Before we begin, add some environment variables to your 
   {{ text::emphasize(text="rc") }} file. This 
@@ -41,7 +41,7 @@ export GID=$(id -g)'
 ) }}
 
 
-<h3>Dockerfiles</h3>
+<h3 id="dockerfiles">Dockerfiles</h3>
 <p>
   Create the following {{ text::emphasize(text="Dockerfile") }}
   which is used to create our application container images.
@@ -220,7 +220,7 @@ PGS_PASS=$USER
 RAILS_ENV=development'
 ) }}
 
-<h3>Configuration Files</h3>
+<h3 id="configuration-files">Configuration Files</h3>
 <p>
   To get our Rails environment working well with Docker, we need 
   to alter some of the configuration files. The alterations are 
@@ -327,7 +327,7 @@ end`
 # ... rest of file`
 ) }}
 
-<h3>Build Containers</h3>
+<h3 id="build-containers">Build Containers</h3>
 <p>
   Build the {{ text::emphasize(text="rails-base") }} 
   container image.
@@ -346,7 +346,7 @@ end`
     --build-arg APP_USER=$USER`
 ) }}
 
-<h3>Generate Rails App</h3>
+<h3 id="generate-rails-app">Generate Rails App</h3>
 <p>
   Generate a new Rails app using the {{ text::emphasize(text="rails-base") }} 
   container image.
@@ -366,7 +366,7 @@ end`
   directory.
 </p>
 
-<h3>Run Containers</h3>
+<h3 id="run-containers">Run Containers</h3>
 <p>
   Bring up the application containers.
 </p>
@@ -403,7 +403,7 @@ end`
   bin/rails generate scaffold device name:string`
 ) }}
 
-<h3>Outro</h3>
+<h3 id="outro">Outro</h3>
 <p>
   In this post I showed you how to configure a Docker environment 
   for Ruby on Rails application development. It's a bit of a process 
@@ -412,6 +412,3 @@ end`
 </p>
 
 {% endblock page_content %}
-
-{% block page_toc %}
-{% endblock page_toc %}

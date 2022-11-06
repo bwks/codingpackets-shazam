@@ -1,6 +1,7 @@
 {% import "macros/link.jinja" as link %}
 {% import "macros/text.jinja" as text %}
 {% import "macros/image.jinja" as image %}
+{% import "macros/spacer.jinja" as spacer %}
 {% import "macros/table.jinja" as table %}
 
 <!DOCTYPE html>
@@ -75,7 +76,7 @@
           {% endblock page_tags %}
 
           {% block blank_page %}
-            {% include "includes/blank-page.jinja" %}
+            {{ spacer::blank_page() }}
           {% endblock blank_page %}
         </div>
         <!-- COLUMN 2 END -->

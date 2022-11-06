@@ -39,15 +39,19 @@
 {% endblock page_content %}
 
 {% block page_tags %}
-  {% if post %}
+  {% if post and post.tags | length > 0 %}
     {{ text::tag_block(tags=post.tags, center=true) }}
   {% endif %}
 {% endblock page_tags %}
 
+{% block blank_page %}
+  {{ spacer::blank_page(end=35) }}
+{% endblock blank_page %}
+
 {% block page_toc %}
-  {% if post %}
+  {% if post and post.table_of_contents | length > 0 %}
     {{ table::toc(header="On this page", rows=post.table_of_contents) }}
-  {% elif posts %}
+  {% elif not post and posts %}
     {{ table::toc(header="Categories", rows=posts.categories, slug=true) }}
   {% endif %}
 {% endblock page_toc %}
