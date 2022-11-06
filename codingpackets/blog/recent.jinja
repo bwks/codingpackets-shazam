@@ -1,23 +1,25 @@
 {% extends "layouts/blog.jinja" %}
 {% block page_content %}
   <div class="">
-    {% for post in posts.all | slice(start=0, end=10) %}
-      <div class="pb-2">
-        <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-zinc-900">
-          <div class="">
-            <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
-            <p class="font-medium text-xl">
-              {{ post.description }}
-            </p>
-          </div>
-
-          {% include "includes/dates.jinja" %}
-
-          <div class="">
-            {{ text::tag_block(tags=post.tags) }}
+    {% set_global count = 0 %}
+    {% for post in posts.all %}
+      {% if post.publish and count < 10 %}
+        <div class="pb-2">
+          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-zinc-900">
+            <div class="">
+              <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
+              <p class="font-medium text-xl">
+                {{ post.description }}
+              </p>
+            </div>
+            {% include "includes/dates.jinja" %}
+            <div class="">
+              {{ text::tag_block(tags=post.tags) }}
+            </div>
           </div>
         </div>
-      </div>
+        {% set_global count = count + 1 %}
+      {% endif %}
     {% endfor %}      
   </div>
   <div class="pb-2">
@@ -29,3 +31,5 @@
     </p>
   </div>
 {% endblock page_content %}
+{% block page_toc %}
+{% endblock page_toc %}

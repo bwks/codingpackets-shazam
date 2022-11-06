@@ -4,7 +4,7 @@
 {% import "macros/table.jinja" as table %}
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark scroll-smooth scroll-pt-20">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,26 +51,41 @@
 
     {% include "includes/navbar.jinja" %}
 
-    <div class="grid place-items-center pt-16">
-      {% block page_header %}
-        {{ text::header(heading=project) }}
-      {% endblock page_header %}
+    {% block page_header %}
+      {{ text::header(heading=project) }}
+    {% endblock page_header %}
 
-      <div class="w-3/5 min-w-full md:min-w-0 px-10 z-0 leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
-        {% block page_content %}
-        {% endblock page_content %}
+    <div class="grid grid-cols-12 gap-8 px-5">
+      {# column 1 #}
+      <div class="md:visible md:col-span-3">
       </div>
 
-      {% block page_tags %}
-      {% endblock page_tags %}
+      {# column 2 #}
+      <div class="col-span-12 md:col-span-6">
+        <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          {% block page_content %}
+          {% endblock page_content %}
+        </div>
 
-      {% block blank_page %}
-        {% include "includes/blank-page.jinja" %}
-      {% endblock blank_page %}
+        {% block page_tags %}
+        {% endblock page_tags %}
+
+        {% block blank_page %}
+          {% include "includes/blank-page.jinja" %}
+        {% endblock blank_page %}
+      </div>
+
+      {# column 3 #}
+      <div class="md:visible md:col-span-3">
+        {% block page_toc %}
+        {% endblock page_toc %}
+      <div>
+
     </div>
 
-    {% include "includes/back-to-top.jinja" %}
 
+    {% include "includes/back-to-top.jinja" %}
+  
   </body>
 
   {% include "includes/footer.jinja" %}

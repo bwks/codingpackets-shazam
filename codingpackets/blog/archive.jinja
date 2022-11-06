@@ -6,27 +6,33 @@
   {% endif %}
 {% endblock page_header %}
 
+
 {% block page_content %}
   <div class="">
-    {% for year in posts.years | reverse %}
+    {% for year in posts.years | sort | reverse %}
+      
       {% for post_year, posts in posts.by_year %}
-        {% if post_year == year %}
+        
+        {% set_global published_posts = [] %}
+        {% for post in posts %}
+          {% if post.publish and post_year | int == year %}
+            {% set_global published_posts = published_posts | concat(with=post) %}
+          {% endif %}
+        {% endfor %}
+
+        {% if post_year | int == year and year != 0 %}
           <div class="pb-4">
-            <div class="">
-              <h3 class="pt-0 pb-1">{{ year }} - {{ posts.by_year[year] | length }} {% if posts.by_year[year] | length < 2 %}Post{% else %}Posts{% endif %}</h3>
+            <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
+              <h3 class="pt-0 pb-1 text-2xl font-normal text-neutral-100 dark:text-neutral-400">{{ year }} - {{ published_posts | length }} {% if published_posts | length < 2 %}Post{% else %}Posts{% endif %}</h3>
             </div>
-            {% for post in posts %}
-              <div class="">
-                <div class="">
-                  <div class="">
-                    <div class="font-medium text-xl">
-                      {{ post.published_date }} &nbsp; 
-                      <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
-                    </div>
-                  </div>
+            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-zinc-900">
+              {% for post in published_posts %}
+                <div class="font-medium text-xl">
+                  {{ post.published_date }} &nbsp; 
+                  <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
                 </div>
-              </div>
-            {% endfor %}      
+              {% endfor %}   
+            </div>
           </div>
         {% endif %}
       {% endfor %}
@@ -39,3 +45,6 @@
     {{ text::tag_block(tags=post.tags) }}
   {% endif %}
 {% endblock page_tags %}
+
+{% block page_toc %}
+{% endblock page_toc %}
