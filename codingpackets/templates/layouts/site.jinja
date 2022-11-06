@@ -51,42 +51,50 @@
 
     {% include "includes/navbar.jinja" %}
 
-    {% block page_header %}
-      {{ text::header(heading=project) }}
-    {% endblock page_header %}
+    <div class="w-full">
+      {% block page_header %}
+        {{ text::header(heading=project) }}
+      {% endblock page_header %}
 
-    <div class="grid grid-cols-12 gap-8 px-5">
-      {# column 1 #}
-      <div class="md:visible md:col-span-3">
-      </div>
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
 
-      {# column 2 #}
-      <div class="col-span-12 md:col-span-6">
-        <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
-          {% block page_content %}
-          {% endblock page_content %}
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
         </div>
+        <!-- COLUMN 1 END -->
 
-        {% block page_tags %}
-        {% endblock page_tags %}
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            {% block page_content %}
+            {% endblock page_content %}
+          </div>
 
-        {% block blank_page %}
-          {% include "includes/blank-page.jinja" %}
-        {% endblock blank_page %}
+          {% block page_tags %}
+          {% endblock page_tags %}
+
+          {% block blank_page %}
+            {% include "includes/blank-page.jinja" %}
+          {% endblock blank_page %}
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          {% block page_toc %}
+          {% endblock page_toc %}
+        </div>
+        <!-- COLUMN 3 END -->
+
       </div>
+      <!-- CONTENT END -->
 
-      {# column 3 #}
-      <div class="md:visible md:col-span-3">
-        {% block page_toc %}
-        {% endblock page_toc %}
-      <div>
-
+      {% include "includes/back-to-top.jinja" %}
     </div>
-
-
-    {% include "includes/back-to-top.jinja" %}
   
+    {% include "includes/footer.jinja" %}
+
   </body>
 
-  {% include "includes/footer.jinja" %}
 </html>

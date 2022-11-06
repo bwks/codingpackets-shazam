@@ -44,7 +44,8 @@
 
   <body class="bg-stone-50 dark:bg-black">
 
-    <nav class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -72,11 +73,14 @@
     </div>
   </div>  
 </nav>
+<!-- NAVBAR END -->
 
-    
+    <div class="w-full">
+      
   
     
-<div class="pt-20 -mb-4 pb-0 sm:pb-4 sm:mb-0 px-5 text-center">
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
   <h1 class="pb-1 sm:pb-2">Dockerize Rails 7 App</h1>
   <div class="">
     
@@ -87,19 +91,23 @@
     
   </div>
 </div>
+<!-- PAGE HEADER END -->
 
   
 
 
-    <div class="grid grid-cols-12 gap-8 px-5">
-      
-      <div class="md:visible md:col-span-3">
-      </div>
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
 
-      
-      <div class="col-span-12 md:col-span-6">
-        <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
-          
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
 <h3>Intro</h3>
 <p>
   In this post, I will show you how to Dockerize your Rails 7 app in 
@@ -133,7 +141,8 @@
 </p>
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">~/.zshrc</span>
@@ -144,6 +153,7 @@ export GID=$(id -g)</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 
@@ -155,7 +165,8 @@ export GID=$(id -g)</code></pre>
 
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">Dockerfile.rails</span>
@@ -256,6 +267,7 @@ CMD ["bin/dev"]</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 
@@ -266,7 +278,8 @@ CMD ["bin/dev"]</code></pre>
 
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">docker-compose.yaml</span>
@@ -302,6 +315,7 @@ services:
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 
@@ -311,7 +325,8 @@ services:
 </p>
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">docker-compose-dev.yaml</span>
@@ -327,6 +342,7 @@ services:
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
@@ -335,7 +351,8 @@ services:
 </p>
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">.env.dev</span>
@@ -352,6 +369,7 @@ RAILS_ENV=development</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <h3>Configuration Files</h3>
@@ -374,7 +392,8 @@ RAILS_ENV=development</code></pre>
   added which is used to run the Procfile.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">Gemfile</span>
@@ -386,6 +405,7 @@ gem "foreman", "~> 0.87.2"
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
@@ -394,7 +414,8 @@ gem "foreman", "~> 0.87.2"
 </p>
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">config/database.yml</span>
@@ -424,6 +445,7 @@ production:
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 
@@ -432,7 +454,8 @@ production:
   is altered to allow access to IPv4/6 address and any hostname for development mode. 
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">config/application-development.rb</span>
@@ -451,6 +474,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
@@ -463,7 +487,8 @@ end</code></pre>
 
 
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">bin/dev</span>
@@ -474,6 +499,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
@@ -483,7 +509,8 @@ end</code></pre>
   <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">localhost</i>.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">Procfile.dev</span>
@@ -494,6 +521,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <h3>Build Containers</h3>
@@ -502,7 +530,8 @@ end</code></pre>
   container image.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
@@ -520,6 +549,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <h3>Generate Rails App</h3>
@@ -528,7 +558,8 @@ end</code></pre>
   container image.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
@@ -542,6 +573,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
@@ -554,7 +586,8 @@ end</code></pre>
   Bring up the application containers.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
@@ -568,13 +601,15 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>
   Bring down the application containers.
 </p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
@@ -588,11 +623,13 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <p>Run a generator.</p>
 
-<div class="pt-2 pb-4">
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
@@ -605,6 +642,7 @@ end</code></pre>
     </div>
   </div>
 </div>
+<!-- CODE BLOCK END -->
 
 
 <h3>Outro</h3>
@@ -616,30 +654,33 @@ end</code></pre>
 </p>
 
 
-        </div>
+          </div>
 
-        
+          
   
     
 
-  <div class="py-3">
+<!-- TAGS START -->
+  <div id="tags" class="py-3 text-center">
     
       <div class="inline-block pr-1.5">
-        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">rails</div>
+        <i class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">rails</i>
       </div>
     
       <div class="inline-block pr-1.5">
-        <div class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">docker</div>
+        <i class="px-2.5 py-1 bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-100 text-base font-semibold italic leading-tight lowercase rounded shadow-md">docker</i>
       </div>
     
   </div>
+<!-- TAGS END -->
 
 
   
 
 
-        
-          <div class="">
+          
+            <!-- BLANK PAGE START -->
+<div id="blank-page">
   
     <br>
   
@@ -652,37 +693,43 @@ end</code></pre>
     <br>
   
 </div>
-        
+<!-- BLANK PAGE END -->
+          
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+
+        </div>
+        <!-- COLUMN 3 END -->
+
       </div>
+      <!-- CONTENT END -->
 
-      
-      <div class="md:visible md:col-span-3">
-        
-
-      <div>
-
-    </div>
-
-
-    <div id="back-to-top"
-     class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
 </div>
+<!-- BACK TO TOP END -->
+    </div>
   
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
   </body>
 
-  <footer class="fixed inset-x-0 bottom-0">
-  <nav class="w-full py-3 bg-zinc-900 shadow-lg">
-    <div class="flex justify-center py-1">
-      <div class="text-center ">
-        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
-        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
-        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
-        <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
-      </div>
-    </div>
-  </nav>
-</footer>
 </html>

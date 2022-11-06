@@ -1,5 +1,6 @@
 {% macro default(header, rows) %}
-<div class="pt-2 pb-4 text-xl">
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
   <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
     <table class="border-4 border-zinc-900 table-auto w-full">
       <thead class="text-center">
@@ -30,13 +31,15 @@
     </table>
   </div>
 </div>
+<!-- TABLE DEFAULT END -->
 {% endmacro %}
 
 
 {% macro toc(header, rows, slug=false) %}
-<div class="collapse md:visible sticky top-20 overflow-y-auto">
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-400">{{ header }}</i>
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">{{ header }}</i>
   </div>
   {% for row in rows %}
     {% if row != "none" %}
@@ -48,5 +51,6 @@
     {% endif %}
   {% endfor %}
 </div>
+<!-- TABLE OF CONTENTS END -->
 {% endmacro %}
 
