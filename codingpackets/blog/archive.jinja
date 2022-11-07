@@ -1,9 +1,7 @@
 {% extends "layouts/blog.jinja" %}
 
 {% block page_header %}
-  {% if post %}
-    {{ text::header(heading=post.title, published_date="", updated_date="") }}
-  {% endif %}
+  {{ text::header(heading="Blog Archives", published_date="", updated_date="") }}
 {% endblock page_header %}
 
 {% block page_content %}

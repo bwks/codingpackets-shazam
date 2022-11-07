@@ -84,12 +84,12 @@
     
 <!-- PAGE HEADER START -->
 <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Remove Whitespace From Rendered Templates in 11ty</h1>
+  <h1 class="pb-1 sm:pb-2">Coding Packets the 11ty Edition</h1>
   <div class="">
     
     
       <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 23rd of July 2020
+        published: 22nd of April 2020
       </p>
     
   </div>
@@ -113,139 +113,131 @@
             
 <h3 id="intro">Intro</h3>
 <p>
-  The default behavour of 11ty is to just remove the template tags 
-  from rendered templates and leave behind white space in its place. 
-  This is probably mostly fine but for me it was causing large amounts 
-  of white space in my rendered templates and needless changes in git diffs.
+  Last year I migrated
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/">codingpackets.com</a>
+  to a rails stack hosted on a digital ocean droplet. You can read about that
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/coding-packets-the-rails-edition">here</a>
+  I really love rails and was completely happy with that choice however, I am tired 
+  of managing infrastructure for what is essentially a static site. Therefore I 
+  decided to move to building
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/">codingpackets.com</a>
+  with a static site generator and hosting it on AWS.
 </p>
+
+<h3 id="11ty">11ty</h3>
 <p>
-  11ty uses Nunjucks as its default templating engine. 11ty is 
-  inspired by Jinja2 from Python land and with Jinja2 you can create 
-  a custom environment that allows you to edit the behavour of how 
-  template tags are removed from rendered templates.
-</p>
-<p>
-  Luckily Nunjucks has a very simlilar concept and in this post I will 
-  show you how to create a custom Nunjucks environment to remove white space 
-  created by template tags.
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.11ty.dev/" target=_blank>11ty</a>
+  is a relatively new static site generator.
+  I love ruby and initially was going to use
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://jekyllrb.com/" target=_blank>jekyll</a>
+  but at the moment I am digging into node so went with 11ty instead. The following sage
+  quote rings true once again.
 </p>
 
 
-<!-- NOTE BLOCK START -->
-<div id="note-block" class="pt-2 pb-4">
-  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">
-    11ty version 0.10.0 was used to write this post.
-</div>
+<!-- QUOTE BLOCK START -->
+<div id="quote-block" class="pt-2 pb-4 text-center">
+  <div>
+    <q class="italic">The only way to learn a new programming 
+language is by writing programs in it.</q>
+  </div>
+  <div>
+    <p> - Dennis Ritchie</p>
   </div>
 </div>
-<!-- NOTE BLOCK END -->
+<!-- QUOTE BLOCK END -->
+ 
 
-
-
-<h3 id="edit-11ty-config">Edit 11ty Config</h3>
 <p>
-  Firstly edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.eleventy.js</i> config file.
-  See the inline comments in the snippet below for more details.
+  11ty is a real pleasure to work with. Things feel natural and are where you think they
+  would be. Even though im a node noob, I found it relatively straight forward to feel
+  productive and not spend hours and hours reading through docs to get things done.
 </p>
 
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono">
-      <pre><code class="language-javascript hljs px-5 dark:opacity-80 rounded-b"># .eleventy.js
-
-// Import Nunjucks   
-const Nunjucks = require("nunjucks");
-
-module.exports = function(eleventyConfig) {
-
-  // Create a Nunjucks environment.
-  const nunjucksEnvironment = new Nunjucks.Environment(
-
-    // Specify the directories where your templates reside.
-    new Nunjucks.FileSystemLoader(["./", "_includes", "_layouts"]),
-
-    // Apply rendering options
-    { 
-      lstripBlocks: true,
-      trimBlocks: true,
-    }
-  );
-
-  // other
-  // eleventyConfig
-  // configs
-
-  // Apply Nunjuks environment config
-  eleventyConfig.setLibrary("njk", nunjucksEnvironment);
-
-  return {
-    dir: {
-      // These values are both relative to your input directory.
-      includes: "_includes",
-      layouts: "_layouts"
-    },
-  };
-};</code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
 <p>
-  Job done ... Not quite.
+  11ty has the option to use a variety of templating 
+  
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.11ty.dev/docs/languages/" target=_blank>languages</a>. 
+  The default being
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://mozilla.github.io/nunjucks/" target=_blank>nunjucks</a>. 
+  Nunjucks is a templating
+  engine built for javascript that is inspired by
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://jinja.palletsprojects.com" target=_blank>jinja</a>. 
+  so it was a very smooth transition with not a lot to learn.
 </p>
 
-
-<h3 id="update-templates">Update Templates</h3>
+<h3 id="whats-inside">Whats Inside</h3>
 <p>
-  The issue I came accross once changing the Nunjucks environment is that templates 
-  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_layouts</i> directory could no longer see the
-  templates in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_includes</i> directory. In order 
-  to fix this I needed to update my templates under the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_layouts</i> directory to point to the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_includes</i> directory. (See below)
+  All the components are still the same on the site. It was a pretty straight forward
+  port, the main thing I had to change was converting the templates over from erb
+  to nunjucks. Apart from that I still used Bootstrap, Font Awesome and Highlight JS.
+</p>
+<h4>Bootstrap</h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://getbootstrap.com/" target=_blank>Bootstrap</a>
+  (version 4.4.1 at the time of writing). It is a NIGHTMARE to try and build a 
+  site without a CSS framework like bootstrap. There are so many considerations 
+  around browser vendors/versions and
+  desktop/tablet/mobile sites. For those out there that do this for a living, I salute
+  you. Bootstrap gives you a nice out of the box experience but it is also pretty
+  painless to customize.
 </p>
 
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono">
-      <pre><code class="language-twig hljs px-5 dark:opacity-80 rounded-b"># _layouts/some-layout-file.njk
-
-# From this
-{% include "navbar.njk" %}
-
-# To this
-{% include "_includes/navbar.njk" %}</code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
-
-<h3 id="reload-server">Reload Server</h3>
+<h4>Font Awesome</h4>
 <p>
-  Once that is done reload your server and your output files will be regenerated free of 
-  the frivolous white space caused by template tags.
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://fontawesome.com/" target=_blank>Font Awesome</a>
+  (version 5.13 at the time
+  of writing) provides really nice icons. There is a free and a pro version, I am
+  just using the free icons of which there are a lot to choose from. The icons at the
+  page footer are from Font Awesome.
+</p>
+
+<h4>Highlight.js</h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://highlightjs.org" target=_blank>highlight.js</a>
+  (version 9.18.1 at the time
+  of writing) provides the syntax highlighting for the code blocks on the site.
+  This is a really awesome project, it supports highlighting for 185 languages
+  in 89 styles. I am currently using the <span class="emphasize-text-darkmode">xt256</span>
+  style.
+</p>
+
+<h3 id="hosting">Hosting</h3>
+<p>
+  The site is now hosted on AWS with S3 for file storage and Cloudfront CDN that puts
+  content close to the users. I am have written a separate post outlining the
+  process to build and setup the components to build the site which you can find
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/aws-s3-cloudfront-static-website-hosting">here</a>.
+</p>
+<p>
+  Why not github pages or netlify or similar? I thought about these options, but I am
+  currently learning my way through AWS so using their services made sense to me.
+</p>
+<p>
+  I am yet to see the cost over a month, but will update
+  this post once I get the bill. The cost calculator estimates that it will be < $5 USD
+  a month. Considering I was paying $5 a month for the DO droplet and I have no infrastructure
+  to manage that's not too shabby.
+</p>
+
+<h3 id="learning-node">Learning Node</h3>
+<p>
+  I have been dabbling with node for a few years and
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://duckduckgo.com/" target=_blank>duck hunted</a>
+  my way through javascript over the last 8 years so I have the basics down ok.....
+</p>
+<p>
+  I have been going through this udemy course to sharpen my skills which I found
+  to be easy to follow and pretty well written and presented:
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.udemy.com/course/the-complete-nodejs-developer-course-2/" target=_blank>The Complete Node.js Developer Course (3rd Edition)</a>
+  its worth checking out if you are looking to learn node.
 </p>
 
 <h3 id="outro">Outro</h3>
 <p>
-  In this post we learned how to create a custom Nunjucks environment for 11ty to 
-  remove that pesky white space created by template tags. Isn't life grand :)
+  11ty is a great static site generator and I would highly recommend checking it out
+  if you plan on building out a static site. Hosting on AWS was also pretty straight
+  forward and looks to be pretty low cost.
 </p>
 
 
@@ -264,14 +256,9 @@ module.exports = function(eleventyConfig) {
           <a href="/blog/tag/#11ty" class="text-xl">11ty</a>        
         </div>
       
-        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#node" class="text-xl">node</a>        
-        </div>
-      
         <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#nunjucks" class="text-xl">nunjucks</a>        
+          <a href="/blog/tag/#node" class="text-xl">node</a>        
         </div>
       
     </div>
@@ -386,24 +373,32 @@ module.exports = function(eleventyConfig) {
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#edit-11ty-config">
-            Edit 11ty Config
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#11ty">
+            11ty
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#update-templates">
-            Update Templates
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#whats-inside">
+            Whats Inside
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#reload-server">
-            Reload Server
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#hosting">
+            Hosting
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#learning-node">
+            Learning Node
           </a>
         </div>
       

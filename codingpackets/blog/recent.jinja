@@ -1,4 +1,9 @@
 {% extends "layouts/blog.jinja" %}
+
+{% block page_header %}
+  {{ text::header(heading="Recent Blogs", published_date="", updated_date="") }}
+{% endblock page_header %}
+
 {% block page_content %}
   <div class="">
     {% set_global count = 0 %}
@@ -25,7 +30,7 @@
   <div class="pb-2">
     <p>
       Looking for more? Browse posts by 
-      {{ link::i(path="/blog/", description="category") }},
+      {{ link::i(path="/blog/", description="category") }} or
       {{ link::i(path="/blog/tag/", description="tag") }}
       or search the blog
       {{ link::i(path="/blog/archive/", description="archives") }}.
