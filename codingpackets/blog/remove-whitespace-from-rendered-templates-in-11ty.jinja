@@ -1,0 +1,115 @@
+{% extends "layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  The default behavour of 11ty is to just remove the template tags 
+  from rendered templates and leave behind white space in its place. 
+  This is probably mostly fine but for me it was causing large amounts 
+  of white space in my rendered templates and needless changes in git diffs.
+</p>
+<p>
+  11ty uses Nunjucks as its default templating engine. 11ty is 
+  inspired by Jinja2 from Python land and with Jinja2 you can create 
+  a custom environment that allows you to edit the behavour of how 
+  template tags are removed from rendered templates.
+</p>
+<p>
+  Luckily Nunjucks has a very simlilar concept and in this post I will 
+  show you how to create a custom Nunjucks environment to remove white space 
+  created by template tags.
+</p>
+
+{{ text::note_block(text='
+    11ty version 0.10.0 was used to write this post.
+')
+}}
+
+
+<h3 id="edit-11ty-config">Edit 11ty Config</h3>
+<p>
+  Firstly edit the {{ text::emphasize(text=".eleventy.js") }} config file.
+  See the inline comments in the snippet below for more details.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code='# .eleventy.js
+
+// Import Nunjucks   
+const Nunjucks = require("nunjucks");
+
+module.exports = function(eleventyConfig) {
+
+  // Create a Nunjucks environment.
+  const nunjucksEnvironment = new Nunjucks.Environment(
+
+    // Specify the directories where your templates reside.
+    new Nunjucks.FileSystemLoader(["./", "_includes", "_layouts"]),
+
+    // Apply rendering options
+    { 
+      lstripBlocks: true,
+      trimBlocks: true,
+    }
+  );
+
+  // other
+  // eleventyConfig
+  // configs
+
+  // Apply Nunjuks environment config
+  eleventyConfig.setLibrary("njk", nunjucksEnvironment);
+
+  return {
+    dir: {
+      // These values are both relative to your input directory.
+      includes: "_includes",
+      layouts: "_layouts"
+    },
+  };
+};'
+) }}
+
+<p>
+  Job done ... Not quite.
+</p>
+
+
+<h3 id="update-templates">Update Templates</h3>
+<p>
+  The issue I came accross once changing the Nunjucks environment is that templates 
+  in the {{ text::emphasize(text="_layouts") }} directory could no longer see the
+  templates in the {{ text::emphasize(text="_includes") }} directory. In order 
+  to fix this I needed to update my templates under the 
+  {{ text::emphasize(text="_layouts") }} directory to point to the 
+  {{ text::emphasize(text="_includes") }} directory. (See below)
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="twig",
+  code='# _layouts/some-layout-file.njk
+
+# From this
+{% include "navbar.njk" %}
+
+# To this
+{% include "_includes/navbar.njk" %}'
+) }}
+
+
+<h3 id="reload-server">Reload Server</h3>
+<p>
+  Once that is done reload your server and your output files will be regenerated free of 
+  the frivolous white space caused by template tags.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we learned how to create a custom Nunjucks environment for 11ty to 
+  remove that pesky white space created by template tags. Isn't life grand :)
+</p>
+
+{% endblock page_content %}

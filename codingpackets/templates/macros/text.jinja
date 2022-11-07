@@ -36,12 +36,12 @@
 {% macro tag_block(tags, center=false) %}
 {% if tags %}
 <!-- TAGS START -->
-  <div id="tags" class="py-3">
+  <div id="tags" class="pb-2">
     <div class="flex {% if center %}justify-center{% endif %}">
       {% for tag in tags %}
-        <div class="{% if not loop.last %}pr-2{% endif %} text-rose-700 hover:text-rose-900">
-          <i class="fas fa-hashtag -mr-1"></i>
-          <a href="/blog/tag/#{{ tag | slugify }}" class="text-xl font-semibold italic lowercase">{{ tag | slugify }}</a>        
+        <div class="{% if not loop.last %}pr-2{% endif %} text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#{{ tag | slugify }}" class="text-xl">{{ tag | slugify }}</a>        
         </div>
       {% endfor %}
     </div>

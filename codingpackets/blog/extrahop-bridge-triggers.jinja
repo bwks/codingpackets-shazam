@@ -1,6 +1,6 @@
 {% extends "layouts/blog.jinja" %}
 {% block page_content %}
-<h3>Intro</h3>
+<h3 id="intro">Intro</h3>
 <p>
   Recently, I was working with a customer that wanted to 
   extract the TCP SYN unanswered in/out metric captured by Extrahop 
@@ -18,7 +18,7 @@
   send that data to Splunk. 
 </p>
 
-<h3>What Are Bridge Triggers Anyway?</h3>
+<h3 id="what-are-bridge-triggers-anyway">What Are Bridge Triggers Anyway?</h3>
 <p>
   To understand Bridge Triggers, first lets find out 
   what a
@@ -71,7 +71,7 @@
 ) }}
 
 
-<h3>Metric Catalog</h3>
+<h3 id="metric-catalog">Metric Catalog</h3>
 <p>
   To find the details of the Metric we are interested in
   we can search for it in the Metric Catalog. In my case I am looking 
@@ -118,7 +118,7 @@
 </p>
 
 
-<h3>Bridge Trigger</h3>
+<h3 id="bridge-trigger">Bridge Trigger</h3>
 <p>
   Now that we have the Metric information we need, lets create a 
   Trigger. Browse to:
@@ -149,7 +149,7 @@
 </p>
 {{ image::boxed(path="blog/extrahop-bridge-triggers/bridge-trigger-create.png", width="600px") }}
 
-<h3>Trigger Code</h3>
+<h3 id="trigger-code">Trigger Code</h3>
 <p>
   Now for the fun part. Trigger are written in 
   {{ text::emphasize(text="Javascript") }} and have 
@@ -244,13 +244,10 @@ tcp_syn_unanswered_out=${MetricRecord.fields["syn_unanswered_out"]}`
 {{ image::boxed(path="blog/extrahop-bridge-triggers/splunk-log.png", width="600px") }}
 
 
-<h3>Outro</h3>
+<h3 id="outro">Outro</h3>
 <p>
   In this post, I showed you how to utilise ExtraHop Bridge 
   (Datastore) Triggers to capture Metric data and send the data 
   off to Splunk as a syslog message via ODS.
 </p>
 {% endblock page_content %}
-
-{% block page_toc %}
-{% endblock page_toc %}

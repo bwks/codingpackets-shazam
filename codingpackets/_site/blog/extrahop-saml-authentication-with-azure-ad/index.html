@@ -109,7 +109,7 @@
           <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
             
 
-<h3>Intro</h3>
+<h3 id="intro">Intro</h3>
 <p>
   I was recently working with a customer to configure Azure AD 
   as the SAML provider for their ExtraHop appliances. Although 
@@ -123,7 +123,7 @@
   the Identity Provider (IdP).
 </p>
 
-<h3>Software</h3>
+<h3 id="software">Software</h3>
 <p>
   The following software was used in this post.
 </p>
@@ -131,7 +131,7 @@
   <li>ExtraHop Sensor (EDA) - 8.9.0</li>
 </ul>
 
-<h3>SAML Terminology</h3>
+<h3 id="saml-terminology">SAML Terminology</h3>
 <p>
   Some important terminology to be aware about SAML is as follows.
 </p>
@@ -143,7 +143,7 @@
   <li>Token - Group of claims.</li>
 </ul>
 
-<h3>SAML Login Flow</h3>
+<h3 id="saml-login-flow">SAML Login Flow</h3>
 <p>
   The image below is directly from the Microsoft 
     <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/auth-saml" target=_blank>docs</a> <sup>[1]</sup>
@@ -160,7 +160,7 @@
 <!-- IMAGE END -->
 
 
-<h3>IdP SAML Requirements</h3>
+<h3 id="idp-saml-requirements">IdP SAML Requirements</h3>
 <p>
   In order for ExtraHop to use an IdP SAML authentication, the IdP must meet 
   the following requirements.
@@ -181,7 +181,7 @@
   The IdP MUST support signed SAML responses. Unsigned SAML responses are NOT supported.
 </p>
 
-<h3>Prerequisites</h3>
+<h3 id="prerequisites">Prerequisites</h3>
 <p>
   There are a couple of items to square away in both ExtraHop and Azure before we begin.
 </p>
@@ -339,7 +339,7 @@
 <!-- NOTE BLOCK END -->
 
 
-<h3>SAML Configuration</h3>
+<h3 id="saml-configuration">SAML Configuration</h3>
 <h4>ExtraHop - SP Metadata</h4>
 <p>
   To complete the Azure side we need to SP metadata from the ExtraHop appliance.
@@ -1676,7 +1676,7 @@
   to login and access the ExtraHop platform.
 </p>
 
-<h3>Testing Access</h3>
+<h3 id="testing-access">Testing Access</h3>
 
 <!-- TIP BLOCK START -->
 <div id="tip-block" class="pt-2 pb-4">
@@ -1796,7 +1796,7 @@
 <!-- IMAGE END -->
 
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 <p>
   A couple of common issues I have run into and their resolution 
   is below.
@@ -1840,7 +1840,7 @@
   Ensure the IdP is configured to sign SAML responses.
 </p>
 
-<h3>Outro</h3>
+<h3 id="outro">Outro</h3>
 <p>
   In this post, I showed you how to configure your ExtraHop appliances 
   to use SAML authentication with Azure AD as an IdP. Please enjoy your 
@@ -1855,17 +1855,17 @@
     
 
 <!-- TAGS START -->
-  <div id="tags" class="py-3">
+  <div id="tags" class="pb-2">
     <div class="flex justify-center">
       
-        <div class="pr-2 text-rose-700 hover:text-rose-900">
-          <i class="fas fa-hashtag -mr-1"></i>
-          <a href="/blog/tag/#extrahop" class="text-xl font-semibold italic lowercase">extrahop</a>        
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#extrahop" class="text-xl">extrahop</a>        
         </div>
       
-        <div class=" text-rose-700 hover:text-rose-900">
-          <i class="fas fa-hashtag -mr-1"></i>
-          <a href="/blog/tag/#azure" class="text-xl font-semibold italic lowercase">azure</a>        
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#azure" class="text-xl">azure</a>        
         </div>
       
     </div>
@@ -1961,6 +1961,100 @@
         <!-- COLUMN 3 START -->
         <div class="invisible md:visible md:col-span-3">
           
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
+            Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#saml-terminology">
+            SAML Terminology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#saml-login-flow">
+            SAML Login Flow
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#idp-saml-requirements">
+            IdP SAML Requirements
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#prerequisites">
+            Prerequisites
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#saml-configuration">
+            SAML Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing-access">
+            Testing Access
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#troubleshooting">
+            Troubleshooting
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
 
         </div>
         <!-- COLUMN 3 END -->

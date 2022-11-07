@@ -2,7 +2,7 @@
 
 {% block page_content %}
 
-<h3>Intro</h3>
+<h3 id="intro">Intro</h3>
 <p>
   I was recently working with a customer to configure Azure AD 
   as the SAML provider for their ExtraHop appliances. Although 
@@ -16,7 +16,7 @@
   the Identity Provider (IdP).
 </p>
 
-<h3>Software</h3>
+<h3 id="software">Software</h3>
 <p>
   The following software was used in this post.
 </p>
@@ -24,7 +24,7 @@
   <li>ExtraHop Sensor (EDA) - 8.9.0</li>
 </ul>
 
-<h3>SAML Terminology</h3>
+<h3 id="saml-terminology">SAML Terminology</h3>
 <p>
   Some important terminology to be aware about SAML is as follows.
 </p>
@@ -36,7 +36,7 @@
   <li>Token - Group of claims.</li>
 </ul>
 
-<h3>SAML Login Flow</h3>
+<h3 id="saml-login-flow">SAML Login Flow</h3>
 <p>
   The image below is directly from the Microsoft 
     {{ link::e(
@@ -51,7 +51,7 @@
   width="600px"
 ) }}
 
-<h3>IdP SAML Requirements</h3>
+<h3 id="idp-saml-requirements">IdP SAML Requirements</h3>
 <p>
   In order for ExtraHop to use an IdP SAML authentication, the IdP must meet 
   the following requirements.
@@ -72,7 +72,7 @@
   The IdP MUST support signed SAML responses. Unsigned SAML responses are NOT supported.
 </p>
 
-<h3>Prerequisites</h3>
+<h3 id="prerequisites">Prerequisites</h3>
 <p>
   There are a couple of items to square away in both ExtraHop and Azure before we begin.
 </p>
@@ -151,7 +151,7 @@
     synced to Azure from on-prem AD.  
 ') }}
 
-<h3>SAML Configuration</h3>
+<h3 id="saml-configuration">SAML Configuration</h3>
 <h4>ExtraHop - SP Metadata</h4>
 <p>
   To complete the Azure side we need to SP metadata from the ExtraHop appliance.
@@ -573,7 +573,7 @@
   to login and access the ExtraHop platform.
 </p>
 
-<h3>Testing Access</h3>
+<h3 id="testing-access">Testing Access</h3>
 {{ text::tip_block(text=`
   You can use the text::emphasize(text="SAML Tracer") Firefox/Chrome plugin to monitor the flow of requests 
   to and from the IdP. I recommend you install it and open its debug window 
@@ -634,7 +634,7 @@
   width="600px"
 ) }}
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 <p>
   A couple of common issues I have run into and their resolution 
   is below.
@@ -668,7 +668,7 @@
   Ensure the IdP is configured to sign SAML responses.
 </p>
 
-<h3>Outro</h3>
+<h3 id="outro">Outro</h3>
 <p>
   In this post, I showed you how to configure your ExtraHop appliances 
   to use SAML authentication with Azure AD as an IdP. Please enjoy your 
@@ -676,6 +676,3 @@
 </p>
 
 {% endblock page_content %} 
-
-{% block page_toc %}
-{% endblock page_toc %}
