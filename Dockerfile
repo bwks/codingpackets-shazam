@@ -58,7 +58,7 @@ WORKDIR ${HOME_DIR}
 
 USER ${APP_USER}
 
-RUN ./shazam init ${APP_NAME}
+RUN ./shazam init --name ${APP_NAME} --owner 'Brad Searle' --owner-email 'bradleysearle@gmail.com'
 
 EXPOSE 3000
 CMD ["./overmind", "s", "-f", "Procfile"]

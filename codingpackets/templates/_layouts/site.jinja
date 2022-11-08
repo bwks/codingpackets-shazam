@@ -1,8 +1,8 @@
-{% import "macros/link.jinja" as link %}
-{% import "macros/text.jinja" as text %}
-{% import "macros/image.jinja" as image %}
-{% import "macros/spacer.jinja" as spacer %}
-{% import "macros/table.jinja" as table %}
+{% import "_macros/link.jinja" as link %}
+{% import "_macros/text.jinja" as text %}
+{% import "_macros/image.jinja" as image %}
+{% import "_macros/spacer.jinja" as spacer %}
+{% import "_macros/table.jinja" as table %}
 
 {% set_global root_path = "/" %}
 {% set_global blog_path = "/blog" %}
@@ -48,12 +48,12 @@
     {% block js_page_local %}
     {% endblock js_page_local %}
 
-    <title>{{ project }}.com</title>
+    <title>{{ config.project }}.com</title>
   </head>
 
   <body class="bg-stone-50 dark:bg-black">
 
-    {% include "includes/navbar.jinja" %}
+    {% include "_includes/navbar.jinja" %}
 
     <div class="w-full">
       {% block page_header %}
@@ -94,10 +94,10 @@
       </div>
       <!-- CONTENT END -->
 
-      {% include "includes/back-to-top.jinja" %}
+      {% include "_includes/back-to-top.jinja" %}
     </div>
   
-    {% include "includes/footer.jinja" %}
+    {% include "_includes/footer.jinja" %}
 
   </body>
 
