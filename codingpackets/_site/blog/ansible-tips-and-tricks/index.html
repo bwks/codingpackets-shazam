@@ -1,0 +1,526 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-20">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Ansible Tips and Tricks</h1>
+  <div class="">
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: 12th of June 2019
+      </p>
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 11th of June 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="overview">Overview</h3>
+<p>
+  A collection of useful tips and tricks for Ansible which don't really justify a full blog
+  post on their own. I'll keep updating this post when I come across something of value.
+</p>
+
+<h3 id="callbacks">Callbacks</h3>
+<p>
+  Convert the output of a playbook run to <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">json</i>. Either
+  set the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stdout_callback = json</i> setting in the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> or alternatively set the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ANSIBLE_STDOUT_CALLBACK=json</i> variable at the CLI on playbook execution.
+</p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ANSIBLE_STDOUT_CALLBACK=json ansible-playbook some-playbook.yml</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="inventory">Inventory</h3>
+  <p>
+    create an ad-hoc inventory using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-i</i> or <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--inventory</i>
+    flags. An ad-hoc inventory allows you to run <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> or
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-playbook</i> against a node (or list of nodes) without creating
+    an inventory file.
+  </p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook -i myhost,&lt;another-host&gt; all -a 'uname -a'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+  <p>
+    <i>Credit: 
+        <a class="text-sky-600 no-underline hover:text-sky-800" href="https://gist.github.com/alces/f7e3de25d98a19550a4e4f97cabc2cf4" target=_blank>https://gist.github.com/alces/f7e3de25d98a19550a4e4f97cabc2cf4</a>
+    </i>
+  </p>
+<h3 id="roles">Roles</h3>
+  <p>
+    There is a fair bit of boilerplate involved in creating a role. There is an
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-galaxy</i> command to aid in the process of building a role. Optionaly
+    add the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--offline</i> flag if the role is not intended for Ansible galaxy.
+  </p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-galaxy init role-name --offline
+
+# output
+- role-name was created successfully
+
+# role-name directory contents
+role-name/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+8 directories, 8 files</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+  <p>
+    <i>
+        Credit:
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="ttps://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#create-roles" target=_blank>ttps://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#create-roles</a>
+    </i>
+  </p>
+
+<h3 id="variables">Variables</h3>
+  <p>
+    Get a json dict of all vars that will be applicable to a host at playbook runtime. The
+    following command also shows you which groups a host belongs to and all groups that are
+    available.
+  </p>
+
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">ansible -i inventory a.example.com -m debug -a "var=hostvars[inventory_hostname]"
+
+# output
+a.example.com | success >> {
+    "var": {
+        "hostvars": {
+            "ansible_ssh_host": "10.0.0.1",
+            "ansible_ssh_user": "user",
+            "group_names": [
+                "group1",
+                "groups"
+            ],
+            "groups": {
+                "all": [
+                    "x.example.com",
+                    "y.example.com",
+                    "a.example.com",
+                    "b.example.com"
+                ],
+                "group1": [
+                    "a.example.com"
+                ],
+                "group2": [
+                    "b.example.com"
+                ],
+                "groups": [
+                    "a.example.com",
+                    "b.example.com"
+                ],
+                "ungrouped": [
+                    "x.example.com",
+                    "y.example.com"
+                ]
+            },
+            "inventory_hostname": "a.example.com",
+            "inventory_hostname_short": "a"
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    <i>
+      Credit: 
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://unix.stackexchange.com/a/208854/294891" target=_blank>https://unix.stackexchange.com/a/208854/294891</a>
+    </i>
+  </p>
+
+
+  <p>
+    Find the source file that a variable was derived from. This is quite useful when you are
+    using the Ansible variable precedence system to see which file a variable actually came from.
+  </p>
+
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">ansible -i inventory leaf01 -m debug -a "var=hostvars[inventory_hostname]['bgp']['asn']._data_source"
+
+# output
+leaf01 | SUCCESS => {
+    "hostvars[inventory_hostname]['bgp']['asn']._data_source": "/path/to/host_vars/leaf01.yml"
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    <i>
+      Credit: 
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://twitter.com/codethenetwork/status/936733364089794560" target=_blank>https://twitter.com/codethenetwork/status/936733364089794560</a>
+    </i>
+  </p>
+
+
+          </div>
+
+          
+  
+    
+
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ansible" class="text-xl">ansible</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+
+  
+
+
+          
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#overview">
+            Overview
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#callbacks">
+            Callbacks
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#inventory">
+            Inventory
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#roles">
+            Roles
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#variables">
+            Variables
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

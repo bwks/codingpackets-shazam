@@ -1,0 +1,181 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="overview">Overview</h3>
+<p>
+  A collection of useful tips and tricks for Ansible which don't really justify a full blog
+  post on their own. I'll keep updating this post when I come across something of value.
+</p>
+
+<h3 id="callbacks">Callbacks</h3>
+<p>
+  Convert the output of a playbook run to {{ text::emphasize(text="json") }}. Either
+  set the {{ text::emphasize(text="stdout_callback = json") }} setting in the
+  {{ text::emphasize(text="ansible.cfg") }} or alternatively set the
+  {{ text::code(text="ANSIBLE_STDOUT_CALLBACK=json") }} variable at the CLI on playbook execution.
+</p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="ANSIBLE_STDOUT_CALLBACK=json ansible-playbook some-playbook.yml"
+  ) }}
+
+<h3 id="inventory">Inventory</h3>
+  <p>
+    create an ad-hoc inventory using the {{ text::code(text="-i") }} or {{ text::code(text="--inventory") }}
+    flags. An ad-hoc inventory allows you to run {{ text::code(text="ansible") }} or
+    {{ text::code(text="ansible-playbook") }} against a node (or list of nodes) without creating
+    an inventory file.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="ansible-playbook -i myhost,&lt;another-host&gt; all -a 'uname -a'"
+  ) }}
+
+  <p>
+    <i>Credit: 
+        {{ link::e(
+          path="https://gist.github.com/alces/f7e3de25d98a19550a4e4f97cabc2cf4", 
+          description="") }}
+    </i>
+  </p>
+<h3 id="roles">Roles</h3>
+  <p>
+    There is a fair bit of boilerplate involved in creating a role. There is an
+    {{ text::code(text="ansible-galaxy") }} command to aid in the process of building a role. Optionaly
+    add the {{ text::code(text="--offline") }} flag if the role is not intended for Ansible galaxy.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='ansible-galaxy init role-name --offline
+
+# output
+- role-name was created successfully
+
+# role-name directory contents
+role-name/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+8 directories, 8 files'
+  ) }}
+
+  <p>
+    <i>
+        Credit:
+          {{ link::e(
+          path="ttps://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#create-roles", 
+          description="") }}
+    </i>
+  </p>
+
+<h3 id="variables">Variables</h3>
+  <p>
+    Get a json dict of all vars that will be applicable to a host at playbook runtime. The
+    following command also shows you which groups a host belongs to and all groups that are
+    available.
+  </p>
+
+
+  {{ text::code_block(
+    header="cmd",
+    language="json",
+    code='ansible -i inventory a.example.com -m debug -a "var=hostvars[inventory_hostname]"
+
+# output
+a.example.com | success >> {
+    "var": {
+        "hostvars": {
+            "ansible_ssh_host": "10.0.0.1",
+            "ansible_ssh_user": "user",
+            "group_names": [
+                "group1",
+                "groups"
+            ],
+            "groups": {
+                "all": [
+                    "x.example.com",
+                    "y.example.com",
+                    "a.example.com",
+                    "b.example.com"
+                ],
+                "group1": [
+                    "a.example.com"
+                ],
+                "group2": [
+                    "b.example.com"
+                ],
+                "groups": [
+                    "a.example.com",
+                    "b.example.com"
+                ],
+                "ungrouped": [
+                    "x.example.com",
+                    "y.example.com"
+                ]
+            },
+            "inventory_hostname": "a.example.com",
+            "inventory_hostname_short": "a"
+        }
+    }
+}'
+  ) }}
+
+
+  <p>
+    <i>
+      Credit: 
+          {{ link::e(
+          path="https://unix.stackexchange.com/a/208854/294891", 
+          description="") }}
+    </i>
+  </p>
+
+
+  <p>
+    Find the source file that a variable was derived from. This is quite useful when you are
+    using the Ansible variable precedence system to see which file a variable actually came from.
+  </p>
+
+
+  {{ text::code_block(
+    header="cmd",
+    language="json",
+    code=`ansible -i inventory leaf01 -m debug -a "var=hostvars[inventory_hostname]['bgp']['asn']._data_source"
+
+# output
+leaf01 | SUCCESS => {
+    "hostvars[inventory_hostname]['bgp']['asn']._data_source": "/path/to/host_vars/leaf01.yml"
+}`
+  ) }}
+
+
+  <p>
+    <i>
+      Credit: 
+          {{ link::e(
+          path="https://twitter.com/codethenetwork/status/936733364089794560", 
+          description="") }}
+    </i>
+  </p>
+
+{% endblock page_content %}

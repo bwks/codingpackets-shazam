@@ -1,0 +1,701 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-20">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Ansible AWX Part 1</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 2nd of October 2017
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-9 text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Ansible <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/ansible/awx" target=_blank>AWX</a> is the upstream open source project to Ansible
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower" target=_blank>Tower</a>.
+</p>
+<p>
+  This is the first part of a series on <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower" target=_blank>Ansible AWX</a>.
+  In this part we will install Ansible AWX.
+</p>
+
+<h4>Code versions used for this post</h4>
+<ul>
+  <li>Centos 7 - minimal 1705.02 (vagrant box)</li>
+  <li>Python - 2.7.13</li>
+  <li>Ansible - 2.4.0</li>
+  <li>docker - 1.12.6</li>
+  <li>Ansible AWX - 1.0.0.577</li>
+</ul>
+<p>
+  Centos 7 minimal ships with <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python 2.7.5</i> which is pretty old, I will be installing
+  python <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i>
+  for use with ansible. I have a guide to install python <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i> and
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">3.6.2</i>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal" target=_blank>here</a>
+   and an ansible role
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/ansible-python" target=_blank>here</a>.
+
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    At the time of writing AWX is not python3 compatible. You will require root/sudo privileges
+    and PIP installed to follow this guide.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="ansible-awx-components">Ansible AWX Components</h3>
+<p>
+  AWX is a web GUI based management system for Ansible. AWX is built with a microservices architecture using
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.docker.com/" target=_blank>docker</a> as the container runtime. Redhat provide an installer playbook as
+  part of AWX which can build onto either an <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.openshift.com/" target=_blank>openshift</a> cluster or a stand alone
+  docker install. This post will use the stand alone docker method.
+</p>
+
+<h3 id="pre-installation-tasks">Pre Installation Tasks</h3>
+<p>
+  Prior to installing AWX we will need to prepare the system.
+</p>
+
+<h3 id="install-required-yum-packages">Install required YUM packages</h3>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">yum install -y epel-release
+yum install -y git gettext docker nodejs npm gcc-c++ bzip2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="install-required-pip-packages">Install required PIP packages</h3>
+<p>
+  Install the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">docker</i> python
+  libraries via PIP to get the latest stable releases.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pip2 install ansible docker</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="start-and-enable-docker-service">Start and enable docker service</h3>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl start docker
+systemctl enable docker</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="open-firewall-ports">Open firewall ports</h3>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+
+firewall-cmd --reload</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="set-selinux-to-permissive">Set SELinux to Permissive</h3>
+<p>
+  I dont know the necessary SELinux policies to make AWX function correctly so I am setting the policy to permissive.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">setenforce permissive</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  To make the changes permanent set the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">SELINUX</i> variable under 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/selinux/config</i> to
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">permissive</i> and reboot.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">SELINUX=permissive</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="install-awx">Install AWX</h3>
+<p>
+  Now that pre-installation tasks are completed lets install AWX.
+</p>
+
+<h3 id="clone-awx-git-repo">Clone AWX Git repo</h3>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /opt/ansible
+cd /opt/ansible
+
+git clone https://github.com/ansible/awx.git</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="edit-the-inventory-file">Edit the inventory file</h3>
+<p>
+  If you followed my guide on upgrading <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python2/3</i> then you will need to
+  change the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible_python_interpreter</i> variable in the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/ansible/awx/installer/inventory</i> file
+  from <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/usr/bin/env python</i> to <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/usr/local/bin/python2.7</i>
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">#/opt/ansible/awx/installer/inventory
+
+# old
+localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"
+
+# new
+localhost ansible_connection=local ansible_python_interpreter="/usr/local/bin/python2.7"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="run-the-install-playbook">Run the install playbook</h3>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd /opt/ansible/awx/installer/
+
+ansible-playbook -i inventory install.yml</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="login-to-awx">Login to AWX</h3>
+<p>Once the playbook is complete you can login to AWX via the web GUI.</p>
+<p>
+  Browse to the AWX url <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">http://&lt;awx-hostname-or-ip&gt;</i> and login with the
+  username
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i> and the password is <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">password</i>.
+  <i>
+    Note: The password can be set in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file with the <span
+       class="emphasize-text-darkmode">default_admin_password</span>
+    variable.
+  </i>
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="50%" 
+    src="/img/blog/ansible-awx-part-1/awx-login.png" alt="blog/ansible-awx-part-1/awx-login.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>The dashboard looks like this</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="90%" 
+    src="/img/blog/ansible-awx-part-1/awx-dashboard.png" alt="blog/ansible-awx-part-1/awx-dashboard.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">If you see the below when browsing to the URL, wait a few minutes.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="50%" 
+    src="/img/blog/ansible-awx-part-1/awx-upgrade.png" alt="blog/ansible-awx-part-1/awx-upgrade.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Ansible AWX is now installed and ready to be configured. In future posts I will configure AWX for use with
+  network devices.
+</p>
+
+
+          </div>
+
+          
+  
+    
+
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ansible" class="text-xl">ansible</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#awx" class="text-xl">awx</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+
+  
+
+
+          
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#ansible-awx-components">
+            Ansible AWX Components
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-installation-tasks">
+            Pre Installation Tasks
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-required-yum-packages">
+            Install required YUM packages
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-required-pip-packages">
+            Install required PIP packages
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#start-and-enable-docker-service">
+            Start and enable docker service
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#open-firewall-ports">
+            Open firewall ports
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#set-selinux-to-permissive">
+            Set SELinux to Permissive
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-awx">
+            Install AWX
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#clone-awx-git-repo">
+            Clone AWX Git repo
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#edit-the-inventory-file">
+            Edit the inventory file
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#run-the-install-playbook">
+            Run the install playbook
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#login-to-awx">
+            Login to AWX
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,198 @@
+{% extends "_layouts/blog.jinja" %}code_block
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Ansible {{ link::e(path="https://github.com/ansible/awx", description="AWX") }} is the upstream open source project to Ansible
+  {{ link::e(path="https://www.ansible.com/tower", description="Tower") }}.
+</p>
+<p>
+  This is the first part of a series on {{ link::e(path="https://www.ansible.com/tower", description="Ansible AWX") }}.
+  In this part we will install Ansible AWX.
+</p>
+
+<h4>Code versions used for this post</h4>
+<ul>
+  <li>Centos 7 - minimal 1705.02 (vagrant box)</li>
+  <li>Python - 2.7.13</li>
+  <li>Ansible - 2.4.0</li>
+  <li>docker - 1.12.6</li>
+  <li>Ansible AWX - 1.0.0.577</li>
+</ul>
+<p>
+  Centos 7 minimal ships with {{ text::emphasize(text="python 2.7.5") }} which is pretty old, I will be installing
+  python {{ text::emphasize(text="2.7.13") }}
+  for use with ansible. I have a guide to install python {{ text::emphasize(text="2.7.13") }} and
+  {{ text::emphasize(text="3.6.2") }}
+  {{ link::e(path="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal", description="here") }}
+   and an ansible role
+  {{ link::e(path="https://github.com/bwks/ansible-python", description="here") }}.
+
+</p>
+
+{{ text::note_block(text="
+    At the time of writing AWX is not python3 compatible. You will require root/sudo privileges
+    and PIP installed to follow this guide."
+) }}
+
+<h3 id="ansible-awx-components">Ansible AWX Components</h3>
+<p>
+  AWX is a web GUI based management system for Ansible. AWX is built with a microservices architecture using
+  {{ link::e(path="https://www.docker.com/", description="docker") }} as the container runtime. Redhat provide an installer playbook as
+  part of AWX which can build onto either an {{ link::e(path="https://www.openshift.com/", description="openshift") }} cluster or a stand alone
+  docker install. This post will use the stand alone docker method.
+</p>
+
+<h3 id="pre-installation-tasks">Pre Installation Tasks</h3>
+<p>
+  Prior to installing AWX we will need to prepare the system.
+</p>
+
+<h3 id="install-required-yum-packages">Install required YUM packages</h3>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="yum install -y epel-release
+yum install -y git gettext docker nodejs npm gcc-c++ bzip2"
+) }}
+
+<h3 id="install-required-pip-packages">Install required PIP packages</h3>
+<p>
+  Install the {{ text::emphasize(text="ansible") }} and {{ text::emphasize(text="docker") }} python
+  libraries via PIP to get the latest stable releases.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="pip2 install ansible docker"
+) }}
+
+
+<h3 id="start-and-enable-docker-service">Start and enable docker service</h3>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="systemctl start docker
+systemctl enable docker"
+) }}
+
+
+<h3 id="open-firewall-ports">Open firewall ports</h3>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+
+firewall-cmd --reload"
+) }}
+
+
+<h3 id="set-selinux-to-permissive">Set SELinux to Permissive</h3>
+<p>
+  I dont know the necessary SELinux policies to make AWX function correctly so I am setting the policy to permissive.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="setenforce permissive"
+) }}
+
+<p>
+  To make the changes permanent set the {{ text::emphasize(text="SELINUX") }} variable under 
+  {{ text::emphasize(text="/etc/selinux/config") }} to
+  {{ text::emphasize(text="permissive") }} and reboot.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="SELINUX=permissive"
+) }}
+
+<h3 id="install-awx">Install AWX</h3>
+<p>
+  Now that pre-installation tasks are completed lets install AWX.
+</p>
+
+<h3 id="clone-awx-git-repo">Clone AWX Git repo</h3>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="mkdir /opt/ansible
+cd /opt/ansible
+
+git clone https://github.com/ansible/awx.git"
+) }}
+
+
+<h3 id="edit-the-inventory-file">Edit the inventory file</h3>
+<p>
+  If you followed my guide on upgrading {{ text::emphasize(text="python2/3") }} then you will need to
+  change the {{ text::emphasize(text="ansible_python_interpreter") }} variable in the 
+  {{ text::emphasize(text="/opt/ansible/awx/installer/inventory") }} file
+  from {{ text::emphasize(text="/usr/bin/env python") }} to {{ text::emphasize(text="/usr/local/bin/python2.7") }}
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code='#/opt/ansible/awx/installer/inventory
+
+# old
+localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"
+
+# new
+localhost ansible_connection=local ansible_python_interpreter="/usr/local/bin/python2.7"'
+) }}
+
+<h3 id="run-the-install-playbook">Run the install playbook</h3>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cd /opt/ansible/awx/installer/
+
+ansible-playbook -i inventory install.yml'
+) }}
+
+<h3 id="login-to-awx">Login to AWX</h3>
+<p>Once the playbook is complete you can login to AWX via the web GUI.</p>
+<p>
+  Browse to the AWX url {{ text::emphasize(text="http://&lt;awx-hostname-or-ip&gt;") }} and login with the
+  username
+  {{ text::emphasize(text="admin") }} and the password is {{ text::emphasize(text="password") }}.
+  <i>
+    Note: The password can be set in the {{ text::emphasize(text="inventory") }} file with the <span
+       class="emphasize-text-darkmode">default_admin_password</span>
+    variable.
+  </i>
+</p>
+
+{{ image::boxed(path="blog/ansible-awx-part-1/awx-login.png", width="50%") }}
+
+<p>The dashboard looks like this</p>
+{{ image::boxed(path="blog/ansible-awx-part-1/awx-dashboard.png", width="90%") }}
+
+
+
+{{ text::note_block(text="If you see the below when browsing to the URL, wait a few minutes.") }}
+
+{{ image::boxed(path="blog/ansible-awx-part-1/awx-upgrade.png", width="50%") }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Ansible AWX is now installed and ready to be configured. In future posts I will configure AWX for use with
+  network devices.
+</p>
+
+{% endblock page_content %}
+
