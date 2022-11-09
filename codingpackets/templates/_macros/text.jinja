@@ -50,6 +50,22 @@
 {% endif %}
 {% endmacro %}
 
+{% macro links_block(links) %}
+  {% if links %}
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      {% for link in post.links %}
+        <p class="text-xl">
+          {{ link::e(path=link) }}
+        </p>
+      {% endfor %}
+  </div>
+  <!-- LINKS END -->
+  {% endif %}
+{% endmacro %}
+
+
 {% macro breadcrumbs(items) %}
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">

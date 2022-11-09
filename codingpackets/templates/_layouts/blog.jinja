@@ -38,6 +38,12 @@
 
 {% endblock page_content %}
 
+{% block page_links %}
+  {% if post and post.links | length > 0 %}
+    {{ text::links_block(links=post.links) }}
+  {% endif %}
+{% endblock page_links %}
+
 {% block page_tags %}
   {% if post and post.tags | length > 0 %}
     {{ text::tag_block(tags=post.tags, center=true) }}

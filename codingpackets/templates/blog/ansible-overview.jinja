@@ -1,0 +1,627 @@
+{% extends "_layouts/blog.jinja" %}code_block
+{% block page_content %}
+
+  <h3 id="intro">Intro</h3>
+
+  <p>
+    Ansible is a 'radically simple', open source, IT automation platform.
+  </p>
+
+  <h3 id="architecture">Architecture</h3>
+
+  {{ image::boxed(path="blog/ansible-overview/ansible-architecture.svg", width="600px") }}
+
+
+  <p>
+    <b>Control Node</b><br>
+    The Ansible control node is the central point of management for managed nodes. Configuration
+    is pushed to the managed nodes from the control node.
+  </p>
+  <p>
+    <b>Managed Node</b><br>
+    A managed node is a device that will be configured by an ansible control node. Ansible
+    supports many types of operating systems including network operating systems from Juniper
+    and linux distributions such as RedHat.
+  </p>
+  <p>
+    <b>Playbook</b><br>
+    A playbook is a list of 'plays' that will be executed on the managed nodes. Plays are a list
+    tasks that will be performed such as a yum update or copying a file.
+  </p>
+  <p>
+    <b>Inventory</b><br>
+    The inventory is a list of managed nodes that playbooks will be run against. Managed nodes in
+    the inventory can be combined into groups, for example; Sydney and Melbourne.
+  </p>
+
+  <h3 id="install">Install</h3>
+  <p>
+    <b>Requirements</b><br>
+    Linux managed nodes require python 2.4 or later. If the python version is less than 2.5
+    {{ text::emphasize(text="python-simplejson") }} is required.
+  </p>
+  <p>
+    <b>Control Node</b><br>
+    The Control node requires python 2.4 or later. Ansible is only required to be installed
+    on the control node. Neither ansible or any agents are required on the managed nodes.<br>
+  </p>
+  <p>
+    <b>Python</b><br>
+    Ansible can be installed via pip, python 3 support is in beta as of Ansible version 2.2.
+    I prefer to install ansible within a <a href="https://docs.python.org/3/library/venv.html">
+      virtual environment</a>.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="mkdir ~/envs
+virtualenv ~/envs/ansible-env
+source ~/envs/ansible-env/bin/activate
+pip install ansible"
+  ) }}
+
+
+
+  <p>
+    <b>Yum</b><br>
+    RPM's are available in the {{ link::e(path="http://fedoraproject.org/wiki/EPEL", description="EPEL") }} release
+    for Yum based systems such as RedHat and Centos.
+  </p>
+  <p>
+    <b>Apt</b><br>
+    Apt based systems such as Ubuntu and Debian can install via a
+    {{ link::e(path="https://launchpad.net/~ansible/+archive/ansible", description="PPA") }}.
+  </p>
+  <p>
+    More details can be found in the
+    {{ link::e(path="http://docs.ansible.com/ansible/intro_installation.html", description="ansible installation") }} documentation.
+  </p>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Ansible configuration can be defined in multiple locations. The following search paths
+    will be checked for an {{ text::emphasize(text="ansible.cfg") }} file from highest to lowest preference.
+  </p>
+
+  <ul>
+    <li>{{ text::emphasize(text="$ANSIBLE_CONFIG") }} environment variable.</li>
+    <li>{{ text::emphasize(text="./ansible.cfg") }} current working directory.</li>
+    <li>{{ text::emphasize(text="~/.ansible.cfg") }} users home directory.</li>
+    <li>{{ text::emphasize(text="/etc/ansible/ansible.cfg") }} default location.</li>
+  </ul>
+
+  <p>
+    When a playbook is run the first file found will be the configuration that is used, configuration
+    files will not be merged. The {{ text::emphasize(text="ansible.cfg") }} file uses the {{ text::emphasize(text=".ini") }} format.
+    Sections are defined with square brackets {{ text::emphasize(text="[defaults]") }}. Variables are defined like so
+    {{ text::emphasize(text="inventory=/etc/ansible/hosts") }}.
+  </p>
+  <p>
+    The {{ link::e(path="http://docs.ansible.com/ansible/intro_configuration.html", description="ansible configuration") }}
+    documentation has details regarding all configuration options.
+  </p>
+
+  <h3 id="inventory">Inventory</h3>
+
+  <p>
+    Ansible inventory files define managed nodes that playbooks can be run against. Inventories
+    can be statically created or dynamically built from another inventory system such as CMDB.
+  </p>
+  <p>
+    <b>Static Inventory</b><br>
+    Static inventory files are similar to {{ text::emphasize(text=".ini") }} file format. There are three types
+    of host definitions.
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="test.lab.local") }} singular host</li>
+    <li>{{ text::emphasize(text="[sydney]") }} group of hosts</li>
+    <li>{{ text::emphasize(text="[australia:children]") }} group of groups</li>
+  </ul>
+
+  <p>
+    <b>Example static inventory</b><br>
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="ini",
+    code="test.lab.local
+
+[sydney]
+host1.lab.sydney
+host2.lab.sydney
+
+[melbourne]
+host1.lab.melbourne
+host2.lab.melbourne
+
+[australia:children]
+sydney
+melbourne"
+  ) }}
+
+
+
+  <p>
+    <b>Dynamic Inventory</b><br>
+    A dynamic inventory script can be written in any language as long as it returns valid JSON.
+    The script must support two arguments: <code>--list</code> and <code>--host</code> and
+    must be executable.
+  </p>
+  <p>
+    The <code>--list</code> argument must return a key/value pair of group to host mappings.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="json",
+    code='[user@control-node ~]$ ./inventoryscript --list
+{
+  "sydney"  : [ "host1.lab.sydney", "host2.lab.sydney" ],
+  "melbourne"  : [ "host1.lab.melbourne", "host2.lab.melbourne" ]
+}'
+  ) }}
+
+
+  <p>
+    The <code>--host</code> argument must return a key/value pair of host to variable mappings
+    or an empty dictionary.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="json",
+    code='[user@control-node ~]$ ./inventoryscript --host host1.lab.sydney
+{
+    "ntp_server" : "ntp.lab.sydney",
+    "syslog_server" : "syslog.lab.sydney"
+}'
+  ) }}
+
+  <p>
+    <b>Inventory Usage</b><br>
+    The inventory that will be used can be defined in the following two ways from highest to
+    lowest preference.
+  </p>
+  <ul>
+    <li><b>-i /path/to/inventory</b> argument at playbook runtime</li>
+    <li><b>inventory=/path/to/inventory</b> variable in the {{ text::emphasize(text="ansible.cfg") }} file</li>
+  </ul>
+  The default inventory location is {{ text::emphasize(text="/etc/ansible/hosts") }}.
+
+  <p>
+    Multiple inventory files can be used if the parameter used with the {{ text::emphasize(text="-i") }} argument
+    or the {{ text::emphasize(text="inventory") }} variable defined in the {{ text::emphasize(text="ansible.cfg") }} file is a
+    directory.
+  </p>
+  <p>
+    If using a directory the files will be read in alphabetical order. The order of files is
+    important if a group of groups in one file refers to a group in another file.
+  </p>
+
+  <p>
+    See the {{ link::e(path="http://docs.ansible.com/ansible/intro_inventory.html", description="ansible inventory") }}
+    documentation for more details.
+  </p>
+
+  <h3 id="playbook">Playbook</h3>
+
+  <p>
+    Playbooks can describe a desired configuration state and/or the steps to implement
+    change on a managed host.
+  </p>
+  <p>
+    A playbook defines a list of 'plays' that will be executed against managed nodes.
+    Each play contains one or more tasks which will be executed against the defined hosts group.
+    Task utilise {{ link::e(path="http://docs.ansible.com/ansible/modules_by_category.html", description="modules") }}
+    to perform the actions on the managed nodes.
+  </p>
+  <p>
+    Playbooks are writen in {{ link::e(path="http://yaml.org/", description="YAML") }} which is an easy to read and write
+    key/value data serialization language.
+  </p>
+
+  <p>
+    Playbooks have four sections
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="hosts") }} host or host group in an inventory file</li>
+    <li>{{ text::emphasize(text="vars") }} variables that will be used in templates</li>
+    <li>{{ text::emphasize(text="tasks") }} will to be executed against hosts</li>
+    <li>{{ text::emphasize(text="handlers") }} perform actions like restarting services</li>
+  </ul>
+
+  <p>
+    <b>Example Playbook</b><br>
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='---
+- hosts: sydney
+
+  vars:
+    ssh_port: 22
+
+  tasks:
+  - name: ensure openssh is at the latest version
+    yum: name=openssh-server state=latest
+
+  - name: write the openssh config file
+    template: src=~/playbooks/templates/sshd.j2 dest=/etc/ssh/sshd_config
+    notify:
+    - restart sshd
+
+  handlers:
+  - name: restart sshd
+    service: name=sshd state=restarted'
+  ) }}
+
+  {{ text::note_block(text="
+    Changes made by Ansible are idempotent so it will not make any changes to
+    managed nodes unless a configuration diff is detected.
+    ")
+  }}
+
+  <p>
+    Find out more about {{ link::e(path="http://docs.ansible.com/ansible/playbooks_intro.html", description="ansible playbooks") }}
+    in the official documentation.
+  </p>
+
+  <h3 id="modules">Modules</h3>
+
+  <p>
+    Modules are where the magic happens in ansible. Modules are invoked with tasks in playbooks
+    or with the <code>ansible</code> ad hoc command {{ text::emphasize(text="-m") }} argument.
+  </p>
+  <p>
+    There are three types of modules in ansible.
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="Core") }} ship with anisble, maintained by core ansible team</li>
+    <li>{{ text::emphasize(text="Extras") }} ship with ansible, maintained by community</li>
+    <li>{{ text::emphasize(text="3rd Party") }} anisble galaxy, maintained by community</li>
+  </ul>
+  An example is the {{ link::e(path="http://docs.ansible.com/ansible/yum_module.html", description="yum") }} module
+  that can be used to perform yum related task such as <code>yum install</code>.
+
+
+  <p>
+    <b>Example yum module usage in playbook</b><br>
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='tasks:
+  - name: ensure openssh is at the latest version
+    yum: name=openssh-server state=latest'
+  ) }}
+
+  <p>
+    When utilizing the {{ text::emphasize(text="ansible") }} ad hoc command the <span class="emphasize-text-darkmode">-m <i>module_name</i>
+            [-a <i>module_args</i>]</span> i used to specify a module. Note the {{ text::emphasize(text="[-a <i>module_args</i>]") }}
+    is an optional parameter.
+  </p>
+
+  <p>
+    The {{ link::e(path="http://docs.ansible.com/ansible/setup_module.html", description="setup") }} module which is
+    used to collect facts about a device is automatically run on hosts during playbook execution.
+  </p>
+
+  <p>
+    Refer to the {{ link::e(path="http://docs.ansible.com/ansible/modules_intro.html", description="ansible modules") }}
+    documention for more details.
+  </p>
+  <h3 id="variables">Variables</h3>
+
+  <p>
+    Variables are technique for managing dynamic values throughout your code. Ansible variable names
+    must start with a letter and only contain letters, numbers or underscores.
+  </p>
+
+  <p>
+    Variables in ansible have three scopes
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="Global") }} set from the command line or defined in {{ text::emphasize(text="anisble.cfg") }} file</li>
+    <li>{{ text::emphasize(text="Play") }} set in plays {{ text::emphasize(text="vars") }} and {{ text::emphasize(text="include_vars") }}</li>
+    <li>{{ text::emphasize(text="Host") }} set via host groups or on hosts by the inventory, facts or registered tasks</li>
+  </ul>
+  Within each scope there are many places a variable can be defined.
+
+  <p>
+    <b>Variable Precedence</b><br>
+    If a variable with the same name is defined in multiple places, the variable with the higher
+    precedence will be used.
+  </p>
+
+  <p>
+    From ansible 2.x the variable precedence is as follows from most to least preferred
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="-e") }} extra vars argument with <code>ansible</code> ad-hoc command</li>
+    <li>{{ text::emphasize(text="task vars") }} task scope only</li>
+    <li>{{ text::emphasize(text="block vars") }} task block scope</li>
+    <li>{{ text::emphasize(text="role vars") }} and {{ text::emphasize(text="include_vars") }}</li>
+    <li>{{ text::emphasize(text="set_facts") }} module</li>
+    <li>{{ text::emphasize(text="registered vars") }} in a play</li>
+    <li>{{ text::emphasize(text="vars_files") }} in a play</li>
+    <li>{{ text::emphasize(text="vars_prompt") }} in a play</li>
+    <li>{{ text::emphasize(text="vars") }} in a play</li>
+    <li>{{ text::emphasize(text="facts") }} gathered about a host</li>
+    <li>{{ text::emphasize(text="host_vars") }} in a playbook</li>
+    <li>{{ text::emphasize(text="group_vars") }} in a playbook</li>
+    <li>{{ text::emphasize(text="host_vars") }} in an inventory</li>
+    <li>{{ text::emphasize(text="group_vars") }} in an inventory</li>
+    <li>{{ text::emphasize(text="vars") }} in a static or dynamic inventory</li>
+    <li>{{ text::emphasize(text="defaults") }} file for a role</li>
+  </ul>
+
+  <p>More on <a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable">
+      variable precedence</a> can be found in the official documentation.
+  </p>
+
+  <p>
+    <b>Facts</b><br>
+    When a playbook is run against a host, there is an implicit module named the {{ text::emphasize(text="setup") }}
+    module that gathers facts about a device. Fact gathering can be disabled by setting the
+    {{ text::emphasize(text="gather_facts: false") }} argument.
+  </p>
+
+  <p>
+    <b>Example facts variables</b><br>
+  </p>
+
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='"ansible_all_ipv4_addresses": [
+    "REDACTED IP ADDRESS"
+],
+"ansible_all_ipv6_addresses": [
+    "REDACTED IPV6 ADDRESS"
+],
+...
+long list of values
+...
+"ansible_virtualization_role": "guest",
+"ansible_virtualization_type": "VMware"'
+  ) }}
+
+
+  <p>
+    <b>Variable Usage</b><br>
+    Depending on where a variable is being defined determines the format to set the variable.
+    Below are some examples of how to define a variable.
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="{{ inventory_hostname }}") }} templates and playbooks</li>
+    <li>{{ text::emphasize(text="ansible_hostname=host1.lab.sydney") }} inventory files</li>
+    <li>{{ text::emphasize(text="hostname: host1.lab.sydney") }} var_files and vars argument in playbook</li>
+  </ul>
+
+  <p>
+    When a variable is defined in a playbook with the {{ text::emphasize(text="{{ ... }}") }}
+    syntax and it starts an argument, it must be enclosed in quotes. For example:
+    {{ text::emphasize(text="template: src='{{ base_path }}/motd.j2'") }}
+  </p>
+
+  <p>
+    More information regarding {{ link::e(path="http://docs.ansible.com/ansible/playbooks_variables.html", description="variables") }}
+    can be found in the documentation.
+  </p>
+
+  <h3 id="templates">Templates</h3>
+
+  <p>
+    Templates in ansible utilize the {{ link::e(path="http://jinja.pocoo.org/docs/dev/", description="Jinja2") }} template language.
+    Templates allow for the re-use of files in a DRY (dont repeat yourself) fashion. For example
+    a template can be written for a MOTD banner that has variables that will be substituted for the inventory hostname.
+  </p>
+
+  <p>
+    Jinja2 templates are basically text files that have control structures and variables that
+    get manipulated by the templating engine on rendering. By convention jinja2 files should
+    end with a {{ text::emphasize(text=".j2") }} extension, but this is not required.
+  </p>
+
+  <p>
+    <b>Delimiters</b><br>
+  </p>
+  Jinja2 templates have the following delimiters which define functionality to be executed
+  by the templating engine.
+  <ul>
+    <li>{{ text::emphasize(text="{% verbatim %}{% ... %}{% endverbatim %}") }} statements eg: for, if and include</li>
+    <li>{{ text::emphasize(text="{% verbatim %}{{ ... }}{% endverbatim %}") }} variables and expressions</li>
+    <li>{{ text::emphasize(text="{% verbatim %}{# ... #}{% endverbatim %}") }} comments</li>
+    <li>{{ text::emphasize(text="{% verbatim %}{# ... #}{% endverbatim %}") }} line statements (not used in ansible afaik)</li>
+  </ul>
+  Templates are used in ansible playbooks via the {{ text::emphasize(text="template") }} module
+
+  <p>
+    <b>Example template</b>
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="django",
+    code='This is a MOTD file for {{ inventory_hostname }}
+{% if ansible_all_ipv4_addresses %}
+  {% for ip in ansible_all_ipv4_addresses %}
+    {{ ip }}
+  {% endfor %}
+{% endif %}'
+  ) }}
+
+  <p>
+    <b>Example template usage in playbook</b>
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='tasks:
+  - template: src=templates/motd.j2
+              dest=/etc/motd
+              owner=root
+              group=root
+              mode="0600"'
+  ) }}
+
+  <p>
+    See the official {{ link::e(path="http://jinja.pocoo.org/docs/dev/", description="Jinja2") }} docs for the full
+    gamut of options available. More about the {{ link::e(path="http://docs.ansible.com/ansible/template_module.html", description="template") }}
+    module can be found in the official ansible docs.
+  </p>
+
+  <h3 id="roles">Roles</h3>
+
+  <p>
+    Ansible roles allow for the abstraction of tasks, making them more portable and re-usable.
+    Rather than having a playbook that builds out a web app, you could seperate the tasks into
+    roles, for example, a role to install and configure the database, another role to install
+    and configure the web server. You could then potentially use these roles to build out any
+    kind of application.
+  </p>
+  <p>
+    Roles can be uploaded to ansible galaxy and shared with the community. To create a role
+    there is a nice helper command <code>anisble-galaxy init <i>role_name</i></code> which
+    will build out the directory structure required for a role.
+  </p>
+  <p>
+    <b>Example Role Directory Structure</b>
+  </p>
+
+  {{ text::code_block(
+    header="output",
+    language="text",
+    code='roles/example_role/
+|-- README.md
+|-- defaults
+|   `-- main.yml
+|-- files
+|-- handlers
+|   `-- main.yml
+|-- meta
+|   `-- main.yml
+|-- tasks
+|   `-- main.yml
+|-- templates
+|-- tests
+|   |-- inventory
+|   `-- test.yml
+`-- vars
+    `-- main.yml'
+  ) }}
+  <h3 id="ansible-galaxy">Ansible Galaxy</h3>
+
+  <p>
+    3rd party modules can be uploaded to ansible galaxy for re-use by others. Ansible galaxy
+    roles are tied to a github account. Starting at ansible version 1.8 it is possible to
+    use git sources other than ansible galaxy.
+  </p>
+
+  <b>ansible-galaxy command line tool</b><br>
+  <p>
+    The {{ text::emphasize(text="ansible-galaxy <i>args</i>") }} cli command can be used to search, list,
+    initialize, install and remove ansbile roles.
+  </p>
+
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='ansible-galaxy --help
+Usage: ansible-galaxy [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options] ...
+
+ansible-galaxy search junos
+
+Found 2 roles matching your search:
+
+ Name                     Description
+ ----                     -----------
+ Juniper.junos            Network build automation of Junos devices.
+ reloadzhang.junos-stdlib Network build automation of Junos devices.'
+  ) }}
+
+
+  <p>
+    A comprehensive guide to getting started with ansible galay can be found at the ansible
+    galaxy  {{ link::e(path="https://galaxy.ansible.com/intro", description="about") }} page.
+  </p>
+
+  <h3 id="ansible-vault">Ansible Vault</h3>
+  <p>
+    Ansible provides a 'vault' to securely stores secrets. The {{ text::emphasize(text="ansible-vault <i>args</i>") }}
+    command is used to create, edit, encrypt and decrypt vault files. Ansible uses a python library to
+    symetrically encrypt a file with AES 256 bit encryption using a password
+    as the key. The default editor for ansible vault is {{ text::emphasize(text="vi") }}, this can be changed by exporting
+    the {{ text::emphasize(text="$EDITOR") }} environment variable. Ansible vault files use YAML syntax
+    for key:value pairs.
+  </p>
+
+  <b>ansible-vault command line tool</b><br>
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='ansible-vault --help
+Usage: ansible-vault [create|decrypt|edit|encrypt|rekey|view] [--help] [options] vaultfile.yml'
+  ) }}
+
+  <p>
+    It is recommended to name the ansible vault file {{ text::emphasize(text="vault") }} and store it under the
+    {{ text::emphasize(text="group_vars/") }} directory. Vault variable names should be prefixed with{{ text::emphasize(text="vault_") }}.
+  </p>
+
+  <b>Access ansible-vault</b><br>
+  <p>
+    There are three methods to tell ansible to access the vault during playbook execution:
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="--ask-vault-pass") }} provide key at runtime.</li>
+    <li>{{ text::emphasize(text="--vault-password-file <i>/path/to/file</i>") }} path to a file containing the key.</li>
+    <li>{{ text::emphasize(text="ANSIBLE_VAULT_PASSWORD_FILE") }} via an environment variable.</li>
+  </ul>
+
+  <p>
+    More on {{ link::e(path="http://docs.ansible.com/ansible/playbooks_vault.html", description="ansible vault") }}
+    can be found in the official docs.
+  </p>
+
+  <h3 id="ansible-tower">Ansible Tower</h3>
+
+  <p>
+    Ansible tower provides a nice web interface for controlling ansible managed nodes with
+    enterprise features.
+  </p>
+  <ul>
+    <li>Role base access control</li>
+    <li>LDAP integration</li>
+    <li>Centralized logging</li>
+    <li>Playbook scheduler</li>
+  </ul>
+
+  <p>
+    Anisble tower is build on a Django web stack with a postgres backend. An ansible playbook
+    is used to install ansible tower after an initial wizard is used to define the configuration
+    variables.
+  </p>
+
+  <b>Installation</b><br>
+  <p>
+    There are three installation methods for ansible tower
+  </p>
+  <ul>
+    <li>Single machine, internal database</li>
+    <li>Single machine, external database</li>
+    <li>Active/Passive, multiple machines, external database. API only available on primary node</li>
+  </ul>
+
+  <p>
+    More on {{ link::e(path="http://docs.ansible.com/ansible-tower/", description="ansible tower") }} can be found in the official documentation.
+  </p>
+{% endblock page_content %}
