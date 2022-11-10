@@ -1,0 +1,679 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-20">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Ansible Tower Part 1</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 26th of March 2017
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-relaxed text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id=intro>Intro</h3>
+<p>
+  This is the first part of a three part series on <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower" target=_blank>Ansible Tower</a>.
+  In this series we will download, install, and configure Ansible Tower with user, groups
+  and to execute jobs.
+</p>
+
+<h4>Code versions used for this lab</h4>
+<ul>
+  <li>Python - 2.7.5</li>
+  <li>Ansible - 2.2.1</li>
+  <li>Centos 7 - minimal 1511</li>
+  <li>Ansible Tower - 3.1.1</li>
+</ul>
+
+<h3 id=ansible-tower-components>Ansible Tower Components</h3>
+<p>
+  Tower is the GUI based management system for Ansible. Installing it can be quite simple, in fact
+  Tower can be installed in only a few steps.
+</p>
+<ul>
+  <li>Download and extract the tar file</li>
+  <li>Run the setup script</li>
+  <li>Apply the license</li>
+</ul>
+
+<h3 id=get-ansible-tower>Get Ansible Tower</h3>
+<p>
+  Go to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower-trial" target=_blank>https://www.ansible.com/tower-trial</a> and enter
+  your details to download the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.tar</i> installation file. There are a number of methods to
+  start a trial with Ansible, we will use the tower for linux method.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="500px" 
+    src="/img/blog/ansible-tower-part-1/download-tower.png" alt="blog/ansible-tower-part-1/download-tower.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">The file will be named <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible-tower-setup-latest.tar.gz</i>.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id=license>License</h3>
+<p>
+  Go to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/license" target=_blank>https://www.ansible.com/license</a>
+  and order a trial license. Fill in your details and the license key will get sent
+  to you in an email.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="500px" 
+    src="/img/blog/ansible-tower-part-1/tower-license.png" alt="blog/ansible-tower-part-1/tower-license.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id=install>Install</h3>
+<p>
+  There are three installation methods for Ansible Tower
+</p>
+<ul>
+  <li>Single host internal database</li>
+  <li>Single host external database</li>
+  <li>Multiple host in HA with a shared external database</li>
+</ul>
+<p>
+  For this tutorial we will use the install on a single server with internal database method.
+</p>
+<p>
+  There are some requirements on the server that tower will be installed on:
+</p>
+<ul>
+  <li>Anisble is installed via distributions package managaer</li>
+  <li>User executing the setup script has root/sudo privileges</li>
+</ul>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"><span class="hljs-comment"># Ansible is in the epel-release repository on yum distributions</span>
+sudo yum -y install epel-release
+sudo yum -y install ansible
+
+<span class="hljs-comment"># Assuming ansible-tower-setup-latest.tar.gz is in ~/ directory</span>
+<span class="hljs-comment"># extract the .tar file</span>
+cd ~/
+tar -xvf ansible-tower-setup-latest.tar.gz
+
+<span class="hljs-comment"># change to ansible-tower-setup-3.1.1 directory</span>
+cd ansible-tower-setup-3.1.1</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file and add the required passwords.
+</p>
+<ul>
+  <li>admin_password</li>
+  <li>pg_password</li>
+  <li>rabbitmq_password</li>
+</ul>
+<p>
+  I have used <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">redhat</i> for all three.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"><span class="hljs-comment"># ~/ansible-tower-setup-3.1.1/inventory</span>
+[tower]
+localhost ansible_connection=local
+
+[database]
+
+[all:vars]
+admin_password='redhat'
+
+pg_host=''
+pg_port=''
+
+pg_database='awx'
+pg_username='awx'
+pg_password='redhat'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='redhat'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=false</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ansible/ansible.cfg</i> file and uncomment <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ask_sudo_pass = True</i>.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># Snippet from /etc/ansible/ansible.cfg
+[defaults]
+#inventory      = /etc/ansible/hosts
+#library        = /usr/share/my_modules/
+#remote_tmp     = ~/.ansible/tmp
+#local_tmp      = ~/.ansible/tmp
+#forks          = 5
+#poll_interval  = 15
+#sudo_user      = root
+ask_sudo_pass = True
+#ask_pass      = True
+#transport      = smart
+#remote_port    = 22
+#module_lang    = C
+#module_set_locale = False</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  To install Tower, execute the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">setup.sh</i> as a sudo user. This will kickoff the playbook
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">install.yml</i>.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"><span class="hljs-comment"># Start Tower install</span>
+sudo ./setup.sh
+[sudo] password for admin:
+Using /etc/ansible/ansible.cfg as config file
+SUDO password:
+
+<span class="hljs-comment"># output</span>
+PLAY [tower:database] **********************************************************
+
+TASK [check_config_static : Ensure expected variables are defined] *************
+skipping: [localhost] => (item=tower_package_name)  => {"changed": false, "item": "tower_package_name", "skip_reason": "Conditional check failed", "skipped": true}
+skipping: [localhost] => (item=tower_package_version)  => {"changed": false, "item": "tower_package_version", "skip_reason": "Conditional check failed", "skipped": true}
+skipping: [localhost] => (item=tower_package_release)  => {"changed": false, "item": "tower_package_release", "skip_reason": "Conditional check failed", "skipped": true}
+
+TASK [check_config_static : Ensure at least one tower host is defined] *********
+skipping: [localhost] => {"changed": false, "skip_reason": "Conditional check failed", "skipped": true}
+
+TASK [check_config_static : Ensure only one database host exists] **************
+skipping: [localhost] => {"changed": false, "skip_reason": "Conditional check failed", "skipped": true}
+
+.
+.
+.
+Many, Many, Many, Many Tasks Later
+.
+.
+.
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=115  changed=56   unreachable=0    failed=1
+
+The setup process completed successfully.
+Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Browse to the tower url <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;tower-hostname-or-ip&gt;</i> and login with the username
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i> and the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin_password</i> previously set in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="500px" 
+    src="/img/blog/ansible-tower-part-1/tower-login.png" alt="blog/ansible-tower-part-1/tower-login.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Remember the license file we requested earlier? By now it should have been emailed to you.
+  Upload it via the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">browse</i> button.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="500px" 
+    src="/img/blog/ansible-tower-part-1/tower-add-license.png" alt="blog/ansible-tower-part-1/tower-add-license.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  The license is in JSON format and looks like this.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
+    "company_name": "company.abc",
+    "contact_email": "your@email.com",
+    "contact_name": "your name",
+    "hostname": "giberish-string",
+    "instance_count": 10,
+    "license_date": 2120361496,
+    "license_key": "license-key",
+    "license_type": "basic",
+    "subscription_name": "Ansible Tower by Red Hat, Self-Support (10 Managed Nodes)"
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once the license file is uploaded you will be redirected to the Tower home screen.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="500px" 
+    src="/img/blog/ansible-tower-part-1/tower-home-screen.png" alt="blog/ansible-tower-part-1/tower-home-screen.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id=outro>Outro</h3>
+<p>
+  There you have it, Ansible Tower is now installed and ready to be configured. In part 2
+  of this series we will configure Ansible Tower with users and groups.
+</p>
+
+
+
+          </div>
+
+          
+  
+    
+  
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible-tower/latest/html/quickinstall/index.html" target=_blank>http://docs.ansible.com/ansible-tower/latest/html/quickinstall/index.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+  
+
+  
+
+
+          
+  
+    
+
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ansible" class="text-xl">ansible</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+
+  
+
+
+          
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#ansible-tower-components">
+            Ansible Tower Components
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#get-ansible-tower">
+            Get Ansible Tower
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#license">
+            License
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install">
+            Install
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

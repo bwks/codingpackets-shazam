@@ -10,3 +10,39 @@ Replace
 ```
 {{ text::emphasize(text="$1") }}
 ```
+
+```
+<a href="(.*?)">(.*?)</a>
+```
+
+Replace
+```
+{{ link::e(path="$1", description="$2") }}
+```
+
+```
+nb.noteBlock(
+```
+
+Replace
+```
+text::note_block(text=
+```
+
+```
+bi.boxedImage(
+```
+
+Replace
+```
+image::boxed(path=
+```
+
+```
+cb.codeBlock
+```
+
+Replace
+```
+text::code_block
+```

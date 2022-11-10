@@ -1,0 +1,249 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id=intro>Intro</h3>
+<p>
+  This is the first part of a three part series on {{ link::e(path="https://www.ansible.com/tower", description="Ansible Tower") }}.
+  In this series we will download, install, and configure Ansible Tower with user, groups
+  and to execute jobs.
+</p>
+
+<h4>Code versions used for this lab</h4>
+<ul>
+  <li>Python - 2.7.5</li>
+  <li>Ansible - 2.2.1</li>
+  <li>Centos 7 - minimal 1511</li>
+  <li>Ansible Tower - 3.1.1</li>
+</ul>
+
+<h3 id=ansible-tower-components>Ansible Tower Components</h3>
+<p>
+  Tower is the GUI based management system for Ansible. Installing it can be quite simple, in fact
+  Tower can be installed in only a few steps.
+</p>
+<ul>
+  <li>Download and extract the tar file</li>
+  <li>Run the setup script</li>
+  <li>Apply the license</li>
+</ul>
+
+<h3 id=get-ansible-tower>Get Ansible Tower</h3>
+<p>
+  Go to {{ link::e(path="https://www.ansible.com/tower-trial", description="https://www.ansible.com/tower-trial") }} and enter
+  your details to download the {{ text::emphasize(text=".tar") }} installation file. There are a number of methods to
+  start a trial with Ansible, we will use the tower for linux method.
+</p>
+
+{{ image::boxed(path="blog/ansible-tower-part-1/download-tower.png", width="500px") }}
+
+
+{{ text::note_block(text='The file will be named $1.'
+  | replace(from="$1", to=text::emphasize(text="ansible-tower-setup-latest.tar.gz"))
+)
+}}
+
+<h3 id=license>License</h3>
+<p>
+  Go to {{ link::e(path="https://www.ansible.com/license", description="https://www.ansible.com/license") }}
+  and order a trial license. Fill in your details and the license key will get sent
+  to you in an email.
+</p>
+
+{{ image::boxed(path="blog/ansible-tower-part-1/tower-license.png", width="500px") }}
+
+<h3 id=install>Install</h3>
+<p>
+  There are three installation methods for Ansible Tower
+</p>
+<ul>
+  <li>Single host internal database</li>
+  <li>Single host external database</li>
+  <li>Multiple host in HA with a shared external database</li>
+</ul>
+<p>
+  For this tutorial we will use the install on a single server with internal database method.
+</p>
+<p>
+  There are some requirements on the server that tower will be installed on:
+</p>
+<ul>
+  <li>Anisble is installed via distributions package managaer</li>
+  <li>User executing the setup script has root/sudo privileges</li>
+</ul>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='<span class="hljs-comment"># Ansible is in the epel-release repository on yum distributions</span>
+sudo yum -y install epel-release
+sudo yum -y install ansible
+
+<span class="hljs-comment"># Assuming ansible-tower-setup-latest.tar.gz is in ~/ directory</span>
+<span class="hljs-comment"># extract the .tar file</span>
+cd ~/
+tar -xvf ansible-tower-setup-latest.tar.gz
+
+<span class="hljs-comment"># change to ansible-tower-setup-3.1.1 directory</span>
+cd ansible-tower-setup-3.1.1'
+) }}
+
+
+<p>
+  Edit the {{ text::emphasize(text="inventory") }} file and add the required passwords.
+</p>
+<ul>
+  <li>admin_password</li>
+  <li>pg_password</li>
+  <li>rabbitmq_password</li>
+</ul>
+<p>
+  I have used {{ text::emphasize(text="redhat") }} for all three.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`<span class="hljs-comment"># ~/ansible-tower-setup-3.1.1/inventory</span>
+[tower]
+localhost ansible_connection=local
+
+[database]
+
+[all:vars]
+admin_password='redhat'
+
+pg_host=''
+pg_port=''
+
+pg_database='awx'
+pg_username='awx'
+pg_password='redhat'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='redhat'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=false`
+) }}
+
+
+<p>
+  Edit the {{ text::emphasize(text="/etc/ansible/ansible.cfg") }} file and uncomment {{ text::emphasize(text="ask_sudo_pass = True") }}.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="# Snippet from /etc/ansible/ansible.cfg
+[defaults]
+#inventory      = /etc/ansible/hosts
+#library        = /usr/share/my_modules/
+#remote_tmp     = ~/.ansible/tmp
+#local_tmp      = ~/.ansible/tmp
+#forks          = 5
+#poll_interval  = 15
+#sudo_user      = root
+ask_sudo_pass = True
+#ask_pass      = True
+#transport      = smart
+#remote_port    = 22
+#module_lang    = C
+#module_set_locale = False"
+) }}
+
+<p>
+  To install Tower, execute the {{ text::emphasize(text="setup.sh") }} as a sudo user. This will kickoff the playbook
+  {{ text::emphasize(text="install.yml") }}.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='<span class="hljs-comment"># Start Tower install</span>
+sudo ./setup.sh
+[sudo] password for admin:
+Using /etc/ansible/ansible.cfg as config file
+SUDO password:
+
+<span class="hljs-comment"># output</span>
+PLAY [tower:database] **********************************************************
+
+TASK [check_config_static : Ensure expected variables are defined] *************
+skipping: [localhost] => (item=tower_package_name)  => {"changed": false, "item": "tower_package_name", "skip_reason": "Conditional check failed", "skipped": true}
+skipping: [localhost] => (item=tower_package_version)  => {"changed": false, "item": "tower_package_version", "skip_reason": "Conditional check failed", "skipped": true}
+skipping: [localhost] => (item=tower_package_release)  => {"changed": false, "item": "tower_package_release", "skip_reason": "Conditional check failed", "skipped": true}
+
+TASK [check_config_static : Ensure at least one tower host is defined] *********
+skipping: [localhost] => {"changed": false, "skip_reason": "Conditional check failed", "skipped": true}
+
+TASK [check_config_static : Ensure only one database host exists] **************
+skipping: [localhost] => {"changed": false, "skip_reason": "Conditional check failed", "skipped": true}
+
+.
+.
+.
+Many, Many, Many, Many Tasks Later
+.
+.
+.
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=115  changed=56   unreachable=0    failed=1
+
+The setup process completed successfully.
+Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log'
+) }}
+
+
+
+<p>
+  Browse to the tower url {{ text::emphasize(text="https://&lt;tower-hostname-or-ip&gt;") }} and login with the username
+  {{ text::emphasize(text="admin") }} and the {{ text::emphasize(text="admin_password") }} previously set in the {{ text::emphasize(text="inventory") }} file.
+</p>
+
+{{ image::boxed(path="blog/ansible-tower-part-1/tower-login.png", width="500px") }}
+
+<p>
+  Remember the license file we requested earlier? By now it should have been emailed to you.
+  Upload it via the {{ text::emphasize(text="browse") }} button.
+</p>
+
+{{ image::boxed(path="blog/ansible-tower-part-1/tower-add-license.png", width="500px") }}
+
+<p>
+  The license is in JSON format and looks like this.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="json",
+  code='{
+    "company_name": "company.abc",
+    "contact_email": "your@email.com",
+    "contact_name": "your name",
+    "hostname": "giberish-string",
+    "instance_count": 10,
+    "license_date": 2120361496,
+    "license_key": "license-key",
+    "license_type": "basic",
+    "subscription_name": "Ansible Tower by Red Hat, Self-Support (10 Managed Nodes)"
+}'
+) }}
+
+<p>
+  Once the license file is uploaded you will be redirected to the Tower home screen.
+</p>
+{{ image::boxed(path="blog/ansible-tower-part-1/tower-home-screen.png", width="500px") }}
+
+<h3 id=outro>Outro</h3>
+<p>
+  There you have it, Ansible Tower is now installed and ready to be configured. In part 2
+  of this series we will configure Ansible Tower with users and groups.
+</p>
+
+
+{% endblock page_content %}
