@@ -73,17 +73,23 @@
           <div class="leading-relaxed text-xl text-gray-800 dark:text-neutral-400 font-medium">
             {% block page_content %}
             {% endblock page_content %}
+
+            {% block page_references %}
+            {% endblock page_references %}
+
+            {% block page_bibliography %}
+            {% endblock page_bibliography %}
+
+            {% block page_links %}
+            {% endblock page_links %}
+
+            {% block page_tags %}
+            {% endblock page_tags %}
+
+            {% block blank_page %}
+              {{ spacer::blank_page() }}
+            {% endblock blank_page %}
           </div>
-
-          {% block page_links %}
-          {% endblock page_links %}
-
-          {% block page_tags %}
-          {% endblock page_tags %}
-
-          {% block blank_page %}
-            {{ spacer::blank_page() }}
-          {% endblock blank_page %}
         </div>
         <!-- COLUMN 2 END -->
 

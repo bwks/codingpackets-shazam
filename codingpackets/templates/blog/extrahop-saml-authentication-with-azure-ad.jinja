@@ -575,9 +575,11 @@
 
 <h3 id="testing-access">Testing Access</h3>
 {{ text::tip_block(text=`
-  You can use the text::emphasize(text="SAML Tracer") Firefox/Chrome plugin to monitor the flow of requests 
+  You can use the $1 Firefox/Chrome plugin to monitor the flow of requests 
   to and from the IdP. I recommend you install it and open its debug window 
-  prior to loggin in.`) }}
+  prior to loggin in.`
+  | replace(from="$1", to=text::emphasize(text="SAML Tracer"))
+  ) }}
 
 <p>
   To test your access, open a private browser window to your ExtraHop appliance.

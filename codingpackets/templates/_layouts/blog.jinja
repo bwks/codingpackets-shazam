@@ -38,6 +38,18 @@
 
 {% endblock page_content %}
 
+{% block page_references %}
+  {% if post and post.references | length > 0 %}
+    {{ table::references(references=post.references) }}
+  {% endif %}
+{% endblock page_references %}
+
+{# {% block page_bibliography %}
+  {% if post and post.links | length > 0 %}
+    {{ text::links_block(links=post.links) }}
+  {% endif %}
+{% endblock page_bibliography %} #}
+
 {% block page_links %}
   {% if post and post.links | length > 0 %}
     {{ text::links_block(links=post.links) }}

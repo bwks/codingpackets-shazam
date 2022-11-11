@@ -34,7 +34,6 @@
 {% endmacro %}
 
 {% macro tag_block(tags, center=false) %}
-{% if tags %}
 <!-- TAGS START -->
   <div id="tags" class="pb-2">
     <div class="flex {% if center %}justify-center{% endif %}">
@@ -47,11 +46,9 @@
     </div>
   </div>
 <!-- TAGS END -->
-{% endif %}
 {% endmacro %}
 
 {% macro links_block(links) %}
-  {% if links %}
   <!-- LINKS START -->
   <div class="pb-2">
     <h3 id="links">Links</h3>
@@ -62,9 +59,7 @@
       {% endfor %}
   </div>
   <!-- LINKS END -->
-  {% endif %}
 {% endmacro %}
-
 
 {% macro breadcrumbs(items) %}
 <!-- BREADCRUMBS START -->
