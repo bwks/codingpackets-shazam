@@ -1,6 +1,6 @@
 
 
-FILENAME="codingpackets/templates/blog/ansible-for-networking-part-1.jinja";
+FILENAME="codingpackets/templates/blog/ansible-from-the-start-to-the-beginning.jinja";
 
 sed -i -e 's/cb\.codeBlock/text::code_block/g' $FILENAME
 

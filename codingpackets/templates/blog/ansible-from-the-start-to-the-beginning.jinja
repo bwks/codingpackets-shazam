@@ -1,0 +1,326 @@
+{% extends "_layouts/blog.jinja" %}code_block
+{% block page_content %}
+
+<h3 id=intro>Intro</h3>
+<p>
+  Ansible is a configuration management platform that sits in the DevOps space along with
+  {{ link::e(path="https://puppet.com/", description="Puppet") }}
+  , {{ link::e(path="https://www.chef.io/", description="Chef") }}
+   and
+  {{ link::e(path="https://saltstack.com/", description="Salt Stack") }}
+  . Touted as being 'radically simple' its possible
+  to get value from Ansible quite quickly with no programming experience required.
+</p>
+<h3 id=architecture>Architecture</h3>
+
+{{ image::boxed(path="blog/ansible-from-the-start-to-the-beginning/ansible-architecture.svg", width="600px") }}
+
+<p>
+  Ansible does not use agents to make configuration changes on devices, instead it relies on a push
+  based method to send configurations to devices. There are four main components in the Ansible solution.
+</p>
+<ul>
+  <li><b>Control Node</b> Central point of configuration management</li>
+  <li><b>Managed Nodes</b> Hosts to be managed</li>
+  <li><b>Inventory</b> Record of managed nodes</li>
+  <li><b>Playbooks</b> Set of actions to perform on managed nodes</li>
+</ul>
+
+<p>
+  The agent-less nature of Ansible is one of the reasons it is more popular than other
+  configuration management systems within the networking community.
+</p>
+
+
+<h3 id=lab-environment>Lab Environment</h3>
+<p>
+  The goal of this lab is to install and configure an Ansible control node and have it
+  communicating with a managed node.
+</p>
+<p>
+  If you are following along at home we will use a
+  {{ link::e(path="https://www.centos.org/", description="Centos") }}
+   7 minimal server as a control node and a
+  {{ link::e(path="https://cumulusnetworks.com/", description="Cumulus") }}
+   host as a managed node. For those unfamiliar
+  with Cumulus Linux it is an open network operating system from the Debian family of linux.
+</p>
+
+{{ image::boxed(path="blog/ansible-from-the-start-to-the-beginning/ansible-start-to-begin.svg", height="200px") }}
+
+<h4>Code versions used for this lab</h4>
+<ul>
+  <li>Python - 2.7.5</li>
+  <li>Ansible - 2.2.1</li>
+  <li>Centos 7 - minimal 1511</li>
+  <li>Cumulus VX - 3.2.1</li>
+</ul>
+
+<h3 id=installation>Installation</h3>
+<p>
+  Ansible can be installed via a distributions package manager, pip or built from source.
+</p>
+<p>
+  <b>YUM</b> distributions can find ansible in the {{ text::emphasize(text="epel-release") }}
+   repository.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo yum install epel-release
+sudo yum install ansible"
+) }}
+
+
+
+<p>
+  <b>APT</b> distributions can find ansible in a {{ text::emphasize(text="PPA") }}
+   repository.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible"
+) }}
+
+
+<p>
+  <b>PIP</b> package is available for installation with {{ text::emphasize(text="pip") }}
+  . If using pip it is preferable to
+  install ansible within a virtual environment.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# root user or user with sudo privileges
+sudo yum install -y epel-release python-virtualenv gcc libffi-devel python-devel openssl-devel sshpass
+sudo yum group install -y "Development Tools"
+curl -O https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install cryptography
+
+# standard user
+mkdir ~/envs
+virtualenv ~/envs/ansible-env
+source ~/envs/ansible-env/bin/activate
+pip install ansible
+
+# create ansible directory for configuration management
+mkdir ~/ansible
+cd ~/ansible'
+) }}
+
+<h3 id=host-inventory>Host Inventory</h3>
+<p>
+  Managed nodes are recorded in an inventory file. As part of this blog I will use a static
+  inventory file, it is also possible to dynamically create an inventory file from an external source
+  such as a CMDB.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code='# ~/ansible/inventory
+[server]
+lab-centos-01
+
+[network]
+lab-cumulus-01
+
+[lab:children]
+server
+network'
+) }}
+
+{{ text::note_block(text='
+  Hosts in an inventory file can be grouped using $1
+  syntax.'
+  | replace(from="$1", to=text::emphasize(text="[group-name]"))
+  )
+}}
+
+
+<h3 id=anisble-configuration>Anisble Configuration</h3>
+<p>
+  The below minimal configuration will allow for the control node to connect to managed nodes
+  specified in the inventory file.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code='# ~/ansible/ansible.cfg
+[defaults]
+hostfile=inventory
+host_key_checking=False
+retry_files_enabled=False'
+) }}
+
+<h3 id=directory-structure>Directory Structure</h3>
+<p>
+  Create the {{ text::emphasize(text="ansible.cfg") }}
+   and {{ text::emphasize(text="inventory") }}
+   files under the {{ text::emphasize(text="~/ansible") }}
+  
+  directory and ensure you have the following directory structure.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# ~/ansible
+ansible
+├── ansible.cfg
+└── inventory'
+) }}
+
+
+<h3 id=first-steps>First steps</h3>
+<p>
+  Once ansible is installed there is an {{ text::emphasize(text="'ad-hoc'") }}
+   mode that can be used to test connectivity.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code='ansible lab-cumulus-01 -m ping -u cumulus -k
+SSH password:
+
+# output
+lab-cumulus-01 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}'
+) }}
+
+<p>
+  The {{ text::code(text="ansible") }} ad-hoc command is really just for testing and not used that much in practice.
+  The usage pattern is {{ text::code(text="ansible &lt;host-pattern&gt; [options]") }}. In the above example
+  there are a number of options being used
+</p>
+<ul>
+  <li><b>- m</b> Module to use (more on this later).</li>
+  <li><b>- u</b> Username to connect with.</li>
+  <li><b>- k</b> Ask users SSH password.</li>
+</ul>
+
+{{ text::note_block(text='
+    The ping module is not ICMP ping, but rather just tests SSH is open and the user can login.
+  </p>
+')
+}}
+
+<p>
+  Another example with the {{ text::code(text="ansible") }} ad-hoc command is using the {{ text::emphasize(text="command") }}
+   module
+  to run arbitrary commands on a managed node.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ansible lab-cumulus-01 -m command -a "net show interface" -u cumulus -k
+SSH password:
+
+# output
+lab-cumulus-01 | SUCCESS | rc=0 >>
+
+    Name    Speed      MTU  Mode      Summary
+--  ------  -------  -----  --------  --------------------------
+UP  lo      N/A      65536  Loopback  IP: 127.0.0.1/8, ::1/128
+UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)'
+) }}
+
+<p>
+  The {{ text::emphasize(text="-a") }}
+   argument flag specifies the command to send, note the command should be
+  enclosed in quotes.
+</p>
+
+<h3 id=playbook>Playbook</h3>
+<p>
+  In Ansible a playbook is where you tie all the pieces together to perform actions on a host.
+  The following example playbook uses the command module to run a command against a host and
+  prints out the result.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="yaml",
+  code='---
+# ~/ansible/show-interfaces.yml
+- hosts: network
+
+  tasks:
+  - name: Get interface information from {{ inventory_hostname }}
+    command: net show interface
+    register: show_interface
+
+  - name: Print output of net show interface from {{ inventory_hostname }}
+    debug: var=show_interface["stdout"]'
+) }}
+
+
+{{ text::note_block(text='
+    Playbooks use $1
+     syntax and the white
+    space is significant.'
+    | replace(from="$1", to=link::e(path="http://www.yaml.org/start.html", description="YAML"))
+    )
+}}
+
+
+<p>
+  There are a number of things to note in the playbook
+</p>
+<ul>
+  <li><b>---</b> Identifies the file as a YAML file. (Add to top of file)</li>
+  <li><b>hosts</b> Declare which host(s) the tasks will run against. ({{ text::emphasize(text="network") }}
+   group in inventory file)</li>
+  <li><b>tasks</b> List of 'plays' that will be executed. (Two play declared in playbook)</li>
+</ul>
+
+<h3 id=playbook-execution>Playbook Execution</h3>
+<p>
+  Playbooks are run with the {{ text::code(text="ansible-playbook &lt;playbook-name&gt; [options]") }} command
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ansible-playbook show-interfaces.yml -u cumulus -k
+SSH password:
+
+# output
+PLAY [network] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [lab-cumulus-01]
+
+TASK [Get interface information from lab-cumulus-01] ***************************
+changed: [lab-cumulus-01]
+
+TASK [Print output of net show interface from lab-cumulus-01] ******************
+ok: [lab-cumulus-01] => {
+    "show_interface[\'stdout\']": "\n    Name    Speed      MTU  Mode      Summary\n--  ------  -------  -----  --------  --------------------------\nUP  lo      N/A      65536  Loopback  IP: 127.0.0.1/8, ::1/128\nUP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)"
+}
+
+PLAY RECAP *********************************************************************
+lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0`
+) }}
+
+<h3 id=outro>Outro</h3>
+<p>
+  You should now have Ansible up and running on a control node and gathering information from a
+  Cumulus Linux managed node.
+</p>
+
+{% include "_includes/from-the-start-to-the-beginning.jinja" %}
+
+{% endblock page_content %}
