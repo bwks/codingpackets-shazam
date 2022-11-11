@@ -1,0 +1,496 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Pulumi is an Infrastructure as Code (IaC) tool similar 
+  to Terraform, except that, rather than defining resources 
+  in a DSL, you defined them in a supported programming 
+  language. This means you have access to all of your 
+  chosen languages features as well as any supporting 
+  libraries you may need.
+</p>
+<p>
+  In this post I will cover the steps to get started
+  configuring your AWS environment with Pulumi and 
+  the Go language. 
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Go - 1.19</li>
+  <li>Pulumi - 1.1.7</li>
+  <li>Ubuntu - 22.04</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+
+<h4>AWS</h4>
+<p>
+  An AWS user is required to interact with AWS resources.
+</p>
+<h5>Create IAM User</h5>
+<p>
+  Create an IAM user that will access AWS programatically. 
+  The docs to create a user can be found 
+  {{ link::e(
+    path="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console", 
+    description="here")
+  }}.
+</p>
+
+{{ text::note_block(text='
+    The users permission level needs to allow 
+    access to the resources you wish to manage.
+') }}
+
+<h5>Configure AWS Credentials</h5>
+<p>
+  Once the user is created, generate access keys. The relevant docs 
+  can be found 
+  {{ link::e(
+    path="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys", 
+    description="here")
+  }}.
+</p>
+<p>
+  Add the credentials as environment variables in your 
+  {{ text::emphasize(text="~/.zshrc") }}
+   file.
+  This allows Pulumi to utilize the credentials automagically.
+</p>
+  {{ text::code_block(
+    header="file",
+    language="text",
+    code='# ~/.zshrc
+export AWS_ACCESS_KEY_ID="&lt;access-key&gt;"
+export AWS_SECRET_ACCESS_KEY="&lt;secret-key&gt;"
+export AWS_REGION="&lt;region&gt;"'
+  ) }}
+
+<h4>Go</h4>
+<p>
+  I am using Pulumi with the Go language so we need to have 
+  Go installed.
+</p>
+<h5>Install Go</h5>
+<p>
+  Details for installing Go can be found in the docs
+  {{ link::e(
+    path="https://go.dev/doc/install", 
+    description="here")
+  }}.
+</p>
+
+<p>
+  The TL/DR steps are as follows.
+</p>
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='# Download
+wget https://go.dev/dl/go1.19.linux-amd64.tar.gz
+
+# Extract
+tar -zxvf go1.19.linux-amd64.tar.gz
+
+# Install
+sudo mv go/ /usr/local'
+  ) }}
+
+<h5>Configure Go Path</h5>
+<p>
+  Add Go to your path via your
+  {{ text::emphasize(text="~/.zshrc") }}
+   file.
+  This gives you access to the {{ text::code(text="go") }} cli command.
+</p>
+
+  {{ text::code_block(
+    header="file",
+    language="text",
+    code='# ~/.zshrc
+export PATH=$PATH:/usr/local/go/bin'
+  ) }}
+
+<h4>Pulumi</h4>
+<h5>Install Pulumi</h5>
+<p>
+  Details for installing Pulumi can be found in the 
+  {{ link::e(
+    path="https://www.pulumi.com/docs/get-started/install/", 
+    description="here")
+  }}.
+</p>
+<p>
+  The TL/DR with the installer script is as follows.
+</p>
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='curl -fsSL https://get.pulumi.com | sh'
+  ) }}
+
+<h5>Configure Pulumi Path</h5>
+<p>
+  Add Pulumi to your path via your  
+  {{ text::emphasize(text="~/.zshrc") }}
+   file.
+  This gives you access to the {{ text::code(text="pulumi") }} cli command.
+</p>
+
+  {{ text::code_block(
+    header="file",
+    language="text",
+    code='# ~/.zshrc
+export PATH=$PATH:$HOME/.pulumi/bin'
+  ) }}
+
+<h5>Create a Pulumi Account</h5>
+<p>
+  I am utilising the 
+    {{ link::e(
+    path="https://www.pulumi.com/product/pulumi-service/", 
+    description="Pulumi")
+  }}
+  service backend, if you don't have an account already go 
+  {{ link::e(
+    path="https://app.pulumi.com/", 
+    description="here")
+  }} to create one.
+</p>
+{{ text::note_block(text='
+    The Pulumi service backend is free for individual use.
+') }}
+
+<h5>Create Pulumi Access Token</h5>
+<p>
+  Once you have created an account, login and create an access token 
+  that will be used to authenticate you to the Pulumi service. 
+  Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Settings",
+    "Access tokens",
+]) }}
+
+<h5>Configure Pulumi Credentials</h5>
+<p>
+  Add the Pulumi access token to your 
+  {{ text::emphasize(text="~/.zshrc") }}
+   file. 
+</p>
+  {{ text::code_block(
+    header="file",
+    language="text",
+    code='# ~/.zshrc
+export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"'
+  ) }}
+
+<p>
+  Alright, with that out of the way, lets move 
+  onto testing out setup by buiding some AWS resources.
+</p>
+
+<h3 id="build-the-infrastructure">Build the Infrastructure</h3>
+<p>
+  Let's build some simple infrastucture in AWS with 
+  Pulumi.
+</p>
+
+<h4>Pulumi Components</h4>
+<p>
+  Pulumi has a number of 
+  {{ link::e(
+    path="https://www.pulumi.com/docs/intro/concepts/", 
+    description="comonents") 
+  }}
+  that are used to define and manage infrastructure.
+</p>
+<p>
+  In this section I will concentrate on the following three.
+</p>
+<ul>
+  <li>
+    {{ text::emphasize(text="Project") }}
+     - 
+    Specifies the language runtime and other configuration options for the project.
+  </li>
+  <li>
+    {{ text::emphasize(text="Stack") }}
+     - 
+    Isolated instance of a Pulumi program. Usually named after the desired envionment (dev, test, prod, etc..)
+  </li>
+  <li>
+    {{ text::emphasize(text="Resource") }}
+     - 
+    Configuration items to be managed such as S3 bucket and EC2 instance.
+  </li>
+</ul>
+
+<h3 id="create-a-project">Create a Project</h3>
+<p>
+  When creating a new project the folder name is used 
+  for the project name. The project folder will also have a 
+  {{ text::emphasize(text="Pulumi.yaml") }}
+   file. 
+</p>
+<p>
+  Create a project named 
+  {{ text::emphasize(text="testing123") }}
+  .
+</p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='mkdir testing123 && cd testing123'
+  ) }}
+
+<h4>Initialize Project</h4>
+<p>
+  Use the {{ text::code(text="pulumi new") }} command to initialize the 
+  project and stack.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pulumi new aws-go --stack test --yes'
+) }}
+
+<p>
+  The options specified are as follows.
+</p>
+
+<ul>
+  <li>
+    {{ text::emphasize(text="new") }}
+     - 
+    Initialize a new project.
+  </li>
+  <li>
+    {{ text::emphasize(text="aws-go") }}
+     - 
+    The template that is used to build the project.
+    In this case, the project is for AWS using the Go language.
+  </li>
+  <li>
+    {{ text::emphasize(text="--stack test") }}
+     - 
+    The name of the stack.
+  </li>
+  <li>
+    {{ text::emphasize(text="--yes") }}
+     - 
+    Accept default config values.
+  </li>
+</ul>
+
+<p>
+  The above command creates to following files.
+</p>
+<ul>
+  <li>
+    {{ text::emphasize(text="Pulumi.yaml") }}
+     - 
+    The project configuration file.
+  </li>
+  <li>
+    {{ text::emphasize(text="Pulumi.test.yaml") }}
+     - 
+    The stack configuration file.
+  </li>
+  <li>
+    {{ text::emphasize(text="go.mod") }}
+     - 
+    Go modules property file which includes the Go version and the dependencies.
+  </li>
+  <li>
+    {{ text::emphasize(text="go.sum") }}
+     - 
+    Checksum file for Go dependencies.
+  </li>
+  <li>
+    {{ text::emphasize(text="main.go") }}
+     - 
+    The entrypoint for the Pulumi program.
+  </li>
+</ul>
+
+<h4>Define Resources</h4>
+<p>
+  The default 
+  {{ text::emphasize(text="main.go") }}
+   file 
+  defines the code to build and S3 bucket.
+</p>
+<p>
+  Open up the {{ text::emphasize(text="main.go") }}
+  
+  file and let step through it. I have added some additional comments 
+  below to furhter explain what is happening.
+</p>
+
+{{ text::code_block(
+  header="go",
+  language="go",
+  code='// file: main.go
+// Defines this file as being part of the `main` package.
+package main
+
+// Import the required packages to build the resources.
+import (
+        "github.com/pulumi/pulumi-aws/sdk/v5/go/aws/s3"
+        "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+// Entrypoint for the program.
+func main() {
+        pulumi.Run(func(ctx *pulumi.Context) error {
+                
+                // Create an AWS resource (S3 Bucket)
+                bucket, err := s3.NewBucket(ctx, "my-bucket", nil)
+                
+                // If we get an erorr, return the error.
+                if err != nil {
+                        return err
+                }
+
+                // Export the name of the bucket.
+                // Exports are displayed as `Outputs` when 
+                // building resources.
+                ctx.Export("bucketName", bucket.ID())
+
+                // exit the program returning `nil`
+                return nil
+        })
+}'
+) }}
+
+<h4>Install Dependencies</h4>
+<p>
+  We are using the s3 module so we need to install it.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='go get github.com/pulumi/pulumi-aws/sdk/v5/go/aws/s3') }}
+
+<h4>Build Resources</h4>
+<p>
+  Lets build the resources by running the {{ text::code(text="pulumi up") }} command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pulumi up -f
+  
+# Output
+Updating (test)
+
+View Live: https://app.pulumi.com/&lt;account-name&gt;/testing123/test/updates/3
+
+     Type                 Name             Status
+ +   pulumi:pulumi:Stack  testing123-test  created
+ +   └─ aws:s3:Bucket     my-bucket        created
+
+Outputs:
+    bucketName: "my-bucket-22610e5"
+
+Resources:
+    + 2 created
+
+Duration: 10s'
+) }}
+
+{{ text::note_block(text='
+  The $1 flag auto-accepts to changes.') 
+  | replace(from="$1", to=text::code(text="-f"))
+  }}
+<p>
+  We can see from the 
+  {{ text::emphasize(text="Outputs") }}
+   section that the 
+  {{ text::emphasize(text="my-bucket-22610e5") }}
+   S3 Bucket
+  was created.
+</p>
+
+<h4>Confirm Creation</h4>
+<p>
+  If you have the AWS CLI installed you can get a list of the 
+  S3 buckets with the {{ text::code(text="aws s3 ls") }} command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='aws s3 ls --region us-east-1
+  
+# Output
+2022-09-03 13:16:13 my-bucket-22610e5'
+) }}
+<p>
+  Otherwise, you can browse to the S3 services section in the 
+  AWS console.
+</p>
+
+<h4>Delete Resources</h4>
+<p>
+  Resources can be deleted with the 
+  {{ text::code(text="pulumi destroy") }} command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pulumi destroy -f
+  
+# Output
+Destroying (test)
+
+View Live: https://app.pulumi.com/&lt;account-name&gt;/testing123/test/updates/4
+
+     Type                 Name             Status
+ -   pulumi:pulumi:Stack  testing123-test  deleted
+ -   └─ aws:s3:Bucket     my-bucket        deleted
+
+Outputs:
+  - bucketName: "my-bucket-22610e5"
+
+Resources:
+    - 2 deleted
+
+Duration: 5s'
+) }}
+
+<h4>Delete Stack</h4>
+<p>
+  If the stack is no longer required, you can delete the 
+  stack as well with the {{ text::code(text="pulumi stack rm test") }} command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="pulumi stack rm test
+  
+# Output
+This will permanently remove the 'test' stack!
+Please confirm that this is what you'd like to do by typing `test`: test
+Stack 'test' has been removed!"
+) }}
+
+<p>
+  How much fun was that!
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I showed you how to get started managing AWS infrastructure 
+  using Pulumi with the Go language. Look out for a future post where I will 
+  show you how to host a static website on AWS with Pulumi.
+</p>
+{% endblock page_content %}
