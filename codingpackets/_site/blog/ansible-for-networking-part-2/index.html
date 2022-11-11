@@ -1,0 +1,948 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-20">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Ansible for Networking Part 2</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 13th of March 2017
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-relaxed text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is part two of a series on Anisble for network engineers. In this part of the series
+  we will take the playbook from
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/ansible-for-networking-part-1">part one</a>
+  and convert it into <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/playbooks_roles.html" target=_blank>roles</a>.
+  Roles in Ansible allow for easy re-use and sharing of code and it is important to understand them
+  as they will use role based playbooks for the rest of the series.
+</p>
+
+<h3 id="role-directory-structure">Role Directory Structure</h3>
+
+<p>
+  To get setup for using roles we will need to create a few directories and files under the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible</i>
+  
+  directory. Once this step is completed we will have the following directory structure.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># tree ~/ansible
+ansible
+├── ansible.cfg
+├── configure-devices.yml
+├── group_vars
+│   └── network
+├── host_vars
+│   ├── lab-leaf-01
+│   ├── lab-leaf-02
+│   ├── lab-spine-01
+│   └── lab-spine-02
+├── inventory
+└── roles
+    ├── base
+    ├── interfaces
+    └── ospf</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="directories">Directories</h3>
+<p>
+  First off lets create the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars</i>
+   and 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">roles</i>
+   directories under
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible</i>
+   directory. In the next step we will create the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">basic</i>
+  , <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">intefaces</i>
+  ,
+  and <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ospf</i>
+   directories under the roles directory.
+</p>
+
+<h3 id="roles">Roles</h3>
+<p>
+  When creating a role there is a nice command that helps build out the directory structure.
+</p>
+<p>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible init &lt;role-name&gt; --offline</i> will create a role with the following
+  directories and files based on the recommended best practices.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">&lt;role-name&gt;
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible init &lt;role-name&gt; --offline</i> command to create three
+  roles.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-galaxy init roles/base --offline
+ansible-galaxy init roles/interfaces --offline
+ansible-galaxy init roles/ospf --offline</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Now that the role directories are created we need to tell Ansible where to find them.
+  Add <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">roles_path=roles</i>
+  
+   under the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[defaults]</i>
+    section.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/ansible.cfg
+[defaults]
+hostfile=inventory
+host_key_checking=False
+retry_files_enabled=False
+ask_pass=True
+gather_facts=False
+roles_path=roles
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_ask_pass=True</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="group-variables">Group Variables</h3>
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars</i>
+   directory is where you define variables specific to groups of managed
+  nodes in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i>
+   file. Create a variable file called 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">network</i>
+  
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars</i>
+   directory and move the network group variables from the inventory
+  file to the network file.
+</p>
+<p>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible_user</i>
+   variable moved to 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars/network</i>
+  .
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/group_vars/network
+---
+ansible_user: cumulus</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i>
+   file should now look like this.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/inventory
+[server]
+lab-centos-01
+
+[spine]
+lab-spine-01
+lab-spine-02
+
+[leaf]
+lab-leaf-01
+lab-leaf-02
+
+[network:children]
+spine
+leaf</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="template">Template</h3>
+<p>
+  Next move the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible/templates/quagga.conf.j2</i>
+   file to the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible/roles/ospf/templates/</i>
+   directory and delete the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible/templates/</i>
+  
+  directory.
+</p>
+
+<h3 id="plays">Plays</h3>
+<p>
+  After that move the plays from the playbook into their respective roles paying attention to
+  the indentation.
+</p>
+
+<h3 id="plays-1-3">Plays 1 - 3</h3>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/base/tasks/main.yml
+---
+- name: Configure hostname in hosts file
+  lineinfile: dest=/etc/hosts
+              regexp='^127\.0\.1\.1'
+              line='127.0.1.1 lab-spine-01'
+              state=present
+
+- name: Configure hostname
+  hostname: name="{{ inventory_hostname }}"
+
+- name: Configure DNS
+  lineinfile: dest=/etc/resolv.conf
+              regexp='^server'
+              line='server 10.200.0.100'
+              state=present</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Plays 4 - 5</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/interface/tasks/main.yml
+---
+- name: Configure front panel ports
+  cl_interface: name="{{ item.int_name }}"
+                ipv4="{{ item.ip_address }}"
+                alias_name="{{ item.description }}"
+  with_items:
+    "{{ interfaces }}"
+
+- name: Add network interfaces to /etc/network/interfaces
+  blockinfile:
+    dest: /etc/network/interfaces
+    block: |
+
+      auto {{ item.int_name }}
+      iface {{ item.int_name }}
+        address {{ item.ip_address }}
+
+    insertafter: "^# ansible managed"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.int_name }}"
+  with_items:
+    "{{ interfaces }}"
+
+  notify: reload_networking</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4>Plays 6 - 8</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/ospf/tasks/main.yml
+---
+- name: Enable zebra and ospf
+  lineinfile: dest=/etc/quagga/daemons
+              regexp="{{ item.target }}"
+              line="{{ item.result }}"
+              state=present
+  with_items:
+    - { target: '^zebra=', result: zebra=yes }
+    - { target: '^ospfd=', result: ospfd=yes }
+
+- name: Ensure quagga is started on boot
+  systemd: name=quagga
+  enabled=true
+  state=started
+  notify: restart_quagga
+
+- name: Configure OSPF
+  template: src=../templates/quagga.conf.j2
+  dest=/etc/quagga/Quagga.conf
+  notify: restart_quagga</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="handlers">Handlers</h3>
+<p>
+  Next move the handlers from the playbook to their respective roles again paying attention
+  to the indentation.
+</p>
+
+<h4>reload_networking handler</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/interfaces/handlers/main.yml
+---
+- name: reload_networking
+  systemd: name=networking
+           state=restarted</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<h4>restart_quagga handler</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/ospf/handlers/main.yml
+---
+- name: restart_quagga
+  systemd: name=quagga
+           state=restarted</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="playbook">Playbook</h3>
+<p>
+  Finally edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">configure-devices.yml</i>
+   playbook as follows.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/configure-devices.yml
+---
+- name: Configure devices
+  hosts: network
+  roles:
+    - base
+    - interfaces
+    - ospf</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="testing">Testing</h3>
+<p>Now lets execute the playbook and make sure the environment builds as expected.</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook configure-devices.yml
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+PLAY [Configure devices] *******************************************************
+
+TASK [setup] *******************************************************************
+changed: [lab-leaf-01]
+changed: [lab-leaf-02]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+
+TASK [base : Configure hostname in hosts file] *********************************
+changed: [lab-leaf-02]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-01]
+
+TASK [base : Configure hostname] ***********************************************
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-02]
+changed: [lab-spine-01]
+
+TASK [base : Configure DNS] ****************************************************
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+
+TASK [interfaces : Configure front panel ports] ********************************
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+
+TASK [interfaces : Add network interfaces to /etc/network/interfaces] **********
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+
+TASK [ospf : Enable zebra and ospf] ********************************************
+changed: [lab-leaf-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-spine-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+
+TASK [ospf : Ensure quagga is started on boot] *********************************
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+
+TASK [ospf : Configure OSPF] ***************************************************
+changed: [lab-leaf-02]
+changed: [lab-spine-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+
+PLAY RECAP *********************************************************************
+lab-leaf-01                : ok=10    changed=10    unreachable=0    failed=0
+lab-leaf-02                : ok=10    changed=10    unreachable=0    failed=0
+lab-spine-01               : ok=10    changed=10    unreachable=0    failed=0
+lab-spine-02               : ok=10    changed=10    unreachable=0    failed=0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  The task header now has an element showing the role the task belongs to: 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">TASK [<b class="text-success">base</b> : Configure hostname in hosts file]</i></div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<p>Feel free to also run the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible</i>
+ ad-hoc test commands from part one.</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  There you have it, the playbook from part one is now converted to a role based structure that
+  can be reused within many playbooks and/or shared on Ansible Galaxy. In part three of the series
+  we will move on to configuring Juniper network devices.
+</p>
+
+          </div>
+
+          
+  
+
+
+          
+  
+    
+
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ansible" class="text-xl">ansible</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+
+  
+
+
+          
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#role-directory-structure">
+            Role Directory Structure
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#directories">
+            Directories
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#roles">
+            Roles
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#group-variables">
+            Group Variables
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#template">
+            Template
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#plays">
+            Plays
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#plays-1-3">
+            Plays 1 - 3
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#handlers">
+            Handlers
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#playbook">
+            Playbook
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

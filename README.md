@@ -46,3 +46,33 @@ Replace
 ```
 text::code_block
 ```
+
+Find
+```
+<a href="(.*?)">(.*?)</a>
+```
+
+Replace
+```
+{{ link::e(path="$1", description="$2") }}
+```
+
+Find
+```
+<code>(.*?)</code>
+```
+
+Replace
+```
+{{ text::code(text="$1") }}
+```
+
+Find 
+```
+<span class="hljs-comment">(.*?)</span>
+```
+
+Replace
+```
+$1
+```

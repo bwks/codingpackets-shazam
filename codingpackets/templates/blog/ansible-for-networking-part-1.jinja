@@ -1,0 +1,706 @@
+{% extends "_layouts/blog.jinja" %}code_block
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  This is part one of a series on Anisble for network engineers. The series will concentrate
+  on Ansible as a configuration management tool for networking and is aimed at those with a basic
+  understanding of Ansible. If you are just starting out with Ansible, see my quick start guide
+  {{ link::i(path="/blog/ansible-from-the-start-to-the-beginning", description="here") }}
+  and ansible cliff notes {{ link::i(path="/blog/ansible-overview", description="here") }}. A CCNA level of
+  network engineering knowledge will be assumed but not necessary to follow along. It is also
+  assumed that Ansible is already installed and if using a virtual env, the env is activated.
+</p>
+
+<h3 id="network-modules">Network Modules</h3>
+<p>
+  Starting with Ansible 2.1 there were a number of
+  {{ link::e(path="http://docs.ansible.com/ansible/list_of_network_modules.html", description="network modules") }}
+  introduced as part of Ansible core. Along with the core modules there are also a number of
+  community supported network modules that make using Ansible to work with network device possible.
+  As part of this series we will use both the core and community modules to configure Cisco,
+  Juniper, Arista and Cumulus network devices.
+
+</p>
+
+<h3 id="lab-topology">Lab Topology</h3>
+<p>
+  In this part of the series we will use {{ link::e(path="https://cumulusnetworks.com/", description="Cumulus") }}
+  Linux hosts as our managed nodes and a {{ link::e(path="https://www.centos.org/", description="Centos") }}
+  host as our control node. The following topology including all IP addressing and OSPF routing
+  domain will be configured via an Ansible playbook.
+</p>
+
+{{ image::boxed(path="blog/ansible-for-networking-part-1/ansible-for-networking-diagram.svg", height="400px") }}
+
+{{ text::note_block(text='
+    The management IP addresses (10.200.0.0/24) were the only thing configured manually
+') }}
+
+<h4>Code versions used for this lab</h4>
+<ul>
+  <li>Python - 2.7.5</li>
+  <li>Ansible - 2.2.1</li>
+  <li>Centos 7 - minimal 1511</li>
+  <li>Cumulus VX - 3.2.1</li>
+</ul>
+
+<h3 id="directory-structure">Directory Structure</h3>
+<p>
+  Create the following directory structure under the {{ text::emphasize(text="~/ansible") }}
+   directory
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# tree ~/ansible/
+
+~/ansible/
+├── ansible.cfg
+├── configure-devices.yml
+├── host_vars
+│   ├── lab-leaf-01
+│   ├── lab-leaf-02
+│   ├── lab-spine-01
+│   └── lab-spine-02
+├── inventory
+└── templates
+    └── quagga.conf.j2"
+) }}
+
+<h3 id="inventory">Inventory</h3>
+
+<p>
+  Create an {{ text::emphasize(text="inventory") }}
+   file under the {{ text::emphasize(text="~/ansible") }}
+   directory and define the managed nodes.
+  To prevent having to run a DNS server and still be able use host names instead of IP addresses
+  for OOB management, I added host entries for the managed nodes under the {{ text::emphasize(text="/etc/hosts") }}
+   file
+  on the control node.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="# ~/ansible/inventory
+[server]
+lab-centos-01
+
+[spine]
+lab-spine-01
+lab-spine-02
+
+[leaf]
+lab-leaf-01
+lab-leaf-02
+
+[network:children]
+spine
+leaf
+
+[network:vars]
+# Variables
+remote_user=cumulus"
+) }}
+
+<p>
+  A user variable has been applied to the network group with the {{ text::emphasize(text="[network:vars]") }}
+  
+  tag. This stops us having to specify a username with the {{ text::emphasize(text="-u") }}
+   flag when running a playbook.
+</p>
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Create an {{ text::emphasize(text="ansible.cfg") }}
+   file under the {{ text::emphasize(text="~/ansible") }}
+   directory.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="# ~/ansible/ansible.cfg
+[defaults]
+hostfile=inventory
+host_key_checking=False
+retry_files_enabled=False
+ask_pass=True
+gather_facts=False
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_ask_pass=True"
+) }}
+
+<p>
+  There are a few more variables here than previously seen so lets go through them.
+</p>
+<ul>
+  <li><b>ask_pass=True</b> Prevents having to use the {{ text::emphasize(text="-k") }}
+   flag when running a playbook</li>
+  <li><b>gather_facts=False</b> Stops the implicit {{ link::e(path="http://docs.ansible.com/ansible/setup_module.html", description="setup") }}
+    module from running at playbook execution.
+  </li>
+  <li><b>become=True</b> Specifies to become a privileged user</li>
+  <li><b>become_method=sudo</b> Defines the way to become a privileged user</li>
+  <li><b>become_ask_pass=True</b> Prevents having to use the {{ text::emphasize(text="-K") }}
+   flag when running a playbook</li>
+</ul>
+
+{{ text::note_block(text="
+  <p>
+    Its possible to authenticate to Cumulus Linux with an SSH key (the usual case when managing
+    linux hosts). In my experience authentication to network devices is usually done with username
+    and password credentials so I will use that method in this blog.
+  </p>
+")
+}}
+
+<h3 id="getting-started">Getting Started</h3>
+
+<p>
+  Now that we have our directory structure built and an {{ text::emphasize(text="ansible.cfg") }}
+   and {{ text::emphasize(text="inventory") }}
+  
+  file configured we can run a connectivity test with the {{ text::emphasize(text="ansible") }}
+   ad-hoc command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ansible network -m ping
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+lab-spine-01 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+lab-spine-02 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+lab-leaf-01 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+lab-leaf-02 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}'
+) }}
+
+<p>
+  If everything is setup correctly you will get a {{ text::emphasize(text="SUCCESS") }}
+   message for each managed node.
+</p>
+
+
+<h3 id="host-variables">Host Variables</h3>
+<p>
+  Next up create the host variable files under the {{ text::emphasize(text="~/ansible/host_vars/") }}
+   directory.
+  The variables defined in these files will be used when the playbook is executed. It is important
+  to name the variable files with the same name as the host defined in the inventory file as
+  this is how Anisble ties the variable file to the managed node.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/host_vars/lab-spine-01
+---
+interfaces:
+  - { int_name: swp1, ip_address: 10.100.0.0/31, description: to lab-spine-02 swp1}
+  - { int_name: swp2, ip_address: 10.100.0.2/31, description: to lab-leaf-01 swp1}
+  - { int_name: swp3, ip_address: 10.100.0.4/31, description: to lab-leaf-02 swp1}
+
+ospf_router_id: 1.1.1.1
+
+ospf_interfaces:
+  - { ospf_interface: swp1,  ospf_instance: 1, ospf_area: 0.0.0.0 }
+  - { ospf_interface: swp2,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+  - { ospf_interface: swp3,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+
+ospf_networks:
+  - { ospf_network: 10.100.0.0/31, ospf_area: 0.0.0.0 }
+  - { ospf_network: 10.100.0.2/31, ospf_area: 0.0.0.1 }
+  - { ospf_network: 10.100.0.4/31, ospf_area: 0.0.0.1 }'
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/host_vars/lab-leaf-01
+---
+interfaces:
+  - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
+  - { int_name: swp2, ip_address: 10.100.0.7/31, description: to lab-spine-02 swp1 }
+
+ospf_router_id: 3.3.3.3
+
+ospf_interfaces:
+  - { ospf_interface: swp1,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+  - { ospf_interface: swp2,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+
+ospf_networks:
+  - { ospf_network: 10.100.0.3/31, ospf_area: 0.0.0.1 }
+  - { ospf_network: 10.100.0.7/31, ospf_area: 0.0.0.1 }'
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/host_vars/lab-leaf-01
+---
+interfaces:
+  - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
+  - { int_name: swp2, ip_address: 10.100.0.7/31, description: to lab-spine-02 swp1 }
+
+ospf_router_id: 3.3.3.3
+
+ospf_interfaces:
+  - { ospf_interface: swp1,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+  - { ospf_interface: swp2,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+
+ospf_networks:
+  - { ospf_network: 10.100.0.3/31, ospf_area: 0.0.0.1 }
+  - { ospf_network: 10.100.0.7/31, ospf_area: 0.0.0.1 }'
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/host_vars/lab-leaf-01
+---
+interfaces:
+  - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
+  - { int_name: swp2, ip_address: 10.100.0.7/31, description: to lab-spine-02 swp1 }
+
+ospf_router_id: 3.3.3.3
+
+ospf_interfaces:
+  - { ospf_interface: swp1,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+  - { ospf_interface: swp2,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+
+ospf_networks:
+  - { ospf_network: 10.100.0.3/31, ospf_area: 0.0.0.1 }
+  - { ospf_network: 10.100.0.7/31, ospf_area: 0.0.0.1 }'
+) }}
+
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/host_vars/lab-leaf-02
+---
+interfaces:
+  - { int_name: swp1, ip_address: 10.100.0.5/31, description: to lab-spine-01 swp2 }
+  - { int_name: swp2, ip_address: 10.100.0.9/31, description: to lab-spine-02 swp2 }
+
+ospf_router_id: 4.4.4.4
+
+ospf_interfaces:
+  - { ospf_interface: swp1,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+  - { ospf_interface: swp2,  ospf_instance: 1, ospf_area: 0.0.0.1 }
+
+ospf_networks:
+  - { ospf_network: 10.100.0.5/31, ospf_area: 0.0.0.1 }
+  - { ospf_network: 10.100.0.9/31, ospf_area: 0.0.0.1 }'
+) }}
+
+<h3 id="template">Template</h3>
+<p>
+  Ansible uses {{ link::e(path="http://jinja.pocoo.org/docs/2.9/", description="Jinja2") }} as its templating engine.
+  Cumulus uses {{ link::e(path="https://github.com/CumulusNetworks/quagga", description="Quagga") }} for its routing daemons.
+  Create a {{ text::emphasize(text="quagga.conf.j2") }}
+   file under the {{ text::emphasize(text="~/ansible/templates/") }}
+   directory
+  which will be used to configure Quagga on the managed nodes.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="django",
+  code='# ~/ansible/templates/quagga.conf.j2
+username cumulus nopassword
+!
+service integrated-vtysh-config
+!
+log file /var/log/quagga/quagga.log
+!
+log timestamp precision 6
+!
+{% for interface in ospf_interfaces %}
+interface {{ interface.ospf_interface }}
+ ip ospf {{ interface.ospf_instance }} area {{ interface.ospf_area }}
+ link-detect
+!
+{% endfor %}
+!
+router ospf
+ ospf router-id {{ ospf_router_id }}
+ {% for network in ospf_networks %}
+ network {{ network.ospf_network  }} area {{ network.ospf_area }}
+ {% endfor %}
+!
+!
+line vty
+!'
+) }}
+
+<p>
+  There is a couple of {{ text::emphasize(text="{% for %}") }}
+   loops defined in the template. This
+  allows us to reduce duplication by following the DRY (Dont Repeat Yourself) principal of programming.
+  Nothing to be afraid of thought, if you get stuck the Jinja2 documentation is very friendly.
+</p>
+
+<h3 id="playbook">Playbook</h3>
+<p>
+  As mentioned previously playbooks are how the pieces are tied together to perform actions
+  on managed nodes. Playbooks describe the state the managed node should be in so lets outline
+  what we want the playbook achieve.
+</p>
+
+<b>Desired Outcomes</b>
+<ul>
+  <li>Configure a hostname and DNS server (plays 1-3)</li>
+  <li>Configure the interfaces (plays 4-5)</li>
+  <li>Enable routing daemons and configure OSPF (plays 6-8)</li>
+</ul>
+
+<p>
+  Create a playbook named {{ text::emphasize(text="configure-devices.yml") }}
+   under the {{ text::emphasize(text="~/ansible/") }}
+  
+  directory.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/configure-devices.yml
+---
+- hosts: network
+
+  tasks:
+  # Play 1
+  - name: Configure hostname in hosts file
+    lineinfile: dest=/etc/hosts
+                regexp="^127\.0\.1\.1"
+line="127.0.1.1 lab-spine-01"
+state=present
+
+# Play 2
+- name: Configure hostname
+hostname: name="{{ inventory_hostname }}"
+
+# Play 3
+- name: Configure DNS
+lineinfile: dest=/etc/resolv.conf
+regexp="^server"
+line="server 10.200.0.100"
+state=present
+
+# Play 4
+- name: Configure front panel ports
+cl_interface: name="{{ item.int_name }}"
+ipv4="{{ item.ip_address }}"
+alias_name="{{ item.description }}"
+with_items:
+"{{ interfaces }}"
+
+# Play 5
+- name: Add network interfaces to /etc/network/interfaces
+blockinfile:
+dest: /etc/network/interfaces
+block: |
+
+auto {{ item.int_name }}
+iface {{ item.int_name }}
+address {{ item.ip_address }}
+
+insertafter: "^# ansible managed"
+marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.int_name }}"
+with_items:
+"{{ interfaces }}"
+notify: reload_networking
+
+# Play 6
+- name: Enable zebra and ospf
+lineinfile: dest=/etc/quagga/daemons
+regexp="{{ item.target }}"
+line="{{ item.result }}"
+state=present
+with_items:
+- { target: "^zebra=", result: zebra=yes }
+- { target: "^ospfd=", result: ospfd=yes }
+
+# Play 7
+- name: Ensure quagga is started on boot
+systemd: name=quagga
+enabled=true
+state=started
+notify: restart_quagga
+
+# Play 8
+- name: Configure OSPF
+template: src=../templates/quagga.conf.j2
+dest=/etc/quagga/Quagga.conf
+notify: restart_quagga
+
+handlers:
+- name: reload_networking
+systemd: name=networking
+state=restarted
+
+- name: restart_quagga
+systemd: name=quagga
+state=restarted'
+) }}
+
+<p>
+  Its worth noting that the {{ text::emphasize(text="cl_interface") }}
+   module has been depreciated as of Ansible
+  version 2.3 and the {{ link::e(path="https://docs.ansible.com/ansible/nclu_module.html", description="nclu") }} module
+  should be used instead.
+</p>
+
+<h3 id="playbook-execution">Playbook Execution</h3>
+<p>
+  When the playbook is executed Ansible will gather up the variables for use within the plays and
+  start executing them on the managed nodes. Ansible will execute the first play on all the hosts,
+  then the second play on all the host and so on. If there is an error encountered during a play
+  the default action is to terminate the playbook execution.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="ansible-playbook configure-devices.yml
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+PLAY [network] *****************************************************************
+
+TASK [setup] *******************************************************************
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+
+TASK [Configure hostname in hosts file] ****************************************
+changed: [lab-leaf-01]
+changed: [lab-leaf-02]
+changed: [lab-spine-02]
+changed: [lab-spine-01]
+
+TASK [Configure hostname] ******************************************************
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+
+TASK [Configure DNS] ***********************************************************
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+
+TASK [Configure a front panel port with an IP] *********************************
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+
+TASK [Add network interfaces] **************************************************
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+
+TASK [Enable zebra and ospf] ***************************************************
+changed: [lab-spine-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+
+TASK [Ensure quagga is started on boot] ****************************************
+changed: [lab-spine-02]
+changed: [lab-spine-01]
+changed: [lab-leaf-01]
+changed: [lab-leaf-02]
+
+TASK [Configure OSPF] **********************************************************
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+
+RUNNING HANDLER [restart quagga] ***********************************************
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-02]
+changed: [lab-spine-01]
+
+PLAY RECAP *********************************************************************
+lab-leaf-01                : ok=10   changed=10    unreachable=0    failed=0
+lab-leaf-02                : ok=10   changed=10    unreachable=0    failed=0
+lab-spine-01               : ok=10   changed=10    unreachable=0    failed=0
+lab-spine-02               : ok=10   changed=10    unreachable=0    failed=0"
+) }}
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that the playbook has executed successfully its time to test our implementation. To keep it simple
+  we will fall back to the {{ text::code(text="ansible") }} ad-hoc command for this purpose.
+</p>
+<p>
+  Below you can see that all the interfaces are UP and configured with IP Addresses.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ansible network -m command -a "net show interface"
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+lab-spine-01 | SUCCESS | rc=0 >>
+
+    Name    Speed      MTU  Mode          Summary
+--  ------  -------  -----  ------------  ------------------------
+UP  lo      N/A      65536  Loopback      IP: 127.0.0.1/8, ::1/128
+UP  eth0    1G        1500  Mgmt          IP: 10.200.0.1/24
+UP  swp1    1G        1500  Interface/L3  IP: 10.100.0.0/31
+UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.2/31
+UP  swp3    1G        1500  Interface/L3  IP: 10.100.0.4/31
+
+lab-spine-02 | SUCCESS | rc=0 >>
+
+    Name    Speed      MTU  Mode          Summary
+--  ------  -------  -----  ------------  ------------------------
+UP  lo      N/A      65536  Loopback      IP: 127.0.0.1/8, ::1/128
+UP  eth0    1G        1500  Mgmt          IP: 10.200.0.2/24
+UP  swp1    1G        1500  Interface/L3  IP: 10.100.0.1/31
+UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.6/31
+UP  swp3    1G        1500  Interface/L3  IP: 10.100.0.8/31
+
+lab-leaf-01 | SUCCESS | rc=0 >>
+
+    Name    Speed      MTU  Mode          Summary
+--  ------  -------  -----  ------------  ------------------------
+UP  lo      N/A      65536  Loopback      IP: 127.0.0.1/8, ::1/128
+UP  eth0    1G        1500  Mgmt          IP: 10.200.0.3/24
+UP  swp1    1G        1500  Interface/L3  IP: 10.100.0.3/31
+UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.7/31
+
+lab-leaf-02 | SUCCESS | rc=0 >>
+
+    Name    Speed      MTU  Mode          Summary
+--  ------  -------  -----  ------------  ------------------------
+UP  lo      N/A      65536  Loopback      IP: 127.0.0.1/8, ::1/128
+UP  eth0    1G        1500  Mgmt          IP: 10.200.0.4/24
+UP  swp1    1G        1500  Interface/L3  IP: 10.100.0.5/31
+UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.9/31'
+) }}
+
+
+<p>
+  We can also see that all OSPF neighbors are formed.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ansible network -m command -a "net show ospf neighbor"
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+lab-spine-01 | SUCCESS | rc=0 >>
+
+Neighbor ID     Pri State           Dead Time Address         Interface            RXmtL RqstL DBsmL
+2.2.2.2           1 Full/DR           31.763s 10.100.0.1      swp1:10.100.0.0          0     0     0
+3.3.3.3           1 Full/DR           38.323s 10.100.0.3      swp2:10.100.0.2          0     0     0
+4.4.4.4           1 Full/DR           37.963s 10.100.0.5      swp3:10.100.0.4          0     0     0
+
+lab-spine-02 | SUCCESS | rc=0 >>
+
+Neighbor ID     Pri State           Dead Time Address         Interface            RXmtL RqstL DBsmL
+1.1.1.1           1 Full/Backup       37.328s 10.100.0.0      swp1:10.100.0.1          0     0     0
+3.3.3.3           1 Full/DR           38.290s 10.100.0.7      swp2:10.100.0.6          0     0     0
+4.4.4.4           1 Full/DR           37.931s 10.100.0.9      swp3:10.100.0.8          0     0     0
+
+lab-leaf-01 | SUCCESS | rc=0 >>
+
+Neighbor ID     Pri State           Dead Time Address         Interface            RXmtL RqstL DBsmL
+1.1.1.1           1 Full/Backup       37.348s 10.100.0.2      swp1:10.100.0.3          0     0     0
+2.2.2.2           1 Full/Backup       31.751s 10.100.0.6      swp2:10.100.0.7          0     0     0
+
+lab-leaf-02 | SUCCESS | rc=0 >>
+
+Neighbor ID     Pri State           Dead Time Address         Interface            RXmtL RqstL DBsmL
+1.1.1.1           1 Full/Backup       37.338s 10.100.0.4      swp1:10.100.0.5          0     0     0
+2.2.2.2           1 Full/Backup       31.741s 10.100.0.8      swp2:10.100.0.9          0     0     0'
+) }}
+
+
+
+
+<p>
+  Feel free to also run some other commands for further verification.
+</p>
+<b>Verification command examples</b>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ansible network -m command -a "net show route ospf"
+ansible network -m command -a "ping 10.100.0.1 -c 1"
+ansible network -m command -a "cat /etc/hosts"
+ansible network -m command -a "cat /etc/hostname"
+ansible network -m command -a "cat /etc/resolv.conf"'
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you made it this far and were following along you will have a spine and leaf topology configured
+  along with all IP addressing and OSPF routing protocol. In part two of this series we will
+  convert the playbook into a role.
+</p>
+
+{% endblock page_content %}

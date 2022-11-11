@@ -1,0 +1,447 @@
+{% extends "_layouts/blog.jinja" %}code_block
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is part two of a series on Anisble for network engineers. In this part of the series
+  we will take the playbook from
+  {{ link::i(path="/blog/ansible-for-networking-part-1", description="part one") }}
+  and convert it into {{ link::e(path="http://docs.ansible.com/ansible/playbooks_roles.html", description="roles") }}.
+  Roles in Ansible allow for easy re-use and sharing of code and it is important to understand them
+  as they will use role based playbooks for the rest of the series.
+</p>
+
+<h3 id="role-directory-structure">Role Directory Structure</h3>
+
+<p>
+  To get setup for using roles we will need to create a few directories and files under the {{ text::emphasize(text="~/ansible") }}
+  
+  directory. Once this step is completed we will have the following directory structure.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# tree ~/ansible
+ansible
+├── ansible.cfg
+├── configure-devices.yml
+├── group_vars
+│   └── network
+├── host_vars
+│   ├── lab-leaf-01
+│   ├── lab-leaf-02
+│   ├── lab-spine-01
+│   └── lab-spine-02
+├── inventory
+└── roles
+    ├── base
+    ├── interfaces
+    └── ospf"
+) }}
+
+<h3 id="directories">Directories</h3>
+<p>
+  First off lets create the {{ text::emphasize(text="group_vars") }}
+   and 
+  {{ text::emphasize(text="roles") }}
+   directories under
+  the {{ text::emphasize(text="~/ansible") }}
+   directory. In the next step we will create the 
+  {{ text::emphasize(text="basic") }}
+  , {{ text::emphasize(text="intefaces") }}
+  ,
+  and {{ text::emphasize(text="ospf") }}
+   directories under the roles directory.
+</p>
+
+<h3 id="roles">Roles</h3>
+<p>
+  When creating a role there is a nice command that helps build out the directory structure.
+</p>
+<p>
+  {{ text::code(text="ansible init &lt;role-name&gt; --offline") }} will create a role with the following
+  directories and files based on the recommended best practices.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="&lt;role-name&gt;
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml"
+) }}
+
+<p>
+  Now use the {{ text::code(text="ansible init &lt;role-name&gt; --offline") }} command to create three
+  roles.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="ansible-galaxy init roles/base --offline
+ansible-galaxy init roles/interfaces --offline
+ansible-galaxy init roles/ospf --offline"
+) }}
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Now that the role directories are created we need to tell Ansible where to find them.
+  Add {{ text::emphasize(text="roles_path=roles") }}
+  
+   under the {{ text::emphasize(text="[defaults]") }}
+    section.
+</p>
+
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="# ~/ansible/ansible.cfg
+[defaults]
+hostfile=inventory
+host_key_checking=False
+retry_files_enabled=False
+ask_pass=True
+gather_facts=False
+roles_path=roles
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_ask_pass=True"
+) }}
+
+
+<h3 id="group-variables">Group Variables</h3>
+<p>
+  The {{ text::emphasize(text="group_vars") }}
+   directory is where you define variables specific to groups of managed
+  nodes in the {{ text::emphasize(text="inventory") }}
+   file. Create a variable file called 
+  {{ text::emphasize(text="network") }}
+  
+  in the {{ text::emphasize(text="group_vars") }}
+   directory and move the network group variables from the inventory
+  file to the network file.
+</p>
+<p>
+  {{ text::emphasize(text="ansible_user") }}
+   variable moved to 
+  {{ text::emphasize(text="group_vars/network") }}
+  .
+</p>
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code="# ~/ansible/group_vars/network
+---
+ansible_user: cumulus"
+) }}
+
+
+<p>
+  The {{ text::emphasize(text="inventory") }}
+   file should now look like this.
+</p>
+
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code="# ~/ansible/inventory
+[server]
+lab-centos-01
+
+[spine]
+lab-spine-01
+lab-spine-02
+
+[leaf]
+lab-leaf-01
+lab-leaf-02
+
+[network:children]
+spine
+leaf"
+) }}
+
+<h3 id="template">Template</h3>
+<p>
+  Next move the {{ text::emphasize(text="~/ansible/templates/quagga.conf.j2") }}
+   file to the
+  {{ text::emphasize(text="~/ansible/roles/ospf/templates/") }}
+   directory and delete the 
+  {{ text::emphasize(text="~/ansible/templates/") }}
+  
+  directory.
+</p>
+
+<h3 id="plays">Plays</h3>
+<p>
+  After that move the plays from the playbook into their respective roles paying attention to
+  the indentation.
+</p>
+
+<h3 id="plays-1-3">Plays 1 - 3</h3>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# ~/ansible/roles/base/tasks/main.yml
+---
+- name: Configure hostname in hosts file
+  lineinfile: dest=/etc/hosts
+              regexp='^127\.0\.1\.1'
+              line='127.0.1.1 lab-spine-01'
+              state=present
+
+- name: Configure hostname
+  hostname: name="{{ inventory_hostname }}"
+
+- name: Configure DNS
+  lineinfile: dest=/etc/resolv.conf
+              regexp='^server'
+              line='server 10.200.0.100'
+              state=present`
+) }}
+
+<h4>Plays 4 - 5</h4>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/roles/interface/tasks/main.yml
+---
+- name: Configure front panel ports
+  cl_interface: name="{{ item.int_name }}"
+                ipv4="{{ item.ip_address }}"
+                alias_name="{{ item.description }}"
+  with_items:
+    "{{ interfaces }}"
+
+- name: Add network interfaces to /etc/network/interfaces
+  blockinfile:
+    dest: /etc/network/interfaces
+    block: |
+
+      auto {{ item.int_name }}
+      iface {{ item.int_name }}
+        address {{ item.ip_address }}
+
+    insertafter: "^# ansible managed"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.int_name }}"
+  with_items:
+    "{{ interfaces }}"
+
+  notify: reload_networking'
+) }}
+
+
+<h4>Plays 6 - 8</h4>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# ~/ansible/roles/ospf/tasks/main.yml
+---
+- name: Enable zebra and ospf
+  lineinfile: dest=/etc/quagga/daemons
+              regexp="{{ item.target }}"
+              line="{{ item.result }}"
+              state=present
+  with_items:
+    - { target: '^zebra=', result: zebra=yes }
+    - { target: '^ospfd=', result: ospfd=yes }
+
+- name: Ensure quagga is started on boot
+  systemd: name=quagga
+  enabled=true
+  state=started
+  notify: restart_quagga
+
+- name: Configure OSPF
+  template: src=../templates/quagga.conf.j2
+  dest=/etc/quagga/Quagga.conf
+  notify: restart_quagga`
+) }}
+
+
+<h3 id="handlers">Handlers</h3>
+<p>
+  Next move the handlers from the playbook to their respective roles again paying attention
+  to the indentation.
+</p>
+
+<h4>reload_networking handler</h4>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/roles/interfaces/handlers/main.yml
+---
+- name: reload_networking
+  systemd: name=networking
+           state=restarted'
+) }}
+
+
+
+
+<h4>restart_quagga handler</h4>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/roles/ospf/handlers/main.yml
+---
+- name: restart_quagga
+  systemd: name=quagga
+           state=restarted'
+) }}
+
+
+<h3 id="playbook">Playbook</h3>
+<p>
+  Finally edit the {{ text::emphasize(text="configure-devices.yml") }}
+   playbook as follows.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# ~/ansible/configure-devices.yml
+---
+- name: Configure devices
+  hosts: network
+  roles:
+    - base
+    - interfaces
+    - ospf'
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>Now lets execute the playbook and make sure the environment builds as expected.</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="ansible-playbook configure-devices.yml
+SSH password:
+SUDO password[defaults to SSH password]:
+
+# output
+PLAY [Configure devices] *******************************************************
+
+TASK [setup] *******************************************************************
+changed: [lab-leaf-01]
+changed: [lab-leaf-02]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+
+TASK [base : Configure hostname in hosts file] *********************************
+changed: [lab-leaf-02]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-01]
+
+TASK [base : Configure hostname] ***********************************************
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-02]
+changed: [lab-spine-01]
+
+TASK [base : Configure DNS] ****************************************************
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+
+TASK [interfaces : Configure front panel ports] ********************************
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+
+TASK [interfaces : Add network interfaces to /etc/network/interfaces] **********
+changed: [lab-spine-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.0/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.3/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.1/31', u'description': u'to lab-spine-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp1', u'ip_address': u'10.100.0.5/31', u'description': u'to lab-spine-01 swp2'})
+changed: [lab-leaf-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.7/31', u'description': u'to lab-spine-02 swp1'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.2/31', u'description': u'to lab-leaf-01 swp1'})
+changed: [lab-leaf-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.9/31', u'description': u'to lab-spine-02 swp2'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp2', u'ip_address': u'10.100.0.6/31', u'description': u'to lab-leaf-01 swp2'})
+changed: [lab-spine-01] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.4/31', u'description': u'to lab-leaf-02 swp1'})
+changed: [lab-spine-02] => (item={u'int_name': u'swp3', u'ip_address': u'10.100.0.8/31', u'description': u'to lab-leaf-02 swp2'})
+
+TASK [ospf : Enable zebra and ospf] ********************************************
+changed: [lab-leaf-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-spine-01] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^zebra=', u'result': u'zebra=yes'})
+changed: [lab-leaf-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-leaf-02] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+changed: [lab-spine-01] => (item={u'target': u'^ospfd=', u'result': u'ospfd=yes'})
+
+TASK [ospf : Ensure quagga is started on boot] *********************************
+changed: [lab-leaf-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+changed: [lab-spine-02]
+
+TASK [ospf : Configure OSPF] ***************************************************
+changed: [lab-leaf-02]
+changed: [lab-spine-02]
+changed: [lab-leaf-01]
+changed: [lab-spine-01]
+
+PLAY RECAP *********************************************************************
+lab-leaf-01                : ok=10    changed=10    unreachable=0    failed=0
+lab-leaf-02                : ok=10    changed=10    unreachable=0    failed=0
+lab-spine-01               : ok=10    changed=10    unreachable=0    failed=0
+lab-spine-02               : ok=10    changed=10    unreachable=0    failed=0"
+) }}
+
+
+{{ text::note_block(text='
+  The task header now has an element showing the role the task belongs to: 
+  $1'
+  | replace(from="$1", to=text::emphasize(text='TASK [<b class="text-success">base</b> : Configure hostname in hosts file]'))
+)
+}}
+
+
+<p>Feel free to also run the {{ text::emphasize(text="ansible") }}
+ ad-hoc test commands from part one.</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  There you have it, the playbook from part one is now converted to a role based structure that
+  can be reused within many playbooks and/or shared on Ansible Galaxy. In part three of the series
+  we will move on to configuring Juniper network devices.
+</p>
+{% endblock page_content %}
