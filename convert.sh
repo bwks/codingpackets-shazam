@@ -1,10 +1,10 @@
-
-
-FILENAME="codingpackets/templates/blog/aws-and-pulumi-with-go-getting-started.jinja";
+FILENAME="codingpackets/templates/blog/aws-s3-cloudfront-static-website-hosting.jinja";
 
 sed -i -e 's/cb\.codeBlock/text::code_block/g' $FILENAME
 
 sed -i -e 's/nb\.noteBlock(/text::note_block(text=/g' $FILENAME
+
+sed -i -e 's/nb\.importantBlock(/text::important_block(text=/g' $FILENAME
 
 sed -i -e 's/bi\.boxedImage(/image::boxed(path=/g' $FILENAME
 

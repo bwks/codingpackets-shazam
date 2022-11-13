@@ -1,0 +1,92 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="overview">Overview</h3>
+<p>
+  AWS Identity and Access Management (IAM) provides access control 
+  for AWS users/applications to the various AWS services and resources.
+</p>
+
+<h3 id="features">Features</h3>
+<ul>
+  <li>Available only in the <span class='emphasize-text-darkmode'>Global</span> region</li>
+  <li>Globally resiliant service</li>
+  <li>Always free service</li>
+</ul>
+
+<h3 id="account-types">Account Types</h3>
+<p>
+  There are a number of account types that can be configured in an AWS environment.
+</p>
+<ul>
+  <li><b>Root</b> - The email address used to sign up for the AWS account. Full administrative access.</li>
+  <li><b>User</b> - A single physical person.</li>
+  <li><b>Group</b> - Collection of users based on job function (admin, developer, etc).</li>
+  <li><b>Role</b> - Control access between AWS services (EG: EC2 -> S3).</li>
+</ul>
+
+<h3 id="credential-types">Credential Types</h3>
+<p>
+  Credentials are used to secure access to AWS user accounts.
+</p>
+<ul>
+  <li><b>Username/Password</b> - The default login credentials for users.</li>
+  <li><b>MFA</b> - Multi-Factor Auth adds an additional authenticaiton mechanism to Username/Password logins.</li>
+  <li><b>Access Key ID/Secret access key</b> - Allows programatic access to AWS resources and services.</li>
+</ul>
+
+<h3 id="policy-documents">Policy Documents</h3>
+<ul>
+  <li>IAM policy documents define access permissions and can be assigned to users, groups and roles.</li>
+  <li>Policy documents are written in JSON format. An example AWS built-in document 
+    <span class='emphasize-text-darkmode'>PowerUserAccess</span> is below.</li>
+</ul>
+
+{{ text::code_block(
+header="PowerUserAccess",
+language="json",
+code='{
+"Version": "2012-10-17",
+"Statement": [
+    {
+        "Effect": "Allow",
+        "NotAction": [
+            "iam:*",
+            "organizations:*",
+            "account:*"
+        ],
+        "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "iam:CreateServiceLinkedRole",
+            "iam:DeleteServiceLinkedRole",
+            "iam:ListRoles",
+            "organizations:DescribeOrganization",
+            "account:ListRegions"
+        ],
+        "Resource": "*"
+    }
+]
+}') }}
+
+<h3 id="caveates">Caveates</h3>
+<ul>
+  <li>By default, new users have no permissions when created.</li>
+  <li>There is a limit of 5000 IAM users per/account.</li>
+  <li>IAM users can be a member of 10 groups maximum.</li>
+</ul>
+
+<h3 id="best-practices">Best Practices</h3>
+<ul>
+  <li>Secure the root account with Multi-Factor Authentication (MFA).</li>
+  <li>Do not use the root account for day to day management.</li>
+  <li>Folow the principle of least privilege when assigning permissions.</li>
+  <li>Create user groups with appropriate permissions and assign users to the appropriate group(s).</li>
+  <li>Assign IAM policy documents to groups and/or roles. Do not assign them to users.</li>
+  <li>Setup a password rotation policy.</li>
+</ul>
+
+{% endblock page_content %}
