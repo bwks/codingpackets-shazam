@@ -1,0 +1,165 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    "Amazon Simple Storage Service (Amazon S3) is an object storage service
+    that offers industry-leading scalability, data availability, security,
+    and performance". At a high level S3 has the following characteristics:
+  </p>
+  <ul>
+    <li>Object based storage for static files that do not change. EG: JPEG, MOV, etc..</li>
+    <li>Objects are stored in "buckets"</li>
+    <li>Files from 0 Bytes - 5TB in size</li>
+    <li>S3 has a universal namespace across all tenants and must be unique</li>
+    <li>S3 buckets and objects have a HTTPS endpoint associated to them</li>
+    <li>Successful uploads to an S3 buckets return a HTTP 200 Ok message</li>
+  </ul>
+
+{{ text::note_block(text='
+    S3 is not suitable for databases or operating systems.
+') }}
+
+  <h3 id="features">Features</h3>
+  <p>
+    S3 has the following features.
+  </p>
+  <ul>
+    <li>Globally resiliant service</li>
+    <li>Tiered storage classes</li>
+    <li>Lifecycle management</li>
+    <li>Object versioning</li>
+    <li>Encryption</li>
+    <li>Security Policies</li>
+  </ul>
+
+  <h3 id="objects">Objects</h3>
+  <p>
+    Objects are just files stored as key / value pairs
+  </p>
+
+  {{ text::code_block(
+    header="json",
+    language="json",
+    code='{
+  "Key": "Name",
+  "Value": "FileData",
+  "VersionID": "VersionNumber",
+  "Subresources": [
+    "ACLs",
+    "Torrent"
+  ]
+}'
+  ) }}
+
+  <h3 id="data-consistency">Data Consistency</h3>
+  <p>
+    There are two methods to maintain data consistency.
+  </p>
+
+  <h4>Read After Write Consistency</h4>
+  <ul>
+    <li>For PUTs of a new object</li>
+    <li>Can immediately read object after PUTing it to S3</li>
+  </ul>
+
+  <h4>Eventual Consistency</h4>
+  <ul>
+    <li>For overwrite PUTs and DELETEs</li>
+    <li>Can take some time to propagate changes</li>
+    <li>May be reading the old file on GETs or still see the old file on DELETEs</li>
+  </ul>
+
+  <h3 id="storage-classes">Storage Classes</h3>
+  <p>
+    There are 6 storage classes for S3 services. See
+    {{ link::e(path="https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html", description="link") }}
+    for further details on each tier.
+  </p>
+  <h4>S3 - Standard</h4>
+  <ul>
+    <li>The original S3 service</li>
+    <li>99.99% uptime</li>
+    <li>11 x 9s durability</li>
+  </ul>
+
+  <h4>S3 - IA (Infrequently Accessed)</h4>
+  <ul>
+    <li>Infrequent accessed data but requires rapid access when needed</li>
+  </ul>
+
+  <h4>S3 - One Zone - IA</h4>
+  <ul>
+    <li>Lower cost IA in a single availability zone</li>
+  </ul>
+
+  <h4>S3 - Intelligent Tiering</h4>
+  <ul>
+    <li>Uses AI to automatically move data to the most cost effective storage tier</li>
+  </ul>
+
+
+  <h4>S3 - Glacier</h4>
+  <ul>
+    <li>Low cost storage with configuratable retreival times from minutes to hours</li>
+  </ul>
+
+  <h4>S3 - Glacier Deep Archive</h4>
+  <ul>
+    <li>Lowest cost storage with a minimum of 12 hours retrieval time</li>
+  </ul>
+
+  <h3 id="cost">Cost</h3>
+  <p>
+    Cost of the service is calculated on a number of factors.
+  </p>
+  <ul>
+    <li>Storage volume</li>
+    <li>Number of requests</li>
+    <li>Storage management</li>
+    <li>Data transfer</li>
+  </ul>
+  <h4>Transfer acceleration</h4>
+  <ul>
+    <li>Uses AWS cloudfront to upload files to an AWS pop close to the user</li>
+    <li>The file is then transferred to the S3 bucket across the AWS backbone</li>
+  </ul>
+  <h4>Cross region replication</h4>
+  <ul>
+    <li>Users upload a file to a "primary" bucket the file is then replicated to a "secondary" bucket in another AWS
+      region
+    </li>
+  </ul>
+
+  <h3 id="transfer-acceleration">Transfer acceleration</h3>
+  <ul>
+    <li>Uses AWS cloudfront to upload files to an AWS pop close to the user</li>
+    <li>The file is then transferred to the S3 bucket across the AWS backbone</li>
+  </ul>
+
+  <h3 id="cross-region-replication">Cross region replication</h3>
+  <ul>
+    <li>Users upload a file to a "primary" bucket the file is then replicated to
+      a "secondary" bucket in another AWS region
+    </li>
+  </ul>
+
+  <h3 id="security">Security</h3>
+  <p>
+    S3 buckets can be secured in the following ways.
+  </p>
+  <h4>Bucket Policies</h4>
+  <ul>
+    <li>Applies to the whole bucket</li>
+  </ul>
+  <h4>Object Policies</h4>
+  <ul>
+    <li>Applies to individual files</li>
+  </ul>
+  <h4>IAM Policies for Users and Groups</h4>
+  <ul>
+    <li>Applies to users and groups</li>
+  </ul>
+
+
+{% endblock page_content %}

@@ -1,4 +1,4 @@
-{% extends "_layouts/blog.jinja" %}code_block
+{% extends "_layouts/blog.jinja" %}
 {% block page_content %}
 
 <h3 id="intro">Intro</h3>
@@ -29,7 +29,7 @@
 <h4>Domain Name</h4>
 <p>
   Firstly some background. I was initially hosting the DNS for
-  {{ link::e(path="{{ links.rootPath.url }}", description="codingpackets.com") }} with Godaddy.
+  {{ link::i(path="/", description="codingpackets.com") }} with Godaddy.
   I was pretty happy with them but there was an issue with
   redirects and I was getting a certificate error when using a bare domain IE:
   <i>https://codingpackets.com</i> without the {{ text::emphasize(text="www") }}
@@ -38,7 +38,7 @@
   adding {{ text::emphasize(text="www") }}
    to the domain
   and Godaddy's inability to create a DNS alias record. For this reason I transferred the
-  {{ link::e(path="{{ links.rootPath.url }}", description="codingpackets.com") }} domain to Route 53.
+  {{ link::i(path="/", description="codingpackets.com") }} domain to Route 53.
 </p>
 
 <p>

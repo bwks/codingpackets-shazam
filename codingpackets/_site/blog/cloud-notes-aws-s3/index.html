@@ -84,12 +84,12 @@
     
 <!-- PAGE HEADER START -->
 <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Cloud Notes: AWS IAM</h1>
+  <h1 class="pb-1 sm:pb-2">Cloud Notes: AWS S3</h1>
   <div class="">
     
     
       <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 30th of June 2022
+        published: 18th of February 2019
       </p>
     
   </div>
@@ -112,79 +112,68 @@
           <div class="leading-relaxed text-xl text-gray-800 dark:text-neutral-400 font-medium">
             
 
-<h3 id="overview">Overview</h3>
-<p>
-  AWS Identity and Access Management (IAM) provides access control 
-  for AWS users/applications to the various AWS services and resources.
-</p>
-
-<h3 id="features">Features</h3>
-<ul>
-  <li>Available only in the <span class='emphasize-text-darkmode'>Global</span> region</li>
-  <li>Globally resiliant service</li>
-  <li>Always free service</li>
-</ul>
-
-<h3 id="account-types">Account Types</h3>
-<p>
-  There are a number of account types that can be configured in an AWS environment.
-</p>
-<ul>
-  <li><b>Root</b> - The email address used to sign up for the AWS account. Full administrative access.</li>
-  <li><b>User</b> - A single physical person.</li>
-  <li><b>Group</b> - Collection of users based on job function (admin, developer, etc).</li>
-  <li><b>Role</b> - Control access between AWS services (EG: EC2 -> S3).</li>
-</ul>
-
-<h3 id="credential-types">Credential Types</h3>
-<p>
-  Credentials are used to secure access to AWS user accounts.
-</p>
-<ul>
-  <li><b>Username/Password</b> - The default login credentials for users.</li>
-  <li><b>MFA</b> - Multi-Factor Auth adds an additional authenticaiton mechanism to Username/Password logins.</li>
-  <li><b>Access Key ID/Secret access key</b> - Allows programatic access to AWS resources and services.</li>
-</ul>
-
-<h3 id="policy-documents">Policy Documents</h3>
-<ul>
-  <li>IAM policy documents define access permissions and can be assigned to users, groups and roles.</li>
-  <li>Policy documents are written in JSON format. An example AWS built-in document 
-    <span class='emphasize-text-darkmode'>PowerUserAccess</span> is below.</li>
-</ul>
+  <h3 id="overview">Overview</h3>
+  <p>
+    "Amazon Simple Storage Service (Amazon S3) is an object storage service
+    that offers industry-leading scalability, data availability, security,
+    and performance". At a high level S3 has the following characteristics:
+  </p>
+  <ul>
+    <li>Object based storage for static files that do not change. EG: JPEG, MOV, etc..</li>
+    <li>Objects are stored in "buckets"</li>
+    <li>Files from 0 Bytes - 5TB in size</li>
+    <li>S3 has a universal namespace across all tenants and must be unique</li>
+    <li>S3 buckets and objects have a HTTPS endpoint associated to them</li>
+    <li>Successful uploads to an S3 buckets return a HTTP 200 Ok message</li>
+  </ul>
 
 
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="fa fa-check-circle" aria-hidden="true"></i> <b>Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    S3 is not suitable for databases or operating systems.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+  <h3 id="features">Features</h3>
+  <p>
+    S3 has the following features.
+  </p>
+  <ul>
+    <li>Globally resiliant service</li>
+    <li>Tiered storage classes</li>
+    <li>Lifecycle management</li>
+    <li>Object versioning</li>
+    <li>Encryption</li>
+    <li>Security Policies</li>
+  </ul>
+
+  <h3 id="objects">Objects</h3>
+  <p>
+    Objects are just files stored as key / value pairs
+  </p>
+
+  
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">PowerUserAccess</span>
+      <span class="">json</span>
     </div>
     <div class="font-mono">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
-"Version": "2012-10-17",
-"Statement": [
-    {
-        "Effect": "Allow",
-        "NotAction": [
-            "iam:*",
-            "organizations:*",
-            "account:*"
-        ],
-        "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": [
-            "iam:CreateServiceLinkedRole",
-            "iam:DeleteServiceLinkedRole",
-            "iam:ListRoles",
-            "organizations:DescribeOrganization",
-            "account:ListRegions"
-        ],
-        "Resource": "*"
-    }
-]
+  "Key": "Name",
+  "Value": "FileData",
+  "VersionID": "VersionNumber",
+  "Subresources": [
+    "ACLs",
+    "Torrent"
+  ]
 }</code></pre>
     </div>
   </div>
@@ -192,22 +181,115 @@
 <!-- CODE BLOCK END -->
 
 
-<h3 id="caveates">Caveates</h3>
-<ul>
-  <li>By default, new users have no permissions when created.</li>
-  <li>There is a limit of 5000 IAM users per/account.</li>
-  <li>IAM users can be a member of 10 groups maximum.</li>
-</ul>
+  <h3 id="data-consistency">Data Consistency</h3>
+  <p>
+    There are two methods to maintain data consistency.
+  </p>
 
-<h3 id="best-practices">Best Practices</h3>
-<ul>
-  <li>Secure the root account with Multi-Factor Authentication (MFA).</li>
-  <li>Do not use the root account for day to day management.</li>
-  <li>Folow the principle of least privilege when assigning permissions.</li>
-  <li>Create user groups with appropriate permissions and assign users to the appropriate group(s).</li>
-  <li>Assign IAM policy documents to groups and/or roles. Do not assign them to users.</li>
-  <li>Setup a password rotation policy.</li>
-</ul>
+  <h4>Read After Write Consistency</h4>
+  <ul>
+    <li>For PUTs of a new object</li>
+    <li>Can immediately read object after PUTing it to S3</li>
+  </ul>
+
+  <h4>Eventual Consistency</h4>
+  <ul>
+    <li>For overwrite PUTs and DELETEs</li>
+    <li>Can take some time to propagate changes</li>
+    <li>May be reading the old file on GETs or still see the old file on DELETEs</li>
+  </ul>
+
+  <h3 id="storage-classes">Storage Classes</h3>
+  <p>
+    There are 6 storage classes for S3 services. See
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html" target=_blank>link</a>
+    for further details on each tier.
+  </p>
+  <h4>S3 - Standard</h4>
+  <ul>
+    <li>The original S3 service</li>
+    <li>99.99% uptime</li>
+    <li>11 x 9s durability</li>
+  </ul>
+
+  <h4>S3 - IA (Infrequently Accessed)</h4>
+  <ul>
+    <li>Infrequent accessed data but requires rapid access when needed</li>
+  </ul>
+
+  <h4>S3 - One Zone - IA</h4>
+  <ul>
+    <li>Lower cost IA in a single availability zone</li>
+  </ul>
+
+  <h4>S3 - Intelligent Tiering</h4>
+  <ul>
+    <li>Uses AI to automatically move data to the most cost effective storage tier</li>
+  </ul>
+
+
+  <h4>S3 - Glacier</h4>
+  <ul>
+    <li>Low cost storage with configuratable retreival times from minutes to hours</li>
+  </ul>
+
+  <h4>S3 - Glacier Deep Archive</h4>
+  <ul>
+    <li>Lowest cost storage with a minimum of 12 hours retrieval time</li>
+  </ul>
+
+  <h3 id="cost">Cost</h3>
+  <p>
+    Cost of the service is calculated on a number of factors.
+  </p>
+  <ul>
+    <li>Storage volume</li>
+    <li>Number of requests</li>
+    <li>Storage management</li>
+    <li>Data transfer</li>
+  </ul>
+  <h4>Transfer acceleration</h4>
+  <ul>
+    <li>Uses AWS cloudfront to upload files to an AWS pop close to the user</li>
+    <li>The file is then transferred to the S3 bucket across the AWS backbone</li>
+  </ul>
+  <h4>Cross region replication</h4>
+  <ul>
+    <li>Users upload a file to a "primary" bucket the file is then replicated to a "secondary" bucket in another AWS
+      region
+    </li>
+  </ul>
+
+  <h3 id="transfer-acceleration">Transfer acceleration</h3>
+  <ul>
+    <li>Uses AWS cloudfront to upload files to an AWS pop close to the user</li>
+    <li>The file is then transferred to the S3 bucket across the AWS backbone</li>
+  </ul>
+
+  <h3 id="cross-region-replication">Cross region replication</h3>
+  <ul>
+    <li>Users upload a file to a "primary" bucket the file is then replicated to
+      a "secondary" bucket in another AWS region
+    </li>
+  </ul>
+
+  <h3 id="security">Security</h3>
+  <p>
+    S3 buckets can be secured in the following ways.
+  </p>
+  <h4>Bucket Policies</h4>
+  <ul>
+    <li>Applies to the whole bucket</li>
+  </ul>
+  <h4>Object Policies</h4>
+  <ul>
+    <li>Applies to individual files</li>
+  </ul>
+  <h4>IAM Policies for Users and Groups</h4>
+  <ul>
+    <li>Applies to users and groups</li>
+  </ul>
+
 
 
 
@@ -226,15 +308,19 @@
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://aws.amazon.com/iam/" target=_blank>https://aws.amazon.com/iam/</a>
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://aws.amazon.com/s3/" target=_blank>https://aws.amazon.com/s3/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html" target=_blank>https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://learn.acloud.guru/course/aws-certified-cloud-practitioner/" target=_blank>https://learn.acloud.guru/course/aws-certified-cloud-practitioner/</a>
         </p>
       
         <p class="text-xl">
           <a class="text-sky-600 no-underline hover:text-sky-800" href="https://learn.acloud.guru/course/certified-solutions-architect-associate" target=_blank>https://learn.acloud.guru/course/certified-solutions-architect-associate</a>
-        </p>
-      
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://learn.cantrill.io/p/aws-certified-solutions-architect-associate-saa-c02" target=_blank>https://learn.cantrill.io/p/aws-certified-solutions-architect-associate-saa-c02</a>
         </p>
       
   </div>
@@ -257,7 +343,7 @@
       
         <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#iam" class="text-xl">iam</a>        
+          <a href="/blog/tag/#s3" class="text-xl">s3</a>        
         </div>
       
         <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
@@ -385,40 +471,48 @@
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#account-types">
-            Account Types
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#objects">
+            Objects
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#credential-types">
-            Credential Types
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#data-consistency">
+            Data Consistency
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#policy-documents">
-            Policy Documents
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#storage-classes">
+            Storage Classes
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#caveates">
-            Caveates
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#transfer-acceleration">
+            Transfer Acceleration
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#best-practices">
-            Best practices
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#cross-region-replication">
+            Cross Region Replication
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#security">
+            Security
           </a>
         </div>
       

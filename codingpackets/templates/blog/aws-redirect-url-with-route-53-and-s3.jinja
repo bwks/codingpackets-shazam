@@ -1,0 +1,147 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I previously hosted my domains with GoDaddy. In their service it was
+  pretty trivial to redirect a URL from one domain to another.
+  I own the domain {{ link::e(path="http://bradleysearle.com", description="bradleysearle.com") }}
+  and I redirect it to {{ link::i(path="/", description="https://codingpackets.com/") }}.
+  The process to do this is not as simple with AWS so in this post
+  I will show you how to accomplish this using the Route 53 and S3 services.
+</p>
+
+<h3 id="s3">S3</h3>
+<p>
+  Firstly you must create an S3 bucket. Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Services",
+  "S3",
+  "Create bucket",
+]) }}
+
+<p>
+  Enter the bucket name and set the bucket region and press create bucket.
+</p>
+{{ image::boxed(path="blog/aws-redirect-url-with-route-53-and-s3/create-bucket.png", width="700px") }}
+
+<p>
+  To modify the bucket to act as a {{ text::emphasize(text="Static web hosting") }} bucket browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Services",
+  "S3",
+  "&lt;bucket-name&gt;",
+  "properties",
+  "Static web hosting",
+]) }}
+
+
+
+<p>
+  Select the option the {{ text::emphasize(text="Redirect requests") }},
+  enter the URL in the {{ text::emphasize(text="Target bucket or domain") }} field.
+  {{ text::emphasize(text="Protocol") }},
+  Then press {{ text::emphasize(text="save") }}.
+</p>
+{{ image::boxed(path="blog/aws-redirect-url-with-route-53-and-s3/web-host-bucket.png", width="700px") }}
+
+<p>
+  That's it for the S3 component. Now lets move onto the Route 53 component.
+</p>
+
+
+<h3 id="route-53">Route 53</h3>
+{{ text::note_block(text='
+    Your domain must be managed with AWS route 53. I will not cover the process
+    of registering or transferring your domain in this post.
+') }}
+
+
+<p>
+  Create a hosted zone for your domain. Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Services",
+  "Route 53",
+  "DNS management",
+  "Hosted zones",
+  "Create Hosted Zone",
+]) }}
+
+<p>
+  Enter the {{ text::emphasize(text="Domain Name") }}, keep the type as
+  {{ text::emphasize(text="Public Hosted Zone") }} the press
+  {{ text::emphasize(text="Create") }}.
+</p>
+{{ image::boxed(path="blog/aws-redirect-url-with-route-53-and-s3/create-hosted-zone.png", width="500px") }}
+
+<p>Browse to the newly created {{ text::emphasize(text="Hosted Zone") }}</p>
+
+{{ text::breadcrumbs(items=[
+  "Services",
+  "Route 53",
+  "DNS management",
+  "Hosted zones",
+  "&lt;zone-name&gt;",
+]) }}
+
+<p>
+  Create an {{ text::emphasize(text="Alias") }} record by pressing the
+  {{ text::emphasize(text="Create Record Set") }} button.
+</p>
+
+<p>
+  Select the {{ text::emphasize(text="Alias: Yes") }} button and select the
+  previously created {{ text::emphasize(text="S3 &lt;bucket-name&gt;") }}.
+  Then press {{ text::emphasize(text="Create") }}.
+</p>
+
+{{ image::boxed(path="blog/aws-redirect-url-with-route-53-and-s3/create-record-set.png", width="500px") }}
+
+<p>
+  That's it for the Route 53 component.
+</p>
+
+{{ text::note_block(text='
+    It may take 15mins or so for DNS to propogate.
+') }}
+
+<h3 id="testing">Testing</h3>
+<p>
+  The trusty {{ text::code(text="curl") }} CLI tool can be used to test the redirect is working.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='curl -sD - -o /dev/null bradleysearle.com
+
+<span class="hljs-comment"># output</span>
+<span class="hljs-string">HTTP/1.1 301 Moved Permanently</span>
+x-amz-id-2: bg3q2exWKIyi4+qzEH+30WwBlIrpxDoZD37k6Q7BMn3+qpBMTamUBYLCw++MY6eLzFEB5ju6cJM=
+x-amz-request-id: 5F858D21794D6A70
+Date: Tue, 05 May 2020 21:25:00 GMT
+<span class="hljs-string">Location: https://codingpackets.com//</span>
+Content-Length: 0
+Server: AmazonS3'
+) }}
+
+<p>
+  You can see from the output we get a HTTP 301 redirect for
+  {{ link::e(path="http://bradleysearle.com", description="bradleysearle.com") }} that points to
+  {{ link::i(path="/", description="https://codingpackets.com/") }}.
+  SUCCESS!!!!
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I showed you how to setup a URL redirect using the AWS Route 53
+  and S3 services. Its not as simple as some other service providers but at the
+  same time there is not a lot to it.
+</p>
+{% endblock page_content %}
