@@ -1,0 +1,406 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently upgraded my Dell XPS (9560) to Ubuntu 1804 LTS from 1604 and I ran into a few
+  issues along the way. This post may help others so I am documenting it here.
+</p>
+
+{{ text::note_block(text='
+    I went on an adventure and tried out OpenSUSE15 as my daily OS. That didnt pan out mainly
+    due to some software I rely on not being well supported so I moved back to Ubuntu. I
+    have updated this post with additional info based on my re-install on 2018-12-19.
+') }}
+
+<h3 id="pre-flight">Pre-Flight</h3>
+<p>
+  Prior to installing Ubuntu 1604 I upgraded the BIOS from Windows 10. Also in the BIOS settings
+  I disabled secure boot and changed the SATA option from RAID to AHCI. If you are following
+  along but doing a fresh install of Ubuntu 1804 over the top of Windows you may need to also
+  do this.
+</p>
+<p>
+  I backup my important folders to my NAS using Deja Dup. I also decided to backup my hard
+  drive to an external 2TB USB drive prior to upgrading. I am glad I did this as I could NOT
+  restore my Deja Dup backup in Ubuntu 1804.
+</p>
+
+<h3 id="issues">Issues</h3>
+<p>
+  One of the reasons I chose a Dell laptop was that Dell sell an Ubuntu edition XPS so I
+  hoped there would be good support for hardware within the linux ecosystem. Everything did
+  work out of the box but I still did face some issues that I had to work around.
+</p>
+
+<h3 id="hardware-issues">Hardware Issues</h3>
+<p>
+  This laptop has been a bit of a dud. I am not sure if I got a lemon, but based on feedback
+  from others I know that have the same model they have a lot of hardware issues. In addition
+  to the bluetooth issue documented below, I have had the screen replaced as it was coming
+  out of the housing. One of the speakers stopped working, the battery started to swell
+  pushing the touch pad up and making it unusable. This also caused the speakers to become
+  unplugged. These keys {{ text::kbd(text="~") }}
+ {{ text::kbd(text="f1") }}
+ {{ text::kbd(text="f2") }}
+ also stopped working so
+  the keyboard was replaced. Considering this laptop is only 18 months old that is a
+  lot of failures for an expensive $3K+ laptop. Thankfully Dell fixed all of these issues
+  under warranty.
+</p>
+
+<h4><b>Bluetooth Dropouts</b></h4>
+<p>
+  My laptop came with a Killer wireless card which is absolute rubbish. My bluetooth adapter
+  would occasionally dropout and be undetectable by the operating system. This was also an
+  issue in Windows 10 so I know it was not related to Ubuntu specifically. The web is littered
+  the complaints from people about these P.O.S cards. The only way to get it back was to reboot
+  but sometimes this was not enough and I had to go into the BIOS and disable/re-enable the
+  bluetooth to bring it back to life.
+</p>
+<p>
+  After upgrading to 1804 the bluetooth was dropping every other day and sometimes daily so
+  I replaced the card with a <a href="https://ark.intel.com/products/94150/Intel-Dual-Band-Wireless-AC-8265">
+  Intel 8265</a> wireless card. It cost about $30 delivered and took 20 minutes of effort, I
+  have not had any issues related to bluetooth dropouts since. My fingers are crossed that this
+  issue is now put to bed.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  I opted for a fresh install of 1804 rather than upgrade directly from 1604.
+  To install I needed to boot into the live environment and install from there. Installing
+  directly did not work. Installing from the live environment seemed to go ahead without
+  issues. I installed the minimal version of 1804 which I was thankful for as it saved me
+  from having to uninstall all the apps I don't use like the Libre office suite etc..
+</p>
+
+
+{{ text::note_block(text='
+  If booting into the live CD does not work you can also enable
+  $1 in the grub config. Press $4 key during boot and add
+  $1 to the end of the line starting with $2
+  but before the $3'
+    | replace(from="$1", to=text::emphasize(text="nomodeset"))
+    | replace(from="$2", to=text::emphasize(text="linux"))
+    | replace(from="$3", to=text::emphasize(text="---"))
+    | replace(from="$4", to=text::kbd(text="e"))
+    ) }}
+
+<h3 id="software-issues">Software Issues</h3>
+<h4><b>Login Problem</b></h4>
+<p>
+  Once the installation was completed there was a problem with logging in. After entering
+  my username and password the screen would go black and the system was unusable. The solution
+  was to install the Nvidia drivers which I declined to do as part of the install due to my
+  {{ link::i(path="/blog/frack-you-nvidia", description="coloured history") }}
+  with the Nvidia drivers.
+</p>
+
+<p>
+  To install the Nvidia drivers switch to the terminal with the {{ text::kbd(text="ctrl") }}
+ + {{ text::kbd(text="alt") }}
+
+  + {{ text::kbd(text="f2") }}
+ keyboard combination from the login screen.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install nvidia-driver-390'
+) }}
+
+<p>
+  Next update the grub config adding the {{ text::emphasize(text="acpi=force") }}
+  to the {{ text::emphasize(text='GRUB_CMDLINE_LINUX=""') }}
+ line.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code='# /etc/default/grub
+
+GRUB_CMDLINE_LINUX="acpi=force"'
+) }}
+
+<p>
+  Update the change to the grub config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo update-grub'
+) }}
+
+<p>
+  Now reboot the system for the changes to take effect.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo reboot now'
+) }}
+
+<p>
+  After installing the Nvidia drivers I could now login and use the system.
+</p>
+
+<h4><b>High Fan and Terrible Battery Life</b></h4>
+
+{{ text::note_block(text='
+    This was no longer an issue after I re-installed Ubuntu on 2018-12-19.
+') }}
+
+<p>
+  The first thing I noticed was the fans where running at full tilt all the time. This was
+  very annoying. The battery life is also very dismal when using the default settings so some
+  adjustments are required to suit laptop use rather than desktop use. To be fair this
+  was also an issue with 1604.
+</p>
+
+<p>
+  Install the {{ text::emphasize(text="powertop") }}
+, {{ text::emphasize(text="tlp") }}
+
+  and {{ text::emphasize(text="tlp-rdw") }}
+ utilities.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install powertop tlp tlp-rdw'
+) }}
+
+
+
+<p>
+  Enable powertop recommendations.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo powertop --auto-tune'
+) }}
+
+<p>
+  These adjustments don't survive a reboot so create a service to start on boot.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code='cat << EOF | sudo tee /etc/systemd/system/powertop.service
+[Unit]
+Description=PowerTOP auto tune
+
+[Service]
+Type=idle
+Environment="TERM=dumb"
+ExecStart=/usr/sbin/powertop --auto-tune
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+) }}
+
+<p>
+  Start and enable the powertop service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo systemctl daemon-reload
+sudo systemctl start powertop.service
+sudo systemctl enable powertop.service'
+) }}
+
+<p>
+  Finally change the Nvidia video card settings to use the Intel integrated graphics only in
+  power saving mode in the Nvidia control panel. I run Windows 10 on an external USB 3 SSD
+  drive for gaming so I have no use for the NVidia video card in Linux, YMMV.
+</p>
+
+<h4><b>Failure To Resume From Suspend</b></h4>
+
+{{ text::note_block(text='
+    This was no longer an issue after I re-installed Ubuntu on 2018-12-19.
+') }}
+
+<p>
+  Putting the laptop into suspend would cause the laptop to lock up and it was not possible
+  to bring it out of a suspended state. Sometimes the fans would also turn on to full speed
+  during this state indicating that it was not actually suspending at all. Some further
+  adjustments to the Nvidia settings where required to fix this issue.
+</p>
+<p>
+  Disable the fallback service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo systemctl disable nvidia-fallback.service'
+) }}
+
+<p>
+  Edit the {{ text::emphasize(text="/etc/default/grub") }}
+ config adding the line
+  {{ text::emphasize(text='GRUB_CMDLINE_LINUX="nouveau.blacklist=1"') }}
+
+</p>
+
+<p>
+  Update GRUB and reboot.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo update-grub
+
+# Reboot after drivers are installed
+sudo reboot now'
+) }}
+
+<h3 id="look-and-feel">Look and Feel</h3>
+<p>
+  The default Ubuntu theme is pretty bland IMHO and I use
+  {{ text::emphasize(text="gnome-tweak-tools") }}
+ to adjust some of the settings.
+  First I installed the {{ link::e(path="https://www.gnome-look.org/p/1099856/", description="Any Bloody Slim") }}
+  theme. Next I installed the {{ link::e(path="https://github.com/pop-os/gtk-theme", description="PopOS") }}
+  theme that is provided by {{ link::e(path="https://system76.com/", description="System76") }}.
+</p>
+<p>
+  I use Gnome Tweaks to set the <i>Application</i> theme to Ant Bloody Slim and the <i>Cursors</i>
+  and <i>Icons</i> themes to PopOS. Combine this with the Gnome dark theme and a nice
+  background and IMO this results in a very pleasing to look at and use desktop environment.
+</p>
+
+{{ image::boxed(path="blog/dell-xps-15-9560-ubuntu-1804-setup/ubuntu-desktop.png", width="900px") }}
+
+
+<h3 id="applications">Applications</h3>
+<p>
+  The following are a list of the core applications that I use.
+</p>
+
+<h4><b>Terminal</b></h4>
+<ul>
+  <li>{{ link::e(path="https://gnunn1.github.io/tilix-web/", description="Tilix") }} - Tiling terminal emulator.</li>
+  <li>{{ link::e(path="https://github.com/powerline/powerline", description="Powerline") }} - Beautiful and informative shell prompt.</li>
+</ul>
+<p>
+  I use the {{ text::emphasize(text="Hurtado") }}
+ theme for Tilix which can be found
+  {{ link::e(path="https://github.com/storm119/Tilix-Themes", description="here") }}.
+</p>
+
+{{ image::boxed(path="blog/dell-xps-15-9560-ubuntu-1804-setup/tilix.png", width="600px") }}
+
+
+<h4><b>Cloud Storage</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.dropbox.com/", description="Dropbox") }}</li>
+</ul>
+
+<h4><b>Password Manager</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.enpass.io/", description="Enpass") }}</li>
+</ul>
+<p>
+  Enpass can be joined to Dropbox and passwords synced across multiple devices.
+</p>
+
+<h4><b>Office Suite</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.onlyoffice.com/", description="Only Office") }} - Documents, Spreadsheets, Presentations</li>
+  <li>{{ link::e(path="https://draw.io", description="draw.io Desktop") }} - Network diagrams</li>
+  <li>{{ link::e(path="https://www.foxitsoftware.com/pdf-reader/", description="Foxit Reader") }} - PDF reader/editor</li>
+</ul>
+
+<h4><b>Image Editing</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.gimp.org/", description="Gimp") }} - PNG/JPEG + others editor</li>
+  <li>{{ link::e(path="https://inkscape.org/en/", description="Inkscape") }} - SVG editor</li>
+</ul>
+
+<h4><b>Sound and Video</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.videolan.org/vlc/", description="VLC media player") }} - Video Player</li>
+</ul>
+<p>
+  Also install additional packages to play restricted content.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install ubuntu-restricted-extras ffmpeg'
+) }}
+
+<h4><b>Virtualization</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.linux-kvm.org/page/Main_Page", description="KVM") }} - OS virtualization</li>
+  <li>{{ link::e(path="https://www.qemu.org/", description="Qemu") }} - Hardware emulation</li>
+  <li>{{ link::e(path="https://libvirt.org/", description="Libvirt") }} - Common API for many virtualization systems.</li>
+  <li>{{ link::e(path="https://www.vagrantup.com/", description="Vagrant") }} - VM orchestration</li>
+  <li>{{ link::e(path="https://github.com/vagrant-libvirt/vagrant-libvirt", description="vagrant-libvirt") }} - Vagrant Libvirt connector</li>
+</ul>
+
+<h4><b>Text Editors and IDEs</b></h4>
+<ul>
+  <li>{{ link::e(path="https://code.visualstudio.com/", description="VSCode") }} - Graphical text editor</li>
+  <li>{{ link::e(path="https://www.vim.org/", description="VIM") }} - Shell text editor</li>
+  <li>{{ link::e(path="https://www.jetbrains.com/pycharm/", description="PyCharm") }} - Python IDE</li>
+  <li>{{ link::e(path="https://www.jetbrains.com/ruby/", description="RubyMine") }} - Ruby IDE</li>
+</ul>
+
+<h4><b>Web Browsers</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.mozilla.org/en-GB/firefox/", description="Firefox") }} - Main Browser</li>
+  <li>{{ link::e(path="https://www.chromium.org/", description="Chromium") }} - Chat apps such as Slack, Ryver, etc</li>
+</ul>
+<p>
+  I also use Enpass, Privacy Badger and Add Block Plus Firefox plugins.
+</p>
+
+<h4><b>Backup</b></h4>
+<ul>
+  <li>{{ link::e(path="https://wiki.gnome.org/Apps/DejaDup", description="Deja Dup") }}</li>
+</ul>
+
+<h4><b>Bittorrent</b></h4>
+<ul>
+  <li>{{ link::e(path="https://www.deluge-torrent.org/", description="Deluge") }}</li>
+</ul>
+
+<h4><b>Utilities</b></h4>
+<ul>
+  <li>{{ link::e(path="https://hisham.hm/htop/", description="htop") }}</li>
+  <li>{{ link::e(path="https://curl.haxx.se/", description="curl") }}</li>
+  <li>{{ link::e(path="https://git-scm.com/", description="git") }}</li>
+  <li>{{ link::e(path="https://www.gnu.org/software/gawk/", description="gawk") }}</li>
+  <li>{{ link::e(path="https://nmap.org/", description="nmap") }}</li>
+  <li>{{ link::e(path="https://www.wireshark.org/", description="wireshark") }}</li>
+  <li>whois</li>
+  <li>mtr</li>
+  <li>traceroute</li>
+  <li>tcptraceroute</li>
+</ul>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Would I recommend a Dell XPS ? Definitely not. Would I buy one again ? Maybe in the
+  future, but I would also feel compelled to purchase the extended Warranty if I wanted
+  to get 3 years out of it. In reality my next laptop will likely be the Lenovo X1 carbon.
+</p>
+
+{% endblock page_content %}

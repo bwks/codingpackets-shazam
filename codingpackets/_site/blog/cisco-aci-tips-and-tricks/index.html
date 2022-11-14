@@ -84,16 +84,12 @@
     
 <!-- PAGE HEADER START -->
 <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Ansible Tips and Tricks</h1>
+  <h1 class="pb-1 sm:pb-2">Cisco ACI Tips and Tricks</h1>
   <div class="">
     
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 12th of June 2019
-      </p>
-    
     
       <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 11th of June 2018
+        published: 3rd of July 2020
       </p>
     
   </div>
@@ -115,21 +111,21 @@
         <div class="col-span-12 px-5 md:col-span-6">
           <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
             
-<h3 id="overview">Overview</h3>
+
+<h3 id="intro">Intro</h3>
 <p>
-  A collection of useful tips and tricks for Ansible which don't really justify a full blog
-  post on their own. I'll keep updating this post when I come across something of value.
+  Cisco ACI does things a bit differently to traditional networking.
+  I find myself constantly <a class="text-sky-600 no-underline hover:text-sky-800" href="https://duckduckgo.com/" target=_blank>duck hunting</a>
+  to do simple things so I am documenting them here so they are easier
+  for me to fine.
 </p>
 
-<h3 id="callbacks">Callbacks</h3>
+<h3 id="get-vrf-names">Get VRF Names</h3>
 <p>
-  Convert the output of a playbook run to <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">json</i>. Either
-  set the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stdout_callback = json</i> setting in the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> or alternatively set the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ANSIBLE_STDOUT_CALLBACK=json</i> variable at the CLI on playbook execution.
+  Get a list of VRFs with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show vrf</i>
+ command from a leaf node.
 </p>
 
-  
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -137,22 +133,28 @@
       <span class="">cmd</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ANSIBLE_STDOUT_CALLBACK=json ansible-playbook some-playbook.yml</code></pre>
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show vrf
+
+VRF-Name                           VRF-ID State    Reason
+black-hole                              3 Up       --
+common:SHARED_MSTP_INT_VRF             89 Up       --
+common:SHARED_MSTP_VRF                148 Up       --
+common:SPAN_ERSPAN_VRF                 12 Up       --
+management                              2 Up       --
+TNT-ALPHA:ALPHA-0001                   68 Up       --
+...</code></pre>
     </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
 
 
-<h3 id="inventory">Inventory</h3>
-  <p>
-    create an ad-hoc inventory using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-i</i> or <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--inventory</i>
-    flags. An ad-hoc inventory allows you to run <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> or
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-playbook</i> against a node (or list of nodes) without creating
-    an inventory file.
-  </p>
+<h3 id="how-to-ping">How to Ping</h3>
+<p>
+  To ping a host use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">iping</i>
+ command from a leaf node.
+</p>
 
-  
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -160,26 +162,71 @@
       <span class="">cmd</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook -i myhost,&lt;another-host&gt; all -a 'uname -a'</code></pre>
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">iping -h
+
+usage: iping     [ -d    set the SO_DEBUG option]
+                 [ -D    enable debug information ]
+                 [ -F    enable do not fragment bit in IP header ]
+                 [ -L    receive packets on supplied interface ]
+                 [ -n    enable printing host IP address than resolved name ]
+                 [ -q    quiet output ]
+                 [ -r    disable routing of the packets, send only to directly connected hosts ]
+                 [ -v    output in verbose format ]
+                 [ -V    <vrf-name>      name of the VRF through which destination is reachable ]
+                 [ -c    <count>         no of packets to send ]
+                 [ -i    <wait>                  no of seconds to wait before sending next packet ]
+                 [ -p    <pattern>       packet payload pattern ]
+                 [ -s    <packetsize>    size of packets to send ]
+                 [ -t    <timeout>       wait for seconds to receive reply ]
+                 [ -S    <source ip/interface>   send packet with given source-ip or IP of given interface and
+                                                 send packet out of that interface ]
+                 <host>  destination host-name or ip address
+
+iping -V TNT-ALPHA:ALPHA-0001 10.47.62.32</code></pre>
     </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
 
 
-  <p>
-    <i>Credit: 
-        <a class="text-sky-600 no-underline hover:text-sky-800" href="https://gist.github.com/alces/f7e3de25d98a19550a4e4f97cabc2cf4" target=_blank>https://gist.github.com/alces/f7e3de25d98a19550a4e4f97cabc2cf4</a>
-    </i>
-  </p>
-<h3 id="roles">Roles</h3>
-  <p>
-    There is a fair bit of boilerplate involved in creating a role. There is an
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-galaxy</i> command to aid in the process of building a role. Optionaly
-    add the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--offline</i> flag if the role is not intended for Ansible galaxy.
-  </p>
 
-  
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    VRFs are a contatination of the tenant and VRF names joined with a colon(:).
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="find-an-endpoint-ip-to-mac-mapping">Find an Endpoint IP to MAC mapping</h3>
+<p>
+  To find an endpoints IP/MAC mapping for a VLAN in a particular EPG you
+  need to run some commands from a leaf node that the EPG is configured on.
+</p>
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    It is highly likely that the VLAN local to the leaf is not the same VLAN
+    that is configured in the GUI (The encapsulated VLAN).
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+<p>
+  Use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show vlan extended</i>
+ and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">egrep</i>
+ commands
+  to find the translated VLAN that is used local to the leaf.
+</p>
+
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -187,53 +234,24 @@
       <span class="">cmd</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-galaxy init role-name --offline
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show vlan extended | egrep 'Encap|vlan-1731'
 
-# output
-- role-name was created successfully
-
-# role-name directory contents
-role-name/
-├── defaults
-│   └── main.yml
-├── files
-├── handlers
-│   └── main.yml
-├── meta
-│   └── main.yml
-├── README.md
-├── tasks
-│   └── main.yml
-├── templates
-├── tests
-│   ├── inventory
-│   └── test.yml
-└── vars
-    └── main.yml
-
-8 directories, 8 files</code></pre>
+VLAN Name                             Encap            Ports
+106  TNT-ALPHA:ALPHA-0001_NETWORK_CE  vlan-1731        Eth1/41, Eth1/48, Po1,
+...</code></pre>
     </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
 
+<p>
+  VLAN 106 is the translated VLAN for 1731 local to this leaf node.
+</p>
+<p>
+  Now use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show endpoints</i>
+ command to show the IP/MAC mapping.
+</p>
 
-  <p>
-    <i>
-        Credit:
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="ttps://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#create-roles" target=_blank>ttps://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#create-roles</a>
-    </i>
-  </p>
-
-<h3 id="variables">Variables</h3>
-  <p>
-    Get a json dict of all vars that will be applicable to a host at playbook runtime. The
-    following command also shows you which groups a host belongs to and all groups that are
-    available.
-  </p>
-
-
-  
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
@@ -241,93 +259,24 @@ role-name/
       <span class="">cmd</span>
     </div>
     <div class="font-mono">
-      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">ansible -i inventory a.example.com -m debug -a "var=hostvars[inventory_hostname]"
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show endpoint vlan 106
 
-# output
-a.example.com | success >> {
-    "var": {
-        "hostvars": {
-            "ansible_ssh_host": "10.0.0.1",
-            "ansible_ssh_user": "user",
-            "group_names": [
-                "group1",
-                "groups"
-            ],
-            "groups": {
-                "all": [
-                    "x.example.com",
-                    "y.example.com",
-                    "a.example.com",
-                    "b.example.com"
-                ],
-                "group1": [
-                    "a.example.com"
-                ],
-                "group2": [
-                    "b.example.com"
-                ],
-                "groups": [
-                    "a.example.com",
-                    "b.example.com"
-                ],
-                "ungrouped": [
-                    "x.example.com",
-                    "y.example.com"
-                ]
-            },
-            "inventory_hostname": "a.example.com",
-            "inventory_hostname_short": "a"
-        }
-    }
-}</code></pre>
+Legend:
+s - arp              H - vtep             V - vpc-attached     p - peer-aged
+R - peer-attached-rl B - bounce           S - static           M - span
+D - bounce-to-proxy  O - peer-attached    a - local-aged       L - local
++-----------------------------------+---------------+-----------------+--------------+-------------+
+VLAN/                           Encap           MAC Address       MAC Info/       Interface
+Domain                          VLAN            IP Address        IP Info
++-----------------------------------+---------------+-----------------+--------------+-------------+
+106                                       vlan-1731    aaaa.bbbb.cccc LV                        po1
+TNT-ALPHA:ALPHA-0001                      vlan-1731      10.10.10.10  LV                        po1
+...</code></pre>
     </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
 
-
-
-  <p>
-    <i>
-      Credit: 
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://unix.stackexchange.com/a/208854/294891" target=_blank>https://unix.stackexchange.com/a/208854/294891</a>
-    </i>
-  </p>
-
-
-  <p>
-    Find the source file that a variable was derived from. This is quite useful when you are
-    using the Ansible variable precedence system to see which file a variable actually came from.
-  </p>
-
-
-  
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono">
-      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">ansible -i inventory leaf01 -m debug -a "var=hostvars[inventory_hostname]['bgp']['asn']._data_source"
-
-# output
-leaf01 | SUCCESS => {
-    "hostvars[inventory_hostname]['bgp']['asn']._data_source": "/path/to/host_vars/leaf01.yml"
-}</code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
-
-  <p>
-    <i>
-      Credit: 
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://twitter.com/codethenetwork/status/936733364089794560" target=_blank>https://twitter.com/codethenetwork/status/936733364089794560</a>
-    </i>
-  </p>
 
 
 
@@ -339,6 +288,19 @@ leaf01 | SUCCESS => {
             
 
             
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://community.cisco.com/t5/application-centric/how-to-ping-from-aci-cli-leaf-or-spine/td-p/3023295" target=_blank>https://community.cisco.com/t5/application-centric/how-to-ping-from-aci-cli-leaf-or-spine/td-p/3023295</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
   
 
 
@@ -349,9 +311,19 @@ leaf01 | SUCCESS => {
   <div id="tags" class="pb-2">
     <div class="flex justify-center">
       
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#aci" class="text-xl">aci</a>        
+        </div>
+      
         <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#ansible" class="text-xl">ansible</a>        
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
         </div>
       
     </div>
@@ -458,40 +430,40 @@ leaf01 | SUCCESS => {
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#overview">
-            Overview
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#callbacks">
-            Callbacks
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#get-vrf-names">
+            Get VRF Names
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#inventory">
-            Inventory
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#how-to-ping">
+            How to Ping
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#roles">
-            Roles
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#find-an-endpoint-ip-to-mac-mapping">
+            Find an Endpoint IP to MAC mapping
           </a>
         </div>
       
     
       
         <div class="px-2">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#variables">
-            Variables
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
           </a>
         </div>
       

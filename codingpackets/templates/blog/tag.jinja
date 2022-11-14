@@ -6,6 +6,7 @@
 
 {% block page_content %}
   <div class="">
+    {% set_global published_post_tags = [] %}
     {% for tag in posts.tags | sort %}
       
       {% for post_tag, posts in posts.by_tag %}
@@ -13,11 +14,12 @@
         {% set_global published_posts = [] %}
         {% for post in posts %}
           {% if post.publish and post_tag == tag %}
+            {% set_global published_post_tags = published_post_tags | concat(with=tag) %}
             {% set_global published_posts = published_posts | concat(with=post) %}
           {% endif %}
         {% endfor %}
 
-        {% if post_tag == tag %}
+        {% if post_tag == tag and published_posts | length > 0 %}
           <div class="pb-4">
             <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
               <h3 id="{{ tag | slugify }}" class="pt-0 pb-1 text-2xl font-normal text-neutral-100 dark:text-neutral-400">{{ tag | slugify }} - {{ published_posts | length }} {% if published_posts | length < 2 %}Post{% else %}Posts{% endif %}</h3>
@@ -37,6 +39,7 @@
   </div>
 {% endblock page_content %}
 
-{% block page_toc %}
-  {{ table::toc(header="Tags", rows=posts.tags, slug=true) }}
+{% block page_toc %} 
+  {% set_global published_post_tags = published_post_tags | unique %}
+  {{ table::toc(header="Tags", rows=published_post_tags, slug=true) }}
 {% endblock page_toc %}

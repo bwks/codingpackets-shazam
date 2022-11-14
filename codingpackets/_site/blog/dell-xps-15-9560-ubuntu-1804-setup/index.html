@@ -1,0 +1,982 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Dell XPS 15 9560 Ubuntu 1804 Setup</h1>
+  <div class="">
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: 20th of December 2018
+      </p>
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 25th of August 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently upgraded my Dell XPS (9560) to Ubuntu 1804 LTS from 1604 and I ran into a few
+  issues along the way. This post may help others so I am documenting it here.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I went on an adventure and tried out OpenSUSE15 as my daily OS. That didnt pan out mainly
+    due to some software I rely on not being well supported so I moved back to Ubuntu. I
+    have updated this post with additional info based on my re-install on 2018-12-19.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="pre-flight">Pre-Flight</h3>
+<p>
+  Prior to installing Ubuntu 1604 I upgraded the BIOS from Windows 10. Also in the BIOS settings
+  I disabled secure boot and changed the SATA option from RAID to AHCI. If you are following
+  along but doing a fresh install of Ubuntu 1804 over the top of Windows you may need to also
+  do this.
+</p>
+<p>
+  I backup my important folders to my NAS using Deja Dup. I also decided to backup my hard
+  drive to an external 2TB USB drive prior to upgrading. I am glad I did this as I could NOT
+  restore my Deja Dup backup in Ubuntu 1804.
+</p>
+
+<h3 id="issues">Issues</h3>
+<p>
+  One of the reasons I chose a Dell laptop was that Dell sell an Ubuntu edition XPS so I
+  hoped there would be good support for hardware within the linux ecosystem. Everything did
+  work out of the box but I still did face some issues that I had to work around.
+</p>
+
+<h3 id="hardware-issues">Hardware Issues</h3>
+<p>
+  This laptop has been a bit of a dud. I am not sure if I got a lemon, but based on feedback
+  from others I know that have the same model they have a lot of hardware issues. In addition
+  to the bluetooth issue documented below, I have had the screen replaced as it was coming
+  out of the housing. One of the speakers stopped working, the battery started to swell
+  pushing the touch pad up and making it unusable. This also caused the speakers to become
+  unplugged. These keys <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">~</i>
+ <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">f1</i>
+ <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">f2</i>
+ also stopped working so
+  the keyboard was replaced. Considering this laptop is only 18 months old that is a
+  lot of failures for an expensive $3K+ laptop. Thankfully Dell fixed all of these issues
+  under warranty.
+</p>
+
+<h4><b>Bluetooth Dropouts</b></h4>
+<p>
+  My laptop came with a Killer wireless card which is absolute rubbish. My bluetooth adapter
+  would occasionally dropout and be undetectable by the operating system. This was also an
+  issue in Windows 10 so I know it was not related to Ubuntu specifically. The web is littered
+  the complaints from people about these P.O.S cards. The only way to get it back was to reboot
+  but sometimes this was not enough and I had to go into the BIOS and disable/re-enable the
+  bluetooth to bring it back to life.
+</p>
+<p>
+  After upgrading to 1804 the bluetooth was dropping every other day and sometimes daily so
+  I replaced the card with a <a href="https://ark.intel.com/products/94150/Intel-Dual-Band-Wireless-AC-8265">
+  Intel 8265</a> wireless card. It cost about $30 delivered and took 20 minutes of effort, I
+  have not had any issues related to bluetooth dropouts since. My fingers are crossed that this
+  issue is now put to bed.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  I opted for a fresh install of 1804 rather than upgrade directly from 1604.
+  To install I needed to boot into the live environment and install from there. Installing
+  directly did not work. Installing from the live environment seemed to go ahead without
+  issues. I installed the minimal version of 1804 which I was thankful for as it saved me
+  from having to uninstall all the apps I don't use like the Libre office suite etc..
+</p>
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  If booting into the live CD does not work you can also enable
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">nomodeset</i> in the grub config. Press <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">e</i> key during boot and add
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">nomodeset</i> to the end of the line starting with <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">linux</i>
+  but before the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">---</i></div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="software-issues">Software Issues</h3>
+<h4><b>Login Problem</b></h4>
+<p>
+  Once the installation was completed there was a problem with logging in. After entering
+  my username and password the screen would go black and the system was unusable. The solution
+  was to install the Nvidia drivers which I declined to do as part of the install due to my
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/frack-you-nvidia">coloured history</a>
+  with the Nvidia drivers.
+</p>
+
+<p>
+  To install the Nvidia drivers switch to the terminal with the <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">ctrl</i>
+ + <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">alt</i>
+
+  + <i class="px-2 py-1 font-mono font-semibold rounded border border-neutral-300 bg-neutral-50 dark:bg-neutral-200 dark:text-zinc-900">f2</i>
+ keyboard combination from the login screen.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install nvidia-driver-390</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Next update the grub config adding the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">acpi=force</i>
+  to the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GRUB_CMDLINE_LINUX=""</i>
+ line.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/default/grub
+
+GRUB_CMDLINE_LINUX="acpi=force"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Update the change to the grub config.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo update-grub</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now reboot the system for the changes to take effect.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo reboot now</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  After installing the Nvidia drivers I could now login and use the system.
+</p>
+
+<h4><b>High Fan and Terrible Battery Life</b></h4>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    This was no longer an issue after I re-installed Ubuntu on 2018-12-19.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  The first thing I noticed was the fans where running at full tilt all the time. This was
+  very annoying. The battery life is also very dismal when using the default settings so some
+  adjustments are required to suit laptop use rather than desktop use. To be fair this
+  was also an issue with 1604.
+</p>
+
+<p>
+  Install the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">powertop</i>
+, <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tlp</i>
+
+  and <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tlp-rdw</i>
+ utilities.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install powertop tlp tlp-rdw</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Enable powertop recommendations.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo powertop --auto-tune</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  These adjustments don't survive a reboot so create a service to start on boot.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cat << EOF | sudo tee /etc/systemd/system/powertop.service
+[Unit]
+Description=PowerTOP auto tune
+
+[Service]
+Type=idle
+Environment="TERM=dumb"
+ExecStart=/usr/sbin/powertop --auto-tune
+
+[Install]
+WantedBy=multi-user.target
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Start and enable the powertop service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl daemon-reload
+sudo systemctl start powertop.service
+sudo systemctl enable powertop.service</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Finally change the Nvidia video card settings to use the Intel integrated graphics only in
+  power saving mode in the Nvidia control panel. I run Windows 10 on an external USB 3 SSD
+  drive for gaming so I have no use for the NVidia video card in Linux, YMMV.
+</p>
+
+<h4><b>Failure To Resume From Suspend</b></h4>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    This was no longer an issue after I re-installed Ubuntu on 2018-12-19.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Putting the laptop into suspend would cause the laptop to lock up and it was not possible
+  to bring it out of a suspended state. Sometimes the fans would also turn on to full speed
+  during this state indicating that it was not actually suspending at all. Some further
+  adjustments to the Nvidia settings where required to fix this issue.
+</p>
+<p>
+  Disable the fallback service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl disable nvidia-fallback.service</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/default/grub</i>
+ config adding the line
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GRUB_CMDLINE_LINUX="nouveau.blacklist=1"</i>
+
+</p>
+
+<p>
+  Update GRUB and reboot.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo update-grub
+
+# Reboot after drivers are installed
+sudo reboot now</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="look-and-feel">Look and Feel</h3>
+<p>
+  The default Ubuntu theme is pretty bland IMHO and I use
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gnome-tweak-tools</i>
+ to adjust some of the settings.
+  First I installed the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.gnome-look.org/p/1099856/" target=_blank>Any Bloody Slim</a>
+  theme. Next I installed the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/pop-os/gtk-theme" target=_blank>PopOS</a>
+  theme that is provided by <a class="text-sky-600 no-underline hover:text-sky-800" href="https://system76.com/" target=_blank>System76</a>.
+</p>
+<p>
+  I use Gnome Tweaks to set the <i>Application</i> theme to Ant Bloody Slim and the <i>Cursors</i>
+  and <i>Icons</i> themes to PopOS. Combine this with the Gnome dark theme and a nice
+  background and IMO this results in a very pleasing to look at and use desktop environment.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/dell-xps-15-9560-ubuntu-1804-setup/ubuntu-desktop.png" alt="blog/dell-xps-15-9560-ubuntu-1804-setup/ubuntu-desktop.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h3 id="applications">Applications</h3>
+<p>
+  The following are a list of the core applications that I use.
+</p>
+
+<h4><b>Terminal</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://gnunn1.github.io/tilix-web/" target=_blank>Tilix</a> - Tiling terminal emulator.</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/powerline/powerline" target=_blank>Powerline</a> - Beautiful and informative shell prompt.</li>
+</ul>
+<p>
+  I use the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Hurtado</i>
+ theme for Tilix which can be found
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/storm119/Tilix-Themes" target=_blank>here</a>.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/dell-xps-15-9560-ubuntu-1804-setup/tilix.png" alt="blog/dell-xps-15-9560-ubuntu-1804-setup/tilix.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h4><b>Cloud Storage</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.dropbox.com/" target=_blank>Dropbox</a></li>
+</ul>
+
+<h4><b>Password Manager</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.enpass.io/" target=_blank>Enpass</a></li>
+</ul>
+<p>
+  Enpass can be joined to Dropbox and passwords synced across multiple devices.
+</p>
+
+<h4><b>Office Suite</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.onlyoffice.com/" target=_blank>Only Office</a> - Documents, Spreadsheets, Presentations</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://draw.io" target=_blank>draw.io Desktop</a> - Network diagrams</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.foxitsoftware.com/pdf-reader/" target=_blank>Foxit Reader</a> - PDF reader/editor</li>
+</ul>
+
+<h4><b>Image Editing</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.gimp.org/" target=_blank>Gimp</a> - PNG/JPEG + others editor</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://inkscape.org/en/" target=_blank>Inkscape</a> - SVG editor</li>
+</ul>
+
+<h4><b>Sound and Video</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.videolan.org/vlc/" target=_blank>VLC media player</a> - Video Player</li>
+</ul>
+<p>
+  Also install additional packages to play restricted content.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install ubuntu-restricted-extras ffmpeg</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4><b>Virtualization</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.linux-kvm.org/page/Main_Page" target=_blank>KVM</a> - OS virtualization</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.qemu.org/" target=_blank>Qemu</a> - Hardware emulation</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://libvirt.org/" target=_blank>Libvirt</a> - Common API for many virtualization systems.</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vagrantup.com/" target=_blank>Vagrant</a> - VM orchestration</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/vagrant-libvirt/vagrant-libvirt" target=_blank>vagrant-libvirt</a> - Vagrant Libvirt connector</li>
+</ul>
+
+<h4><b>Text Editors and IDEs</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://code.visualstudio.com/" target=_blank>VSCode</a> - Graphical text editor</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vim.org/" target=_blank>VIM</a> - Shell text editor</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.jetbrains.com/pycharm/" target=_blank>PyCharm</a> - Python IDE</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.jetbrains.com/ruby/" target=_blank>RubyMine</a> - Ruby IDE</li>
+</ul>
+
+<h4><b>Web Browsers</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.mozilla.org/en-GB/firefox/" target=_blank>Firefox</a> - Main Browser</li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.chromium.org/" target=_blank>Chromium</a> - Chat apps such as Slack, Ryver, etc</li>
+</ul>
+<p>
+  I also use Enpass, Privacy Badger and Add Block Plus Firefox plugins.
+</p>
+
+<h4><b>Backup</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://wiki.gnome.org/Apps/DejaDup" target=_blank>Deja Dup</a></li>
+</ul>
+
+<h4><b>Bittorrent</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.deluge-torrent.org/" target=_blank>Deluge</a></li>
+</ul>
+
+<h4><b>Utilities</b></h4>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://hisham.hm/htop/" target=_blank>htop</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://curl.haxx.se/" target=_blank>curl</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://git-scm.com/" target=_blank>git</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.gnu.org/software/gawk/" target=_blank>gawk</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://nmap.org/" target=_blank>nmap</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.wireshark.org/" target=_blank>wireshark</a></li>
+  <li>whois</li>
+  <li>mtr</li>
+  <li>traceroute</li>
+  <li>tcptraceroute</li>
+</ul>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Would I recommend a Dell XPS ? Definitely not. Would I buy one again ? Maybe in the
+  future, but I would also feel compelled to purchase the extended Warranty if I wanted
+  to get 3 years out of it. In reality my next laptop will likely be the Lenovo X1 carbon.
+</p>
+
+
+
+            
+  
+
+
+            
+            
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://linoxide.com/linux-how-to/install-use-powertop-ubuntu-16-04/" target=_blank>https://linoxide.com/linux-how-to/install-use-powertop-ubuntu-16-04/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://askubuntu.com/questions/112705/how-do-i-make-powertop-changes-permanent" target=_blank>https://askubuntu.com/questions/112705/how-do-i-make-powertop-changes-permanent</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.reddit.com/r/Dell/comments/5y3rii/xps_9560_battery_life_optimization_and_fan/" target=_blank>https://www.reddit.com/r/Dell/comments/5y3rii/xps_9560_battery_life_optimization_and_fan/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://askubuntu.com/questions/1032417/ubuntu-18-04-lts-bluetooth-0cf33004-discovery-not-working" target=_blank>https://askubuntu.com/questions/1032417/ubuntu-18-04-lts-bluetooth-0cf33004-discovery-not-working</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://ark.intel.com/products/94150/Intel-Dual-Band-Wireless-AC-8265" target=_blank>https://ark.intel.com/products/94150/Intel-Dual-Band-Wireless-AC-8265</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.dell.com/community/Inspiron/Suspend-resume-problems-on-Ubuntu-18-04/td-p/6072410" target=_blank>https://www.dell.com/community/Inspiron/Suspend-resume-problems-on-Ubuntu-18-04/td-p/6072410</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://ubuntuforums.org/showthread.php?t=2317843" target=_blank>https://ubuntuforums.org/showthread.php?t=2317843</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.reddit.com/r/Dell/comments/450rln/ubuntu_1604_daily_on_dell_xps_15_9550/" target=_blank>https://www.reddit.com/r/Dell/comments/450rln/ubuntu_1604_daily_on_dell_xps_15_9550/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/rcasero/doc/wiki/Ubuntu-linux-on-Dell-XPS-15-(9560)" target=_blank>https://github.com/rcasero/doc/wiki/Ubuntu-linux-on-Dell-XPS-15-(9560)</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://m.windowscentral.com/upgrade-wifi-dell-xps-15" target=_blank>https://m.windowscentral.com/upgrade-wifi-dell-xps-15</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://ubuntuforums.org/showthread.php?t=2390291" target=_blank>https://ubuntuforums.org/showthread.php?t=2390291</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://gsilvapt.github.io/2018-06-03/Installing-Ubuntu-1804-With-NVidia-High-End-Graphics-Card" target=_blank>https://gsilvapt.github.io/2018-06-03/Installing-Ubuntu-1804-With-NVidia-High-End-Graphics-Card</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#computering" class="text-xl">computering</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#linux" class="text-xl">linux</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ubuntu" class="text-xl">ubuntu</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#dell" class="text-xl">dell</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-scroll">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-flight">
+            Pre-Flight
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#issues">
+            Issues
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#hardware-issues">
+            Hardware Issues
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#installation">
+            Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software-issues">
+            Software Issues
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#look-and-feel">
+            Look and Feel
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#applications">
+            Applications
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

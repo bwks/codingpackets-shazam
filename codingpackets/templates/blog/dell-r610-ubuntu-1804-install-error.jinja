@@ -1,0 +1,30 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<p>
+  When attempting to install the Ubuntu 1804 server spin on a Dell R610 I use for labs
+  I encountered an error. The image that is available from the main
+  {{ link::e(path="https://www.ubuntu.com/download/server", description="downloads") }}
+  page links to a {{ text::emphasize(text="live") }}
+ installer. When I tried to
+  install from this image, the installer would crash and restart when trying to assign an
+  IP address to one of the network interfaces.
+  If I left the IP assignment method to DHCP, the interfaces could not obtain an
+  IP address from the DHCP server. This was mildly annoying and after re-imaging the USB
+  3 times it was time to try something else.
+</p>
+<p>
+  I was pretty sure that it should work as I have previously installed Ubuntu 1804 on another
+  Dell R610. This {{ link::e(path="https://certification.ubuntu.com/hardware/201003-5449/", description="link") }} says
+  that they are certified. I went on a {{ link::e(path="https://duckduckgo.com/", description="duck hunt") }} and found this
+  {{ link::e(path="https://askubuntu.com/questions/1042364/install-18-04-server-without-network-connection", description="thread") }}
+  around installing Ubuntu 1804 without internet access. One of the
+  {{ link::e(path="https://askubuntu.com/a/1056301", description="answers") }} mentioned using the
+  {{ text::emphasize(text="standard") }}
+ ISO
+  available {{ link::e(path="http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/", description="here") }} so
+  I gave that a shot.
+</p>
+<p>
+  The result: SUCCESS !! The morel of the story. Always go full ISO.
+</p>
+{% endblock page_content %}

@@ -1,0 +1,71 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Today, my beloved Lenovo P14s Gen 1 had a "computer 
+  says noooooo" moment. Since purchasing this machine 
+  6 months ago, it has been rock solid.
+  Then, out of the blue it hits me with a rotating 
+  carousel of full screen colours: red, blue, green, 
+  white and black. 
+</p>
+
+<p>
+  OMG! This is my work laptop and I dont have a spare.
+  I tried holding the power button down to force a reboot 
+  but that did not help. I was met with the same series of 
+  flashy flashy.
+</p>
+
+<p>
+  <i>I am Jack's cold sweat.</i>
+</p>
+
+<h3 id="the-crime-scene">The Crime Scene</h3>
+<p>
+  The GIF below shows what I was dealing with.
+</p>
+
+{{ image::boxed(path=
+  "blog/lenovo-p14s-red-blue-green-white-black-flashing-screen/lenovo-p14s.gif", 
+  width="600px") 
+}}
+<p>
+  <i>I am Jack's broken heart.</i>
+</p>
+
+<h3 id="the-fix">The Fix</h3>
+
+<p>
+  After a bit of duck hunting I found that i was not the 
+  only one to have experienced this issue.
+  Thanks to this <a href="https://forums.lenovo.com/t5/Gaming-Laptops/Y520-Screen-flashing-colors-at-start-up/m-p/4164933?page=2#5303052">
+  forum post</a> I discovered that the Lenovo P14s has an 
+  "emergency reset hole". The hole is on the underside of 
+  the laptop above the centre screw.
+</p>
+{{ image::boxed(path=
+  "blog/lenovo-p14s-red-blue-green-white-black-flashing-screen/lenovo-p14s-rear.png", 
+  width="600px") 
+}}
+<p>
+  Using a paperclip or similar (I used a small allen key)
+  depress the button for 15 seconds. After that, power on 
+  the laptop. 
+</p>
+<p>
+  The laptop booted into recovery mode, I then just clicked 
+  on the restart computer option. The laptop then booted 
+  normally. Crisis averted.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In case of emergency, press the emergency hole.
+</p>
+<p>
+  <i>I am Jack's smirking revenge.</i>
+</p>
+{% endblock page_content %}

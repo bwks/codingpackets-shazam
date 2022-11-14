@@ -1,0 +1,117 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Cisco ACI does things a bit differently to traditional networking.
+  I find myself constantly {{ link::e(path="https://duckduckgo.com/", description="duck hunting") }}
+  to do simple things so I am documenting them here so they are easier
+  for me to fine.
+</p>
+
+<h3 id="get-vrf-names">Get VRF Names</h3>
+<p>
+  Get a list of VRFs with the {{ text::code(text="show vrf") }}
+ command from a leaf node.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="show vrf
+
+VRF-Name                           VRF-ID State    Reason
+black-hole                              3 Up       --
+common:SHARED_MSTP_INT_VRF             89 Up       --
+common:SHARED_MSTP_VRF                148 Up       --
+common:SPAN_ERSPAN_VRF                 12 Up       --
+management                              2 Up       --
+TNT-ALPHA:ALPHA-0001                   68 Up       --
+..."
+) }}
+
+<h3 id="how-to-ping">How to Ping</h3>
+<p>
+  To ping a host use the {{ text::code(text="iping") }}
+ command from a leaf node.
+</p>
+{{ text::code_block(
+    header="cmd",
+    language="text",
+    code="iping -h
+
+usage: iping     [ -d    set the SO_DEBUG option]
+                 [ -D    enable debug information ]
+                 [ -F    enable do not fragment bit in IP header ]
+                 [ -L    receive packets on supplied interface ]
+                 [ -n    enable printing host IP address than resolved name ]
+                 [ -q    quiet output ]
+                 [ -r    disable routing of the packets, send only to directly connected hosts ]
+                 [ -v    output in verbose format ]
+                 [ -V    <vrf-name>      name of the VRF through which destination is reachable ]
+                 [ -c    <count>         no of packets to send ]
+                 [ -i    <wait>                  no of seconds to wait before sending next packet ]
+                 [ -p    <pattern>       packet payload pattern ]
+                 [ -s    <packetsize>    size of packets to send ]
+                 [ -t    <timeout>       wait for seconds to receive reply ]
+                 [ -S    <source ip/interface>   send packet with given source-ip or IP of given interface and
+                                                 send packet out of that interface ]
+                 <host>  destination host-name or ip address
+
+iping -V TNT-ALPHA:ALPHA-0001 10.47.62.32"
+) }}
+
+{{ text::note_block(text='
+    VRFs are a contatination of the tenant and VRF names joined with a colon(:).
+') }}
+
+<h3 id="find-an-endpoint-ip-to-mac-mapping">Find an Endpoint IP to MAC mapping</h3>
+<p>
+  To find an endpoints IP/MAC mapping for a VLAN in a particular EPG you
+  need to run some commands from a leaf node that the EPG is configured on.
+</p>
+{{ text::note_block(text='
+    It is highly likely that the VLAN local to the leaf is not the same VLAN
+    that is configured in the GUI (The encapsulated VLAN).
+') }}
+<p>
+  Use the {{ text::code(text="show vlan extended") }}
+ and {{ text::code(text="egrep") }}
+ commands
+  to find the translated VLAN that is used local to the leaf.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="show vlan extended | egrep 'Encap|vlan-1731'
+
+VLAN Name                             Encap            Ports
+106  TNT-ALPHA:ALPHA-0001_NETWORK_CE  vlan-1731        Eth1/41, Eth1/48, Po1,
+..."
+) }}
+<p>
+  VLAN 106 is the translated VLAN for 1731 local to this leaf node.
+</p>
+<p>
+  Now use the {{ text::code(text="show endpoints") }}
+ command to show the IP/MAC mapping.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="show endpoint vlan 106
+
+Legend:
+s - arp              H - vtep             V - vpc-attached     p - peer-aged
+R - peer-attached-rl B - bounce           S - static           M - span
+D - bounce-to-proxy  O - peer-attached    a - local-aged       L - local
++-----------------------------------+---------------+-----------------+--------------+-------------+
+VLAN/                           Encap           MAC Address       MAC Info/       Interface
+Domain                          VLAN            IP Address        IP Info
++-----------------------------------+---------------+-----------------+--------------+-------------+
+106                                       vlan-1731    aaaa.bbbb.cccc LV                        po1
+TNT-ALPHA:ALPHA-0001                      vlan-1731      10.10.10.10  LV                        po1
+..."
+) }}
+
+{% endblock page_content %}

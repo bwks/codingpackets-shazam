@@ -1,0 +1,66 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  TCL is a simple programming language that you can use on Cisco IOS devices. 
+  This is just a quick post to demonstrate how to run a pingsweep on a Cisco IOS 
+  device using TCL.
+</p>
+
+<p>
+  To enter the TCL shell use the {{ text::code(text="tclsh") }}
+ command.
+</p>
+{{ text::code_block(
+  header="ios",
+  language="text",
+  code='R1#tclsh
+R1(tcl)#'
+) }}
+
+<p>
+  A simple {{ text::emphasize(text="foreach") }} 
+  can be used to ping a few addresses. This can become 
+  quite tedious if you have a large subnet block to loop through though.
+</p>
+{{ text::code_block(
+  header="tcl",
+  language="tcl",
+  code='foreach address {
+  1.1.1.1
+  4.4.4.4
+  8.8.8.8
+  9.9.9.9} { ping $address
+}'
+) }}
+
+
+<p>
+  The following snippet can be used to loop through a subnets IPs 
+  and ping each one. The subnet {{ text::emphasize(text="10.102.254.0/24") }}
+ 
+  is used for the below example.
+</p>
+{{ text::code_block(
+  header="tcl",
+  language="tcl",
+  code='for {set i 1} {$i <= 254} {incr i} {
+  set var 10.102.254.
+  append var $i
+  ping $var rep 3 time 1}
+}'
+) }}
+
+<p>
+  To exit the TCL shell use the {{ text::code(text="tclquit") }}
+ command.
+</p>
+{{ text::code_block(
+  header="ios",
+  language="text",
+  code='R1(tcl)#tclquit
+R1#'
+) }}
+{% endblock page_content %}
