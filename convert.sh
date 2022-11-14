@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/quotes-to-remember.jinja";
+FILENAME="codingpackets/templates/blog/jncis-sp.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 

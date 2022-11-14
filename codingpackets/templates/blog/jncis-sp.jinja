@@ -1,0 +1,114 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently passed the JNCIS Service Provider (JN0-361) certification exam
+  on my second attempt. This post will cover the materials and methods
+  I used to tackle this exam.
+</p>
+
+<h3 id="first-attempt">First Attempt</h3>
+<p>
+  Juniper had a free cert day on the 17th of September 2019 here in
+  Australia. From the time it was announced I only had two weeks to
+  study for this exam and I was not very confident of passing but
+  decided to go for it as it was basically a free look at the exam.
+  I failed, but I got very close to passing, probably within a
+  question or two based on the score report. This gave me the confidence
+  to stick with it and I booked a resit for the 31st of October which
+  was the earliest day I could get and in hindsight was a bit of a
+  blessing in disguise.
+</p>
+
+<h3 id="books">Books</h3>
+<p>
+  The Juniper day one library is an amazing resource. Its great for
+  picking up a topic quickly and there is a vast number of high
+  quality books on offer for the low, low cost of .... FREE!
+  I read all or the relevant parts of the following books.
+</p>
+{{ table::default(
+  header=["Title", "Author(s)"],
+  rows=[
+  "This week: Deploying MPLS | Tim Fiola and Jamie Panagos",
+  "Day one MPLS up and running | Nupur Kanoi",
+  "Day one: MPLS for enterprise engineers | Darren J. S. O'Connor",
+  "Day one: Routing the internet protocol | Martin Brown & Nick Ryce",
+  "JNCIS-SP Study Guide-Part 1/2/3 | Unknown Author(s)",
+  ],
+) }}
+
+
+
+<h3 id="videos">Videos</h3>
+<p>
+  There is not a lot of video content out there for the Juniper Service Provider
+  track. I did use the following video tutorial series which were very helpful.
+</p>
+{{ table::default(
+  header=["Title", "Author(s)"],
+  rows=[
+  "Juniper JNCIS-ENT (JN0-343) - CBT Nuggets | Anthony Sequeira",
+  "Introduction to MPLS - INE | Keith Bogart",
+  ],
+) }}
+
+<h3 id="juniper-genius">Juniper Genius</h3>
+<p>
+  The Juniper genius app has two JNCIS-SP practice exams. I completed them
+  both getting 75% and 73% respectively. Any question I had to guess, got
+  wrong or was unsure about I wrote down and went back and researched the
+  topic more.
+</p>
+<p>
+  I did not find this out until the last week before my exam when I was
+  going through the practice tests. There is a JNCIS-SP video based
+  training available on the genius and if I were to start the process
+  again I would go through this training. Check it out, its a great
+  resource and its FREE!
+</p>
+
+<h3 id="juniper-docs">Juniper Docs</h3>
+<p>
+  I mainly read the the Juniper docs on GRE/IP-IP and NSR/GRES. There was
+  also plenty of reading the docs for examples of configuring all the
+  required protocols.
+</p>
+
+<h3 id="labs">Labs</h3>
+<p>
+  I used my vendor agnostic
+  {{ link::i(path="/blog/network-lab-base", description="lab topology") }}
+   and also added automated provisioning via the
+  {{ link::e(path="https://github.com/nornir-automation/nornir", description="Nornir framework") }}.
+  This allowed me to really drill out topics without wasting time
+  configuring boilerplate.
+</p>
+
+<h3 id="time-budget">Time Budget</h3>
+<p>
+  All up I spent about 8 weeks studying for this exam. This included
+  approximately 10-12 hours a week of reading/researching and 10-16
+  hours of labbing. I am also currently working with a customer that
+  has a large network with a lot of Juniper devices. Day to day config
+  and troubleshooting certainly didnt hurt my preparation.
+</p>
+
+<h3 id="study-notes">Study Notes</h3>
+<p>
+  I did take a lot of notes as part of my preparation. I did not have time
+  to turn them into articles. When I get time I will create them and update
+  this section.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  As with the JNCIA-Junos exam I found the JNCIS-SP to be a fair exam.
+  The questions were very relevant to operating juniper network devices
+  without being vague or esoteric. In a way I am glad I failed the first
+  attempt as it forced me to dig deeper and understand the subject matter
+  more thoroughly. This is as far as I am going with certifications this
+  year. Time/need permitting, 2020 may be the year of the JNCIP-SP.
+</p>
+{% endblock page_content %}
