@@ -1,6 +1,8 @@
-FILENAME="codingpackets/templates/blog/jncis-sp.jinja";
+FILENAME="codingpackets/templates/blog/chef-from-the-start-to-the-beginning.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
+
+sed -i -e 's/<\/code>/<\/code>\r\n/g' $FILENAME
 
 sed -i -e 's/cb\.codeBlock/text::code_block/g' $FILENAME
 

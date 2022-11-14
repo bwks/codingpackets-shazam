@@ -1,0 +1,1542 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Chef From the Start to the Beginning</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 27th of April 2019
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="leading-relaxed text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Chef is an infrastructure automation tool similar to Puppet and Salt.
+  In this post I will setup a Chef infrastructure consisting of a Chef
+  server, node and workstation to manage the infrastructure.
+</p>
+<p>
+  In April 2019 Chef
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://blog.chef.io/2019/04/02/chef-software-announces-the-enterprise-automation-stack/" target=_blank>announced</a>
+  that they are open sourcing all of their
+  products under the Apache 2.0 license (A lot of Chef was already open source).
+  This is fantastic and is the main reason I decided to dig deeper into
+  Chef.
+</p>
+<p>
+  Chef has been around for a long time, it was initially released in 2009.
+  There is a lot of information out there in which things have changed
+  either slightly (or greatly) in Chef land and it was a bit of a journey
+  to get all the pieces working together.
+</p>
+
+<h3 id="chef-architecture">Chef Architecture</h3>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/chef-from-the-start-to-the-beginning/chef-infra.svg" alt="blog/chef-from-the-start-to-the-beginning/chef-infra.svg">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h4>Components</h4>
+<ul>
+  <li><b>Chef Server</b> - Central point of policy enforcement</li>
+  <li><b>Chef Node</b> - Hosts that are managed by the Chef server</li>
+  <li><b>Chef Supermarket</b> - Public repository for cookbooks</li>
+  <li><b>Cookbook</b> - Collection of recipes</li>
+  <li><b>Recipe</b> - List of tasks to apply to a node</li>
+  <li><b>Runlist</b> - List of cookbooks to apply to a node</li>
+</ul>
+<p>
+  There are three on premises deployment models for the Chef server as well
+  as a cloud hosted version. The on-premises deployments models are as follows.
+</p>
+<ul>
+  <li>Standalone</li>
+  <li>High availability</li>
+  <li>Tiered</li>
+</ul>
+<p>
+  The system requirements depend on how many Chef nodes are under management
+  of the Chef server. I will install the standalone server on a Centos 7 VM
+  with 2 CPUs and 4GB of RAM in this lab.
+</p>
+<p>
+  The following software versions will be installed.
+</p>
+<ul>
+  <li><b>Chef Server</b> - 12.19.31</li>
+  <li><b>Chef Client</b> - 14.12.9</li>
+  <li><b>Chef Workstation</b> - 0.2.53</li>
+</ul>
+
+<h3 id="chef-server-prerequisites">Chef Server Prerequisites</h3>
+<p>
+  If Apache QPID is installed it will need to be disabled. You can
+  check the install status with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">rpm -qa</i> command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rpm -qa | grep qpid</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  If it is installed, follow the instructions
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/install_server_pre.html#apache-qpid" target=_blank>here</a>.
+  to disable it.
+</p>
+
+<p>
+  Next up, an SELinux profile will not be configured by the Chef server
+  installer. Chef advises to set SELinux to permissive and you need to figure
+  out the polices yourself if you require enforcing to be enabled. Further info
+  can be found
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/install_server_pre.html#selinux" target=_blank>here</a>.
+</p>
+<p>
+  Set SELinux to permissive mode.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo setenforce Permissive
+sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now open up the required firewall ports.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo firewall-cmd --zone=public --add-service=http --permanent
+sudo firewall-cmd --zone=public --add-service=https --permanent
+sudo firewall-cmd --reload</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="chef-server-installation">Chef Server Installation</h3>
+<p>Download and install Chef server.</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://packages.chef.io/files/stable/chef-server/12.19.31/el/7/chef-server-core-12.19.31-1.el7.x86_64.rpm
+sudo yum install -y chef-server-core-12.19.31-1.el7.x86_64.rpm</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The web management console is free for upto 25 nodes (Possibly for
+  unlimited nodes in the future). Although it is not strictly required,
+  it gives you a nice visualisation of the infrastructure. Install it with
+  the below command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chef-server-ctl install chef-manage</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now start up all the Chef services
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chef-server-ctl reconfigure</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Start the Web management server and accept the license agreement.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chef-manage-ctl reconfigure
+
+# output
+To use this software, you must agree to the terms of the software license agreement.
+Press any key to continue.
+Type 'yes' to accept the software license agreement, or anything else to cancel.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="chef-server-configuration">Chef Server Configuration</h3>
+<p>
+  Users interact with the Chef server using certificates.
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+ directory in the
+  users home directory to store the certificate.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir /home/bradmin/.chef/
+sudo chown bradmin:bradmin /home/bradmin/.chef/
+sudo chmod 0700 /home/bradmin/.chef/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create a Chef server account and private key for the user.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># sudo chef-server-ctl user-create USERNAME FIRST_NAME LAST_NAME EMAIL 'PASSWORD' --filename /path/to/username.pem
+
+sudo chef-server-ctl user-create bradmin brad searle bradleysearle@lab.local 'SuperSecretPassword' --filename /home/bradmin/.chef/bradmin.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Users can login to the web console and change their password.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Adjust the permissions of the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.pem</i>
+ file
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chown bradmin:bradmin /home/bradmin/.chef/bradmin.pem
+sudo chmod 0600 /home/bradmin/.chef/bradmin.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Finally create an Organisation.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chef-server-ctl org-create testlab 'Test Lab' --association_user bradmin --filename /home/bradmin/.chef/testlab-validator.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  That's it for the Chef server install. Browse to the url
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;hostname-or-ip&gt;</i>.
+  Login with the user account created in the previous step
+  and have a poke around.
+</p>
+
+<h3 id="chef-workstation-installation">Chef Workstation Installation</h3>
+<p>
+  The Chef workstation package is a convenient way to get your
+  workstation setup to communicate with the Chef server. The
+  packages includes CLI utilities such as: <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i>,
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i>.
+</p>
+<p>
+  A brief rundown of the utilities are as follows
+</p>
+<ul>
+  <li>
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/ctl_chef.html" target=_blank>chef</a>
+    - Helper commands for generating boilerplate
+  </li>
+  <li>
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/knife.html" target=_blank>knife</a>
+    - Interact with Chef server and / or Nodes
+  </li>
+  <li>
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/berkshelf.html" target=_blank>berks</a>
+     - Manage cookbooks dependencies and installation
+    </li>
+</ul>
+
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://downloads.chef.io/chef-workstation/" target=_blank>Download</a>
+  the workstation package for you system (I an using an Ubuntu workstation).
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://packages.chef.io/files/stable/chef-workstation/0.2.53/ubuntu/18.04/chef-workstation_0.2.53-1_amd64.deb</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Install the workstation package.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo dpkg -i chef-workstation_0.2.53-1_amd64.deb</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="chef-workstation-setup">Chef Workstation Setup</h3>
+<p>
+  Everything you need to do is done inside a repo
+  directory called <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>.
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i> command has a bunch of helper
+  commands called <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">generators</i>.
+  Generators help you to avoid writing boilerplate.
+</p>
+
+<p>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>
+ directory
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chef generate repo chef-repo</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This creates the following directory structure.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tree chef-repo/
+
+# output
+chef-repo/
+├── chefignore
+├── cookbooks
+│   ├── example
+│   │   ├── attributes
+│   │   │   └── default.rb
+│   │   ├── metadata.rb
+│   │   ├── README.md
+│   │   └── recipes
+│   │       └── default.rb
+│   └── README.md
+├── data_bags
+│   ├── example
+│   │   └── example_item.json
+│   └── README.md
+├── environments
+│   ├── example.json
+│   └── README.md
+├── LICENSE
+├── README.md
+└── roles
+    ├── example.json
+    └── README.md</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Change into the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>
+  directory and create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  directory. The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+ will be
+  used to store your private key.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd chef-repo && mkdir .chef/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Add the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+ directory to the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.gitignore</i>
+ file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo '.chef/' >> .gitignore</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Copy the private key from the Chef server to your
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+ directory.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">scp bradmin@chefserver:~/.chef/bradmin.pem .chef/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Adjust the permissions to ensure only you have access.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod 0700 .chef/
+chmod 0600 .chef/bradmin.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Chef uses the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility to communicate
+  with the Chef server. Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">knife.rb</i>
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+ directory that
+  defines the required parameters.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b">tee .chef/knife.rb > /dev/null << "EOF"
+current_dir = File.dirname(__FILE__)
+log_level                :info
+log_location             STDOUT
+node_name                "bradmin"
+client_key               "#{current_dir}/bradmin.pem"
+chef_server_url          "https://chefserver01.lab.local/organizations/testlab"
+syntax_check_cache_path  "#{ENV['HOME']}/.chef/syntaxcache"
+cookbook_path            ["#{current_dir}/../cookbooks"]
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  To setup your connection to the Chef server you first
+  need to download the servers SSL keys.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">knife ssl fetch
+
+# output
+WARNING: Certificates from chefserver01.lab.local will be fetched and placed in your trusted_cert
+directory (/home/bradmin/chef-repo/.chef/trusted_certs).
+
+Knife has no means to verify these are the correct certificates. You should
+verify the authenticity of these certificates after downloading.
+
+Adding certificate for chefserver01_lab_local in /home/bradmin/chef-repo/.chef/trusted_certs/chefserver01_lab_local.crt</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm you can now communicate with the Chef server.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">knife client list
+
+# output
+testlab-validator</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    A successful connection will return <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">&lt;organisation&gt;-validator</i>.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<h3 id="cookbooks">Cookbooks</h3>
+<p>
+  Cookbooks are a group of recipes that perform actions on a node.
+</p>
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ cookbook is
+  developed by the Chef team and is used to manage the .... you
+  guessed it <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ utility.
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ is how managed
+  nodes communicate with the Chef server.
+</p>
+<p>
+  A Cookbooks functionality can be customised by including it in
+  your own cookbooks in a similar way to Class inheritance. Upstream
+  cookbooks are not edited directly you create a
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">wrapper</i>
+ cookbook
+  that includes the upstream cookbook and the customisations you require.
+</p>
+<p>
+  Generate a wrapper cookbook for the base
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ cookbook.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chef generate cookbook cookbooks/chef_client_wrapper</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Add the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ cookbook
+  as a dependency to the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+ cookbook
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.rb</i>
+ file
+  using the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">depends</i>
+ keyword.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># cookbooks/chef_client_wrapper/metadata.rb
+
+name 'chef_client_wrapper'
+maintainer 'The Authors'
+maintainer_email 'you@example.com'
+license 'All Rights Reserved'
+description 'Installs/Configures chef_client_wrapper'
+long_description 'Installs/Configures chef_client_wrapper'
+version '0.1.0'
+chef_version '>= 13.0'
+
+# Add chef-client as a dependency
+depends 'chef-client', '~> 11.1.3'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    It is good practice to pin the vrsion of your dependency cookbooks.
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~> 11.1.3</i> in the example above.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  As a minimum you need to include the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+ cookbooks
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">default</i>
+ recipe in the
+  wrapper cookbooks
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">recipes/default.rb</i>
+
+  file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># cookbooks/chef_client_wrapper/recipes/default.rb
+
+# Cookbook:: chef_client_wrapper
+# Recipe:: default
+#
+# Copyright:: 2019, The Authors, All Rights Reserved.
+
+include_recipe 'chef-client::default'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility to download the
+  dependency cookbooks and upload them to the Chef server.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility looks for a file called
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Berksfile</i> in the currently directory.
+    You will need to change into the directory containing the
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Berksfile</i> whenever you use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility.</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd cookbooks/chef_client_wrapper/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks install</i> command fetches the dependency
+  cookbook and also any dependency cookbooks it might have to
+  you local workstation.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">berks install
+
+# output
+Resolving cookbook dependencies...
+Fetching 'chef_client_wrapper' from source at .
+Fetching cookbook index from https://supermarket.chef.io...
+Using chef-client (11.1.3)
+Using logrotate (2.2.0)
+Using cron (6.2.1)
+Using chef_client_wrapper (0.1.0) from source at .</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks upload</i> command uploads the cookbook
+  and all of the dependency cookbooks to the Chef server.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">berks upload
+
+# output
+Uploaded cron (6.2.1) to: 'https://chefserver01.lab.local/organizations/testlab'
+Uploaded logrotate (2.2.0) to: 'https://chefserver01.lab.local/organizations/testlab'
+Uploaded chef-client (11.1.3) to: 'https://chefserver01.lab.local/organizations/testlab'
+Uploaded chef_client_wrapper (0.1.0) to: 'https://chefserver01.lab.local/organizations/testlab'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now that the workstation is all configured and the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+ cookbook
+  and its dependencies are installed on the Chef server we are ready
+  to bootstrap our Chef nodes.
+</p>
+
+<h3 id="node-bootstrap">Node Bootstrap</h3>
+<p>
+  Bootstrapping a node will install the Chef client on the node and
+  bring it under management of the Chef server. During the bootstrap
+  process we apply the
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+ cookbook
+  which will start the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+
+  as a daemon and configure the node to check-in with the Chef server
+  for updates every 60 minutes.
+</p>
+<p>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility is used to bootstrap a chef node.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">knife bootstrap chefnode01.lab.local -N chefnode01.lab.local -x bradmin --sudo -r 'recipe[chef_client_wrapper]'
+
+# output
+Creating new client for chefnode01.lab.local
+Creating new node for chefnode01.lab.local
+Connecting to chefnode01.lab.local
+Warning: Permanently added '192.168.255.10' (ECDSA) to the list of known hosts.
+chefnode01.lab.local knife sudo password:
+Enter your password:
+chefnode01.lab.local
+chefnode01.lab.local -----> Installing Chef Omnibus (-v 14)
+chefnode01.lab.local downloading https://omnitruck-direct.chef.io/chef/install.sh
+chefnode01.lab.local   to file /tmp/install.sh.19787/install.sh
+chefnode01.lab.local trying curl...
+chefnode01.lab.local el 7 x86_64
+chefnode01.lab.local Getting information for chef stable 14 for el...
+chefnode01.lab.local downloading https://omnitruck-direct.chef.io/stable/chef/metadata?v=14&p=el&pv=7&m=x86_64
+chefnode01.lab.local   to file /tmp/install.sh.19793/metadata.txt
+chefnode01.lab.local trying curl...
+chefnode01.lab.local sha1	0c987093a78f7a7c70e635301eb8f82f8f36c4a7
+chefnode01.lab.local sha256	749a0550b220a2a50ce7744eb32ab8959840cb3d870cc19e58e10bd86726693a
+chefnode01.lab.local url	https://packages.chef.io/files/stable/chef/14.12.9/el/7/chef-14.12.9-1.el7.x86_64.rpm
+chefnode01.lab.local version	14.12.9
+chefnode01.lab.local downloaded metadata file looks valid...
+chefnode01.lab.local downloading https://packages.chef.io/files/stable/chef/14.12.9/el/7/chef-14.12.9-1.el7.x86_64.rpm
+chefnode01.lab.local   to file /tmp/install.sh.19793/chef-14.12.9-1.el7.x86_64.rpm
+chefnode01.lab.local trying curl...
+chefnode01.lab.local Comparing checksum with sha256sum...
+chefnode01.lab.local Installing chef 14
+chefnode01.lab.local installing with rpm...
+chefnode01.lab.local warning: /tmp/install.sh.19793/chef-14.12.9-1.el7.x86_64.rpm: Header V4 DSA/SHA1 Signature, key ID 83ef826a: NOKEY
+chefnode01.lab.local Preparing...                          ################################# [100%]
+chefnode01.lab.local Updating / installing...
+chefnode01.lab.local    1:chef-14.12.9-1.el7               ################################# [100%]
+chefnode01.lab.local Thank you for installing Chef!
+chefnode01.lab.local Starting the first Chef Client run...
+chefnode01.lab.local Starting Chef Client, version 14.12.9
+chefnode01.lab.local resolving cookbooks for run list: ["chef_client_wrapper"]
+chefnode01.lab.local Synchronizing Cookbooks:
+chefnode01.lab.local   - chef_client_wrapper (0.1.0)
+chefnode01.lab.local   - chef-client (11.1.3)
+chefnode01.lab.local   - cron (6.2.1)
+chefnode01.lab.local   - logrotate (2.2.0)
+chefnode01.lab.local Installing Cookbook Gems:
+chefnode01.lab.local Compiling Cookbooks...
+chefnode01.lab.local Converging 10 resources
+chefnode01.lab.local Recipe: chef-client::systemd_service
+chefnode01.lab.local   * directory[/var/run/chef] action create
+chefnode01.lab.local     - create new directory /var/run/chef
+chefnode01.lab.local     - change owner from '' to 'root'
+chefnode01.lab.local     - change group from '' to 'root'
+chefnode01.lab.local     - restore selinux security context
+chefnode01.lab.local   * directory[/var/cache/chef] action create
+chefnode01.lab.local     - create new directory /var/cache/chef
+chefnode01.lab.local     - change owner from '' to 'root'
+chefnode01.lab.local     - change group from '' to 'root'
+chefnode01.lab.local     - restore selinux security context
+chefnode01.lab.local   * directory[/var/lib/chef] action create
+chefnode01.lab.local     - create new directory /var/lib/chef
+chefnode01.lab.local     - change owner from '' to 'root'
+chefnode01.lab.local     - change group from '' to 'root'
+chefnode01.lab.local     - restore selinux security context
+chefnode01.lab.local   * directory[/var/log/chef] action create
+chefnode01.lab.local     - create new directory /var/log/chef
+chefnode01.lab.local     - change mode from '' to '0755'
+chefnode01.lab.local     - change owner from '' to 'root'
+chefnode01.lab.local     - change group from '' to 'root'
+chefnode01.lab.local     - restore selinux security context
+chefnode01.lab.local   * directory[/etc/chef] action create (up to date)
+chefnode01.lab.local   * template[/etc/sysconfig/chef-client] action create
+chefnode01.lab.local     - create new file /etc/sysconfig/chef-client
+chefnode01.lab.local     - update content in file /etc/sysconfig/chef-client from none to ec7de1
+chefnode01.lab.local     --- /etc/sysconfig/chef-client	2019-04-27 20:50:44.973462558 +1000
+chefnode01.lab.local     +++ /etc/sysconfig/.chef-chef-client20190427-19787-47a021	2019-04-27 20:50:44.972462567 +1000
+chefnode01.lab.local     @@ -1 +1,15 @@
+chefnode01.lab.local     +# Configuration file for the chef-client service
+chefnode01.lab.local     +
+chefnode01.lab.local     +CONFIG=/etc/chef/client.rb
+chefnode01.lab.local     +PIDFILE=/var/run/chef/client.pid
+chefnode01.lab.local     +#LOCKFILE=/var/lock/subsys/chef-client
+chefnode01.lab.local     +# Sleep interval between runs.
+chefnode01.lab.local     +# This value is in seconds.
+chefnode01.lab.local     +INTERVAL=1800
+chefnode01.lab.local     +# Maximum amount of random delay before starting a run. Prevents every client
+chefnode01.lab.local     +# from contacting the server at the exact same time.
+chefnode01.lab.local     +# This value is in seconds.
+chefnode01.lab.local     +SPLAY=300
+chefnode01.lab.local     +# Any additional chef-client options.
+chefnode01.lab.local     +OPTIONS=""
+chefnode01.lab.local     - change mode from '' to '0644'
+chefnode01.lab.local     - restore selinux security context
+chefnode01.lab.local   * directory[/etc/systemd/system] action create (up to date)
+chefnode01.lab.local   * systemd_unit[chef-client.service] action create
+chefnode01.lab.local   Recipe: &lt;Dynamically Defined Resource&gt;
+chefnode01.lab.local     * file[/etc/systemd/system/chef-client.service] action create
+chefnode01.lab.local       - create new file /etc/systemd/system/chef-client.service
+chefnode01.lab.local       - update content in file /etc/systemd/system/chef-client.service from none to 72baea
+chefnode01.lab.local       --- /etc/systemd/system/chef-client.service	2019-04-27 20:50:45.096461385 +1000
+chefnode01.lab.local       +++ /etc/systemd/system/.chef-chef-client20190427-19787-1tpdjg1.service	2019-04-27 20:50:45.063461699 +1000
+chefnode01.lab.local       @@ -1 +1,15 @@
+chefnode01.lab.local       +[Unit]
+chefnode01.lab.local       +Description = Chef Client daemon
+chefnode01.lab.local       +After = network.target auditd.service
+chefnode01.lab.local       +
+chefnode01.lab.local       +[Service]
+chefnode01.lab.local       +Type = simple
+chefnode01.lab.local       +EnvironmentFile = /etc/sysconfig/chef-client
+chefnode01.lab.local       +ExecStart = /usr/bin/chef-client -c $CONFIG -i $INTERVAL -s $SPLAY $OPTIONS
+chefnode01.lab.local       +ExecReload = /bin/kill -HUP $MAINPID
+chefnode01.lab.local       +SuccessExitStatus = 3
+chefnode01.lab.local       +Restart = always
+chefnode01.lab.local       +
+chefnode01.lab.local       +[Install]
+chefnode01.lab.local       +WantedBy = multi-user.target
+chefnode01.lab.local       - change mode from '' to '0644'
+chefnode01.lab.local       - change owner from '' to 'root'
+chefnode01.lab.local       - change group from '' to 'root'
+chefnode01.lab.local       - restore selinux security context
+chefnode01.lab.local     - creating unit: chef-client.service
+chefnode01.lab.local Recipe: chef-client::systemd_service
+chefnode01.lab.local   * service[chef-client] action enable
+chefnode01.lab.local     - enable service service[chef-client]
+chefnode01.lab.local   * service[chef-client] action start
+chefnode01.lab.local     - start service service[chef-client]
+chefnode01.lab.local   * systemd_unit[chef-client.timer] action stop (up to date)
+chefnode01.lab.local   * systemd_unit[chef-client.timer] action disable (up to date)
+chefnode01.lab.local   * systemd_unit[chef-client.timer] action delete (up to date)
+chefnode01.lab.local   * service[chef-client] action restart
+chefnode01.lab.local     - restart service service[chef-client]
+chefnode01.lab.local
+chefnode01.lab.local Running handlers:
+chefnode01.lab.local Running handlers complete
+chefnode01.lab.local Chef Client finished, 10/15 resources updated in 02 seconds</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The options used in the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife bootstrap</i> command are as follows.
+</p>
+<ul>
+  <li><b>-N</b> - The name of the node when added to the Chef server</li>
+  <li><b>-x</b> - The username to use to connect to the node</li>
+  <li><b>--sudo</b> - Activate sudo on the node (Will prompt for sudo password)</li>
+  <li><b>-r</b> - List of recipes to apply to the node</li>
+</ul>
+
+<p>
+  Confirm the node is connected to the Chef server.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">knife node list
+
+# output
+chefnode01.lab.local</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Get detailed information about the node.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">knife node show
+
+# output
+Node Name:   chefnode01.lab.local
+Environment: _default
+FQDN:        chefnode01.lab.local
+IP:          192.168.255.190
+Run List:    recipe[chef_client_wrapper]
+Roles:
+Recipes:     chef_client_wrapper, chef_client_wrapper::default, chef-client::default, chef-client::service, chef-client::systemd_service
+Platform:    centos 7.6.1810
+Tags:</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  That's it. Rinse and repeat the bootstrap process for any other nodes you
+  want to bring under management of the Chef server.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you followed along and made it this far, you will have a working Chef
+  infrastructure setup. There is a lot of moving parts and cooking based
+  terminology to get your head around, but like most complex systems after
+  a while things start to make sense. I have only just started using
+  Chef and I am enjoying the experience so far and look forward to digging
+  deeper.
+</p>
+
+<h4>Remember: This is not the end, it's merely the beginning!</h4>
+<p>
+  The <i>"from the start to the beginning"</i> series aims to take you from nothing to getting you up and running.
+  This is not meant to be a comprehensive guide, but should be enough to get you started on the journey.
+</p>
+
+
+
+            
+  
+
+
+            
+            
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.chef.io" target=_blank>https://www.chef.io</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/install_server.html" target=_blank>https://docs.chef.io/install_server.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/install_server_pre.html" target=_blank>https://docs.chef.io/install_server_pre.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://linoxide.com/linux-how-to/chef-workstation-server-node-centos-7/" target=_blank>https://linoxide.com/linux-how-to/chef-workstation-server-node-centos-7/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-chef-12-configuration-management-system-on-ubuntu-14-04-servers" target=_blank>https://www.digitalocean.com/community/tutorials/how-to-set-up-a-chef-12-configuration-management-system-on-ubuntu-14-04-servers</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/install_dk.html" target=_blank>https://docs.chef.io/install_dk.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://downloads.chef.io/chef-workstation/" target=_blank>https://downloads.chef.io/chef-workstation/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.chef.io/chef_repo.html" target=_blank>https://docs.chef.io/chef_repo.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://blog.chef.io/2017/09/28/chef-101-the-road-to-best-practices/" target=_blank>https://blog.chef.io/2017/09/28/chef-101-the-road-to-best-practices/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://blog.chef.io/2019/04/02/chef-software-announces-the-enterprise-automation-stack/" target=_blank>https://blog.chef.io/2019/04/02/chef-software-announces-the-enterprise-automation-stack/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#chef" class="text-xl">chef</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-architecture">
+            Chef Architecture
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-server-prerequisites">
+            Chef Server Prerequisites
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-server-installation">
+            Chef Server Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-server-configuration">
+            Chef Server Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-workstation-installation">
+            Chef Workstation Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#chef-workstation-setup">
+            Chef Workstation Setup
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#cookbooks">
+            Cookbooks
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#node-bootstrap">
+            Node Bootstrap
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

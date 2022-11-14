@@ -1,0 +1,185 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  One of my goals for 2019 is the brush back up on
+  networking theory/operation after the last couple of years
+  focused on network automation. This is a bit of a brain
+  dump about my adventure in pursuit of the JNCIA-Junos
+  certification and the study materials I used.
+</p>
+
+<h3 id="preface">Preface</h3>
+<p>
+  I have worked as a network engineer for 10+ years and
+  spent most of my time working with Cisco products on
+  the network side of the house. Over the last couple of
+  years I have worked at a mostly Cisco allergic shop with
+  Juniper being the preferred network vendor.
+</p>
+<p>
+  Although I am not in operations I work with Juniper
+  routers/switches/firewalls a fair bit in order to apply
+  automation magic to them. I am certainly no Junos wizard
+  and I took about 6 months from thinking about getting
+  certified to feeling like I had prepared enough to
+  confidently take the exam.
+</p>
+
+<h3 id="books">Books</h3>
+<p>
+  I feel like I had a good enough handle on the fundamentals to
+  skip over the parts around the OSI model, subnetting, what is a router,
+  switch etc... I read the three day one books cover to cover and the
+  parts of the cert guide and study guide that made sense based on
+  the blueprint.
+</p>
+
+{{ table::default(
+  header=["Title", "Author(s)"],
+  rows=[
+  "Day one exploring the Junos CLI | Walter Goralski, Sean Clarke, and Ian Jarrett",
+  "Day one routing the internet protocol | Martin Brown and Nick Ryce",
+  "Day one Junos monitoring and troubleshooting | Jamie Panagos and Albert Statti",
+  "JNCIA: Juniper Networks Certified Internet Associate Study Guide | Joseph M. Soricelli with John L. Hammond, Galina Diker Pildush, Thomas E. Van Meter, and Todd M. Warble",
+  "JNCIA-Junos Study Guide-Part 1/2 | Unknown Author(s)",
+  ],
+) }}
+
+<h3 id="videos">Videos</h3>
+<p>
+  The Pluralsite course from Rich Bibby was a pretty good
+  introduction. It was high level but enough to give me a
+  good idea of what I needed to study deeper.
+</p>
+
+{{ table::default(
+  header=["Title", "Author(s)"],
+  rows=[
+  "Juniper Networks JNCIA-Junos (JN0-102) | Rich Bibby",
+  ],
+) }}
+
+<h3 id="other-tools">Other Tools</h3>
+<h4>Juniper Genius</h4>
+<p>
+  The Juniper genius app has two JNCIA practice exams. I completed them
+  both getting 80 and 85% respectively. Any question I had to guess, got
+  wrong or was unsure about I wrote down and went back and researched the
+  topic more. This was a big help, although none of the questions were in
+  the actual exam, the subject matter was similar and it helped me identify
+  the areas where I needed to spend more time studying.
+</p>
+
+<h4>Juniper Docs</h4>
+<p>
+  The Juniper docs are a good resource and where I went searching when I
+  needed to clarify something that I wasn't sure about from one of the
+  books/videos. They also have a lot of configuration examples which helped
+  me understand the Juniper way of doing things via the CLI.
+</p>
+
+<h4>Labs</h4>
+<p>
+  I built a vendor agnostic
+  {{ link::i(path="/blog/network-lab-base", description="lab topology") }}
+  which I used for most of my labbing. Having the base configs already
+  applied and being able to rollback to a baseline state quickly really
+  helped pump in as much quality lab time as possible. I did not
+  actually spend a large percentage of time labbing, but what I
+  did do was very productive.
+</p>
+
+<h4>Liquid Text App</h4>
+<p>
+  Liquid Text is an IOS app that allows you to take notes on a PDF and the
+  notes are linked in context to the document. You can write directly
+  on the document or there is a side panel for copying text or
+  writing your own notes / diagrams. I felt like this was a great time
+  saver when going back for revision of something I had noted but didnt
+  quite understand or had forgotten.
+</p>
+
+<h3 id="time-budget">Time Budget</h3>
+<p>
+  I dont have a concrete answer as I really didnt start accurately
+  tracking my time until the middle of January when I thought It
+  might be good (or sad) to see how much time I was actually committing
+  to this goal. My recorded time was 50.5 hours but I would estimate
+  it was closer to 100 based on what I had done in the months prior to
+  Christmas 2018.
+</p>
+
+<h3 id="study-notes">Study Notes</h3>
+<p>
+  Below are the links to my study notes. They may not make sense
+  to you if you are not me, but they may be helpful to give others
+  and idea of what to look for.
+</p>
+
+<ul>
+  <li>
+    {{ link::i(path="/blog/juniper-aaa", description="AAA") }}
+  </li>
+  <li>
+    {{ link::i(path="/blog/juniper-firewall-filters", description="Firewall Filters") }}
+  </li>
+
+  <li>
+    {{ link::i(path="/blog/juniper-junos", description="Junos") }}
+  </li>
+
+  <li>
+    {{ link::i(path="/blog/juniper-cli-quick-reference", description="Juniper CLI quick reference") }}
+  </li>
+
+  <li>
+    {{ link::i(path="/blog/juniper-protocol-independent-routing", description="Protocol-independent routing") }}
+  </li>
+
+  <li>
+    {{ link::i(path="/blog/juniper-routing-policy", description="Routing policy") }}
+  </li>
+
+  <li>
+    {{ link::i(path="/blog/juniper-trace-options", description="Trace Options") }}
+  </li>
+</ul>
+
+<p>
+  I also documented some quick reference configs
+  {{ link::i(path="/blog/#juniper", description="here") }}
+</p>
+
+<h3 id="calculated-omissions">Calculated Omissions</h3>
+<p>
+  I took a bit of a gamble and skimmed
+  over QoS without spending too much time on it. QoS I am
+  familiar with (not Juniper specific) but I guessed/hoped there
+  would not be a ton of questions and I can focus on it properly
+  and give it the attention it deserves if/when I do higher level
+  Juniper certs. I took the same tactic with uRPF although I am
+  familiar with it, I will look at it more deeply in the future.
+</p>
+
+<h3 id="the-verdict">The Verdict</h3>
+<p>
+  I am pretty happy that I went for this cert. It helped me get
+  a good handle on the operation of Junos and how things are
+  done in Juniper land. I completed my CCNA over 10 years ago
+  now and from what I recall that was a harder exam with more
+  generic network theory questions (I also had zero real world
+  experience at that time). I recall studying very hard
+  for that exam and the fundamentals I learned still help me and
+  are relevant to this day.
+</p>
+
+<p>
+  I thought the exam was pretty fair and a good level of knowledge
+  for a junior network professional. Not many useless trivia questions
+  and if you have been operating Junos devices, a lot of the answers
+  made sense, where obvious or easily inferred.
+</p>
+{% endblock page_content %}
