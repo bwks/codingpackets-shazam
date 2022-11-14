@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/cloud-notes-aws-s3.jinja";
+FILENAME="codingpackets/templates/blog/quotes-to-remember.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 
@@ -9,6 +9,8 @@ sed -i -e 's/nb\.noteBlock(/text::note_block(text=/g' $FILENAME
 sed -i -e 's/nb\.importantBlock(/text::important_block(text=/g' $FILENAME
 
 sed -i -e 's/nb\.warningBlock(/text::warning_block(text=/g' $FILENAME
+
+sed -i -e 's/qt\.quoteBlock(/text::quote_block(/g' $FILENAME
 
 sed -i -e 's/bi\.boxedImage(/image::boxed(path=/g' $FILENAME
 
