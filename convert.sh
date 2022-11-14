@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/chef-from-the-start-to-the-beginning.jinja";
+FILENAME="codingpackets/templates/blog/cisco-meraki-claim-devices.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 
@@ -30,9 +30,11 @@ sed -i -r -e 's/<a href="(.*?)">(.*?)<\/a>/{{ link::e(path="\1", description="\2
 
 sed -i -r -e 's/<a href="(.*?)">(.*?)<\/a>/{{ link::e(path="\1", description="\2") }}/g' $FILENAME
 
+
 sed -i -r -e 's/<code>(.*?)<\/code>/{{ text::code(text="\1") }}/g' $FILENAME
 
 sed -i -r -e 's/<span class="emphasize-text-darkmode">(.*?)<\/span>/{{ text::emphasize(text="\1") }}/g' $FILENAME
+sed -i -r -e "s/<span class='emphasize-text-darkmode'>(.*?)<\/span>/{{ text::emphasize(text=\"\1\") }}/g" $FILENAME
 
 sed -i -r -e 's/\{\% verbatim \%\}(.*?)\{\% endverbatim \%\}/\1/g' $FILENAME
 
