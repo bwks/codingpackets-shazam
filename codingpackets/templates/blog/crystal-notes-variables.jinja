@@ -1,0 +1,49 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Like most languages, variables in Crystal are 
+  defined with the {{ text::emphasize(text="=") }}
+  operator.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Create a string variable
+stuff = "stuff"
+
+# Deduce the type of a variable. 
+typeof(stuff) # => String
+
+# Explicitly define the type of a variable.
+stuff : String
+
+# Assign "stuff" value to the stuff variable
+stuff = "stuff"
+
+# Define a variable type and assign a value
+stuff : String = "stuff"
+
+# Define a constant
+THINGS = "things"'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+
+  <li>Variable types are inferred by the compiler and do not have to be specifically defined.</li>
+  <li>When a variable type is declared, it must be assigned a value before it can be accessed.</li>
+  <li>There are no global variables in Crystal, all variables are locally scoped</li>
+  <li>A variables value can be reassigned.</li>
+  <li>If a constants value is reassigned, the compiler will complain, but the program will still run.</li>
+  <li>Variables are defined in {{ text::emphasize(text="snake_case") }}
+ by convention.</li>
+  <li>Constants are defined in {{ text::emphasize(text="SHOUTING_SNAKE_CASE") }}
+ by convention.</li>
+</ul>
+
+
+{% endblock page_content %}

@@ -1,0 +1,116 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Arrays in Crystal are an ordered collection of elements, 
+  generally of the same type. Although, it is possible 
+  to have an array of multiple types.
+</p>
+
+<h3 id="creating-an-array">Creating an array</h3>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Create an array of strings
+stuff_and_things = ["stuff", "things"]
+
+# Deduce the type signature of the array. 
+typeof(stuff_and_things) # => Array(String)
+
+# Alternate array syntax for strings
+stuff_and_things = %w(stuff things)
+
+# Alternate array syntax for symbols
+stuff_and_things = %i(:stuff :things)
+
+# To create an empty array, you must define 
+# the intended type of its elements.
+# There is 2 ways to define an empty array.
+stuff_and_things = [] of String
+stuff_and_things = Array(String).new'
+) }}
+
+<h3 id="iterating-an-array">Iterating an Array</h3>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Iterate through an array
+stuff_and_things.each do |item|
+  puts item
+end
+
+# Iterate through an array with an index
+stuff_and_things.each_with_index do |item, idx|
+  puts "#{idx} #{item}"
+end'
+) }}
+
+<h3 id="accessing-elements">Accessing Elements</h3>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Get the first element
+stuff_and_things[0]
+
+# Get the last element
+stuff_and_things[-1]
+
+# Get a sub array of elements
+stuff_and_things[1..2]
+
+# Check if array index exists
+stuff_and_things[10]?
+
+# Check for element existance
+stuff_and_things.includes?("stuff")'
+) }}
+
+
+<h3 id="array-operations">Array Operations</h3>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# The shovel (<<) operator can be used to add 
+# elements to the end of an array
+stuff_and_things << "blah"
+
+# Delete an element
+stuff_and_things.delete("stuff")
+
+# Remove the first element
+stuff_and_things.shift
+
+# Remove the last element
+stuff_and_things.pop
+
+# Get the size of an array
+stuff_and_things.size # => 3'
+) }}
+
+<h3 id="static-arrays">Static Arrays</h3>
+<p>
+  If the size of an array is fixed it is much more performant 
+  to create a static array.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Create a static array
+stuff_and_things = StaticArray["stuff", "things"]
+
+# Check the type of a static array
+typeof(stuff_and_things) # => StaticArray(String, 2)'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Attempting to access an element of an array that is out of bounds is a runtime error.</li>
+</ul>
+{% endblock page_content %}

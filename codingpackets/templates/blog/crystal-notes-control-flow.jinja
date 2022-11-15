@@ -1,0 +1,120 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Like many other languages, Crystal has a few 
+  methods of controlling a programs flow of execution.
+</p>
+
+<h3 id="if-elsif-else">if/elsif/else</h3>
+
+<p>
+  {{ text::emphasize(text="if") }}
+ and 
+  {{ text::emphasize(text="elsif") }}
+
+  conditions are evaluated on being
+  {{ text::emphasize(text="truthy") }}
+ or
+  {{ text::emphasize(text="falsy") }}
+
+</p>
+
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Exampe if/elsif/else block.
+if is_stuff
+  puts "its stuff"
+elsif is_things
+  puts "its things"
+else
+  puts "its something else"
+end
+
+# An if condition can be used at the end of an expression.
+stuff = "stuff" if is_stuff'
+) }}
+
+<h3 id="unless">unless</h3>
+<p>
+  {{ text::emphasize(text="unless") }}
+ 
+  can be though if as a synonym for 
+  {{ text::emphasize(text="if not") }}
+.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Exampe unless/else block.
+unless is_stuff
+  puts "its not stuff, its things"
+else
+  puts "its stuff"
+end
+
+# An unless condition can be used at the end of an expression.
+stuff = "stuff" unless not_stuff'
+) }}
+
+<h3 id="case-when">case/when</h3>
+<p>
+  {{ text::emphasize(text="case/when") }}
+ 
+  blocks are usually more suitable than an
+  {{ text::emphasize(text="if/else") }}
+ 
+  block when there is a larger number of conditions 
+  to check for.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Exampes of case/when block.
+items = 10
+
+# Check equality 
+how_much_stuff = case items
+  when 0
+    "no stuff"
+  when 1
+    "a little stuff"
+  when 5
+    "a bit more stuff"
+  when 10
+    "a lot of stuff"
+  else
+    "maybe get some things"
+end
+  
+# Evaluate expression
+how_much_stuff = case
+  when items == 0
+    "no stuff"
+  when 1 < items < 5
+    "a little stuff"
+  when 5 < items < 10
+    "a bit more stuff"
+  when items > 10
+    "a lot of stuff"
+  else
+    "maybe get some things"
+end') }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Crystal treats {{ text::emphasize(text="false") }}
+, {{ text::emphasize(text="nil") }}
+ and {{ text::emphasize(text="null pointers") }}
+ as {{ text::emphasize(text="falsy") }}
+, everything else is {{ text::emphasize(text="truthy") }}
+</li>
+</ul>
+{% endblock page_content %}

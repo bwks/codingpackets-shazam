@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/crystal-notes-modules.jinja";
+FILENAME="codingpackets/templates/blog/install-crystal-ubuntu-2004.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 

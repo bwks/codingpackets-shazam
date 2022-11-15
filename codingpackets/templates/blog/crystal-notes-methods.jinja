@@ -1,0 +1,204 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A Method in Crystal is like a fuction in 
+  other languages.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a method that accepts no arguments.
+def print_stuff
+  puts "stuff"
+end
+
+# Call a method.
+print_stuff()
+
+# Define a method that accepts arguments.
+# The parameter types will be inferred by the compiler.
+def do_stuff(what, how)
+  puts "#{what} #{how}"
+end
+
+# Call a method with arguments.
+do_stuff("Say hello", "speak")
+
+# Call a method with named parameter arguments.
+do_stuff(what: "Say hello", how: "speak")'
+) }}
+
+<h3 id="overloading">Overloading</h3>
+<p>
+  Methods in Crystal can be
+  {{ text::emphasize(text="overloaded") }}
+.
+  This means that methods with the same name but 
+  different signatures are treated as different 
+  methods.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a method and explicity define the types that are accepted.
+def do_stuff(what : String, how : String)
+  puts "#{what} #{how}"
+end
+
+# Call a method with arguments defining the parameters.
+do_stuff(what: "Say hello", how: "speak")
+
+# Overload the do_stuff method with a different signature.
+def do_stuff(x : Int32, y : Int32)
+  puts x + y
+end
+
+do_stuff(1, 2)'
+) }}
+
+<h3 id="default-parameters">Default Parameters</h3>
+<p>
+  Methods can have default parameters.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a method with default parameters.
+def do_stuff(x : Int32, y : Int32 = 1)
+  puts x + y
+end
+
+# Call a method with default parameters.
+do_stuff(1)'
+) }}
+
+<h3 id="splat">Splat</h3>
+<p>
+  A {{ text::emphasize(text="splat") }}
+
+  parameter is defined by prefixing a parameter 
+  with an asterix (*). A splat takes a variadic 
+  number of elements.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a method with splat parameter.
+# The splat items can be optionally type annotated.
+def do_stuff(*args : String)
+  args.each do |a|
+    puts a
+  end
+end
+
+# Call method with N number of elements.
+do_stuff("stuff", "things")
+
+# A Tuple can be splatted into a method
+stuff_and_things = {"stuff", "things"}
+do_stuff(*stuff_and_things)'
+) }}
+
+
+<h3 id="double-splat">Double Splat</h3>
+<p>
+  A {{ text::emphasize(text="double splat") }}
+
+  parameter is defined by prefixing a parameter 
+  with 2 asterixes (**). A double splat takes a 
+  variadic number of elements.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a double splat method
+def do_stuff(**kwargs)
+  kwargs.each do |key, value|
+    puts "Key: #{key} - Value: #{value}"
+  end
+end
+
+# Call a method with N number of named arguments.
+do_stuff(stuff: "my stuff", things: "my things")
+
+# A NamedTuple can be double splatted into a method.
+stuff_and_things = {stuff: "my stuff", things: "my things"}
+do_stuff(**stuff_and_things)'
+) }}
+
+<h3 id="return-values">Return Values</h3>
+<p>
+  The return type of a method can be specifically defined.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a methods return type as a String.
+def do_stuff(what : String, how : String) : String
+  "#{what} #{how}"
+end
+
+# Multiple return values, can be packed in a Tuple or Array.
+def do_stuff(what : String, how : String) : Tuple(String, String)
+  Tuple(what, how)
+end
+
+# Unpack multiple return values
+what, how = do_stuff("call glass guy", "on phone")'
+) }}
+
+
+<h3 id="block">Block</h3>
+<p>
+  A block lets you reuse code without creating a formal method.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Example of using block.
+stuff_and_things.map{ |item| item.upcase }
+
+# (&) is syntastic sugar used to defind the captured object.
+stuff_and_things.map(&.upcase)') }}
+
+<h3 id="proc">Proc</h3>
+<p>
+  A Proc, also know as a lambda or an anonymous 
+  function in other languages is a nameless function 
+  with a call method. Anonymous functions are defined 
+  with the {{ text::emphasize(text="->") }}
+ 
+  operator.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define an anonymous function and assign it to a 
+# variable named fn.
+fn = ->(stuff : String, things : String) { "#{stuff} - #{things}" }
+
+# Call anonymous function
+fn.call("my stuff", "my things") # => my stuff - my things') }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Methods are defined in {{ text::emphasize(text="snake_case") }}
+ by convention.</li>
+  <li>A splat/double splat can appear only once in any position.</li>
+  <li>The splat only accepts a tuple.</li>
+  <li>The double splat only accepts a named tuple.</li>
+  <li>Methods automatically return the value of the last 
+  expression. There is no need to declare the 
+  {{ text::emphasize(text="return") }}
+ statement.</li>
+  <li>Type annotations are required for Procs.</li>
+  <li>The return type of a Proc is inferred by the compiler.</li>
+  <li>Crystal does not implement tail-call optimization. Therefore, recursive method calls are not infinitly scalable.</li>
+</ul>
+{% endblock page_content %}

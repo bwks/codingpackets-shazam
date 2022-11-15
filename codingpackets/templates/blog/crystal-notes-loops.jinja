@@ -1,0 +1,80 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Crystal has a set of looping structures 
+  similar to what can be found in other languages.
+</p>
+
+<h3 id="each">Each</h3>
+<p>
+  An {{ text::emphasize(text="each") }}
+ 
+  loop is similar to a for loop in other languages.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Example each loop.
+stuff_and_things = ["stuff", "things"]
+stuff_and_things.each do |item|
+  puts item
+end
+
+# Example each loop with an index.
+stuff_and_things = ["stuff", "things"]
+stuff_and_things.each_with_index do |item, idx|
+  puts "#{idx} - #{item}"
+end'
+) }}
+
+<h3 id="times">Times</h3>
+<p>
+  {{ text::emphasize(text="times") }}
+ allows 
+  you to iterate for {{ text::emphasize(text="N") }}
+
+  number of iterations.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Exampe times block.
+10.times do 
+  puts "Show me your stuff"
+end'
+) }}
+
+<h3 id="while-loop">While/Loop</h3>
+<p>
+  {{ text::emphasize(text="while") }}
+ and
+  {{ text::emphasize(text="loop") }}
+ 
+  have similar behaviour and start an infinite loop. 
+  It is up to the user to program the exit condition.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Example of while loop.
+is_true = true
+while is_true
+  puts "blah"
+  is_true = false
+end
+
+# Example of a loop...er loop. 
+# Usefull if you want a single iteration.
+is_true = true
+loop do
+  puts "blah"
+  break if is_true
+end') }}
+
+
+{% endblock page_content %}
