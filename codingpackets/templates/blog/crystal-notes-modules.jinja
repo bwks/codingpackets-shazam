@@ -1,0 +1,94 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Modules in Crystal allow you to group methods 
+  and classes together based on related functionality.
+  They provide a namespace to help avoid naming collisions 
+  and can also be used to mixin functionality.
+</p>
+
+<h3 id="module-definition">Module Definition</h3>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a module that wraps a class.
+module Stuff
+  class Things
+  end
+end
+
+# Access a class from within a module.
+s = Stuff::Things.new
+puts typeof(s) # => Stuff::Things'
+) }}
+
+<h3 id="top-level-variables">Top Level Variables</h3>
+<p>
+  Modules can have top level variables.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a module with a top level variable.
+module Things
+  THINGS = "things"
+end
+
+# Access the top level variable.
+puts Things::THINGS # => things'
+) }}
+
+<h3 id="top-level-methods">Top Level Methods</h3>
+<p>
+  Modules can have top level methods.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a module with a top level method.
+module Things
+  # Avoid having to define self.method_name
+  # by extending self.
+  extend self
+
+  def stuff # self.stuff not required.
+    puts("stuff")
+  end
+
+end
+
+# Access the top level method.
+Things.stuff # => stuff'
+) }}
+
+<h3 id="mixin">Mixin</h3>
+<p>
+  Modules can be used to "mixin" behavour.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a module
+module Stuff
+  extend self
+  def stuff
+    puts "stuff"
+  end
+end
+
+# Mixin the Stuff module to the Things class.
+class Things
+  include Stuff
+end
+
+# Access the behaviour from the Stuff module in Things.
+Things.new.stuff'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Library authors should use modules to help avoid namespace collisions.</li>
+</ul>
+{% endblock page_content %}

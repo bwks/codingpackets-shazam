@@ -1,0 +1,52 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In Crystal, code is imported with the 
+  {{ text::emphasize(text="require") }}
+ statement.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Import stuff.cr from the current directory. 
+# OR import stuff.cr from the ./stuff/ directory if it exists. 
+require "./stuff"
+
+# Explicitly import the stuff.cr file from the 
+# current directory.
+require "./stuff.cr"
+
+# Import from parent directory.
+require "../stuff"
+
+# Import from N parent level directories.
+require "../../stuff"
+
+# Import from a subdirectory.
+require "./stuff/things"
+
+# Import all .cr files in the current directory.
+require "./stuff/*"
+
+# Import all .cr files in the current and sub directories.
+require "./stuff/**"
+
+# Import stuff.cr or stuff/stuff.cr from the standard library.
+# OR import stuff.cr or stuff/stuff.cr from the ./lib directory.
+require "stuff"') }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>The compiler combines all required files together.</li>
+  <li>A file can be required more than once, but only the first 
+    {{ text::emphasize(text="require") }}
+ statement has any effect.</li>
+  <li>The standard library on Linux is located in the 
+    {{ text::emphasize(text="/opt/crystal/src/") }}
+ directory.</li>
+</ul>
+{% endblock page_content %}

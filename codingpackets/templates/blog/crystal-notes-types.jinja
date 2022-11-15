@@ -1,0 +1,64 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="strings">Strings</h3>
+<ul>
+  <li>Strings in Crystal are are declared with double 
+  quotes {{ text::emphasize(text='("")') }}
+.</li>
+  <li>Strings are stored as as sequence of 
+  {{ text::emphasize(text="UTF-8") }}
+ encoded characters.</li>
+  <li>Strings are immutable.</li>
+</ul>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a string.
+stuff = "stuff"
+
+# Multi-line string.
+stuff_and_things="stuff
+and
+things"' 
+) }}
+
+<h3 id="symbols">Symbols</h3>
+<ul>
+  <li>Symbols in Crystal are declared by prefixing 
+  a colon {{ text::emphasize(text="(:)") }}
+ to a variable.</li>
+  <li>Every instance of a Symbol is the same object.
+    Symbols are stored as a unique {{ text::emphasize(text="Int32") }}
+ 
+    value, which saves memory compared to strings.</li>
+  <li>Symbols are immutable.</li>
+  <li>Symbols are evaluated at runtime.</li>
+</ul>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a symbol.
+stuff = :stuff
+
+# Define a symbol enclosed in double quotes.
+# This allows for a space in the symbol.
+things = :"my things"
+
+# Symbols are a good options for hash keys.
+stuff_and_things = {
+  :stuff => "my stuff",
+  :things => "my things"
+}' 
+) }}
+
+<h3 id="boolean">Boolean</h3>
+
+
+<h3 id="numbers">Numbers</h3>
+
+<h3 id="union-types">Union Types</h3>
+
+{% endblock page_content %}

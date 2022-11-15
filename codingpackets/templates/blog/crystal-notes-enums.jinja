@@ -1,0 +1,40 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Enums group a related number of values and store 
+  the values internally as integers. Enums are good 
+  to use when the number of values are not too big.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define an Enum.
+enum Bike
+  Specialized
+  Trek
+  Cannondale
+  Factor
+end
+
+# Access an Enum.
+Bikes::Specialized  # => Specialized
+
+# Check the type of an Enum.
+typeof(Bike::Specialized) # => Bike
+
+# Access the Enum value
+Bike::Specialized.value  # => 0
+
+# Check the type of the Enum value
+typeof(Bike::Specialized.value)  # => Int32' 
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Enums are a type safe alternative to Symbols.</li>
+  <li>It is recommended to use Enums whenever possible and only use Symbols for an internal API implementation.</li>
+</ul>
+{% endblock page_content %}

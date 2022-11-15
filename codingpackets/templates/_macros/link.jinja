@@ -1,3 +1,5 @@
-{% macro i(path, description="") %}<a class="text-sky-600 no-underline hover:text-sky-800" href="{{ path }}">{% if description %}{{ description }}{% else %}{{ path }}{% endif %}</a>{% endmacro %}{% set alias = link_to %}
+{% macro i(path, description="") %}<a class="text-sky-600 no-underline hover:text-sky-800" href="{{ path }}">{% if description %}{{ description }}{% else %}{{ path }}{% endif %}</a>{% endmacro %}
 
-{% macro e(path, description="") %}<a class="text-sky-600 no-underline hover:text-sky-800" href="{{ path }}" target=_blank>{% if description %}{{ description }}{% else %}{{ path }}{% endif %}</a>{% endmacro %}{% set alias = elink_to %}
+{% macro e(path, description="") %}<a class="text-sky-600 no-underline hover:text-sky-800" href="{{ path }}" target=_blank>{% if description %}{{ description }}{% else %}{{ path }}{% endif %}</a>{% endmacro %}
+
+{% macro ref(path) %}<a class="text-sky-600 no-underline hover:text-sky-800" href="#references-{{ path }}"><sup>[{{ path }}]</sup></a>{% endmacro %}

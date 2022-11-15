@@ -1,0 +1,47 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="tuples">Tuples</h3>
+<p>
+  A Tuple in Crystal is a group of related values 
+  of possibly different types.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a Tuple.
+stuff_and_things = {"stuff", :things, 42}
+
+# Access a Tuple element.
+stuff_and_things[0] # => stuff
+
+# Deduce the type of stuff_and_things
+typeof(stuff_and_things) # => Tuple(String, Symbol, Int32)') }}
+
+
+<h3 id="named-tuples">Named Tuples</h3>
+<p>
+  NamedTuples allow you to create a key/value pair version 
+  of a Tuple.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a NamedTuple.
+stuff_and_things = {stuff: "stuff", things: :things, the_answer: 42}
+
+# Access a NamedTuple element.
+stuff_and_things[:the_answer] # => 42
+
+# Deduce the type of stuff_and_things
+typeof(stuff_and_things) # => NamedTuple(stuff: String, things: Symbol, the_answer: Int32)' 
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Tuples have a fixed size and are stack-allocated.</li>
+  <li>Preference should be given to tuples over arrays for fixed size collections.</li>
+  <li>NamedTuple keys are of the Symbol type.</li>
+</ul>
+{% endblock page_content %}

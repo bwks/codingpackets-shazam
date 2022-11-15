@@ -188,7 +188,7 @@
   Ansible can be installed via a distributions package manager, pip or built from source.
 </p>
 <p>
-  <b>YUM</b> distributions can find ansible in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">epel-release</i>
+  <b>YUM</b> distributions can find ansible in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">epel-release</i>
    repository.
 </p>
 
@@ -211,7 +211,7 @@ sudo yum install ansible</code></pre>
 
 
 <p>
-  <b>APT</b> distributions can find ansible in a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PPA</i>
+  <b>APT</b> distributions can find ansible in a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">PPA</i>
    repository.
 </p>
 
@@ -234,7 +234,7 @@ sudo apt-get install ansible</code></pre>
 
 
 <p>
-  <b>PIP</b> package is available for installation with <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pip</i>
+  <b>PIP</b> package is available for installation with <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">pip</i>
   . If using pip it is preferable to
   install ansible within a virtual environment.
 </p>
@@ -306,7 +306,7 @@ network</code></pre>
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-  Hosts in an inventory file can be grouped using <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[group-name]</i>
+  Hosts in an inventory file can be grouped using <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">[group-name]</i>
   syntax.</div>
   </div>
 </div>
@@ -341,9 +341,9 @@ retry_files_enabled=False</code></pre>
 
 <h3 id=directory-structure>Directory Structure</h3>
 <p>
-  Create the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i>
-   and <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i>
-   files under the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible</i>
+  Create the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible.cfg</i>
+   and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">inventory</i>
+   files under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible</i>
   
   directory and ensure you have the following directory structure.
 </p>
@@ -369,7 +369,7 @@ ansible
 
 <h3 id=first-steps>First steps</h3>
 <p>
-  Once ansible is installed there is an <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">'ad-hoc'</i>
+  Once ansible is installed there is an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">'ad-hoc'</i>
    mode that can be used to test connectivity.
 </p>
 
@@ -396,8 +396,8 @@ lab-cumulus-01 | SUCCESS => {
 
 
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> ad-hoc command is really just for testing and not used that much in practice.
-  The usage pattern is <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible &lt;host-pattern&gt; [options]</i>. In the above example
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> ad-hoc command is really just for testing and not used that much in practice.
+  The usage pattern is <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible &lt;host-pattern&gt; [options]</i>. In the above example
   there are a number of options being used
 </p>
 <ul>
@@ -421,7 +421,7 @@ lab-cumulus-01 | SUCCESS => {
 
 
 <p>
-  Another example with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> ad-hoc command is using the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">command</i>
+  Another example with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible</i> ad-hoc command is using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">command</i>
    module
   to run arbitrary commands on a managed node.
 </p>
@@ -451,7 +451,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
 
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-a</i>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-a</i>
    argument flag specifies the command to send, note the command should be
   enclosed in quotes.
 </p>
@@ -509,14 +509,14 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 </p>
 <ul>
   <li><b>---</b> Identifies the file as a YAML file. (Add to top of file)</li>
-  <li><b>hosts</b> Declare which host(s) the tasks will run against. (<i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">network</i>
+  <li><b>hosts</b> Declare which host(s) the tasks will run against. (<i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">network</i>
    group in inventory file)</li>
   <li><b>tasks</b> List of 'plays' that will be executed. (Two play declared in playbook)</li>
 </ul>
 
 <h3 id=playbook-execution>Playbook Execution</h3>
 <p>
-  Playbooks are run with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-playbook &lt;playbook-name&gt; [options]</i> command
+  Playbooks are run with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ansible-playbook &lt;playbook-name&gt; [options]</i> command
 </p>
 
 

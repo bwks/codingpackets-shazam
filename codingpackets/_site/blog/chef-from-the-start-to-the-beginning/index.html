@@ -180,7 +180,7 @@
 <h3 id="chef-server-prerequisites">Chef Server Prerequisites</h3>
 <p>
   If Apache QPID is installed it will need to be disabled. You can
-  check the install status with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">rpm -qa</i> command.
+  check the install status with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">rpm -qa</i> command.
 </p>
 
 
@@ -340,7 +340,7 @@ Type 'yes' to accept the software license agreement, or anything else to cancel.
 <h3 id="chef-server-configuration">Chef Server Configuration</h3>
 <p>
   Users interact with the Chef server using certificates.
-  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
  directory in the
   users home directory to store the certificate.
 </p>
@@ -397,7 +397,7 @@ sudo chef-server-ctl user-create bradmin brad searle bradleysearle@lab.local 'Su
 
 
 <p>
-  Adjust the permissions of the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.pem</i>
+  Adjust the permissions of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.pem</i>
  file
 </p>
 
@@ -438,7 +438,7 @@ sudo chmod 0600 /home/bradmin/.chef/bradmin.pem</code></pre>
 
 <p>
   That's it for the Chef server install. Browse to the url
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;hostname-or-ip&gt;</i>.
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">https://&lt;hostname-or-ip&gt;</i>.
   Login with the user account created in the previous step
   and have a poke around.
 </p>
@@ -447,8 +447,8 @@ sudo chmod 0600 /home/bradmin/.chef/bradmin.pem</code></pre>
 <p>
   The Chef workstation package is a convenient way to get your
   workstation setup to communicate with the Chef server. The
-  packages includes CLI utilities such as: <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i>,
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i>.
+  packages includes CLI utilities such as: <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i>,
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i>.
 </p>
 <p>
   A brief rundown of the utilities are as follows
@@ -510,14 +510,14 @@ sudo chmod 0600 /home/bradmin/.chef/bradmin.pem</code></pre>
 <h3 id="chef-workstation-setup">Chef Workstation Setup</h3>
 <p>
   Everything you need to do is done inside a repo
-  directory called <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>.
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i> command has a bunch of helper
-  commands called <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">generators</i>.
+  directory called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-repo</i>.
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">chef</i> command has a bunch of helper
+  commands called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">generators</i>.
   Generators help you to avoid writing boilerplate.
 </p>
 
 <p>
-  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>
+  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-repo</i>
  directory
 </p>
 
@@ -581,9 +581,9 @@ chef-repo/
 
 
 <p>
-  Change into the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-repo</i>
-  directory and create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
-  directory. The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  Change into the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-repo</i>
+  directory and create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
+  directory. The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
  will be
   used to store your private key.
 </p>
@@ -604,9 +604,9 @@ chef-repo/
 
 
 <p>
-  Add the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  Add the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
  directory to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.gitignore</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.gitignore</i>
  file.
 </p>
 
@@ -627,7 +627,7 @@ chef-repo/
 
 <p>
   Copy the private key from the Chef server to your
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
  directory.
 </p>
 
@@ -667,9 +667,9 @@ chmod 0600 .chef/bradmin.pem</code></pre>
 
 
 <p>
-  Chef uses the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility to communicate
-  with the Chef server. Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">knife.rb</i>
-  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.chef/</i>
+  Chef uses the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility to communicate
+  with the Chef server. Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">knife.rb</i>
+  in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.chef/</i>
  directory that
   defines the required parameters.
 </p>
@@ -756,7 +756,7 @@ testlab-validator</code></pre>
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    A successful connection will return <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">&lt;organisation&gt;-validator</i>.</div>
+    A successful connection will return <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">&lt;organisation&gt;-validator</i>.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -768,12 +768,12 @@ testlab-validator</code></pre>
   Cookbooks are a group of recipes that perform actions on a node.
 </p>
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  cookbook is
   developed by the Chef team and is used to manage the .... you
-  guessed it <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  guessed it <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  utility.
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  is how managed
   nodes communicate with the Chef server.
 </p>
@@ -781,13 +781,13 @@ testlab-validator</code></pre>
   A Cookbooks functionality can be customised by including it in
   your own cookbooks in a similar way to Class inheritance. Upstream
   cookbooks are not edited directly you create a
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">wrapper</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">wrapper</i>
  cookbook
   that includes the upstream cookbook and the customisations you require.
 </p>
 <p>
   Generate a wrapper cookbook for the base
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  cookbook.
 </p>
 
@@ -808,14 +808,14 @@ testlab-validator</code></pre>
 
 
 <p>
-  Add the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  Add the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  cookbook
   as a dependency to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef_client_wrapper</i>
  cookbook
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.rb</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.rb</i>
  file
-  using the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">depends</i>
+  using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">depends</i>
  keyword.
 </p>
 
@@ -853,7 +853,7 @@ depends 'chef-client', '~> 11.1.3'</code></pre>
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     It is good practice to pin the vrsion of your dependency cookbooks.
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~> 11.1.3</i> in the example above.</div>
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~> 11.1.3</i> in the example above.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -861,12 +861,12 @@ depends 'chef-client', '~> 11.1.3'</code></pre>
 
 <p>
   As a minimum you need to include the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
  cookbooks
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">default</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">default</i>
  recipe in the
   wrapper cookbooks
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">recipes/default.rb</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">recipes/default.rb</i>
 
   file.
 </p>
@@ -894,7 +894,7 @@ include_recipe 'chef-client::default'</code></pre>
 
 
 <p>
-  Use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility to download the
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility to download the
   dependency cookbooks and upload them to the Chef server.
 </p>
 
@@ -904,10 +904,10 @@ include_recipe 'chef-client::default'</code></pre>
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility looks for a file called
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Berksfile</i> in the currently directory.
+    The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility looks for a file called
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Berksfile</i> in the currently directory.
     You will need to change into the directory containing the
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Berksfile</i> whenever you use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility.</div>
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Berksfile</i> whenever you use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks</i> utility.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -929,7 +929,7 @@ include_recipe 'chef-client::default'</code></pre>
 
 
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks install</i> command fetches the dependency
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks install</i> command fetches the dependency
   cookbook and also any dependency cookbooks it might have to
   you local workstation.
 </p>
@@ -959,7 +959,7 @@ Using chef_client_wrapper (0.1.0) from source at .</code></pre>
 
 
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks upload</i> command uploads the cookbook
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">berks upload</i> command uploads the cookbook
   and all of the dependency cookbooks to the Chef server.
 </p>
 
@@ -986,7 +986,7 @@ Uploaded chef_client_wrapper (0.1.0) to: 'https://chefserver01.lab.local/organiz
 
 <p>
   Now that the workstation is all configured and the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef_client_wrapper</i>
  cookbook
   and its dependencies are installed on the Chef server we are ready
   to bootstrap our Chef nodes.
@@ -997,15 +997,15 @@ Uploaded chef_client_wrapper (0.1.0) to: 'https://chefserver01.lab.local/organiz
   Bootstrapping a node will install the Chef client on the node and
   bring it under management of the Chef server. During the bootstrap
   process we apply the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef_client_wrapper</i>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef_client_wrapper</i>
  cookbook
-  which will start the <i class="px-2 py-1 font-mono font-semibold rounded bg-neutral-200 border border-neutral-300 text-zinc-900 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">chef-client</i>
+  which will start the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">chef-client</i>
 
   as a daemon and configure the node to check-in with the Chef server
   for updates every 60 minutes.
 </p>
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility is used to bootstrap a chef node.
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife</i> utility is used to bootstrap a chef node.
 </p>
 
 
@@ -1156,7 +1156,7 @@ chefnode01.lab.local Chef Client finished, 10/15 resources updated in 02 seconds
 
 
 <p>
-  The options used in the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife bootstrap</i> command are as follows.
+  The options used in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">knife bootstrap</i> command are as follows.
 </p>
 <ul>
   <li><b>-N</b> - The name of the node when added to the Chef server</li>

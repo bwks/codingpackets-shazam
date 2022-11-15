@@ -1,0 +1,191 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+
+<p>
+  Crystal is a object orientated language. Classes 
+  are the blueprints from which objects can be created.
+</p>
+
+<h3 id="class-definition">Class Definition</h3>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a class.
+class Stuff
+end
+
+# Create an instance of the Stuff class.
+stuff = Stuff.new()
+
+# Check the type of "stuff"
+puts typeof(stuff) # => Stuff'
+) }}
+
+<h3 id="class-methods">Class Methods</h3>
+<p>
+  Class methods allow you to add behaviour to a class.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a class with a show method.
+class StuffAndThings
+  # Define instance variables and their types.
+  @stuff : String
+  @things : String
+  @blah : String
+
+  def initialize(@stuff, @things, @blah)
+    # Do something with variables on object initialization.
+  end
+
+  # Add a show method to the StuffAndThings class
+  def show
+    puts "Stuff: #{@stuff}"
+    puts "Things: #{@things}"
+    puts "Blah: #{@blah}"
+  end
+
+end
+
+# Create an instance of the StuffAndThings class.
+stuff_and_things = StuffAndThings.new(
+  stuff: "my stuff",
+  things: "my things",
+  blah: "blah blah"
+  )
+
+# Use the show method.
+stuff_and_things.show'
+) }}
+
+<h3 id="variable-access">Variable Access</h3>
+<p>
+  By default, class variables are not accessible from outside 
+  the class. You cannot {{ text::emphasize(text="get") }}
+
+  or {{ text::emphasize(text="set") }}
+ them. Crystal 
+  has some conveniences to help with this.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a class.
+class StuffAndThings
+  # Define instance variables and their types.
+  @stuff : String
+  @things : String
+  @blah : String
+
+  # Set variables read/write properties.
+  getter stuff # The stuff variable can be read but not written.
+  setter things # The things variable can be written but not read.
+  property blah # The blah variable can be read and written.
+
+  def initialize(@stuff, @things, @blah)
+    # Do something with variables on object initialization.
+  end
+
+end'
+) }}
+
+<h3 id="class-variables">Class Variables</h3>
+<p>
+  Class variables are prefixed with a double 
+  (@@) symbol. Each object created from a class 
+  shares the class variables. Sub-classes get 
+  their own copy with the value shared across 
+  subclasses.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a class with class variables.
+class Blah 
+  @@blah = "blah blah blah"
+
+  def blah 
+    @@blah
+  end
+
+end
+
+# Create a new class.
+blah = Blah.new()
+
+# Access the class variable.
+puts(blah.blah())'
+) }}
+
+<h3 id="class-inheritance">Class Inheritance</h3>
+<p>
+  Class inheritance allows the properties of a 
+  superclass to be shared with its subclasses. 
+  Class inheritance is defined with the 
+  {{ text::emphasize(text="subclass < superclass") }}
+
+  syntax.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define a parent class.
+class Parent
+  @greet : String
+  property greet
+
+  def initialize(@greet="hello")
+  end
+
+end
+
+# Define a child class that inherits from parent.
+class Child < Parent
+end
+
+# Create an instance of the parent and child classes.
+Parent.new().greet # => hello
+Child.new().greet # => hello'
+) }}
+
+
+<h3 id="abstract-class">Abstract Class</h3>
+<p>
+  An abstract class is like an interface in other languages. 
+  It is a blueprint that specifes the methods that 
+  must be implemented in its derived classes.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define an abstract class.
+abstract class StuffAndThings
+  # The stuff and things methods must be implemented 
+  # in any derived classes of StuffAndThings.
+  abstract def stuff
+  abstract def things
+end'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Classes are defined in {{ text::emphasize(text="CamelCase") }}
+ by convention.</li>
+  <li>When you create a {{ text::emphasize(text="class") }}
+, you are also defining a new {{ text::emphasize(text="type") }}
+.</li>
+  <li>By default class methods are {{ text::emphasize(text="public") }}
+ and visible from outside the class.</li>
+  <li>A class methods visibility can be changed to either {{ text::emphasize(text="private") }}
+ or {{ text::emphasize(text="protected.") }}
+</li>
+  <li>Classes are created on the heap and are passed by reference.</li>
+</ul>
+{% endblock page_content %}

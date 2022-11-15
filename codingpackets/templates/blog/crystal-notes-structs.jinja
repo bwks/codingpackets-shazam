@@ -1,0 +1,41 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Structs have a similiar syntax to a Class 
+  and are used to hold data.
+</p>
+
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='# Define an Struct.
+struct Stuff
+  @stuff : String
+  property stuff
+
+  def initialize(@stuff)
+  end
+
+  def print
+    puts(@stuff)
+  end
+
+end
+
+# Instatiate the Stuff struct.
+s = Stuff.new("my stuff")
+
+# Use the print method.
+s.print # => my stuff'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Structs are created on the stack and are passed by value.</li>
+  <li>Structs are best suited for small amounts of immutible data.</li>
+  <li>Structs can be mutible, since values are copied, the behaviour is different from a class.</li>
+</ul>
+{% endblock page_content %}

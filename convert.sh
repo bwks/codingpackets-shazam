@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/dell-xps-15-9560-ubuntu-1804-setup.jinja";
+FILENAME="codingpackets/templates/blog/crystal-notes-modules.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 
