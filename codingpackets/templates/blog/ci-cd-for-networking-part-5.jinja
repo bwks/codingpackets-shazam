@@ -1,0 +1,458 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Ansible {{ link::e(path="https://github.com/ansible/awx", description="AWX") }} is the upstream open source project
+  to Ansible {{ link::e(path="https://www.ansible.com/tower", description="Tower") }}.
+</p>
+<p>
+  For this part of the series AWX will be installed on a Centos 7 minimal host
+  with the firewall service disabled and SELinux set to permissive. Nginx will be utilized
+  as a reverse proxy for HTTP/S traffic to the AWX application.
+</p>
+
+{{ text::note_block(text='
+    Centos 7 minimal ships with $1 which is
+    pretty old and results in pain when working with network automation libraries. On the AWX
+    host I have installed python $2 for use with Ansible.
+    You can follow my guide to install python $2 and $3 $4 I also have an ansible role $5.
+  ')
+  | replace(from="$1", to=text::emphasize(text="python 2.7.5"))
+  | replace(from="$2", to=text::emphasize(text="2.7.13"))
+  | replace(from="$3", to=text::emphasize(text="3.6.2"))
+  | replace(from="$4", to=link::i(path="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal", description="here"))
+  | replace(from="$5", to=link::e(path="https://github.com/bwks/ansible-python", description="here"))
+
+ }}
+
+
+<h3 id="install">Install</h3>
+<p>
+  The hosts in this lab get their management IP addresses via DHCP. An update
+  to the {{ text::emphasize(text="/etc/sysconfig/network-scripts/ifcfg-eth0") }}
+
+  file is required to use the labs {{ text::emphasize(text="dnsmasq") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`DEVICE="eth0"
+BOOTPROTO="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+PERSISTENT_DHCLIENT="yes"
+
+# add the following
+
+DNS1="192.168.121.120"
+PEERDNS=no`
+) }}
+
+<p>
+  Restart the {{ text::emphasize(text="network") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart network`
+) }}
+
+<p>
+  Install the AWX dependencies.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y epel-release
+sudo yum install -y git gettext nodejs npm gcc-c++ bzip2`
+) }}
+
+<p>
+  Install the {{ text::emphasize(text="ansible") }}
+ and
+  {{ text::emphasize(text="docker") }}
+ python libraries via PIP to get the
+  latest stable releases.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo /usr/local/bin/pip2 install ansible docker`
+) }}
+
+<h3 id="install-docker">Install Docker</h3>
+<p>
+  The default YUM repo has a very old version of Docker. It's best to install Docker from
+  the Docker maintained repositories but first, remove any old versions of Docker.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum remove -y docker docker-common docker-selinux docker-engine`
+) }}
+
+<p>
+  Install Docker dependencies.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y yum-utils device-mapper-persistent-data lvm2`
+) }}
+
+<p>
+  Add the Docker community edition repository.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
+) }}
+
+<p>
+  Install Docker community edition.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y docker-ce`
+) }}
+
+<p>
+  Start and enable docker service
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start docker
+sudo systemctl enable docker`
+) }}
+
+<h3 id="install-awx">Install AWX</h3>
+<p>
+  Clone AWX Git repo.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir /opt/ansible && cd /opt/ansible
+
+sudo git clone https://github.com/ansible/awx.git`
+) }}
+
+<p>
+  We will customize the AWX installation by making some changes to the
+  {{ text::emphasize(text="/opt/ansible/awx/installer/inventory") }}
+ file.
+</p>
+
+<p>
+  If you followed my guide on upgrading {{ text::emphasize(text="python2/3") }}
+ then
+  you will need to change the {{ text::emphasize(text="ansible_python_interpreter") }}
+
+  variable.
+</p>
+
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`#/opt/ansible/awx/installer/inventory
+
+
+# old
+
+localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"
+
+# new
+
+localhost ansible_connection=local ansible_python_interpreter="/usr/local/bin/python2.7"`
+) }}
+
+<p>
+  Change the AWX admin user password.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`#/opt/ansible/awx/installer/inventory
+
+
+# old
+
+# default_admin_password=password
+
+# new
+
+default_admin_password=Vagrant123`
+) }}
+
+
+<p>
+  Change the database storage location.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`#/opt/ansible/awx/installer/inventory
+
+
+# old
+
+postgres_data_dir=/tmp/pgdocker
+
+# new
+
+postgres_data_dir=/var/lib/pgdocker/`
+) }}
+
+<p>
+  Nginx will proxy HTTP/S connections to AWX so change the AWX port.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`#/opt/ansible/awx/installer/inventory
+
+
+# old
+
+host_port=80
+
+# new
+
+host_port=127.0.0.1:8052`
+) }}
+
+<p>
+  Run the AWX install playbook.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /opt/ansible/awx/installer/
+
+sudo /usr/local/bin/ansible-playbook -i inventory install.yml`
+) }}
+
+
+<h3 id="nginx">Nginx</h3>
+<p>
+  The AWX installer does not currently support enabling HTTPS. An Nginx container will be
+  utilized to reverse proxy HTTPS to the AWX container.
+</p>
+
+<p>
+  Create a directory for the Nginx Docker container configs and SSL certificates.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /opt/awx-nginx-docker/`
+) }}
+
+
+<p>
+  Generate an SSL certificate and have it signed by the root CA.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /etc/ssl/certs
+
+sudo openssl genrsa -out awx.lab.local.key 2048
+
+sudo openssl req -new -key awx.lab.local.key \
+    -subj "/C=AU/ST=NSW/L=NSW/O=LAB/CN=awx.lab.local" \
+    -out awx.lab.local.csr`
+) }}
+
+<p>
+  Update the {{ text::emphasize(text="awx.lab.local.key") }}
+ permissions.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo chmod 0400 awx.lab.local.key`
+) }}
+
+
+
+<p>
+  Have CSR signed by the Root CA then add the signed
+  {{ text::emphasize(text="awx.lab.local.crt") }}
+ certificate and the
+  {{ text::emphasize(text="awx.lab.local.key") }}
+ key
+  to the {{ text::emphasize(text="/opt/awx-nginx-docker/") }}
+
+  directory on the {{ text::emphasize(text="awx") }}
+ host.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# on the root CA host.
+
+cd /etc/ssl/certs
+
+sudo openssl x509 -req -in awx.lab.local.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out awx.lab.local.crt -days 500 -sha256`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# on the awx host.
+
+sudo cp /etc/ssl/certs/awx.lab.local.{crt,key} /opt/awx-nginx-docker/
+
+sudo ls /opt/awx-nginx-docker/ | grep awx
+awx.lab.local.crt
+awx.lab.local.key`
+) }}
+
+<p>
+  Create a {{ text::emphasize(text="Dockerfile") }}
+ file with the following contents
+  in the {{ text::emphasize(text="/opt/awx-nginx-docker/") }}
+ directory.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="dockerfile",
+  code=`# /opt/awx-nginx-docker/Dockerfile
+
+FROM nginx:alpine
+RUN mkdir -p /etc/ssl
+RUN mkdir -p /etc/nginx/
+COPY awx.lab.local.crt /etc/ssl/certs/awx.lab.local.crt
+COPY awx.lab.local.key /etc/ssl/certs/awx.lab.local.key
+COPY nginx.conf /etc/nginx/nginx.conf`
+) }}
+
+<p>
+  Create an {{ text::emphasize(text="nginx.conf") }}
+ file with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="nginx",
+  code=`# /opt/awx-nginx-docker/nginx.conf
+
+user nginx;
+worker_processes 1;
+
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen      80;
+        server_name awx.lab.local;
+        rewrite     ^  https://$host$request_uri? permanent;
+    }
+    server {
+        listen              443;
+        server_name         awx.lab.local;
+
+        ssl on;
+        ssl_certificate /etc/ssl/awx.lab.local.crt;
+        ssl_certificate_key /etc/ssl/awx.lab.local.key;
+
+        location / {
+            proxy_pass          http://awx_web:8052;
+            proxy_set_header    Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}`
+) }}
+
+
+<p>
+  Build the Nginx container.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo docker image build -t awx-nginx .`
+) }}
+
+<p>
+  Start the Nginx container.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo docker container run -d --name awx-nginx -p 80:80 -p 443:443 --link awx_web:awx_web awx-nginx`
+) }}
+
+
+<h3 id="test">Test</h3>
+<p>
+  Once the Nignx Docker container is started login to AWX via the web GUI.
+</p>
+<p>
+  Browse to the AWX url {{ text::emphasize(text="https://&lt;awx-hostname-or-ip&gt;") }}
+
+  and login with the username {{ text::emphasize(text="admin") }}
+ and the password is
+  {{ text::emphasize(text="Vagrant123") }}
+.
+</p>
+
+{{ image::boxed(path="blog/ci-cd-for-networking-part-5/awx-login.png", width="50%") }}
+
+<p>The dashboard looks like this</p>
+{{ image::boxed(path="blog/ci-cd-for-networking-part-5/awx-dashboard.png", width="90%") }}
+
+{{ text::note_block(text='
+    If you see the below when browsing to the URL, wait a few minutes.
+') }}
+
+{{ image::boxed(path="blog/ci-cd-for-networking-part-5/awx-upgrade.png", width="50%") }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Next up in part 6 of this series:
+</p>
+
+
+{% endblock page_content %}

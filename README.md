@@ -76,3 +76,38 @@ Replace
 ```
 $1
 ```
+
+Code Blocks
+```
+<div class="code-block-caption-darkmode text-center">
+  <span class="code-block-title-darkmode">(.*?)</span>
+
+</div>
+<div class="code-block-left-darkmode">
+\s+<pre><code class="(.*?) hljs">
+(.*?(.|[\n])*?)
+\s+</code>
+</pre>
+</div>
+```
+
+```
+{{ text::code_block(
+  header="$1",
+  language="$2",
+  code=`$3`
+) }}
+```
+
+```
+<div class="code-block-caption-darkmode text-center">
+  <span class="code-block-title-darkmode">(.*?)</span>
+
+</div>
+<div class="code-block-left-darkmode">
+\s+<pre><code class="(.*?) hljs">
+(.*?(.|[\n])*?)
+\s+</code>
+</pre>
+</div>
+```

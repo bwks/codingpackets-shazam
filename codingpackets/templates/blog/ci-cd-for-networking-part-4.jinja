@@ -1,0 +1,396 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://jenkins.io/", description="Jenkins") }} is and open source project that helps to
+  build, test and deploy code. Jenkins is a very mature project in the CI/CD space and has the
+  ability to perform many automation tasks with the help of plugins.
+</p>
+
+<p>
+  For this part of series Jenkins will be installed on a Centos 7 minimal hosts
+  with the firewall service disabled and SELinux set to permissive.
+</p>
+
+<h3 id="install">Install</h3>
+<p>
+  The hosts in this lab get their management IP addresses via DHCP. An update
+  to the {{ text::emphasize(text="/etc/sysconfig/network-scripts/ifcfg-eth0") }}
+
+  file is required to use the labs {{ text::emphasize(text="dnsmasq") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`DEVICE="eth0"
+BOOTPROTO="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+PERSISTENT_DHCLIENT="yes"
+
+# add the following
+
+DNS1="192.168.121.120"
+PEERDNS=no`
+) }}
+
+<p>
+  Restart the {{ text::emphasize(text="network") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart network`
+) }}
+
+
+
+
+<p>
+  Install the required packages.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y git java-1.8.0-openjdk.x86_64`
+) }}
+
+<p>
+  Add the Jenkins repo and import the GPG key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo curl -o /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key`
+) }}
+
+<p>
+  Update yum to enable the Jenkins repo.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum update -y`
+) }}
+
+<p>
+  Install Jenkins.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y jenkins`
+) }}
+
+<p>
+  Start and enable Jenkins.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start jenkins
+sudo systemctl enable jenkins`
+) }}
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Disable the post installation lock screen.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo bash -c 'echo 2.0 >> /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion'
+sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion`
+) }}
+
+<p>
+  Set the {{ text::emphasize(text="admin") }}
+ users password to
+  {{ text::emphasize(text="Vagrant123") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo sed -i 's/.*passwordHash.*/      &lt;passwordHash&gt;#jbcrypt:$2a$10$29oSBz38iNlRhmyl7qx7..yhQlzkoLjne\/.galQ5QwA3wA3jJLdFa&lt;\/passwordHash>/' /var/lib/jenkins/users/admin/config.xml`
+) }}
+
+<p>
+  Download the {{ text::emphasize(text="jenkins-cli") }}
+ package.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O http://localhost:8080/jnlpJars/jenkins-cli.jar`
+) }}
+
+<p>
+  Create a {{ text::emphasize(text="vagrant") }}
+ user and set the password to
+  {{ text::emphasize(text="Vagrant123") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("vagrant", "Vagrant123")' |
+> java -jar jenkins-cli.jar -s http://admin:Vagrant123@localhost:8080 groovy =`
+) }}
+
+
+<p>
+  Restart Jenkins.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart jenkins`
+) }}
+
+<h3 id="plugins">Plugins</h3>
+<p>
+  Install the plugins.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`java -jar jenkins-cli.jar -s http://admin:Vagrant123@localhost:8080 install-plugin {git,gitlab-plugin,job-dsl,workflow-aggregator,workflow-cps,slack,webhook-step,blueocean}`
+) }}
+
+<p>
+  Restart the {{ text::emphasize(text="jenkins") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart jenkins`
+) }}
+
+<h3 id="install-nginx">Install Nginx</h3>
+<p>
+  It's possible to enable HTTPS within the Jenkins application but for this series I will
+  use Nginx to provide a HTTPS frontend and reverse proxy to the Jenkins application in the
+  backend.
+</p>
+<p>
+  Create an {{ text::emphasize(text="nginx.repo") }}
+ file in the
+  {{ text::emphasize(text="/etc/yum.repos.d/") }}
+ directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1`
+) }}
+
+<p>
+  Update {{ text::emphasize(text="yum") }}
+ and install {{ text::emphasize(text="nginx") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum update -y && sudo yum install -y nginx`
+) }}
+
+
+<p>
+  Generate an {{ text::emphasize(text="ssl") }}
+ key and a certificate signing request.
+  The CSR will need to be signed by the root CA.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /etc/ssl/certs/
+
+sudo openssl genrsa -out jenkins.lab.local.key 2048
+
+sudo openssl req -new -key jenkins.lab.local.key \
+    -subj "/C=AU/ST=NSW/L=NSW/O=LAB/CN=jenkins.lab.local" \
+    -out jenkins.lab.local.csr`
+) }}
+<p>
+  Update the {{ text::emphasize(text="jenkins.lab.local.key") }}
+ permissions.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo chmod 0400 jenkins.lab.local.key`
+) }}
+
+
+<p>
+  Have CSR signed by the Root CA then add the signed
+  {{ text::emphasize(text="jenkins.lab.local.crt") }}
+ certificate
+  to the {{ text::emphasize(text="/etc/ssl/certs") }}
+
+  directory on the {{ text::emphasize(text="jenkins") }}
+ host.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# on the root CA host.
+
+cd /etc/ssl/certs
+
+sudo openssl x509 -req -in jenkins.lab.local.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out jenkins.lab.local.crt -days 500 -sha256`
+) }}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# on the jenkins host.
+
+[vagrant@localhost certs]$ ls /etc/ssl/certs/ | grep jenkins
+
+jenkins.lab.local.crt
+jenkins.lab.local.csr
+jenkins.lab.local.key`
+) }}
+
+<p>
+  Create a symlink to the {{ text::emphasize(text="jenkins.lab.local.key") }}
+ and
+  {{ text::emphasize(text="jenkins.lab.local.crt") }}
+ files to the
+  {{ text::emphasize(text="/etc/nginx/ssl") }}
+ directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /etc/nginx/ssl
+sudo chmod 700 /etc/nginx/ssl
+sudo ln -s /etc/ssl/certs/jenkins.lab.local.key  /etc/nginx/ssl/jenkins.lab.local.key
+sudo ln -s /etc/ssl/certs/jenkins.lab.local.crt  /etc/nginx/ssl/jenkins.lab.local.crt`
+) }}
+
+
+
+<p>
+  Create an {{ text::emphasize(text="/etc/nginx/sites-available/") }}
+ directory for
+  the site config files.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir /etc/nginx/sites-available/`
+) }}
+
+
+<p>
+  Create an {{ text::emphasize(text="/etc/nginx/sites-available/jenkins.conf") }}
+ file
+  with the below contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="nginx",
+  code=`server {
+    listen 443 ssl;
+    server_name jenkins.lab.local;
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/jenkins.lab.local.crt;
+    ssl_certificate_key /etc/nginx/ssl/jenkins.lab.local.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}`
+) }}
+
+
+<p>
+  Create a symlink from the {{ text::emphasize(text="/etc/nginx/sites-available/") }}
+
+  file into the {{ text::emphasize(text="/etc/nginx/config.d/") }}
+ directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ln -s /etc/nginx/sites-available/jenkins.conf /etc/nginx/conf.d/jenkins.conf`
+) }}
+
+
+<p>
+  Restart the {{ text::emphasize(text="nginx") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart nginx`
+) }}
+
+<h3 id="test">Test</h3>
+
+<p>
+  Browse to the {{ text::emphasize(text="https://&lt;hostname-or-ip&gt;") }}
+ url and
+  close off the two getting started popover windows and confirm you can login.
+</p>
+
+{{ image::boxed(path="blog/ci-cd-for-networking-part-4/jenkins-getting-started.png", width="600px") }}
+
+{{ image::boxed(path="blog/ci-cd-for-networking-part-4/jenkins-ready.png", width="600px") }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  With the Jenkins server installed lets move onto
+  {{ link::i(path="/blog/ci-cd-for-networking-part-5", description="Part 5") }} of this series:
+  AWX Installation.
+</p>
+
+{% endblock page_content %}
