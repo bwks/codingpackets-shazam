@@ -1,0 +1,932 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Ci/Cd for Networking Part 2</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 24th of January 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  When using PKI certificates is critical that both DNS is working correctly and that
+  hosts have their time synced via a reliable NTP server. In this part of the series I will
+  build a utility server that will act as the DNS, NTP and root certificate authority.
+  The utility server will use Centos 7 minimal as the OS with the firewall service disabled
+  and SELinux set to permissive.
+</p>
+
+<h3 id="dns">DNS</h3>
+<p>
+  The DNS service will be provided by <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ as it's
+  lightweight and easy to setup.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y dnsmasq</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ user and group and assign the user
+  to the group.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo groupadd -r dnsmasq
+sudo useradd -r -g dnsmasq dnsmasq</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Backup the old <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/dnsmasq.conf</i>
+ configuration file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.old</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/dnsmasq.conf</i>
+ file with the following contents.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># /etc/dnsmasq.conf
+
+listen-address=127.0.0.1,192.168.121.120
+port=53
+bind-interfaces
+user=dnsmasq
+group=dnsmasq
+pid-file=/var/run/dnsmasq.pid
+domain-needed
+domain=lab.local
+expand-hosts
+bogus-priv
+dns-forward-max=150
+cache-size=1000
+no-negcache
+neg-ttl=3600
+resolv-file=/etc/resolv.dnsmasq
+no-poll</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/resolv.dnsmasq</i>
+ file that uses
+  google DNS as the upstream DNS servers.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/resolv.dnsmasq
+
+nameserver 8.8.8.8
+nameserver 8.8.4.4</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Set the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">nameserver</i>
+ attribute in
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/resolv.conf</i>
+ file to use a loopback address.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/resolv.conf
+
+nameserver 127.0.0.1</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Add the device host to IP address mappings to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/hosts</i>
+
+  file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/hosts
+
+192.168.121.120 util
+192.168.121.121 jenkins
+192.168.121.122 gitlab
+192.168.121.123 awx
+192.168.121.124 netq</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    When the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/hosts</i>
+ file is updated the
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ service needs to be restarted to update its
+    DNS cache.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ configuration can be tested for syntax errors
+  with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">dnsmasq --test</i>
+ command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo dnsmasq --test
+
+# output
+
+dnsmasq: syntax check OK.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Start and enable the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start dnsmasq
+sudo systemctl enable dnsmasq</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The hosts in this lab get their management IP addresses via DHCP. An update
+  to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
+
+  file is required to use the local <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+ service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">DEVICE="eth0"
+BOOTPROTO="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+PERSISTENT_DHCLIENT="yes"
+
+# add the following
+
+DNS1="127.0.0.1"
+PEERDNS=no</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Restart the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">network</i>
+ service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart network</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="ntp">NTP</h3>
+<p>
+  Install the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ntp</i>
+ service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y ntp</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Backup the old <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ntp.conf</i>
+ configuration file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /etc/ntp.conf /etc/ntp.conf.old</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ntp.conf</i>
+ file with the following contents.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/ntp.conf
+
+# For more information about this file, see the man pages
+# ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+
+driftfile /var/lib/ntp/drift
+
+# Permit time synchronization with our time source, but do not
+# permit the source to query or modify the service on this system.
+restrict default nomodify notrap nopeer noquery
+
+# Permit all access over the loopback interface.
+restrict 127.0.0.1
+restrict ::1
+
+# Hosts on local network are less restricted.
+restrict 192.168.121.0 mask 255.255.255.0 nomodify notrap
+
+# Use NTP servers.
+server time.google.com iburst
+server time.apple.com iburst
+
+# Enable public key cryptography.
+#crypto
+
+includefile /etc/ntp/crypto/pw
+
+# Key file containing the keys and key identifiers used when operating
+# with symmetric key cryptography.
+keys /etc/ntp/keys
+
+# Enable writing of statistics records.
+#statistics clockstats cryptostats loopstats peerstats
+
+# Disable the monitoring facility to prevent amplification attacks using ntpdc
+# monlist command when default restrict does not include the noquery flag. See
+# CVE-2013-5211 for more details.
+# Note: Monitoring will not be disabled with the limited restriction flag.
+disable monitor</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The subnet that can query the NTP server is restricted to
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">192.168.121.0/24</i> and the
+    upstream NTP servers are set to the Google and Apple <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">stratum 1</i>
+    time servers.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Start and enable the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ntp</i>
+ service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start ntpd
+sudo systemctl enable ntpd</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Test the connection to the NTP servers with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ntpq -p</i>
+ command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ntpq -p
+
+# output
+
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*time4.google.co .GOOG.           1 u   15 1024  377  141.819   48.513  57.598
++ussjc2-ntp-002. .GPSs.           1 u  115 1024  377  218.000   18.940  32.073</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h3 id="root-ca">Root CA</h3>
+<p>
+  The root CA server will provide certificate signing services.
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">openssl</i>
+ package will be used
+  to generate the root certificate and to also sign the hosts certificates.
+</p>
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I will be using a minimal configuration that is not very secure, please don't use
+    this method in production.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<p>
+  Generate a signing key.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl genrsa -out ROOTCA.key 2048</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Create a self-signed certificate using the signing key just created.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 1024 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=LAB/CN=util.lab.local" \
+    -out ROOTCA.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Move the certificates to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ssl/certs</i>
+ directory
+  and update the permissions and ownership to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+ user.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv ROOTCA.* /etc/ssl/certs/ ; cd /etc/ssl/certs/
+sudo chown root:root ROOTCA.*
+sudo chmod 0644 ROOTCA.pem
+sudo chmod 0400 ROOTCA.key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once this is done the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ROOTCA.pem</i>
+ will need to be
+  imported into the trusted certificate store of the host devices. The host themselves will
+  need to generate a certificate signing request and have the certificate signed by the root
+  CA.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Now that the utility server is configured with DNS, NTP and certificate services let move
+  onto <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/ci-cd-for-networking-part-3">Part 3</a> of this series:
+  Gitlab Installation.
+</p>
+
+
+
+            
+  
+
+
+            
+            
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.techrepublic.com/article/how-to-configure-dnsmasq-on-fedora-desktop-and-server/" target=_blank>https://www.techrepublic.com/article/how-to-configure-dnsmasq-on-fedora-desktop-and-server/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.server-world.info/en/note?os=CentOS_7&p=dnsmasq" target=_blank>https://www.server-world.info/en/note?os=CentOS_7&p=dnsmasq</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.server-world.info/en/note?os=CentOS_7&p=ntp" target=_blank>https://www.server-world.info/en/note?os=CentOS_7&p=ntp</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/" target=_blank>https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#devops" class="text-xl">devops</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cicd" class="text-xl">cicd</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#dnsmasq" class="text-xl">dnsmasq</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-scroll">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#dns">
+            DNS
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#ntp">
+            NTP
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#root-ca">
+            Root CA
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-2">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,106 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Continuous Integration and Continuous Delivery/Deployment was traditionally reserved for the
+  software development space. With the push towards infrastructure as code now making it to
+  the networking space the idea of bringing CI/CD methodologies down to the network is
+  gaining alot of traction. So what is this CI/CD hoo-ha all about anyway ?
+</p>
+<h3 id="ci-cd-for-software-development">CI/CD For Software Development</h3>
+<p>
+  At a high level, the meaning of CI/CD can be expanded as follows.
+</p>
+<p>
+  <b>Continuous Integration (CI)</b> is the process of developers merging their code into the master
+  branch as soon as possible ..... continuously.
+</p>
+<p>
+  <b>Continuous Delivery (CD)</b> is the releasing of small changes to production on a frequent
+  basis. This could be daily, weekly or monthly depending on the business requirements.
+  Continuous delivery requires automated testing, code quality checks and optionally an
+  automated release process (known as a pipeline) to gain the maximum benefits.
+</p>
+<p>
+  <b>Continuous Deployment (also CD)</b> takes it to the EXTREME !!!!! With continuous deployment,
+  changes that pass the deployment pipelines tests are immediately delivered to production.
+</p>
+
+{{ text::warning_block(text='
+    The thought of continuous deployment will likely generate an underpants soiling
+    event for your ITIL change manager.
+') }}
+
+<p>
+  You might also hear people talk about agile and how it relates to CI/CD. If you would like an
+  overview of agile see this {{ link::e(path="https://www.youtube.com/watch?v=nvks70PD0Rs", description="link") }}.
+</p>
+
+<h3 id="ci-cd-for-networking">CI/CD For Networking</h3>
+<p>
+  So how does all this apply to the networking space? Traditionally we configure our networks
+  more like the {{ link::e(path="https://en.wikipedia.org/wiki/Waterfall_model", description="waterfall") }} model
+  of software development. Waterfall has long development cycles, tightly controlled
+  change windows and yearly or bi-yearly releases.
+</p>
+<p>
+  Although there is not a 1 to 1 correlation between CI/CD for software development and
+  CI/CD for network engineering, if we apply some of the methodologies of
+  CI/CD to the network this would translate to smaller, more frequent changes with automated
+  pre and post change testing resulting in far lower risk, with a much higher degree of
+  confidence in the changes success.
+</p>
+
+<h3 id="whats-involved">Whats Involved</h3>
+<p>
+  This series on bringing CI/CD to the network will consist of multiple parts (currently number of parts
+  unknown) that covers;
+</p>
+<ul>
+  <li>Tooling setup and integrations</li>
+  <li>Configuration, testing and deployment</li>
+  <li>Infrastructure validation</li>
+  <li>Real time notification</li>
+</ul>
+
+<p>
+  The following software will be used throughout this series.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="Gitlab") }}
+ - Configuration version control.</li>
+  <li>{{ text::emphasize(text="Jenkins") }}
+ - Build, test and deploy.</li>
+  <li>{{ text::emphasize(text="AWX/Ansible") }}
+ - Configuration management.</li>
+  <li>{{ text::emphasize(text="Slack") }}
+ - Notifications service.</li>
+  <li>{{ text::emphasize(text="NetQ") }}
+ - Infrastructure validation.</li>
+  <li>{{ text::emphasize(text="Cumulus Linux") }}
+ - Network operating system.</li>
+
+</ul>
+
+<h3 id="topology">Topology</h3>
+<p>
+  I will utilize Vagrant to build the topology below (apart from the Slack component).
+  The goal is to build the spine and leaf switches creating two new pods with a series
+  of tests to validate the deployment and confirm host01 and host02 have connectivity.
+</p>
+
+{{ image::boxed(path="blog/ci-cd-for-networking-part-1/cicd-topology.svg", width="900px") }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The CI/CD methodology has alot of advantages for network engineers over the way we traditionally
+  operate a network and looks like it will have a major role in the future of networking.
+  Alrighty then, with all that out of the way lets get cracking on
+  {{ link::i(path="/blog/ci-cd-for-networking-part-2", description="Part 2") }}
+  of this series: Utility server setup.
+</p>
+
+
+{% endblock page_content %}

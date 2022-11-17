@@ -1,0 +1,383 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  When using PKI certificates is critical that both DNS is working correctly and that
+  hosts have their time synced via a reliable NTP server. In this part of the series I will
+  build a utility server that will act as the DNS, NTP and root certificate authority.
+  The utility server will use Centos 7 minimal as the OS with the firewall service disabled
+  and SELinux set to permissive.
+</p>
+
+<h3 id="dns">DNS</h3>
+<p>
+  The DNS service will be provided by {{ text::emphasize(text="dnsmasq") }}
+ as it's
+  lightweight and easy to setup.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y dnsmasq`
+) }}
+
+<p>
+  Create a {{ text::emphasize(text="dnsmasq") }}
+ user and group and assign the user
+  to the group.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo groupadd -r dnsmasq
+sudo useradd -r -g dnsmasq dnsmasq`
+) }}
+
+<p>
+  Backup the old {{ text::emphasize(text="/etc/dnsmasq.conf") }}
+ configuration file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.old`
+) }}
+
+<p>
+  Create an {{ text::emphasize(text="/etc/dnsmasq.conf") }}
+ file with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/dnsmasq.conf
+
+listen-address=127.0.0.1,192.168.121.120
+port=53
+bind-interfaces
+user=dnsmasq
+group=dnsmasq
+pid-file=/var/run/dnsmasq.pid
+domain-needed
+domain=lab.local
+expand-hosts
+bogus-priv
+dns-forward-max=150
+cache-size=1000
+no-negcache
+neg-ttl=3600
+resolv-file=/etc/resolv.dnsmasq
+no-poll`
+) }}
+
+<p>
+  Create an {{ text::emphasize(text="/etc/resolv.dnsmasq") }}
+ file that uses
+  google DNS as the upstream DNS servers.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/resolv.dnsmasq
+
+nameserver 8.8.8.8
+nameserver 8.8.4.4`
+) }}
+
+<p>
+  Set the {{ text::emphasize(text="nameserver") }}
+ attribute in
+  {{ text::emphasize(text="/etc/resolv.conf") }}
+ file to use a loopback address.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/resolv.conf
+
+nameserver 127.0.0.1`
+) }}
+
+<p>
+  Add the device host to IP address mappings to the {{ text::emphasize(text="/etc/hosts") }}
+
+  file.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/hosts
+
+192.168.121.120 util
+192.168.121.121 jenkins
+192.168.121.122 gitlab
+192.168.121.123 awx
+192.168.121.124 netq`
+) }}
+
+{{ text::note_block(text='
+    When the $1
+ file is updated the
+    $2
+ service needs to be restarted to update its
+    DNS cache.
+')
+ | replace(from="$1", to=text::emphasize(text="/etc/hosts"))
+ | replace(from="$2", to=text::emphasize(text="dnsmasq"))
+ }}
+
+<p>
+  The {{ text::emphasize(text="dnsmasq") }}
+ configuration can be tested for syntax errors
+  with the {{ text::code(text="dnsmasq --test") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo dnsmasq --test
+
+# output
+
+dnsmasq: syntax check OK.`
+) }}
+
+<p>
+  Start and enable the {{ text::emphasize(text="dnsmasq") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start dnsmasq
+sudo systemctl enable dnsmasq`
+) }}
+
+<p>
+  The hosts in this lab get their management IP addresses via DHCP. An update
+  to the {{ text::emphasize(text="/etc/sysconfig/network-scripts/ifcfg-eth0") }}
+
+  file is required to use the local {{ text::emphasize(text="dnsmasq") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`DEVICE="eth0"
+BOOTPROTO="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+PERSISTENT_DHCLIENT="yes"
+
+# add the following
+
+DNS1="127.0.0.1"
+PEERDNS=no`
+) }}
+
+<p>
+  Restart the {{ text::emphasize(text="network") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart network`
+) }}
+
+
+<h3 id="ntp">NTP</h3>
+<p>
+  Install the {{ text::emphasize(text="ntp") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y ntp`
+) }}
+
+<p>
+  Backup the old {{ text::emphasize(text="/etc/ntp.conf") }}
+ configuration file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mv /etc/ntp.conf /etc/ntp.conf.old`
+) }}
+
+<p>
+  Create an {{ text::emphasize(text="/etc/ntp.conf") }}
+ file with the following contents.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# /etc/ntp.conf
+
+# For more information about this file, see the man pages
+# ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+
+driftfile /var/lib/ntp/drift
+
+# Permit time synchronization with our time source, but do not
+# permit the source to query or modify the service on this system.
+restrict default nomodify notrap nopeer noquery
+
+# Permit all access over the loopback interface.
+restrict 127.0.0.1
+restrict ::1
+
+# Hosts on local network are less restricted.
+restrict 192.168.121.0 mask 255.255.255.0 nomodify notrap
+
+# Use NTP servers.
+server time.google.com iburst
+server time.apple.com iburst
+
+# Enable public key cryptography.
+#crypto
+
+includefile /etc/ntp/crypto/pw
+
+# Key file containing the keys and key identifiers used when operating
+# with symmetric key cryptography.
+keys /etc/ntp/keys
+
+# Enable writing of statistics records.
+#statistics clockstats cryptostats loopstats peerstats
+
+# Disable the monitoring facility to prevent amplification attacks using ntpdc
+# monlist command when default restrict does not include the noquery flag. See
+# CVE-2013-5211 for more details.
+# Note: Monitoring will not be disabled with the limited restriction flag.
+disable monitor`
+) }}
+
+{{ text::note_block(text='
+    The subnet that can query the NTP server is restricted to
+    $1 and the
+    upstream NTP servers are set to the Google and Apple $2
+    time servers.
+')
+  | replace(from="$1", to=text::emphasize(text="192.168.121.0/24"))
+  | replace(from="$2", to=text::emphasize(text="stratum 1"))
+ }}
+
+<p>
+  Start and enable the {{ text::emphasize(text="ntp") }}
+ service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start ntpd
+sudo systemctl enable ntpd`
+) }}
+
+<p>
+  Test the connection to the NTP servers with the {{ text::code(text="ntpq -p") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ntpq -p
+
+# output
+
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*time4.google.co .GOOG.           1 u   15 1024  377  141.819   48.513  57.598
++ussjc2-ntp-002. .GPSs.           1 u  115 1024  377  218.000   18.940  32.073`
+) }}
+
+
+
+<h3 id="root-ca">Root CA</h3>
+<p>
+  The root CA server will provide certificate signing services.
+  The {{ text::emphasize(text="openssl") }}
+ package will be used
+  to generate the root certificate and to also sign the hosts certificates.
+</p>
+
+
+{{ text::note_block(text="
+    I will be using a minimal configuration that is not very secure, please don't use
+    this method in production.
+") }}
+
+
+<p>
+  Generate a signing key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl genrsa -out ROOTCA.key 2048`
+) }}
+
+<p>
+  Create a self-signed certificate using the signing key just created.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 1024 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=LAB/CN=util.lab.local" \
+    -out ROOTCA.pem`
+) }}
+
+<p>
+  Move the certificates to the {{ text::emphasize(text="/etc/ssl/certs") }}
+ directory
+  and update the permissions and ownership to the {{ text::emphasize(text="root") }}
+ user.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mv ROOTCA.* /etc/ssl/certs/ ; cd /etc/ssl/certs/
+sudo chown root:root ROOTCA.*
+sudo chmod 0644 ROOTCA.pem
+sudo chmod 0400 ROOTCA.key`
+) }}
+
+<p>
+  Once this is done the {{ text::emphasize(text="ROOTCA.pem") }}
+ will need to be
+  imported into the trusted certificate store of the host devices. The host themselves will
+  need to generate a certificate signing request and have the certificate signed by the root
+  CA.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Now that the utility server is configured with DNS, NTP and certificate services let move
+  onto {{ link::i(path="/blog/ci-cd-for-networking-part-3", description="Part 3") }} of this series:
+  Gitlab Installation.
+</p>
+
+{% endblock page_content %}

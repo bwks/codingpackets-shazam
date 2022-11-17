@@ -1,4 +1,4 @@
-FILENAME="codingpackets/templates/blog/ci-cd-for-networking-part-3.jinja";
+FILENAME="codingpackets/templates/blog/ci-cd-for-networking-part-1.jinja";
 
 sed -i -e 's/<\/span>/<\/span>\r\n/g' $FILENAME
 
