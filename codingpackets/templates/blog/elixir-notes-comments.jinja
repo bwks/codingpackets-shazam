@@ -1,0 +1,38 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A comment is descriptive text that will be ignored 
+  during compile time. Comments are denoted with the 
+  hash {{ text::emphasize(text="#") }}
+ character.
+</p>
+
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a comment
+
+# Hi im a comment
+
+# Define an inline comment
+
+a = "AAAA dude" # Im an inline comment
+
+# Module and function docs can span multiple lines
+
+defmodule MyModule do
+  @moduledoc """
+  This module processes strings
+  """
+
+  @doc """
+  processes the given string.
+  """
+  def my_function(s) do
+  end'
+) }}
+
+{% endblock page_content %}

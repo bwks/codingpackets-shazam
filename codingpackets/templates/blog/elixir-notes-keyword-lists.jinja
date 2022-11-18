@@ -1,0 +1,42 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  Keyword lists are similar to list. 
+  They are a sequence of tuples that are enclosed 
+  with square brackets {{ text::emphasize(text="[{}, {}]") }}
+.
+</p>
+<p>
+  Becasue keyword lists are lists they support 
+  all the operations that can be perfomed on a list.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a keyword list
+
+keyword_list = [{:stuff, "stuff"}, {:things, "things"}]
+
+# Special syntax to define a keyword list
+
+keyword_list = [stuff: "stuff", things: "things"]
+
+# Pass keyword list to function
+
+if(false, [{:do, :this}, {:else, :that}])
+
+# syntastic sugar version
+if false, do: :this, else: :that'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+    <li>Keys must be atoms</li>
+    <li>Keys are ordered based on insertion</li>
+    <li>Keys can be declared more than once</li>
+    <li>Keyword lists are the syntax for passing parameters to functions</li>
+</ul>
+
+{% endblock page_content %}

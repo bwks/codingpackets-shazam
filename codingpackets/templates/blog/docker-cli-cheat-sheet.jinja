@@ -1,0 +1,106 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Docker is a fantastic tool. In this post I am documenting 
+  common/useful commands for working with the Docker CLI.
+</p>
+
+
+<h3 id="containers">Containers</h3>
+<p>
+  Show all local running containers.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker container ls"
+) }}
+
+
+<p>
+  Show all local containers.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker container ls -a"
+) }}
+
+<p>
+  Stop all local running containers.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker container stop $(docker container ps -a -q)"
+) }}
+
+<p>
+  Delete all local stopped containers.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker container rm $(docker container ps -a -q)"
+) }}
+
+<h3 id="images">Images</h3>
+
+<p>
+  Show all local images.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker images ls"
+) }}
+
+<p>
+  Remove dangling image layers.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker images ls --quiet --filter 'dangling=true'"
+) }}
+
+
+<p>
+  Delete all local images.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker rmi $(docker images -a -q)"
+) }}
+
+
+<h3 id="docker-hub">Docker Hub</h3>
+<p>
+  Pull an image from Docker Hub with the {{ text::emphasize(text="latest") }}
+
+  tag.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker pull ruby"
+) }}
+
+<p>
+  Pull a specific version of an image.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="docker pull debian:10.7-slim
+
+docker pull ruby:2.7.2-slim-buster
+
+docker pull postgres:13.1"
+) }}
+
+{% endblock page_content %}

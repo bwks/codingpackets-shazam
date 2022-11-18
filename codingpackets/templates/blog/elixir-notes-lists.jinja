@@ -1,0 +1,30 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Lists are a sequence of values that are enclosed 
+  with square brackets {{ text::emphasize(text="[]") }}
+.
+</p>
+<p>
+  Lists in Elixir are actually stored in memory as linked lists. 
+  Each element holds both its value and a pointer to the next 
+  element. 
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a list
+
+list = [1, 2, 3]'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>To compute the length of a list, the whole list needs to be traversed.</li>
+  <li>Performance of list concatenation depends on the length of the lists.</li>
+</ul>
+
+{% endblock page_content %}

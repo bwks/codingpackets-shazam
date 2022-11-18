@@ -1,0 +1,124 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Elixir has a number of types similar to most programming 
+  languages.
+</p>
+
+<h3 id="integer">Integer</h3>
+<p>
+  Integers are whole numbers.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Integers
+
+1
+42
+100
+9001'
+) }}
+
+<h3 id="float">Float</h3>
+<p>
+  Floats are decimal place numbers.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Floats
+
+1.42
+9000.1'
+) }}
+
+<h3 id="boolean">Boolean</h3>
+<p>
+  Booleans are {{ text::emphasize(text="true") }}
+ 
+  or {{ text::emphasize(text="false") }}
+ values.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Booleans
+
+true
+false'
+) }}
+
+<h3 id="atom">Atom</h3>
+<p>
+  Atoms are constants where the value is the same 
+  as the name of the atom. Atoms are similar to symbols 
+  in Ruby and are defined with a colon 
+  {{ text::emphasize(text=":") }}
+.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define an atom
+
+:stuff'
+) }}
+
+
+{{ text::note_block(text='
+  $1, $2 and $3 are also 
+  atoms, but they do not need to be prefixed with a 
+  colon.
+')
+  | replace(from="$1", to=text::emphasize(text="true"))
+  | replace(from="$2", to=text::emphasize(text="false"))
+  | replace(from="$3", to=text::emphasize(text="nil"))
+}}
+
+<h3 id="string">String</h3>
+<p>
+  String are defined by enclosing characters in 
+  double quotes {{ text::emphasize(text='""') }}
+ 
+  and are encoded in UTF-8. 
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a string
+
+stuff = "stuff"
+
+# String interpolation
+
+"#{replace_me}"
+
+# Multi-line string
+
+"
+Hello im a multi-line string.
+"
+
+# Heredoc strings support better formatting for multiple lines
+
+"""
+Hello 
+im a 
+string.
+"""
+
+# Sigil format can also be used
+
+~s(I am also a string)
+
+# The capitol sigil format is not interpolated or escaped
+
+~S(#{i_wont_be_replaced} \n im on the same line)
+'
+) }}
+
+{% endblock page_content %}

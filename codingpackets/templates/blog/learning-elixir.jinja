@@ -1,0 +1,150 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://elixir-lang.org/", description="Elixir") }} is a 
+  dynamic functional programming language that runs on 
+  the Erlang virtual machine.
+</p>
+<p>
+  In this post I will outline my reasoning for learning 
+  Elixir and document the resources used in the process.
+  I will update the Books, Videos and Blogs section as 
+  I move through the learning process.
+</p>
+
+<h3 id="why">Why</h3>
+<p>
+  With Golang currently the most popular functional 
+  language in the network automation space, why would 
+  someone invest time in Elixir?
+</p>
+<p>
+  I'm not much of a conformist. I naturally tend to 
+  gravitate to the abnormal. I find this personality 
+  trait a factor in my decisions of alot of things 
+  I do. This is not the main reason though.
+</p>
+<p>
+  With that said, here are some of the reasons I am 
+  digging into Elixir.
+</p>
+
+<h4>Syntax</h4>
+<p>
+  The Elixir syntax is inspired by Ruby. I really like 
+  Ruby. It's probably my favourite language. There is 
+  something about it that just meshes with my way of 
+  thinking. That was the initial reason Elixir appealed 
+  to me.
+</p>
+
+<h4>Functional</h4>
+<p>
+  Elixir is a 'dynamic' functional language. Which 
+  basically means you dont have to declare the types 
+  of things.  
+</p>
+<p>
+  Functional languages are all the rage these days so 
+  Elixir ticks that box. I like the idea of passing 
+  messages between functions, rather than inheriting 
+  the state of an object.
+</p>
+
+<h4>Compiled</h4>
+<p>
+  Eixir code gets compiled to a {{ text::emphasize(text="beam") }}
+
+  file that is run on the Erlang VM. This hopefully avoids 
+  runtime errors that you get with languages like Python 
+  and Ruby.
+</p>
+
+<h4>Concurrency</h4>
+<p>
+  Concurrency is a core feature of the language. 
+  Elixir code runs in lightweight isolated threads. 
+  All CPU cores are used and because processes are 
+  isolated, they can be garbage collected independently.
+</p>
+
+<h4>Failure Recovery</h4>
+<p>
+  Elixir uses supervisors to restart parts of an 
+  application when an error occurs. Thus avoiding 
+  crashes of the application.
+</p>
+
+<h4>Ecosystem</h4>
+<p>
+  There is a pretty good number of Elixir projects 
+  out there. Elixir is also Erlang compatible, so 
+  you have access to Erlang libraries as well. I will 
+  do another post tracking Elixir projects that are 
+  useful for network automation purposes.
+</p>
+
+<h4>Tooling</h4>
+<p>
+  There is a really nice ecosystem of tooling available 
+  to make developing in Elixir a great experience. Some 
+  I have encountered so far.
+</p>
+<ul>
+  <li>IEX - A REPL for interactive running of code</li>
+  <li>Mix - Similar to Rake in Ruby land, has helpers to develop, compile and publish packages</li>
+  <li>Hex.pm - Package manager similar to rubygems.org or PyPi</li>
+  <li>ExUnit - The default test framework for Elixir</li>
+</ul>
+
+<h4>Existing Codebases</h4>
+<p>
+  The final tipping point for me was looking through the code 
+  of existing projects. The code looks for want of a better 
+  word ... Elegant. How it's organized, how succinct it is 
+  without being impossible to understand. This made me want 
+  learn and use Elixir.
+</p>
+
+<h3 id="books">Books</h3>
+<ul>
+  <li>
+    <a href="https://www.manning.com/books/elixir-in-action-second-edition">
+      Elixir in Action, Second Edition
+    </a> - Sasa Juric
+  </li>
+  <li>
+    <a href="https://www.manning.com/books/the-little-elixir-and-otp-guidebook">
+      The Little Elixir & OTP Guidebook
+    </a> - Benjamin Tan Wei Hao
+  </li>
+</ul>
+
+
+
+<h3 id="video-tutorials">Video Tutorials</h3>
+<ul>
+  <li>
+    <a href="https://www.udemy.com/course/elixir-for-beginners/">
+      Elixir for Beginners
+    </a> - Ben Emson
+  </li>
+  <li>
+    <a href="https://www.udemy.com/course/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/">
+      The Complete Elixir and Phoenix Bootcamp
+    </a> - Stephen Grider
+  </li>
+</ul>
+
+<h3 id="blogs">Blogs</h3>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Elixir looks like its Fast, stable and most of all fun 
+  language. I'm really looking forward to digging into the 
+  language and update this post as I do.
+</p>
+{% endblock page_content %}

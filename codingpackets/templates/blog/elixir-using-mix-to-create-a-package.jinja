@@ -1,0 +1,223 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Elixir is a functional programming language with a 
+  syntax inspired by Ruby that runs on the Erlang 
+  virtual machine. 
+</p>
+<p>
+  In this post I will cover the process of creating 
+  an Elixir package with Mix and publishing it to 
+  {{ link::e(path="https://hex.pm", description="Hex.pm") }} which is the 
+  package repository for Elixir progect. 
+</p>
+
+<h3 id="software-used">Software Used</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Elixir - 1.11.2</li>
+</ul>
+
+<h3 id="create">Create</h3>
+<p>
+  Create a new Elixir project with the 
+  {{ text::code(text="mix new &lt;project-name&gt;") }}
+ 
+  command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mix new pensieve
+
+# output
+
+* creating README.md
+* creating .formatter.exs
+* creating .gitignore
+* creating mix.exs
+* creating lib
+* creating lib/pensieve.ex
+* creating test
+* creating test/test_helper.exs
+* creating test/pensieve_test.exs
+
+Your Mix project was created successfully.
+You can use "mix" to compile it, test it, and more:
+
+    cd pensieve
+    mix test
+
+Run "mix help" for more commands.'
+) }}
+
+
+<h3 id="development">Development</h3>
+<p>
+  Whilst developing your app you can use the 
+  Elixir REPL {{ text::emphasize(text="IEX") }}
+ 
+</p>
+<p>
+  You can load your package along with its 
+  dependencies into IEX with the 
+  {{ text::code(text="iex -S mix") }}
+ command from your 
+  project directory.
+</p>
+<p>
+  This will compile your app and its dependencies
+  into the IEX environment making all the functions 
+  available to use.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='iex -S mix
+
+# output
+
+Erlang/OTP 23 [erts-11.1.5] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe]
+==> earmark_parser
+Compiling 3 files (.erl)
+...
+Generated pensieve app
+Interactive Elixir (1.11.3) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)>'
+) }}
+
+<h3 id="create-an-account">Create an account</h3>
+<p>
+  Before you can publish a package you need to 
+  create an account.
+  You can either create an account via the 
+  {{ link::e(path="https://hex.pm", description="Hex.pm") }} website or 
+  via the command line with the 
+  {{ text::code(text="mix hex.user register") }}
+ command.
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mix hex.user register
+  
+# output
+
+Username: johndoe
+Email: john.doe@example.com
+Password:
+Password (confirm):
+Registering...
+Generating API key...
+You are required to confirm your email to access your account, a confirmation email has been sent to john.doe@example.com'
+) }}
+
+<h3 id="authenticate">Authenticate</h3>
+<p>
+  Once you have created an account, you need to 
+  authenticate via the command line.
+</p>
+<p>
+  This will prompt you to login and also create 
+  a local password.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mix hex.user auth'
+) }}
+
+<h3 id="ship-it">Ship It!</h3>
+<p>
+  With all that out of the way, it's time to 
+  publish.
+</p>
+<p>
+  Push your project to Hex with the 
+  {{ text::code(text="mix hex.publish") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mix hex.publish
+
+# output
+
+Building pensieve 0.1.0
+  Dependencies:
+    sshex ~> 2.1 (app: sshex)
+  App: pensieve
+  Name: pensieve
+  Files:
+    lib
+    lib/pensieve.ex
+    .formatter.exs
+    mix.exs
+    README.md
+    LICENSE
+    CHANGELOG.md
+  Version: 0.1.0
+  Build tools: mix
+  Description: Backup network device configs.
+  Licenses: GNU General Public License v3.0
+  Links:
+    GitHub: https://github.com/automatico/pensieve
+  Elixir: ~> 1.11
+Before publishing, please read the Code of Conduct: https://hex.pm/policies/codeofconduct
+
+Publishing package to public repository hexpm.
+
+Proceed? [Yn] y
+Building docs...
+==> earmark_parser
+Compiling 3 files (.erl)
+Compiling 32 files (.ex)
+Generated earmark_parser app
+==> sshex
+Compiling 3 files (.ex)
+Generated sshex app
+==> nimble_parsec
+Compiling 4 files (.ex)
+Generated nimble_parsec app
+==> makeup
+Compiling 44 files (.ex)
+Generated makeup app
+==> earmark
+Compiling 9 files (.ex)
+Generated earmark app
+==> makeup_elixir
+Compiling 6 files (.ex)
+Generated makeup_elixir app
+==> ex_doc
+Compiling 22 files (.ex)
+Generated ex_doc app
+==> pensieve
+Compiling 1 file (.ex)
+Generated pensieve app
+Generating docs...
+View "html" docs at "doc/index.html"
+View "epub" docs at "doc/pensieve.epub"
+Local password:
+Publishing package...
+[#########################] 100%
+Package published to https://hex.pm/packages/pensieve/0.1.0 (036cae372b42042204f2a8d373d25636d0bc8bf38b06e1005aed0e9f9394d5ea)
+Publishing docs...
+[#########################] 100%
+Docs published to https://hexdocs.pm/pensieve/0.1.0'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Hey look at you developer person. In this post 
+  We created an Elixir project with Mix and published 
+  it the Hex.pm.
+</p>
+{% endblock page_content %}

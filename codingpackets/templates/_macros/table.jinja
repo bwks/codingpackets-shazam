@@ -37,14 +37,14 @@
 
 {% macro toc(header, rows, slug=false) %}
 <!-- TABLE OF CONTENTS START -->
-<div id="table-of-contents" class="invisible md:visible sticky top-20 overflow-y-scroll">
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
     <i class="not-italic font-semibold text-xl dark:text-neutral-600">{{ header }}</i>
   </div>
   <div class="">
     {% for row in rows %}
       {% if row != "uncategorised" %}
-        <div class="px-2">
+        <div class="px-1">
           <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#{{ row | slugify }}">
             {% if slug %}{{ row | slugify }}{% else %}{{ row }}{% endif %}
           </a>

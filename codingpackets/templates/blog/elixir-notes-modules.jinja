@@ -1,0 +1,80 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  A module is a collection of functions that can be 
+  used to organize your code in a manner similar to 
+  namespacing. 
+</p>
+<p>
+  Modules are defined in Elixir with the 
+  {{ text::emphasize(text="defmodule") }}
+
+  keyword.
+</p>
+
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a module
+
+defmodule MyModule do
+  # Contents
+end
+
+# Define a nested helpers module
+
+defmodule MyModule.Helpers do
+  # Contents
+end
+
+# Define module attributes
+
+defmodule MyModule do
+  @some_attribute "some attribute value"
+  # Contents
+end'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>
+    Modules must start with an uppercase {{ text::emphasize(text="[A-Z]") }}
+
+  </li>
+  <li>
+    {{ text::emphasize(text="CamelCase") }}
+ is the 
+    formatting convention used for module naming.
+  </li>
+  <li>
+    Modules can contain upper/lower case
+    {{ text::emphasize(text="[a-zA-Z]") }}
+,
+    {{ text::emphasize(text="_") }}
+ underscore
+    and the dot {{ text::emphasize(text=".") }}
+ characters.
+  </li>
+  <li>
+    The {{ text::emphasize(text=".") }}
+ character signifies 
+    module hierarchy
+  </li>
+  <li>
+    The {{ text::emphasize(text=".") }}
+ character is a syntastic 
+    convenience. After compilation there is no relation between 
+    {{ text::emphasize(text="MyModule") }}
+ and 
+    {{ text::emphasize(text="MyModule.Helpers") }}
+
+  </li>
+  <li>
+    Module attributes are compile time constants. The can also 
+    be registered and queried at runtime.
+  </li>
+</ul>
+
+{% endblock page_content %}

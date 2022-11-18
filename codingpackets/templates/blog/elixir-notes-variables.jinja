@@ -1,0 +1,82 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Define a variable in Elixir with the equals
+  {{ text::emphasize(text="=") }}
+  operator.
+</p>
+
+{{ text::note_block(text='
+    The $1
+ operator is also used 
+    for pattern matching.
+  </p>
+'
+  | replace(from="$1", to=text::emphasize(text="="))
+)
+}}
+
+
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Valid variable assignments
+
+stuff = "stuff"
+valid_variable = "Hi im valid"
+_me_too = "Im also valid"
+me_good? = true
+
+# Valid variable assignments but discouraged
+
+dontDoThis = "Hi from Java"
+
+# Invalid variable assignments
+
+BooHoo = "Im invalid and will cause an error" # -> ** (MatchError) no match of right hand side value: "Im invalid and will cause an error"
+
+# To perform a pattern match rather than an assignment 
+# Prefix the left hand side with the ^ operator.  
+^stuff = "things" # -> ** (MatchError) no match of right hand side value: "things"'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>
+    Variables can start with a lowercase {{ text::emphasize(text="[a-z]") }}
+
+    or an underscore {{ text::emphasize(text="_") }}
+
+  </li>
+  <li>
+    Variables can contain upper/lower case
+    {{ text::emphasize(text="[a-zA-Z]") }}
+ and the
+    {{ text::emphasize(text="_") }}
+ underscore characters.
+  </li>
+  <li>
+    {{ text::emphasize(text="snake_case") }}
+ is the 
+    formatting convention used for variable naming.
+  </li>
+  <li>
+    Variables can end with a question mark {{ text::emphasize(text="?") }}
+ 
+    or an exclaimation mark {{ text::emphasize(text="!") }}
+
+  </li>
+  <li>
+    Variables that have been previously assigned can be reassigned in Elixir.
+    This differs from Erlang.
+  </li>
+  <li>
+    If a variable is reassigned the value in the memory address is not mutated. 
+    The variable is assigned a new memory address.
+  </li>
+</ul>
+
+{% endblock page_content %}

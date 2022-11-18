@@ -1,0 +1,37 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Maps are used to store key/value pairs. Maps are defined 
+  with curly brackets prefixed with a percent 
+  {{ text::emphasize(text="%{}") }}
+.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a map
+
+map = %{stuff: "stuff", things: "things"}
+
+# Define a map with the hash rocket syntax
+
+map = %{:stuff => "stuff", :things => "things"}
+
+# Create a map from a list of tuples
+
+map = Map.new([{:stuff, "stuff"}, {:things, "things"}])'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>It is convention to use atoms as keys for maps.</li>
+  <li>When an atom is used for a key the value can be retrieved with the
+    {{ text::emphasize(text=".") }}
+ syntax. IE: {{ text::emphasize(text="map.stuff") }}
+</li>
+</ul>
+
+{% endblock page_content %}

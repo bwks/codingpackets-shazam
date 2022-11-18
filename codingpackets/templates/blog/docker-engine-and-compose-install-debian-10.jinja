@@ -1,0 +1,227 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://www.docker.com/", description="Docker") }} and 
+  {{ link::e(path="https://github.com/docker/compose", description="docker-compose") }} 
+  are a very common tools for developing and deploying applications.
+</p>
+<p>
+  In this post I will cover the process of installing Docker 
+  engine and Docker compose on Debian 10 minimal.
+</p>
+
+<h3 id="software-used-in-this-post">Software Versions Used In This Post</h3>
+<ul>
+  <li>Debian Minimal - 10.7 Buster</li>
+  <li>Docker Engine CE - 19.03.14</li>
+  <li>Docker Compose - 1.27.4</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<p>
+  Ensure that there are no default versions of Docker install. 
+  There should not be, but it's worth confirming.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='apt list --installed | egrep "(docker|container)"'
+) }}
+
+<h3 id="docker-install">Docker Install</h3>
+<p>
+  Add the required APT repositories.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common'
+) }}
+
+<p>
+  Add the GPG key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -'
+) }}
+
+<p>
+  Verify the GPG key matches the key listed in the
+  {{ link::e(path="https://docs.docker.com/engine/install/debian/", description="docks") }}.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt-key fingerprint 0EBFCD88
+
+# Output
+
+pub   4096R/0EBFCD88 2017-02-22
+      Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid                  Docker Release (CE deb) <docker@docker.com>
+sub   4096R/F273FCD8 2017-02-22'
+) }}
+
+<p>
+  Add the required APT repositories.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo add-apt-repository -y \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"'
+) }}
+
+<p>
+  Install Docker, the CLI tools and containerd.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io'
+) }}
+
+<p>
+  Confirm the {{ text::emphasize(text="docker") }}
+ service is 
+  started and enabled.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='systemctl enable docker
+
+# Output
+ 
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2020-12-12 06:07:54 AEST; 6min ago
+     Docs: https://docs.docker.com
+ Main PID: 4750 (dockerd)
+    Tasks: 10
+   Memory: 48.1M
+   CGroup: /system.slice/docker.service
+           └─4750 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock'
+) }}
+
+
+<p>
+  Add your user to docker group.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo usermod -aG docker $USER'
+) }}
+
+<p>
+  Now logout and log back in or run the 
+  {{ text::code(text="newgrp docker") }}
+ command.
+</p>
+
+<h3 id="verify-docker-install">Verify Docker Install</h3>
+<p>
+  Confirm that you can run {{ text::emphasize(text="docker") }}
+  
+  commands.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='docker pull hello-world
+
+# Output
+
+Using default tag: latest
+latest: Pulling from library/hello-world
+0e03bdcc26d7: Pull complete 
+Digest: sha256:e7c70bb24b462baa86c102610182e3efcb12a04854e8c582838d92970a09f323
+Status: Downloaded newer image for hello-world:latest
+docker.io/library/hello-world:latest'
+) }}
+
+<h3 id="docker-compose-install">Docker Compose Install</h3>
+<p>
+  Install the {{ text::emphasize(text="docker-compose") }}
+ 
+  binary from the Github release page.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+) }}
+ 
+<p>
+  Make the {{ text::emphasize(text="docker-compose") }}
+ binary 
+  executable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo chmod +x /usr/local/bin/docker-compose'
+) }}
+
+<p>
+  Symlink the {{ text::emphasize(text="docker-compose") }}
+ 
+  binary into a location in your 
+  {{ text::emphasize(text="$PATH") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose'
+) }}
+
+<p>
+  Update the {{ text::emphasize(text="docker-compose") }}
+ 
+  binaries permissions.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo chgrp docker /usr/local/bin/docker-compose
+sudo chmod 750 /usr/local/bin/docker-compose'
+) }}
+
+<h3 id="verify-docker-compose-install">Verify Docker Compose Install</h3>
+<p>
+  Confirm that you can run 
+  {{ text::emphasize(text="docker-compose") }}
+ commands.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='docker-compose --version
+
+# Output
+
+docker-compose version 1.27.4, build 40524192'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  This post covered the process of installing Docker 
+  engine and Docker compose on Debian 10 Minimal.
+</p>
+{% endblock page_content %}

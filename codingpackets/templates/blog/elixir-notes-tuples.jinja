@@ -1,0 +1,25 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Tuples are similar to lists except they store all their elements 
+  in a contiguous memory block. Tuples are defined with the 
+  curly braces {{ text::emphasize(text="{}") }}
+.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a tuple
+
+tuple = {1, 2, 3}'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Updating or adding to tuples is expensive, because a new tuple is created in memory.</li>
+</ul>
+
+{% endblock page_content %}

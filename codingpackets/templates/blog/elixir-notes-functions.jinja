@@ -1,0 +1,170 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A function is a unit of code that does a thing. 
+  With Elixir being a functional language, functions 
+  are a core tenant of the language.
+</p>
+<p>
+  Elixir has both named functions and anonymous functions.
+</p>
+
+
+<h3 id="named-functions">Named Functions</h3>
+<p>
+  Functions are defined in Elixir with the 
+  {{ text::emphasize(text="def") }}
+
+  keyword.
+</p>
+
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define a named function
+
+def my_function do
+  # Contents
+end
+
+# Define a named function that accepts arguments
+
+def another_function(a, b) do
+  # Do someting with "a" and "b"
+end
+
+# Define a named function that has default arguments
+
+# default arguments use the double backslash (\\\\\) to define their value
+def another_function(a, b \\\\\ 1) do
+  # Do someting with "a" and "b"
+end
+
+# Define a private named function
+
+defp my_function do
+  # Contents
+end
+
+# Call a named function within a module
+
+another_function("stuff", "things")
+
+# Call a named function from another module
+
+IO.puts("Beam me up Scotty!")'
+) }}
+
+<h3 id="anonymous-functions">Anonymous Functions</h3>
+<p>
+  Anonymous functions are like named functions except they 
+  don't have a name. An anonymous function 
+  can be assigned to a variable and passed around like an 
+  integer or a string.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Anonymous function syntax
+
+fn parameter(s) -> body end
+  
+# Define an anonymous function
+
+add = fn a, b -> a + b end
+
+# Call an anonymous function
+
+add.(1, 2)'
+) }}
+
+<h3 id="multi-clause-functions">Multi-Clause Functions</h3>
+<p>
+  Functions can be overloaded by defining a function 
+  with the same name but different number of parameters (arity). 
+  This generates a function with a different signature 
+  because function signatures are defined by both 
+  their name and arity.
+</p>
+{{ text::code_block(
+  header="elixir",
+  language="elixir",
+  code='# Define multiple functions with the same name, but different parameters
+
+defmodule SomeModule do
+  # some_funciton/2
+  def some_function(a, b) do
+    # Do someting with "a" and "b"
+  end
+
+  # some_function/3
+  def some_function(a, b, c) do
+    # Do someting with "a" and "b" and "c"
+  end
+
+  # default clause that is always matched and 
+  # returns and error rather than raise an exception.
+  def some_function(unknown) do
+    {:error, {:unknown_param, unknown}}
+  end
+end'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>
+    Functions must be defined inside of a module.
+  </li>
+  <li>
+    Functions can start with a lowercase {{ text::emphasize(text="[a-z]") }}
+
+    or an underscore {{ text::emphasize(text="_") }}
+
+  </li>
+  <li>
+    Functions can contain upper/lower case
+    {{ text::emphasize(text="[a-zA-Z]") }}
+ and the
+    {{ text::emphasize(text="_") }}
+ underscore characters.
+  </li>
+  <li>
+    {{ text::emphasize(text="snake_case") }}
+ is the 
+    formatting convention used for function naming.
+  </li>
+  <li>
+    Functions can end with a question mark {{ text::emphasize(text="?") }}
+ 
+    or an exclaimation mark {{ text::emphasize(text="!") }}
+
+  </li>
+  <li>
+    Functions that end with a question mark {{ text::emphasize(text="?") }}
+ 
+    should return a boolean {{ text::emphasize(text="true") }}
+ or 
+    {{ text::emphasize(text="false") }}
+
+  </li>  
+  <li>
+    Functions that end with an exclaimation mark {{ text::emphasize(text="!") }}
+
+    may raise a runtime error.
+  </li>
+  <li>
+    Functions are identified by its containing module and both their name and 
+    {{ text::emphasize(text="arity") }}
+. Arity is a fancy word for the 
+    number of arguments.
+  </li>
+  <li>
+    Private functions are only accessible from the module they exist in.
+  </li>
+</ul>
+
+{% endblock page_content %}
