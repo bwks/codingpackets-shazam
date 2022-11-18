@@ -1,6 +1,10 @@
 #! /bin/bash
 
-files="codingpackets/templates/blog/learning-elixir.jinja"
+files="\
+codingpackets/templates/blog/eve-ng-add-extrahop-appliances.jinja \
+codingpackets/templates/blog/eve-ng-add-palo-alto-panos-10-vm.jinja \
+codingpackets/templates/blog/eve-ng-firefox-and-zoc-terminal.jinja \
+"
 
 for FILENAME in $files; do
   echo $FILENAME

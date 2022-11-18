@@ -1,0 +1,455 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently started working with Extrahop and 
+  wanted to make some labs to understand the product 
+  portfolio. I have EVE-NG already setup as 
+  a lab platform so I decided to build the labs on that.
+</p>
+<p>
+  Extrahop VMs do not have an EVE-NG template out of the box.
+  In this post I will show you how to add Extrahop 
+  VMs as custom device types in EVE-NG.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>EVE-NG</b> - 4.0.1-62</li>
+  <li><b>Extrahop Discovery Appliance 1100v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Explore Appliance 5100v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Trace Appliance 1150v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Command Appliance</b> - 8.6.2.1446</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre Flight Check</h3>
+<p>
+  This post assumes that you have downloaded the Extrahop 
+  appliances and they have been moved to the EVE-NG host 
+  in the {{ text::emphasize(text="/tmp/") }}
+ directory.
+  I used {{ text::emphasize(text="scp") }}
+ to transfer them 
+  from my MAC to the EVE-NG host. For example:
+</p>
+<p>
+  {{ text::code(text="scp ~/Downloads/extrahop-eca-kvm-8.6.2.1446.tar.gz &lt;user&gt;@&lt;eve-ip&gt;:/tmp/") }}
+
+</p>
+
+{{ text::note_block(text='
+    When downloading the VM images from Extrahop, ensure that you 
+    download the $1 image 
+    type. EXCEPT for the Trace appliance, which only has the 
+    $2 option available.
+') 
+  | replace(from="$1", to=text::emphasize(text="KVM"))
+  | replace(from="$2", to=text::emphasize(text="VMware"))
+}}
+
+<h3 id="add-devices">Add Devices</h3>
+
+{{ text::note_block(text='
+    All commands run on the EVE-NG host will be 
+    executed as the $1 user.
+') 
+  | replace(from="$1", to=text::emphasize(text="root"))
+}}
+
+<p>
+  First up, lets add the VMs to EVE-NG.
+  Base VM images are stored in the
+  {{ text::emphasize(text="/opt/unetlab/addons/qemu/") }}
+
+  directory.
+</p>
+
+<p>
+  The following steps will be completed from the 
+  {{ text::emphasize(text="/tmp/") }}
+
+  directory.
+</p>
+
+
+<h4>Extrahop Discovery Appliance (EDA)</h4>
+
+<p>
+  Create a directory for the EDA.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /opt/unetlab/addons/qemu/eda-8.6.2.1446/'
+) }}
+
+<p>
+  Extract the EDA {{ text::emphasize(text=".tar") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.tar.gz'
+) }}
+
+<p>
+  Move the {{ text::emphasize(text="boot") }}
+ and 
+  {{ text::emphasize(text="data") }}
+
+  disks to the EDA directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mv eda-1100v-kvm/extrahop-boot.qcow2 /opt/unetlab/addons/qemu/eda-8.6.2.1446/virtioa.qcow2
+mv eda-1100v-kvm/extrahop-data.qcow2 /opt/unetlab/addons/qemu/eda-8.6.2.1446/virtiob.qcow2'
+) }}
+
+<p>
+  Create a third disk that will be used for 
+  on-box packet captures.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img create -f qcow2 /opt/unetlab/addons/qemu/eda-8.6.2.1446/virtioc.qcow2 100G'
+) }}
+
+
+
+<h4>Extrahop Explore Appliance (EXA)</h4>
+
+<p>
+  Create a directory for the EXA.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /opt/unetlab/addons/qemu/exa-8.6.2.1446/'
+) }}
+
+<p>
+  Extract the EXA {{ text::emphasize(text=".tar") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-exa-5100v-xs-kvm-8.6.2.1446.tar.gz'
+) }}
+
+<p>
+  Move the {{ text::emphasize(text="boot") }}
+
+  disk to the EXA directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img create -f qcow2 /opt/unetlab/addons/qemu/exa-8.6.2.1446/virtiob.qcow2 100G'
+) }}
+
+<p>
+  Create a second disk that will be used as a data store.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img create -f qcow2 /opt/unetlab/addons/qemu/eda-8.6.2.1446/virtioc.qcow2 100G'
+) }}
+
+
+<h4>Extrahop Command Appliance (ECA)</h4>
+
+<p>
+  Create a directory for the ECA.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /opt/unetlab/addons/qemu/eca-8.6.2.1446/'
+) }}
+
+<p>
+  Extract the ECA {{ text::emphasize(text=".tar") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-eca-kvm-8.6.2.1446.tar.gz'
+) }}
+
+<p>
+  Move the {{ text::emphasize(text="boot") }}
+ and 
+  {{ text::emphasize(text="data") }}
+
+  disks to the ECA directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mv eca-kvm/extrahop-boot.qcow2 /opt/unetlab/addons/qemu/eca-8.6.2.1446/virtioa.qcow2
+mv eca-kvm/extrahop-data.qcow2 /opt/unetlab/addons/qemu/eca-8.6.2.1446/virtiob.qcow2'
+) }}
+
+
+<h4>Extrahop Trace Appliance (ETA)</h4>
+
+<p>
+  Create a directory for the ETA.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /opt/unetlab/addons/qemu/eta-8.6.2.1446/'
+) }}
+
+<p>
+  Extract the ETA {{ text::emphasize(text=".tar") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-eta-1150v-vmware-8.6.2.1446.ova'
+) }}
+
+<p>
+  Convert the {{ text::emphasize(text="boot") }}
+ and 
+  {{ text::emphasize(text="data") }}
+
+  disks from {{ text::emphasize(text="vmdk") }}
+ to 
+  {{ text::emphasize(text="qcow2") }}
+ and move 
+  them to the ETA directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img convert -p -f vmdk -O qcow2 extrahop-eta-1150v-vmware-disk1.vmdk /opt/unetlab/addons/qemu/eta-8.6.2.1446/virtioa.qcow2
+/opt/qemu/bin/qemu-img convert -p -f vmdk -O qcow2 extrahop-eta-1150v-vmware-disk2.vmdk /opt/unetlab/addons/qemu/eta-8.6.2.1446/virtiob.qcow2'
+) }}
+
+<p>
+  Create a third disk that will be used as 
+  a packet capture store.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img create -f qcow2 /opt/unetlab/addons/qemu/eta-8.6.2.1446/virtioc.qcow2 100G'
+) }}
+
+<p>
+  That's it for the creation of the VM images.
+  Next up we need to define some device templates.
+</p>
+
+<h3 id="device-templates">Device Templates</h3>
+<p>
+  Device templates are stored in the 
+  {{ text::emphasize(text="/opt/unetlab/html/templates/intel/") }}
+
+  directory. For each device type, you need to add a 
+  {{ text::emphasize(text="yaml") }}
+ file to this directory 
+  that defines the devices default parameters.
+</p>
+
+<h4>Extrahop Discovery Appliance</h4>
+<p>
+  Create a file named {{ text::emphasize(text="eda.yml") }}
+
+  in the {{ text::emphasize(text="/opt/unetlab/html/templates/intel/") }}
+ 
+  directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# /opt/unetlab/html/templates/intel/eda.yml
+---
+type: qemu
+name: eda
+cpulimit: 1
+icon: vanalytic.png
+cpu: 2
+ram: 4096
+eth_format: eth{0}
+ethernet: 2
+qemu_nic: virtio-net-pci
+console: telnet
+qemu_arch: x86_64
+qemu_options: -machine type=pc,accel=kvm -cpu host,+ssse3 -vga std -usbdevice tablet -boot order=dc'
+) }}
+
+
+<h4>Extrahop Explore Appliance</h4>
+<p>
+  Create a file named {{ text::emphasize(text="exa.yml") }}
+
+  in the {{ text::emphasize(text="/opt/unetlab/html/templates/intel/") }}
+ 
+  directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# /opt/unetlab/html/templates/intel/exa.yml
+---
+type: qemu
+name: exa
+cpulimit: 1
+icon: vanalytic.png
+cpu: 4
+ram: 8192
+eth_format: eth{0}
+ethernet: 1
+qemu_nic: virtio-net-pci
+console: telnet
+qemu_arch: x86_64
+qemu_options: -machine type=pc,accel=kvm -cpu host,+ssse3 -vga std -usbdevice tablet -boot order=dc'
+) }}
+
+<h4>Extrahop Command Appliance</h4>
+<p>
+  Create a file named {{ text::emphasize(text="eca.yml") }}
+
+  in the {{ text::emphasize(text="/opt/unetlab/html/templates/intel/") }}
+ 
+  directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# /opt/unetlab/html/templates/intel/eca.yml
+---
+type: qemu
+name: eca
+cpulimit: 1
+icon: vdirector.png
+cpu: 2
+ram: 4096
+eth_format: eth{0}
+ethernet: 2
+qemu_nic: virtio-net-pci
+console: telnet
+qemu_arch: x86_64
+qemu_options: -machine type=pc,accel=kvm -cpu host,+ssse3 -vga std -usbdevice tablet -boot order=dc'
+) }}
+
+<h4>Extrahop Trace Appliance</h4>
+<p>
+  Create a file named {{ text::emphasize(text="eta.yml") }}
+
+  in the {{ text::emphasize(text="/opt/unetlab/html/templates/intel/") }}
+ 
+  directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# /opt/unetlab/html/templates/intel/eta.yml
+---
+type: qemu
+name: eta
+cpulimit: 1
+icon: vanalytic.png
+cpu: 2
+ram: 16384
+eth_format: eth{0}
+ethernet: 2
+qemu_nic: virtio-net-pci
+console: telnet
+qemu_arch: x86_64
+qemu_options: -machine type=pc,accel=kvm -cpu host,+ssse3 -vga std -usbdevice tablet -boot order=dc'
+) }}
+
+
+<h4>Custom Templates File</h4>
+<p>
+  Custom device types also need to be defined in the
+  {{ text::emphasize(text="/opt/unetlab/html/includes/custom_templates.yml") }}
+ 
+  file. This allows them to be selected as devices 
+  from the web interface. Add the four appliance types to 
+  this file.
+</p>
+
+{{ text::note_block(text='
+    The $1 parameter needs to match what is defined in the device template.
+') 
+  | replace(from="$1", to=text::emphasize(text="name"))
+}}
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code='# /opt/unetlab/html/includes/custom_templates.yml
+---
+custom_templates:
+  - name: "eda"
+    listname: "Extrahop Discovery Appliance"
+  - name: "exa"
+    listname: "Extrahop Explore Appliance"
+  - name: "eca"
+    listname: "Extrahop Command Appliance"
+  - name: "eta"
+    listname: "Extrahop Trace Appliance"
+...'
+) }}
+
+<p>
+  Finally, run the fix permissions script.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/unetlab/wrappers/unl_wrapper -a fixpermissions'
+) }}
+
+<p>
+  And thats it for the templates. If you browse to the 
+  web interface and start a lab, you will be able to 
+  add the Extrahop virtual appliances.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I covered the process to add Extrahop 
+  Discovery, Explore, Command and Trace virtual appliances 
+  to EVE-NG as custom device types. 
+  Time to get my lab on 🥳 Keep an eye out for future 
+  post around the Extrahop product portfolio.
+</p>
+{% endblock page_content %}

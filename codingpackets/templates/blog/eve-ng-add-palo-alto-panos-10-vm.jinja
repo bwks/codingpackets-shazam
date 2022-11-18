@@ -1,0 +1,232 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In 2021 I am starting a new role were I will be working 
+  with Palo Alto products. In preperation for that I want 
+  to get familiar with Palo Alto firewalls again after not 
+  using them for about 5 years.
+</p>
+<p>
+  In this post I will show you how to add a Palo Alto 
+  PanOS 10.0 VM to EVE-NG.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>EVE-NG - Pro 3.0.1-16</li>
+  <li>PanOS - 10.0</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Transfer the PA VM to the EVE-NG host. I am using 
+  the {{ text::code(text="scp") }}
+ utility on Windows 10.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='scp PA-VM-ESX-10.0.0.ova &lt;user&gt;@&lt;eve-ng-host&gt;:~/'
+) }}
+<p>
+  Once the transfer is complete SSH to the EVE-NG host.
+</p>
+
+<p>
+  Make a temporary directory and extract the 
+  {{ text::emphasize(text=".ova") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /tmp/pavm
+  
+tar -xvf PA-VM-ESX-10.0.0.ova -C /tmp/pavm/'
+) }}
+
+<p>
+  Convert the {{ text::emphasize(text=".ova") }}
+ file to a 
+  {{ text::emphasize(text=".qemu") }}
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/qemu/bin/qemu-img convert -f vmdk -O qcow2 /tmp/pavm/PA-VM-ESX-10.0.0-disk1.vmdk /tmp/pavm/virtioa.qcow2'
+) }}
+
+{{ text::note_block(text='
+   From this point on you will need to switch to the 
+   $1 user. Or a user with $2 permissions.')
+  | replace(from="$1", to=text::emphasize(text="root"))
+  | replace(from="$2", to=text::emphasize(text="sudo"))
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='su -
+  
+password: &lt;root-password&gt;'
+) }}
+
+<p>
+  Create a directory for the PA VM in the  
+  {{ text::emphasize(text="/opt/unetlab/addons/qemu/") }}
+ 
+  directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /opt/unetlab/addons/qemu/paloalto-10.0.0/'
+) }}
+
+<p>
+  Move the {{ text::emphasize(text="virtioa.qcow2") }}
+ file
+  into the  
+  {{ text::emphasize(text="/opt/unetlab/addons/qemu/paloalto-10.0.0/") }}
+ 
+  directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mv /tmp/pavm/virtioa.qcow2 /opt/unetlab/addons/qemu/paloalto-10.0.0/'
+) }}
+
+<p>
+  Clean up the temp directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='rm -rf /tmp/pavm/'
+) }}
+
+<p>
+  Dont forget to fix the permissions.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/opt/unetlab/wrappers/unl_wrapper -a fixpermissions'
+) }}
+
+<h3 id="testing">Testing</h3>
+<p>
+  Add a node to a topology and check the VM settings.
+</p>
+<ul>
+  <li>Interface - {{ text::emphasize(text="virtio-net-pci") }}
+</li>
+  <li>CPU - {{ text::emphasize(text="2") }}
+</li>
+  <li>RAM - {{ text::emphasize(text="5632") }}
+</li>
+  <li>Console - {{ text::emphasize(text="telnet") }}
+</li>
+</ul>
+{{ text::note_block(text='Change the Console type to $1.
+  Unless you want to access the VM terminal via VNC.
+')
+ | replace(from="$1", to=text::emphasize(text="telnet"))
+}}
+
+<p>
+  Start the VM. When the VM is booted up login with the default
+  {{ text::emphasize(text="admin/admin") }}
+ credentials.
+</p>
+
+{{ text::important_block(text='
+<p>
+   It takes a bit of time before you can login. The prompt will 
+   change from $1, to $2, then eventually $3
+   before you can successfully login. It does take a bit of time for 
+   all the services to start.
+</p>
+')
+ | replace(from="$1", to=text::emphasize(text="vm login:"))
+ | replace(from="$2", to=text::emphasize(text="PA-HDF login:"))
+ | replace(from="$3", to=text::emphasize(text="PA-VM login:"))
+}}
+
+{{ text::note_block(text='
+<p>
+  Once you successfully login you will be prompted to change the admin 
+  password. Some password complexity is required.
+</p>
+')
+}}
+
+
+<h3 id="setup">Setup</h3>
+<p>
+  Configure the management interface IP Address
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='configure
+set deviceconfig system type static
+set deviceconfig system ip-address &lt;ip-address&gt;
+set deviceconfig system netmask &lt;netmask&gt;
+set deviceconfig system default-gateway &lt;default-gateway&gt;
+set deviceconfig system dns-setting servers primary &lt;dns-ip-address&gt;
+commit'
+) }}
+
+
+<p>
+  Check the management interface is configured with the 
+  correct IP details and the state is up.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='show interface management'
+) }}
+
+<h3 id="access-web-interface">Access Web Interface</h3>
+<p>
+  To access the PA VM web interface, I am currently connecting connecting 
+  to it by VNC'ing to a linux VM in EVE-NG and browsing to the management 
+  IP address.
+</p>
+<p>
+  The user credentials are {{ text::emphasize(text="admin") }}
+ 
+  and the password configured in the previous step.
+</p>
+
+{{ text::note_block(text='
+<p>
+   If you connect the PA-VM management interface to 
+   $1
+   you can access the device from your LAN. 
+   By default this is the same network as your 
+   EVE-NG management address.
+</p>
+')
+| replace(from="$1", to=text::emphasize(text="Cloud-0"))
+}}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we added a Palo Alto PanOS 10 VM to EVE-NG. 
+  Happy firewall labbing.
+</p>
+{% endblock page_content %}
