@@ -1,0 +1,132 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Kali is a purpose build Linux distribution for penetration 
+  testing. They have many pre-built deployment options, but 
+  unfortunately a cloud-init compatible image is not one of them.
+  In this post, I will show you how to convert a pre-build VMware 
+  image into a cloud-init compatible image that can be used in 
+  Proxmox, OpenStack and other environments that utilize cloud-init. 
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Kali Linux</b> - 2022.1</li>
+  <li><b>Ubuntu</b> - 2004</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<p>
+  Before we can prepare the image we need to install the required 
+  system tools. I am using an Ubuntu 2004 host for the conversion 
+  process.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install -y libguestfs-tools p7zip-full p7zip-rar'
+) }}
+
+<h3 id="build-image">Build Image</h3>
+<p>
+  We will be converting the VMware image, so let's download the 
+  image to our local machine.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='wget https://kali.download/virtual-images/kali-2022.1/kali-linux-2022.1-vmware-amd64.7z'
+) }}
+
+<p>
+  Unpack the image.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='7za x kali-linux-2022.1-vmware-amd64.7z'
+) }}
+
+<p>
+  Convert the image from {{ text::emphasize(text="VMDK") }}
+ 
+  format to {{ text::emphasize(text="RAW") }}
+ format.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qemu-img convert -f vmdk -O raw kali-linux-2022.1-vmware-amd64.vmwarevm/kali-linux-2022.1-vmware-amd64.vmdk kali-2022.1.img'
+) }}
+
+<p>
+  Now we need to customize the image to make it configurable 
+  with {{ text::emphasize(text="cloud-init") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo virt-customize -a kali-2022.1.img --install cloud-init'
+) }}
+
+<p>
+  Install {{ text::emphasize(text="qemu-guest-agent") }}
+ so 
+  that the guest can be controlled by the hypervisor.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo virt-customize -a kali-2022.1.img --install qemu-guest-agent'
+) }}
+
+<p>
+  By default, the SSH service is disabled. I want to SSH to the VMs when 
+  I build them, so I am enabling the SSH service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo virt-customize -a kali-2022.1.img --run-command 'systemctl enable ssh.service'"
+) }}
+
+<p>
+  Finally, let's update the image with the latest packages.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo virt-customize -a kali-2022.1.img --update'
+) }}
+
+
+{{ text::note_block(text='
+    By default, the username to login to the image is 
+    $1 and an SSH keypair is required. This can of course 
+    be modified with cloud-init.
+') 
+| replace(from="$1", to=text::emphasize(text="kali"))
+}}
+
+<p>
+  And that's it! Now, you can copy the image to your environment 
+  of choice and configure the Kali VM on boot with 
+  {{ text::emphasize(text="cloud-init") }}
+.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to convert a Kali Linux VMware
+  VM image to a cloud-init compatible image that can be used in 
+  Proxmox, OpenStack and other environments that utilize cloud-init.
+  Thanks for following along ✌️
+</p>
+
+{% endblock page_content %}

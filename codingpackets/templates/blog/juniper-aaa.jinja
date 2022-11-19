@@ -1,0 +1,138 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Junos has a robust authentication, authorization and
+    accounting (AAA) system ensuring authenticated users
+    have access to only the things their permissions allow.
+  </p>
+
+  <h3 id="authentication">Authentication</h3>
+  <p>
+    Junos supports two categories of user authentication.
+  </p>
+  <ul>
+    <li><b>Local</b> - On box user database</li>
+    <li><b>Remote</b> - TACACS or RADIUS servers.</li>
+  </ul>
+
+  <h4>Local Authentication</h4>
+  <p>
+    Local authentication utilizes a user database configured on the
+    local device. Local user passwords have the following restrictions.
+  </p>
+  <ul>
+    <li>At least 6 Characters long</li>
+    <li>Cannot include control characters</li>
+    <li>At least one change of case</li>
+  </ul>
+  <p>
+    Local users have a home directory automatically generated for them.
+  </p>
+
+  <h4>Remote Authentication</h4>
+  <p>
+    There are two methods of remote user authentication.
+  </p>
+  <ul>
+    <li><b>TACACS</b> - Terminal Access Controller Access-Control System</li>
+    <li><b>RADIUS</b> - Remote Authentication Dial-In User Service</li>
+  </ul>
+
+  <h4>Authentication Order</h4>
+  <p>
+    Multiple authentication sources can be defined.
+    When a user attempts to login, the configured authentication sources
+    will be attempted in order until an authentication accept is received
+    from one of the authentication sources.
+  </p>
+
+
+  {{ text::code_block(
+    header="config",
+    language="text",
+    code="system {
+    authentication-order [ radius tacplus password ];
+}"
+  ) }}
+
+  <p>
+    In order to consult the local user database
+    {{ text::emphasize(text="ONLY") }}
+ in the
+    event of remote authentication server failure omit the
+    {{ text::emphasize(text="password") }}
+ keyword.
+  </p>
+
+
+  {{ text::code_block(
+    header="config",
+    language="text",
+    code="system {
+    authentication-order [ radius tacplus ];
+}"
+  ) }}
+
+
+  <p>
+    The local database will be used as a fallback authentication
+    source if no remote authentication sources are available.
+  </p>
+
+  <h3 id="authorization">Authorization</h3>
+  <p>
+    Junos applies authorization policy to commands and configuration
+    statements for all non-root users. Authorization is applied according
+    to the following diagram.
+  </p>
+
+  {{ image::boxed(path="blog/juniper-aaa/aaa.svg", width="800px") }}
+
+  {{ text::important_block(text='
+    <p>
+      If the same command is configured under both
+      $1 and $2 statements, or both $3 and
+      $4 statements, then the $5 operation takes precedence over 
+      the $6 statement.
+  ') 
+  | replace(from="$1", to=text::emphasize(text="allow-commands"))
+  | replace(from="$2", to=text::emphasize(text="deny-commands"))
+  | replace(from="$3", to=text::emphasize(text="allow-configuration"))
+  | replace(from="$4", to=text::emphasize(text="deny-configuration"))
+  | replace(from="$5", to=text::emphasize(text="allow"))
+  | replace(from="$6", to=text::emphasize(text="deny"))
+
+  }}
+
+  <h4>Login Classes</h4>
+  <p>
+    A login class is a logical grouping of permission that get assigned to
+    users. There are four default login classes.
+  </p>
+  <ul>
+    <li><b>super-user</b> - Root permission</li>
+    <li><b>operator</b> - View, clear, network, reset, and trace permissions</li>
+    <li><b>read-only</b> - View permissions</li>
+    <li><b>unauthorized</b> - No permissions</li>
+  </ul>
+  <p>
+    It is also possible to create custom login classes if the default
+    classes do not meet your needs.
+  </p>
+  <p>
+    Users can be members of a single login class. The login class permissions
+    will be applied to the user upon login.
+  </p>
+
+  <h3 id="accounting">Accounting</h3>
+  <p>
+    When accounting is enabled, user activities such as logins,
+    configuration changes, and interactive commands will be logged.
+    The logs are sent to user defined TACACS or RADIUS servers.
+  </p>
+
+
+{% endblock page_content %}

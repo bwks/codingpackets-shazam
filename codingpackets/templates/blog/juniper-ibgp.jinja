@@ -1,0 +1,484 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    8 steps to configure iBGP.
+  </p>
+
+  <ul>
+    <li>Configure a router-id</li>
+    <li>Configure an autonomous system number</li>
+    <li>Configure transport routing protocol</li>
+    <li>Configure a BGP group and define the peer type</li>
+    <li>Configure a BGP group local address</li>
+    <li>Add neighbors to the peer group</li>
+    <li>Define a routing policy to export routes</li>
+    <li>Assign the routing policy to the BGP group</li>
+  </ul>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Configure a router-id.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1`
+) }}
+
+
+  <p>
+    Configure an autonomous system number.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options autonomous-system 65100`
+) }}
+
+
+  <p>
+    Configure transport routing protocol.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols ospf3 area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/2.0`
+) }}
+
+
+  <p>
+    Configure a BGP group and define the peer type.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols bgp group IBGP-PEERS type internal
+
+set protocols bgp group IBGPV6-PEERS type internal`
+) }}
+
+
+  <p>
+    Configure a BGP group local address.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols bgp group IBGP-PEERS local-address 10.255.1.1
+
+set protocols bgp group IBGPV6-PEERS local-address fd00:10:255:1::1`
+) }}
+
+
+  <p>
+    Add neighbors to the peer group.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols bgp group IBGP-PEERS neighbor 10.255.1.2
+
+set protocols bgp group IBGPV6-PEERS neighbor fd00:10:255:1::2`
+) }}
+
+
+  <p>
+    Define a routing policy to export routes.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set policy-options policy-statement TO-EBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGP-PEERS term 1 then accept
+
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 then accept`
+) }}
+
+
+  <p>
+    Assign the routing policy to the BGP group.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols bgp group EBGP-PEERS export TO-EBGP-PEERS
+
+set protocols bgp group EBGPV6-PEERS export TO-EBGPV6-PEERS`
+) }}
+
+
+
+  <h3 id="topology">Topology</h3>
+
+  {{ image::boxed(path="network/topologies/2-router.svg", width="800px") }}
+
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1
+set routing-options autonomous-system 65100
+set protocols ospf3 area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/2.0
+set protocols bgp group IBGP-PEERS type internal
+set protocols bgp group IBGP-PEERS local-address 10.255.1.1
+set protocols bgp group IBGP-PEERS neighbor 10.255.1.2
+set protocols bgp group IBGPV6-PEERS type internal
+set protocols bgp group IBGPV6-PEERS local-address fd00:10:255:1::1
+set protocols bgp group IBGPV6-PEERS neighbor fd00:10:255:1::2
+set policy-options policy-statement T0-IBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement T0-IBGP-PEERS term 1 then accept
+set policy-options policy-statement T0-IBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement T0-IBGPV6-PEERS term 1 then accept
+set protocols bgp group IBGP-PEERS export T0-IBGP-PEERS
+set protocols bgp group IBGPV6-PEERS export T0-IBGPV6-PEERS`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.2
+set routing-options autonomous-system 65100
+set protocols ospf3 area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface lo0.0 passive
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/1.0
+set protocols bgp group IBGP-PEERS type internal
+set protocols bgp group IBGP-PEERS local-address 10.255.1.2
+set protocols bgp group IBGP-PEERS neighbor 10.255.1.1
+set protocols bgp group IBGPV6-PEERS type internal
+set protocols bgp group IBGPV6-PEERS local-address fd00:10:255:1::2
+set protocols bgp group IBGPV6-PEERS neighbor fd00:10:255:1::1
+set policy-options policy-statement T0-IBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement T0-IBGP-PEERS term 1 then accept
+set policy-options policy-statement T0-IBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement T0-IBGPV6-PEERS term 1 then accept
+set protocols bgp group IBGP-PEERS export T0-IBGP-PEERS
+set protocols bgp group IBGPV6-PEERS export T0-IBGPV6-PEERS`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+  <p>
+    Show BGP neighbour info.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show bgp neighbor
+
+# output
+
+Peer: 10.255.1.2+56570 AS 65100 Local: 10.255.1.1+179 AS 65100
+  Group: IBGP-PEERS            Routing-Instance: master
+  Forwarding routing-instance: master
+  Type: Internal    State: Established    Flags: &lt;Sync&gt;
+  Last State: OpenConfirm   Last Event: RecvKeepAlive
+  Last Error: None
+  Export: [ T0-IBGP-PEERS ]
+  Options: &lt;Preference LocalAddress Refresh&gt;
+  Local Address: 10.255.1.1 Holdtime: 90 Preference: 170
+  Number of flaps: 0
+  Peer ID: 10.255.1.2      Local ID: 10.255.1.1        Active Holdtime: 90
+  Keepalive Interval: 30         Group index: 0    Peer index: 0    SNMP index: 3
+  I/O Session Thread: bgpio-0 State: Enabled
+  BFD: disabled, down
+  NLRI for restart configured on peer: inet-unicast
+  NLRI advertised by peer: inet-unicast
+  NLRI for this session: inet-unicast
+  Peer supports Refresh capability (2)
+  Stale routes from peer are kept for: 300
+  Peer does not support Restarter functionality
+  Restart flag received from the peer: Notification
+  NLRI that restart is negotiated for: inet-unicast
+  NLRI of received end-of-rib markers: inet-unicast
+  NLRI of all end-of-rib markers sent: inet-unicast
+  Peer does not support LLGR Restarter functionality
+  Peer supports 4 byte AS extension (peer-as 65100)
+  Peer does not support Addpath
+  Table inet.0 Bit: 20000
+    RIB State: BGP restart is complete
+    Send state: in sync
+    Active prefixes:              6
+    Received prefixes:            9
+    Accepted prefixes:            9
+    Suppressed due to damping:    0
+    Advertised prefixes:          9
+  Last traffic (seconds): Received 397507 Sent 6822 Checked 397507
+  Input messages:  Total 255	Updates 2	Refreshes 0	Octets 4955
+  Output messages: Total 254	Updates 1	Refreshes 0	Octets 4892
+  Output Queue[1]: 0            (inet.0, inet-unicast)
+
+Peer: fd00:10:255:1::2+61842 AS 65100 Local: fd00:10:255:1::1+179 AS 65100
+  Group: IBGPV6-PEERS          Routing-Instance: master
+  Forwarding routing-instance: master
+  Type: Internal    State: Established    Flags: &lt;Sync&gt;
+  Last State: OpenConfirm   Last Event: RecvKeepAlive
+  Last Error: None
+  Export: [ T0-IBGPV6-PEERS ]
+  Options: &lt;Preference LocalAddress Refresh&gt;
+  Local Address: fd00:10:255:1::1 Holdtime: 90 Preference: 170
+  Number of flaps: 0
+  Peer ID: 10.255.1.2      Local ID: 10.255.1.1        Active Holdtime: 90
+  Keepalive Interval: 30         Group index: 1    Peer index: 0    SNMP index: 4
+  I/O Session Thread: bgpio-0 State: Enabled
+  BFD: disabled, down
+  NLRI for restart configured on peer: inet6-unicast
+  NLRI advertised by peer: inet6-unicast
+  NLRI for this session: inet6-unicast
+  Peer supports Refresh capability (2)
+  Stale routes from peer are kept for: 300
+  Peer does not support Restarter functionality
+  Restart flag received from the peer: Notification
+  NLRI that restart is negotiated for: inet6-unicast
+  NLRI of received end-of-rib markers: inet6-unicast
+  NLRI of all end-of-rib markers sent: inet6-unicast
+  Peer does not support LLGR Restarter functionality
+  Peer supports 4 byte AS extension (peer-as 65100)
+  Peer does not support Addpath
+  Table inet6.0 Bit: 30000
+    RIB State: BGP restart is complete
+    Send state: in sync
+    Active prefixes:              6
+    Received prefixes:            8
+    Accepted prefixes:            8
+    Suppressed due to damping:    0
+    Advertised prefixes:          8
+  Last traffic (seconds): Received 397507 Sent 47584 Checked 397507
+  Input messages:  Total 1768	Updates 2	Refreshes 0	Octets 33770
+  Output messages: Total 1767	Updates 1	Refreshes 0	Octets 33707
+  Output Queue[2]: 0            (inet6.0, inet6-unicast)`
+) }}
+
+
+  <p>
+    Show BGP group info.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show bgp group
+
+# output
+
+Group Type: Internal    AS: 65100                  Local AS: 65100
+  Name: IBGP-PEERS      Index: 0                   Flags: <>
+  Export: [ T0-IBGP-PEERS ]
+  Holdtime: 0
+  Total peers: 1        Established: 1
+  10.255.1.2+56570
+  inet.0: 6/9/9/0
+
+Group Type: Internal    AS: 65100                  Local AS: 65100
+  Name: IBGPV6-PEERS    Index: 1                   Flags: <>
+  Export: [ T0-IBGPV6-PEERS ]
+  Holdtime: 0
+  Total peers: 1        Established: 1
+  fd00:10:255:1::2+61842
+  inet6.0: 6/8/8/0
+
+Groups: 2  Peers: 2    External: 0    Internal: 2    Down peers: 0   Flaps: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0
+                       9          6          0          0          0          0
+inet6.0
+                       8          6          0          0          0          0`
+) }}
+
+
+
+  <p>
+    Show BGP summary info.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show bgp summary
+
+# output
+
+Groups: 2 Peers: 2 Down peers: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0
+                       9          6          0          0          0          0
+inet6.0
+                       8          6          0          0          0          0
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+10.255.1.2            65100        259        258       0       0     1:55:32 6/9/9/0              0/0/0/0
+fd00:10:255:1::2       65100       1772       1771       0       0    13:14:54 Establ
+  inet6.0: 6/8/8/0`
+) }}
+
+
+  <p>
+    Show BGP routing table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route protocol bgp
+
+# output
+
+inet.0: 56 destinations, 59 routes (56 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.12.0/24        [BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.23.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.24.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.25.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.26.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.27.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.28.0/24       *[BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.255.1.2/32       [BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+192.168.121.0/24    [BGP/170] 01:55:52, localpref 100, from 10.255.1.2
+                      AS path: I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+
+inet6.0: 94 destinations, 96 routes (94 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+fd00:10:1:12::/64   [BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:23::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:24::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:25::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:26::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:27::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:1:28::/64  *[BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+fd00:10:255:1::2/128
+                    [BGP/170] 13:15:14, localpref 100, from fd00:10:255:1::2
+                      AS path: I, validation-state: unverified
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0`
+) }}
+
+
+  <p>
+    Show routes advertised to neighbor.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route advertising-protocol bgp 10.255.1.2
+
+# output
+
+inet.0: 56 destinations, 59 routes (56 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+* 10.1.12.0/24            Self                         100        I
+* 10.1.13.0/24            Self                         100        I
+* 10.1.14.0/24            Self                         100        I
+* 10.1.15.0/24            Self                         100        I
+* 10.1.16.0/24            Self                         100        I
+* 10.1.17.0/24            Self                         100        I
+* 10.1.18.0/24            Self                         100        I
+* 10.255.1.1/32           Self                         100        I
+* 192.168.121.0/24        Self                         100        I
+
+
+show route advertising-protocol bgp fd00:10:255:1::2
+
+# output
+
+inet6.0: 94 destinations, 96 routes (94 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+* fd00:10:1:12::/64       Self                         100        I
+* fd00:10:1:13::/64       Self                         100        I
+* fd00:10:1:14::/64       Self                         100        I
+* fd00:10:1:15::/64       Self                         100        I
+* fd00:10:1:16::/64       Self                         100        I
+* fd00:10:1:17::/64       Self                         100        I
+* fd00:10:1:18::/64       Self                         100        I
+  fd00:10:255:1::1/128
+*                         Self                         100        I`
+) }}
+
+
+  <p>
+    Show routes received from neighbor.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route receive-protocol bgp 10.255.1.2
+
+# output
+
+inet.0: 56 destinations, 59 routes (56 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+  10.1.12.0/24            10.255.1.2                   100        I
+* 10.1.23.0/24            10.255.1.2                   100        I
+* 10.1.24.0/24            10.255.1.2                   100        I
+* 10.1.25.0/24            10.255.1.2                   100        I
+* 10.1.26.0/24            10.255.1.2                   100        I
+* 10.1.27.0/24            10.255.1.2                   100        I
+* 10.1.28.0/24            10.255.1.2                   100        I
+  10.255.1.2/32           10.255.1.2                   100        I
+  192.168.121.0/24        10.255.1.2                   100        I
+
+inet6.0: 94 destinations, 96 routes (94 active, 0 holddown, 0 hidden)
+
+
+show route receive-protocol bgp fd00:10:255:1::2
+
+# output
+
+inet.0: 56 destinations, 59 routes (56 active, 0 holddown, 0 hidden)
+
+inet6.0: 94 destinations, 96 routes (94 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+  fd00:10:1:12::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:23::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:24::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:25::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:26::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:27::/64       fd00:10:255:1::2             100        I
+* fd00:10:1:28::/64       fd00:10:255:1::2             100        I
+  fd00:10:255:1::2/128
+                          fd00:10:255:1::2             100        I`
+) }}
+
+
+{% endblock page_content %}

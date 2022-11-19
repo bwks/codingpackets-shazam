@@ -1,0 +1,1594 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Juniper vQFX Vagrant Libvirt Box Install</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 8th of September 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Juniper vQFX Vagrant box for use with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ provider.
+</p>
+<p>
+  With other Juniper VM's such as the vSRX and vMX there are some required steps to get the
+  KVM host prepped, these may be required for the vQFX also. I did not find any documentation
+  directly stating this but if you have issues
+  <a href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-install-preparing.html">
+    this</a> could be a good place to look.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin already installed. You can follow this
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
+  to get the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Juniper vQFX</b> - 17.4R1.16</li>
+  <li><b>Vagrant</b> - 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="vqfx-overview">vQFX Overview</h3>
+<p>
+  The vQFX is made up of two VMs, one for the routing engine (RE) that runs Junos and one for the
+  packet forwarding engine (PFE) that runs wind river linux.
+  Although there are two separate VMs, logically they act as a single device. Conceptually
+  a vQFX looks like the below diagram.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="400px" 
+    src="/img/blog/juniper-vqfx-vagrant-libvirt-box-installation/vqfx.svg" alt="blog/juniper-vqfx-vagrant-libvirt-box-installation/vqfx.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  The first two interfaces from each VM are reserved. The first is for management and the
+  second is used as a communication channel between the two VMs. Additionally the third
+  interface on the RE is unusable. The PFE only requires two interfaces. The RE supports an
+  additional 12 interfaces for data plane traffic.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Juniper provides ready built Vagrant boxes for use with the Virtualbox provider. Unfortunately
+  using the Vagrant mutate plugin to convert them to libvirt boxes was not successful. The PFE
+  Vagrant box can be reused with minimal work. The RE requires building from scratch.
+</p>
+<p>
+  Navigate to the Juniper software
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vqfxeval#sw" target=_blank>download</a>
+  page and download the PFE <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrant Package for Virtualbox (VQFX10K PFE)</i>
+
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74232.html" target=_blank>box</a>.
+</p>
+<p>
+  For the RE download the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">VQFX10K RE Disk Image</i>
+
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74230.html" target=_blank>.img</a>
+</p>
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    You will likely need no request access to download these images which may involve raising
+    a case. AFAIK a valid support contract is not required to get access to these images.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into a directory for vQFX files. I like to keep my custom vagrant boxes under
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/juniper/vqfx
+cd ~/vagrant/boxes/juniper/vqfx</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Copy the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">PFE</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">RE</i>
+
+  files downloaded earlier to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vqfx/</i>
+
+  directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/vqfx10k-pfe-virtualbox.box .
+cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>PFE Install</b></h4>
+<p>
+  Extract the HDD from the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">PFE</i>
+ Vagrant box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tar -xvf vqfx10k-pfe-virtualbox.box</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The PFE is already prepared as a Vagrant box so the only thing required to get it working
+  with libvirt is convert the disk to a qcow2 image and package it up as a libvirt box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img convert -f vmdk -O qcow2 packer-virtualbox-ovf-1520878605-disk001.vmdk pfe.qcow2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  The good folks who maintain the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin
+  have a script can be used to convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ images to a
+  vagrant box. Download the libvirt conversion script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+ with the following
+  contents for the PFE box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":6}' > metadata.json</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a PFE vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+ script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh pfe.qcow2
+
+# output
+
+{6}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> pfe.box created
+==> You can now add the box:
+==>   'vagrant box add pfe.box --name pfe'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">pfe.json</i>
+ so that the
+  box is added with the correct version number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > pfe.json
+{
+  "name": "juniper/vqfx-pfe",
+  "description": "Juniper vQFX Packet Forwarding Engine",
+  "versions": [
+    {
+      "version": "17.4R1.16",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.box"
+        }
+      ]
+    }
+  ]
+}
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Add the PFE box to Vagrant.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add pfe.json
+
+# output
+
+==> box: Loading metadata for box 'pfe.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.json
+==> box: Adding box 'juniper/vqfx-pfe' (v17.4R1.16) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.box
+==> box: Successfully added box 'juniper/vqfx-pfe' (v17.4R1.16) for 'libvirt'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the PFE box was added successfully
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx   (libvirt, 3.4.2)
+arista/veos                   (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 18.2R1.9)
+juniper/vmx-vfp               (libvirt, 18.2R1.9)
+<span class="hljs-string">juniper/vqfx-pfe              (libvirt, 17.4R1.16)</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>RE Install</b></h4>
+<p>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">jinstall-vqfx-10-f-17.4R1.16.img</i>
+ is actually
+  a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ file so just rename it.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mv jinstall-vqfx-10-f-17.4R1.16.img re.qcow2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Start up the RE.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vqfx-re \
+    --os-type unix \
+    --memory 1024 \
+    --vcpus=1 \
+    --import \
+    --disk path=re.qcow2,size=4,bus=ide,format=qcow2 \
+    --network=network:vagrant-libvirt,model=e1000 \
+    --network=network:vagrant-libvirt,model=e1000 \
+    --graphics none</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  You will be automatically connected to the virtual console.
+</p>
+
+<h4><b>RE Configuration</b></h4>
+<p>
+  Login to the RE with the username <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+ there is no
+  password.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">FreeBSD/amd64 (Amnesiac) (ttyu0)
+
+login: root
+
+root@:~ #
+root@:~ # cli
+root> configure</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Paste in the initial bootstrap configuration to allow SSH and set the
+  root password to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Juniper</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set interfaces em0 unit 0 family inet dhcp
+set system services ssh root-login allow
+set system root-authentication plain-text-password
+
+New password: &lt;Juniper&gt;
+Retype new password: &lt;Juniper&gt;
+
+commit and-quit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  There is a limit to how many characters can be pasted into the terminal over the console so
+  grab the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">em0</i>
+ ip address and SSH to the guest to finish
+  the configuration.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show interfaces terse | match em0.0
+
+em0.0                  up    up   inet     192.168.121.36/24</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>From another terminal SSH to the IP to finalize the rest of the configuration.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ssh root@192.168.121.36
+Password: &lt;Juniper&gt;
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+root@vqfx:RE:0% cli</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Due to reasons I am unable to prove, but suspect is due the the em0 MAC address changing
+  when creating a Vagrant box, the em0 interface refused to get an IP address via DHCP on
+  boot. As a workaround I delete the em0 config prior to shutting the box down
+  after finalizing the bootstrap config and set a cron job to enable DHCP on the em0 interface
+  60 seconds after the RE boots up. Its a bit of a dodgy hack, but it works.
+</p>
+
+<p>
+  From the root shell create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bootup.sh</i>
+ script and
+  make it executable.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># root shell
+
+cat << EOF > bootup.sh
+#! /bin/sh
+logger "STARTING sleep 60s to complete boot process"
+sleep 60
+logger "AFTER 60s"
+logger "STARTING configuration using script"
+/usr/sbin/cli -c 'configure;set interfaces em0.0 family inet dhcp;commit comment "Commit by script"'
+EOF
+
+chmod +x bootup.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Edit the crontab with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">crontab -e</i>
+ command and add the following line.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># root shell
+
+@reboot /bin/sh /var/root/bootup.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Now login to the Junos CLI and add the rest of the bootstrap config.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">root@vqfx:RE:0% cli
+root> configure
+Entering configuration mode
+
+[edit]
+root#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set system login user vagrant uid 2000
+set system login user vagrant class super-user
+set system login user vagrant authentication encrypted-password "$6$lUoxFIpU$ZiC3/b2UNpGvasntcvkNV4WVDJXBeZ.VqE6yPezbaGOos17vM9BhlTH.LBJb9DZE8fCoBtH0RWNhrbaYpZqxJ/"
+set system login user vagrant authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system root-authentication encrypted-password "$1$nq.N1UsY$JxA/ESAj3KuXseXE597gg0"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system host-name vqfx
+set system services ssh root-login allow
+set system services netconf ssh
+commit and-quit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Exit out and confirm you can SSH in with the vagrant user and the vagrant
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+ key.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ssh vagrant@192.168.121.36 -i ~/.vagrant.d/insecure_private_key
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+{master:0}
+vagrant@vqfx></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Finally switch back to the virtual console terminal session to delete the em0 interface
+  and shutdown the VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">delete interfaces em0
+commit and-quit
+request system power-off</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<p>
+  With that done we will now convert the RE to a Vagrant box.
+</p>
+
+<p>
+  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+ with the following
+  contents for the RE box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":4}' > metadata.json</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create an RE vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+ script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh vqfx-re.qcow2
+
+# output
+
+{4}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> vqfx-re.box created
+==> You can now add the box:
+==>   'vagrant box add vqfx-re.box --name vqfx-re'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">re.json</i>
+ so that the
+  box is added with the correct version number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > re.json
+{
+  "name": "juniper/vqfx-re",
+  "description": "Juniper vQFX Routing Engine",
+  "versions": [
+    {
+      "version": "17.4R1.16",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.box"
+        }
+      ]
+    }
+  ]
+}
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Add the RE box to Vagrant.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add re.json
+
+# output
+
+==> box: Loading metadata for box 're.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.json
+==> box: Adding box 'juniper/vqfx-re' (v17.4R1.16) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.box
+==> box: Successfully added box 'juniper/vqfx-re' (v17.4R1.16) for 'libvirt'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the RE box was added successfully
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx   (libvirt, 3.4.2)
+arista/veos                   (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 18.2R1.9)
+juniper/vmx-vfp               (libvirt, 18.2R1.9)
+juniper/vqfx-pfe              (libvirt, 17.4R1.16)
+<span class="hljs-string">juniper/vqfx-re               (libvirt, 17.4R1.16)</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that the boxes are installed create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+
+  and confirm you can build VMs with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/vqfx-test && cd ~/vqfx-test</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Add a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+ to the test directory with the
+  following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def get_mac(oui="28:b7:ad")
+  "Generate a MAC address"
+  nic = (1..3).map{"%0.2x"%rand(256)}.join(":")
+  return "#{oui}:#{nic}"
+end
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "vqfx-re-01" do |node|
+    guest_name = "vqfx-re-01"
+    node.vm.box = "juniper/vqfx-re"
+    node.vm.box_version = "17.4R1.16"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.cpus = 1
+      domain.memory = 1024
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 2
+      domain.nic_model_type = "e1000"
+    end
+
+    node.vm.network :private_network,
+      # vqfx-re-01-int1 <--> vqfx-pfe-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.1",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.15.121.2",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+    node.vm.network :private_network,
+      # vqfx-re-01-int2 reserved interface
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.1",
+      :libvirt__tunnel_local_port => 10002,
+      :libvirt__tunnel_ip => "127.6.6.6",
+      :libvirt__tunnel_port => 10666,
+      :libvirt__iface_name => "bh-int2",
+      auto_config: false
+
+  end
+  config.vm.define "vqfx-pfe-01" do |node|
+    guest_name = "vqfx-pfe-01"
+    node.vm.box = "juniper/vqfx-pfe"
+    node.vm.box_version = "17.4R1.16"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.cpus = 1
+      domain.memory = 2048
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 1
+      domain.nic_model_type = "e1000"
+    end
+
+    node.vm.network :private_network,
+      # vqfx-pfe-01-int1 <--> vqfx-re-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.2",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.15.121.1",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+  end
+
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Now <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+ and confirm you can login to the RE.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
+
+# output
+
+Bringing machine 'vqfx-re-01' up with 'libvirt' provider...
+Bringing machine 'vqfx-pfe-01' up with 'libvirt' provider...
+==> vqfx-re-01: Checking if box 'juniper/vqfx-re' is up to date...
+==> vqfx-pfe-01: Checking if box 'juniper/vqfx-pfe' is up to date...
+==> vqfx-pfe-01: Creating image (snapshot of base box volume).
+==> vqfx-re-01: Creating image (snapshot of base box volume).
+==> vqfx-pfe-01: Creating domain with the following settings...
+==> vqfx-re-01: Creating domain with the following settings...
+==> vqfx-re-01:  -- Name:              bradmin_vqfx-test_vqfx-re-01
+==> vqfx-re-01:  -- Domain type:       kvm
+==> vqfx-pfe-01:  -- Name:              bradmin_vqfx-test_vqfx-pfe-01
+==> vqfx-re-01:  -- Cpus:              1
+==> vqfx-pfe-01:  -- Domain type:       kvm
+==> vqfx-re-01:
+==> vqfx-pfe-01:  -- Cpus:              1
+==> vqfx-re-01:  -- Feature:           acpi
+==> vqfx-pfe-01:
+==> vqfx-re-01:  -- Feature:           apic
+==> vqfx-pfe-01:  -- Feature:           acpi
+==> vqfx-re-01:  -- Feature:           pae
+==> vqfx-pfe-01:  -- Feature:           apic
+==> vqfx-re-01:  -- Memory:            1024M
+==> vqfx-pfe-01:  -- Feature:           pae
+==> vqfx-re-01:  -- Management MAC:
+==> vqfx-pfe-01:  -- Memory:            2048M
+==> vqfx-re-01:  -- Loader:
+==> vqfx-pfe-01:  -- Management MAC:
+==> vqfx-re-01:  -- Base box:          juniper/vqfx-re
+==> vqfx-pfe-01:  -- Loader:
+==> vqfx-re-01:  -- Storage pool:      disk1
+==> vqfx-pfe-01:  -- Base box:          juniper/vqfx-pfe
+==> vqfx-re-01:  -- Image:             /disk1/libvirt/images/bradmin_vqfx-test_vqfx-re-01.img (4G)
+==> vqfx-re-01:  -- Volume Cache:      default
+==> vqfx-re-01:  -- Kernel:
+==> vqfx-re-01:  -- Initrd:
+==> vqfx-pfe-01:  -- Storage pool:      disk1
+==> vqfx-re-01:  -- Graphics Type:     vnc
+==> vqfx-re-01:  -- Graphics Port:     -1
+==> vqfx-pfe-01:  -- Image:             /disk1/libvirt/images/bradmin_vqfx-test_vqfx-pfe-01.img (6G)
+==> vqfx-re-01:  -- Graphics IP:       127.0.0.1
+==> vqfx-pfe-01:  -- Volume Cache:      default
+==> vqfx-pfe-01:  -- Kernel:
+==> vqfx-re-01:  -- Graphics Password: Not defined
+==> vqfx-pfe-01:  -- Initrd:
+==> vqfx-re-01:  -- Video Type:        cirrus
+==> vqfx-pfe-01:  -- Graphics Type:     vnc
+==> vqfx-re-01:  -- Video VRAM:        9216
+==> vqfx-pfe-01:  -- Graphics Port:     -1
+==> vqfx-re-01:  -- Sound Type:
+==> vqfx-pfe-01:  -- Graphics IP:       127.0.0.1
+==> vqfx-pfe-01:  -- Graphics Password: Not defined
+==> vqfx-re-01:  -- Keymap:            en-us
+==> vqfx-pfe-01:  -- Video Type:        cirrus
+==> vqfx-re-01:  -- TPM Path:
+==> vqfx-pfe-01:  -- Video VRAM:        9216
+==> vqfx-re-01:  -- INPUT:             type=mouse, bus=ps2
+==> vqfx-pfe-01:  -- Sound Type:
+==> vqfx-pfe-01:  -- Keymap:            en-us
+==> vqfx-pfe-01:  -- TPM Path:
+==> vqfx-pfe-01:  -- INPUT:             type=mouse, bus=ps2
+==> vqfx-re-01: Creating shared folders metadata...
+==> vqfx-re-01: Starting domain.
+==> vqfx-re-01: Waiting for domain to get an IP address...
+==> vqfx-pfe-01: Creating shared folders metadata...
+==> vqfx-pfe-01: Starting domain.
+==> vqfx-pfe-01: Waiting for domain to get an IP address...
+==> vqfx-pfe-01: Waiting for SSH to become available...
+==> vqfx-pfe-01: Configuring and enabling network interfaces...
+==> vqfx-re-01: Waiting for SSH to become available...
+==> vqfx-re-01: Configuring and enabling network interfaces...</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm you can login to the RE box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host terminal
+
+vagrant ssh vqfx-re-01
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+{master:0}
+vagrant@vqfx>
+
+# Now in vagrant box terminal
+
+vagrant@vqfx> show version
+fpc0:
+--------------------------------------------------------------------------
+Hostname: vqfx
+Model: vqfx-10000
+Junos: 17.4R1.16 limited
+JUNOS Base OS boot [17.4R1.16]
+JUNOS Base OS Software Suite [17.4R1.16]
+JUNOS Crypto Software Suite [17.4R1.16]
+JUNOS Online Documentation [17.4R1.16]
+JUNOS Kernel Software Suite [17.4R1.16]
+JUNOS Packet Forwarding Engine Support (qfx-10-f) [17.4R1.16]
+JUNOS Routing Software Suite [17.4R1.16]
+JUNOS jsd [i386-17.4R1.16-jet-1]
+JUNOS SDN Software Suite [17.4R1.16]
+JUNOS Enterprise Software Suite [17.4R1.16]
+JUNOS Web Management [17.4R1.16]
+JUNOS py-base-i386 [17.4R1.16]
+JUNOS py-extensions-i386 [17.4R1.16]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm that the RE is connected to the PFE.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant@vqfx> show chassis fpc
+                     Temp  CPU Utilization (%)   CPU Utilization (%)  Memory    Utilization (%)
+Slot State            (C)  Total  Interrupt      1min   5min   15min  DRAM (MB) Heap     Buffer
+  0  Online           Testing  81        28        0      0      0    1024        0         77
+  1  Empty
+  2  Empty
+  3  Empty
+  4  Empty
+  5  Empty
+  6  Empty
+  7  Empty
+  8  Empty
+  9  Empty
+
+{master:0}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  We have confirmed we can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> vqfx-pfe-01: Removing domain...
+==> vqfx-re-01: Removing domain...</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>Remove the original downloaded images.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f ~/vagrant/boxes/juniper/vqfx/{jinstall-vqfx-10-f-17.4R1.16.img,packer-virtualbox-ovf-1520878605-disk001.vmdk, vqfx10k-pfe-virtualbox.box}
+
+# output
+
+virsh undefine vqfx-re
+Domain vqfx-re has been undefined</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  As a final note, the vQFX has a bunch of interface config (et/xe-0/0/0 - 71) defined. I
+  found that if you delete this config before packaging up the Vagrant box, Vagrant will
+  not be able to SSH to the RE as part of the build process. I could not figure out why so
+  I left the config in the base box. The below config can be used to delete all the interface
+  config on boot with a provisioner.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">wildcard range delete interfaces et-0/0/[0-71]
+wildcard range delete interfaces xe-0/0/[0-71]
+wildcard range delete interfaces xe-0/0/[0-71]:[0-3]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Juniper vQFX is a community driven project, its great that Juniper is offering virtual
+  flavors of their devices for testing and training purposes. As with the vMX the vQFX requires
+  two VMs but I think its worth the effort to be able to test the Juniper switching features.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/Juniper/vqfx10k-vagrant" target=_blank>https://github.com/Juniper/vqfx10k-vagrant</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vqfxeval#sw" target=_blank>https://www.juniper.net/support/downloads/?p=vqfxeval#sw</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://ipengineer.net/2018/06/juniper-vqfx10k-esxi-6-5/" target=_blank>http://ipengineer.net/2018/06/juniper-vqfx10k-esxi-6-5/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://networkfoo.github.io/juniper/vqfx/kvm/2017/01/10/Juniper-vQFX10000-on-KVM-Fedora.html" target=_blank>https://networkfoo.github.io/juniper/vqfx/kvm/2017/01/10/Juniper-vQFX10000-on-KVM-Fedora.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://nextheader.net/2017/06/08/running-a-shell-script-during-boot-on-junos/" target=_blank>https://nextheader.net/2017/06/08/running-a-shell-script-during-boot-on-junos/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#vagrant" class="text-xl">vagrant</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#libvirt" class="text-xl">libvirt</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vqfx-overview">
+            vQFX Overview
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#download">
+            Download
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install">
+            Install
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

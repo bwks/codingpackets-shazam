@@ -1,0 +1,938 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Juniper eBGP</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 10th of February 2019
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+  <h3 id="overview">Overview</h3>
+  <p>
+    6 steps to configure eBGP.
+  </p>
+
+  <ul>
+    <li>Configure a router-id</li>
+    <li>Configure an autonomous system number</li>
+    <li>Configure a BGP group and define the peer type</li>
+    <li>Add neighbors to the peer group</li>
+    <li>Define a routing policy to export routes</li>
+    <li>Assign the routing policy to the BGP group</li>
+  </ul>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Configure a router-id.
+  </p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set routing-options router-id 10.255.1.1</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Configure an autonomous system number.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set routing-options autonomous-system 65101</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Configure a BGP group and define the peer type.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set protocols bgp group EBGP-PEERS type external
+
+set protocols bgp group EBGPV6-PEERS type external</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Add neighbors to the peer group.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set protocols bgp group EBGP-PEERS peer-as 65102
+set protocols bgp group EBGP-PEERS neighbor 10.1.12.2
+
+set protocols bgp group EBGPV6-PEERS peer-as 65102
+set protocols bgp group EBGPV6-PEERS neighbor fd00:10:1:12::2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Define a routing policy to export routes.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set policy-options policy-statement TO-EBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGP-PEERS term 1 then accept
+
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 then accept</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Assign the routing policy to the BGP group.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set protocols bgp group EBGP-PEERS export TO-EBGP-PEERS
+
+set protocols bgp group EBGPV6-PEERS export TO-EBGPV6-PEERS</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <h3 id="topology">Topology</h3>
+
+  
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/network/topologies/2-router.svg" alt="network/topologies/2-router.svg">
+</div>
+<!-- IMAGE END -->
+
+
+  <h4>P1R1</h4>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set routing-options router-id 10.255.1.1
+set routing-options autonomous-system 65101
+set protocols bgp group EBGP-PEERS type external
+set protocols bgp group EBGPV6-PEERS type external
+set protocols bgp group EBGP-PEERS peer-as 65102
+set protocols bgp group EBGP-PEERS neighbor 10.1.12.2
+set protocols bgp group EBGPV6-PEERS peer-as 65102
+set protocols bgp group EBGPV6-PEERS neighbor fd00:10:1:12::2
+set policy-options policy-statement TO-EBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGP-PEERS term 1 then accept
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 then accept
+set protocols bgp group EBGP-PEERS export TO-EBGP-PEERS
+set protocols bgp group EBGPV6-PEERS export TO-EBGPV6-PEERS</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <h4>P1R2</h4>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">set routing-options router-id 10.255.1.2
+set routing-options autonomous-system 65102
+set protocols bgp group EBGP-PEERS type external
+set protocols bgp group EBGPV6-PEERS type external
+set protocols bgp group EBGP-PEERS peer-as 65101
+set protocols bgp group EBGP-PEERS neighbor 10.1.12.1
+set protocols bgp group EBGPV6-PEERS peer-as 65101
+set protocols bgp group EBGPV6-PEERS neighbor fd00:10:1:12::1
+set policy-options policy-statement TO-EBGP-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGP-PEERS term 1 then accept
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 from protocol direct
+set policy-options policy-statement TO-EBGPV6-PEERS term 1 then accept
+set protocols bgp group EBGP-PEERS export TO-EBGP-PEERS
+set protocols bgp group EBGPV6-PEERS export TO-EBGPV6-PEERS</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <h3 id="verification">Verification</h3>
+  <p>
+    Show BGP neighbour info.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show bgp neighbor
+
+# output
+
+Peer: 10.1.12.2+59430 AS 65102 Local: 10.1.12.1+179 AS 65101
+  Group: EBGP-PEERS            Routing-Instance: master
+  Forwarding routing-instance: master
+  Type: External    State: Established    Flags: &lt;Sync&gt;
+  Last State: OpenConfirm   Last Event: RecvKeepAlive
+  Last Error: None
+  Export: [ TO-EBGP-PEERS ]
+  Options: &lt;Preference PeerAS Refresh&gt;
+  Holdtime: 90 Preference: 170
+  Number of flaps: 0
+  Peer ID: 10.255.1.2      Local ID: 10.255.1.1        Active Holdtime: 90
+  Keepalive Interval: 30         Group index: 0    Peer index: 0    SNMP index: 1
+  I/O Session Thread: bgpio-0 State: Enabled
+  BFD: disabled, down
+  Local Interface: ge-0/0/2.0
+  NLRI for restart configured on peer: inet-unicast
+  NLRI advertised by peer: inet-unicast
+  NLRI for this session: inet-unicast
+  Peer supports Refresh capability (2)
+  Stale routes from peer are kept for: 300
+  Peer does not support Restarter functionality
+  Restart flag received from the peer: Notification
+  NLRI that restart is negotiated for: inet-unicast
+  NLRI of received end-of-rib markers: inet-unicast
+  NLRI of all end-of-rib markers sent: inet-unicast
+  Peer does not support LLGR Restarter functionality
+  Peer supports 4 byte AS extension (peer-as 65102)
+  Peer does not support Addpath
+  Table inet.0 Bit: 20000
+    RIB State: BGP restart is complete
+    Send state: in sync
+    Active prefixes:              7
+    Received prefixes:            9
+    Accepted prefixes:            9
+    Suppressed due to damping:    0
+    Advertised prefixes:          9
+  Last traffic (seconds): Received 105868 Sent 9012 Checked 105868
+  Input messages:  Total 338	Updates 2	Refreshes 0	Octets 6531
+  Output messages: Total 337	Updates 1	Refreshes 0	Octets 6468
+  Output Queue[1]: 0            (inet.0, inet-unicast)
+
+Peer: fd00:10:1:12::2+58172 AS 65102 Local: fd00:10:1:12::1+179 AS 65101
+  Group: EBGPV6-PEERS          Routing-Instance: master
+  Forwarding routing-instance: master
+  Type: External    State: Established    Flags: &lt;Sync&gt;
+  Last State: OpenConfirm   Last Event: RecvKeepAlive
+  Last Error: Open Message Error
+  Export: [ TO-EBGPV6-PEERS ]
+  Options: &lt;Preference PeerAS Refresh&gt;
+  Holdtime: 90 Preference: 170
+  Number of flaps: 0
+  Error: 'Open Message Error' Sent: 2 Recv: 0
+  Peer ID: 10.255.1.2      Local ID: 10.255.1.1        Active Holdtime: 90
+  Keepalive Interval: 30         Group index: 1    Peer index: 0    SNMP index: 2
+  I/O Session Thread: bgpio-0 State: Enabled
+  BFD: disabled, down
+  Local Interface: ge-0/0/2.0
+  NLRI for restart configured on peer: inet6-unicast
+  NLRI advertised by peer: inet6-unicast
+  NLRI for this session: inet6-unicast
+  Peer supports Refresh capability (2)
+  Stale routes from peer are kept for: 300
+  Peer does not support Restarter functionality
+  Restart flag received from the peer: Notification
+  NLRI that restart is negotiated for: inet6-unicast
+  NLRI of received end-of-rib markers: inet6-unicast
+  NLRI of all end-of-rib markers sent: inet6-unicast
+  Peer does not support LLGR Restarter functionality
+  Peer supports 4 byte AS extension (peer-as 65102)
+  Peer does not support Addpath
+  Table inet6.0 Bit: 30000
+    RIB State: BGP restart is complete
+    Send state: in sync
+    Active prefixes:              7
+    Received prefixes:            8
+    Accepted prefixes:            8
+    Suppressed due to damping:    0
+    Advertised prefixes:          8
+  Last traffic (seconds): Received 105868 Sent 650 Checked 105868
+  Input messages:  Total 27	Updates 2	Refreshes 0 	Octets 706
+  Output messages: Total 26	Updates 1	Refreshes 0 	Octets 643
+  Output Queue[2]: 0            (inet6.0, inet6-unicast)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Show BGP group info.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show bgp group
+
+# output
+
+Group Type: External                               Local AS: 65101
+  Name: EBGP-PEERS      Index: 0                   Flags: <>
+  Export: [ TO-EBGP-PEERS ]
+  Holdtime: 0
+  Total peers: 1        Established: 1
+  10.1.12.2+59430
+  inet.0: 7/9/9/0
+
+Group Type: External                               Local AS: 65101
+  Name: EBGPV6-PEERS    Index: 1                   Flags: <>
+  Export: [ TO-EBGPV6-PEERS ]
+  Holdtime: 0
+  Total peers: 1        Established: 1
+  fd00:10:1:12::2+58172
+  inet6.0: 7/8/8/0
+
+Groups: 2  Peers: 2    External: 2    Internal: 0    Down peers: 0   Flaps: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0
+                       9          7          0          0          0          0
+inet6.0
+                       8          7          0          0          0          0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+  <p>
+    Show BGP summary info.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show bgp summary
+
+# output
+
+Groups: 2 Peers: 2 Down peers: 0
+Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
+inet.0
+                       9          7          0          0          0          0
+inet6.0
+                       8          7          0          0          0          0
+Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
+10.1.12.2             65102        344        343       0       0     2:33:04 7/9/9/0              0/0/0/0
+fd00:10:1:12::2       65102         34         33       0       0       13:42 Establ
+  inet6.0: 7/8/8/0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Show BGP routing table.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show route protocol bgp
+
+# output
+
+inet.0: 56 destinations, 58 routes (56 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.12.0/24        [BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.23.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.24.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.25.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.26.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.27.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.28.0/24       *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.255.1.2/32      *[BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+192.168.121.0/24    [BGP/170] 02:33:46, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to 10.1.12.2 via ge-0/0/2.0
+
+inet6.0: 93 destinations, 94 routes (93 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+fd00:10:1:12::/64   [BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:23::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:24::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:25::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:26::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:27::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:1:28::/64  *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0
+fd00:10:255:1::2/128
+                   *[BGP/170] 00:14:24, localpref 100
+                      AS path: 65102 I, validation-state: unverified
+                    > to fd00:10:1:12::2 via ge-0/0/2.0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Show routes advertised to neighbor.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show route advertising-protocol bgp 10.1.12.2
+
+# output
+
+inet.0: 56 destinations, 58 routes (56 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+* 10.1.12.0/24            Self                                    I
+* 10.1.13.0/24            Self                                    I
+* 10.1.14.0/24            Self                                    I
+* 10.1.15.0/24            Self                                    I
+* 10.1.16.0/24            Self                                    I
+* 10.1.17.0/24            Self                                    I
+* 10.1.18.0/24            Self                                    I
+* 10.255.1.1/32           Self                                    I
+* 192.168.121.0/24        Self                                    I
+
+
+show route advertising-protocol bgp fd00:10:1:12::2
+
+# output
+
+inet6.0: 93 destinations, 94 routes (93 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+* fd00:10:1:12::/64       Self                                    I
+* fd00:10:1:13::/64       Self                                    I
+* fd00:10:1:14::/64       Self                                    I
+* fd00:10:1:15::/64       Self                                    I
+* fd00:10:1:16::/64       Self                                    I
+* fd00:10:1:17::/64       Self                                    I
+* fd00:10:1:18::/64       Self                                    I
+  fd00:10:255:1::1/128
+*                         Self                                    I</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <p>
+    Show routes received from neighbor.
+  </p>
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show route receive-protocol bgp 10.1.12.2
+
+# output
+
+inet.0: 56 destinations, 58 routes (56 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+  10.1.12.0/24            10.1.12.2                               65102 I
+* 10.1.23.0/24            10.1.12.2                               65102 I
+* 10.1.24.0/24            10.1.12.2                               65102 I
+* 10.1.25.0/24            10.1.12.2                               65102 I
+* 10.1.26.0/24            10.1.12.2                               65102 I
+* 10.1.27.0/24            10.1.12.2                               65102 I
+* 10.1.28.0/24            10.1.12.2                               65102 I
+* 10.255.1.2/32           10.1.12.2                               65102 I
+  192.168.121.0/24        10.1.12.2                               65102 I
+
+inet6.0: 86 destinations, 86 routes (86 active, 0 holddown, 0 hidden)
+
+
+show route receive-protocol bgp fd00:10:1:12::2
+
+# output
+
+inet.0: 56 destinations, 58 routes (56 active, 0 holddown, 0 hidden)
+
+inet6.0: 93 destinations, 94 routes (93 active, 0 holddown, 0 hidden)
+  Prefix		  Nexthop	       MED     Lclpref    AS path
+  fd00:10:1:12::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:23::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:24::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:25::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:26::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:27::/64       fd00:10:1:12::2                         65102 I
+* fd00:10:1:28::/64       fd00:10:1:12::2                         65102 I
+  fd00:10:255:1::2/128
+*                         fd00:10:1:12::2                         65102 I</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/topic-map/bgp-peering.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/topic-map/bgp-peering.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/example/bgp-advertise-peer-as.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/example/bgp-advertise-peer-as.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/topic-map/bgp-route-advertisement.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/topic-map/bgp-route-advertisement.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/example/example-advertising-ipv4-routes-over-ipv6-bgp-session.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/example/example-advertising-ipv4-routes-over-ipv6-bgp-session.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#overview">
+            Overview
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#topology">
+            Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

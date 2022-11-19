@@ -1,0 +1,61 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This post is a collection of links to resources I have found useful on 
+  infosec related topics.
+</p>
+
+<h3 id="cve">CVE</h3>
+<ul>
+  <li>
+    {{ link::e(
+        path="https://www.exploit-db.com/", 
+        description="Exploit DB"
+    ) }} 
+    - CVE compliant archive of public exploits and corresponding 
+    vulnerable software, developed for use by penetration testers and vulnerability researchers.
+  </li>
+
+  <li>
+    {{ link::e(
+        path="https://nvd.nist.gov/vuln/search", 
+        description="National Vulnerability Database (NVD)"
+    ) }} 
+    - CVE Database hosted by the US government agency: National Institue of Standards and Technology (NIST).
+  </li>
+
+  <li>
+    {{ link::e(
+        path="https://www.cvedetails.com/", 
+        description="CVE Details Database"
+    ) }} 
+    - Searchable CVE Database.
+  </li>
+
+</ul>
+
+<h3 id="nmap">NMAP</h3>
+<ul>
+  <li>
+    {{ link::e(
+        path="https://nmap.org/nsedoc/", 
+        description="NMAP Scripting Engine (NSE)"
+    ) }} 
+    - NSE docs, scripts and library reference hosted on nmap.org.
+  </li>
+</ul>
+
+<h3 id="search">Search</h3>
+<ul>
+  <li>
+    {{ link::e(
+        path="https://shodan.io", 
+        description="Shodan search engine"
+    ) }} 
+    - Search Engine for the Internet of Everything.
+  </li>
+</ul>
+{% endblock page_content %}

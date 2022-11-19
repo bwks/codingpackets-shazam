@@ -1,0 +1,73 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Like most languages, variables in Javascript are 
+  defined with the {{ text::emphasize(text="=") }}
+  operator.
+</p>
+
+<p>
+  There are 3 different keywords that can be used to 
+  define a variable.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="var") }}
+ - Depricated, should not be used for ES6+.</li>
+  <li>{{ text::emphasize(text="let") }}
+ - Variable can be re-assigned. Value can be mutated.</li>
+  <li>{{ text::emphasize(text="const") }}
+ - Variable cannot be re-assigned. Value can be mutated.</li>
+</ul>
+
+{{ text::note_block(text='
+    $1 and $2 have been available since ES6/2015.
+') 
+  | replace(from="$1", to=text::emphasize(text="let"))
+  | replace(from="$2", to=text::emphasize(text="const"))
+}}
+
+<h3 id="define a variable">Define a Variable</h3>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// var syntax (considered depricated)
+var name = "stuff";
+
+// let syntax
+// initialize variable without value assignment
+// only available with "let" keyword
+let name;
+
+// initialize a variable and assign a value
+let name = "stuff";
+
+// re-assign a variable
+let name = "things";
+
+// const syntax
+// initialize a constant and assign a value
+// a value must be assigned when initialized
+const name = "stuff";
+
+// re-assigning a constant will result in a runtime error
+const name = "things"; // => Uncaught SyntaxError: redeclaration of var name'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+    <li>{{ text::emphasize(text="camelCase") }}
+ is the convention used for multi-word variables.</li>
+  <li>Variables can contain letters, numbers, underscores {{ text::emphasize(text="_") }}
+ and a dollar sign {{ text::emphasize(text="$") }}
+.</li>
+  <li>Variables cannot start with a number.</li>
+  <li>{{ text::emphasize(text="let") }}
+ should be used when a variable may be overwritten such as in a for loop.</li>
+  <li>{{ text::emphasize(text="const") }}
+ should be used when a variable should not be overwritten.</li>
+</ul>
+
+{% endblock page_content %}

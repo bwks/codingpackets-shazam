@@ -1,0 +1,872 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Juniper Routing Policy</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 23rd of February 2019
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Junos routing policy allows an administrator to alter the
+    default behaviour of a routing protocol. All routing protocols
+    try to determine the best path to a destination based on the
+    protocols definition of the best "metric". The Junos routing
+    policy framework allows an administrator to influence the
+    best path based on their business needs.
+  </p>
+
+  <h3 id="usage-examples">Usage Examples</h3>
+  <ul>
+    <li>Alter the best path to a destination</li>
+    <li>Modify or ignore routes that are advertised to you</li>
+    <li>Modify or ignore routes that are advertised to your neighbours</li>
+    <li>Redistribute routes between protocols</li>
+  </ul>
+
+  <h3 id="policy-application">Policy Application</h3>
+  <p>
+    There are two places routing policy can be applied.
+  </p>
+  <ul>
+    <li><b>Inbound</b> - Import policy</li>
+    <li><b>Outbound</b> - Export policy</li>
+  </ul>
+  <p>
+    The use of a routing policy alters a routers
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">view</i>
+ of the network
+    topology. If you apply a policy inbound it will alter the local routers
+    perception of the network topology. Applying a policy outbound will
+    alter a neighbours perception of the network topology.
+  </p>
+
+  <p>
+    BGP policies can be applied at three levels.
+    The below list is order from the most to least preferred.
+  </p>
+  <ul>
+    <li>Neighbor</li>
+    <li>Group</li>
+    <li>Global</li>
+  </ul>
+  <p>
+    Less preferred policies are ignored if a more preferred match is
+    also configured.
+  </p>
+
+  <h3 id="policy-processing">Policy Processing</h3>
+  <ul>
+    <li>
+      Routing policy is only evaluated against <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">active</i>
+
+      routes in the routing table.
+    </li>
+    <li>
+      Policies are evaluated in a daisy-chain order known as a
+      <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">policy-chain</i>
+.
+    </li>
+    <li>
+      Evaluation is halted once a policy match is found and the policy
+      contains a
+      <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">terminating action</i>
+.
+    </li>
+    <li>
+      If no match is found evaluation will continue to the
+      <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">next policy</i>
+.
+    </li>
+    <li>
+      If no match is found in any policy the
+      <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">default policy</i>
+ will
+      be evaluated.
+    </li>
+
+  </ul>
+
+  <h3 id="terminating-action">Terminating Action</h3>
+  <p>
+    Terminating actions define how a route match is utilised.
+    The options are <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">accept</i>
+
+    and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">reject</i>
+. Their usage
+    is as follows.
+  </p>
+  <ul>
+    <li><b>Accept</b> - Route will be placed in the routing table and advertised to neighbours</li>
+    <li><b>Reject</b> - Route is ignored and will not be placed in the routing table</li>
+  </ul>
+
+  <h3 id="action-modifiers">Action Modifiers</h3>
+  <p>
+    Prior to a route being accepted or rejected by a terminating action
+    the routes attributes can be modified. Below are some common usage
+    examples of action modifiers.
+  </p>
+  <ul>
+    <li><b>local-preference</b> - Set the BGP local-preference attribute</li>
+    <li><b>metric</b> - Set the metric for a route</li>
+    <li><b>next-hop</b> - Set the next-hop interface for a route</li>
+    <li><b>origin</b> - Set the BGP origin attribute</li>
+    <li><b>preference</b> - Set the routes preference (AD)</li>
+  </ul>
+
+  <h3 id="flow-control">Flow Control</h3>
+  <p>
+    There are two flow control statements that can be used within routing policy.
+  </p>
+  <ul>
+    <li><b>next term</b> - Moves to the next term in the current policy</li>
+    <li><b>next policy</b> - Moves to the next policy in the policy chain</li>
+  </ul>
+
+  <h3 id="policy-configuration">Policy Configuration</h3>
+  <p>
+    There are two methods to define a routing policy.
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">term based</i>
+ and
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">non-term based</i>
+.
+  </p>
+
+  <p>
+    Non-term based policies can only have one set
+    of match/action statements.
+  </p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">policy-options {
+    policy-statement POLICY-NAME {
+        from {
+            MATCH-CONDITIONS;
+        }
+        then {
+            ACTIONS;
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+  <h4>Term Based</h4>
+  <p>
+    Term based policies allow for more than one set
+    of match/action statements using a
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">term</i>
+ block.
+  </p>
+
+  
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">policy-options {
+    policy-statement POLICY-NAME {
+        term TERM-NAME {
+            from {
+                MATCH-CONDITIONS;
+            }
+            then {
+                ACTIONS;
+            }
+        }
+        term TERM-NAME {
+            from {
+                MATCH-CONDITIONS;
+            }
+            then {
+                ACTIONS;
+            }
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+  
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+      If a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">term</i> does not contain a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">term</i> the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">next-term</i> is evaluated.
+  </div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+  <h3 id="route-filters">Route Filters</h3>
+  <p>
+    Route filters are used to apply routing policy to a specific
+    route (or set of routes). There are a number of methods to
+    match a route(s) which are outlined below.
+  </p>
+
+  <h4>exact</h4>
+  <ul>
+    <li>The exact prefix</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16</i>
+
+
+
+</li>
+  </ul>
+
+  <h4>longer</h4>
+  <ul>
+    <li>Prefixes more specific than the defined prefix</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 longer</i>
+
+
+
+</li>
+  </ul>
+
+  <h4>orlonger</h4>
+  <ul>
+    <li>Defined prefix plus more specific prefixes</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 orlonger</i>
+
+
+
+</li>
+  </ul>
+
+  <h4>upto</h4>
+  <ul>
+    <li>Defined prefix and prefixes up to a defined prefix length</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 upto /18</i>
+
+
+
+</li>
+  </ul>
+
+  <h4>prefix-length-range</h4>
+  <ul>
+    <li>Defined prefix and routes between a defined prefix length start and end</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 prefix-length-range /17-/18</i>
+</li>
+  </ul>
+
+  <h4>through</h4>
+  <ul>
+    <li>Defined prefixes and any prefixes in between</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 through 192.168.0.0/19</i>
+
+  </li>
+  </ul>
+
+  <h3 id="radix-tree">Radix Tree</h3>
+  <p>
+    A radix tree is used to match prefixes based on the route filter conditions.
+    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-800" href="#references-1">[1]</a></sup> is a sample radix tree.
+  </p>
+  
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/juniper-routing-policy/radix-tree-1.png" alt="blog/juniper-routing-policy/radix-tree-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+  <p>
+    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-800" href="#references-2">[2]</a></sup>
+    illustrates how route filters affect the selection
+    of prefixes in the radix tree.
+  </p>
+  
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/juniper-routing-policy/radix-tree-2.png" alt="blog/juniper-routing-policy/radix-tree-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+  <h3 id="default-routing-policy">Default Routing Policy</h3>
+  <p>
+    The default manner in which Junos handles routing policy is
+    outlined in the table below.
+  </p>
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Protocol</th>
+        
+          <th class="pt-1 pb-2 px-2">Import</th>
+        
+          <th class="pt-1 pb-2 px-2">Export</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">BGP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">OSPF/v3 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. OSPF uses flooding to advertise local and learned routes.</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">IS-IS </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. IS-IS uses flooding to advertise local and learned routes.</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">RIP/ng </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. An export policy is required to export RIP/ng routes.</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+
+            
+  
+    
+<!-- TABLE REFERENCES START -->
+<div id="references" class="pb-2">
+  <div class="">
+    <h3>References</h3>
+  </div>
+  <div class="">
+    
+      <span id="references-1" class="pr-2">1)</span> <span>JNCIA: Juniper Networks Certified Internet Associate Study Guide - Chapter 4: Routing Policy - Page 164</span><br>
+    
+      <span id="references-2" class="pr-2">2)</span> <span>JNCIA: Juniper Networks Certified Internet Associate Study Guide - Chapter 4: Routing Policy - Page 167</span><br>
+    
+  </div>
+</div>
+<!-- TABLE REFERENCES END -->
+
+  
+
+
+            
+  
+    
+<!-- TABLE BIBLIOGRAPHY START -->
+<div id="bibliography" class="pb-2">
+  <div class="">
+    <h3>Bibliography</h3>
+  </div>
+  <div class="">
+    
+      <span id="bibliography-1" class="pr-2">1)</span> <span>Soricelli, J. Hammond, J. Pildush, G. Van Meter, T. and Warble, T. (2003) JNCIA: Juniper Networks Certified Internet Associate Study Guide. Juniper / Sybex</span><br>
+    
+      <span id="bibliography-2" class="pr-2">2)</span> <span>Author Unknown (2012) JNCIA-Junos Study Guide-Part 2. Juniper Networks</span><br>
+    
+  </div>
+</div>
+<!-- TABLE BIBLIOGRAPHY END -->
+
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#overview">
+            Overview
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#usage-examples">
+            Usage Examples
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#policy-application">
+            Policy Application
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#policy-processing">
+            Policy Processing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#terminating-action">
+            Terminating Action
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#action-modifiers">
+            Action Modifiers
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#flow-control">
+            Flow Control
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#policy-configuration">
+            Policy Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#route-filters">
+            Route Filters
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#radix-tree">
+            Radix Tree
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#default-routing-policy">
+            Default Routing Policy
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#references">
+            References
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#bibliography">
+            Bibliography
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

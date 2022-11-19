@@ -1,0 +1,163 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Firewall filters are similar to access control lists (ACLs).
+    Firewall filters are stateless and inspect each packet individually.
+    Because they are stateless traffic must be allowed in both directions.
+  </p>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Routing policies and firewall filters have a common structure.
+    Firewall filters are configured under the
+    {{ text::emphasize(text="firewall") }}
+ hierarchy section
+    and are configured
+    {{ text::emphasize(text="per-protocol") }}
+ family type.
+  </p>
+  <p>
+    Filters contain a list of terms that are groups of
+    match and action statements which define how packets
+    are processed.
+  </p>
+  {{ text::code_block(
+  header="config",
+  language="text",
+  code=`firewall {
+    family PROTOCOL-FAMILY {
+        filter FW-FILTER-NAME {
+            term TERM-NAME {
+                from {
+                    MATCH-CONDITIONS;
+                }
+                then {
+                    ACTIONS;
+                }
+            }
+        }
+    }
+}`
+) }}
+
+  <p>
+    The following rules must be observed when configuring terms in
+    a firewall filter policy.
+  </p>
+  <ul>
+    <li>The filter must contain at least one term</li>
+    <li>Terms are evaluated in the order they are defined</li>
+    <li>Each term must have a unique name</li>
+  </ul>
+
+  <h3 id="match-conditions">Match Conditions</h3>
+  <p>
+    Match conditions generally fall into three categories.
+  </p>
+  <ul>
+    <li>Numeric Range</li>
+    <li>Address</li>
+    <li>Bit-field match</li>
+  </ul>
+
+  <h3 id="actions">Actions</h3>
+  <p>
+    As with routing policy there are a number of actions
+    available when processing firewall filters.
+  </p>
+  <ul>
+    <li>Terminating actions</li>
+    <li>Flow control</li>
+    <li>Action modifiers</li>
+  </ul>
+
+  <h4>Terminating actions</h4>
+  <p>
+    Terminating actions halt the processing of the firewall filter.
+    There are three terminating actions.
+  </p>
+  <ul>
+    <li><b>accept</b> - Accepts the traffic</li>
+    <li><b>reject</b> - Drop the traffic and send ICMP unreachable /
+      administratively prohibited message</li>
+    <li><b>discard</b> - Silently drop to the traffic</li>
+  </ul>
+
+  {{ text::note_block(text='
+      A term that has a $1
+
+      clause but does not contain a terminating action has an
+      implicit $2
+
+      terminating action.')
+    | replace(from="$1", to=text::emphasize(text="match"))
+    | replace(from="$2", to=text::emphasize(text="accept"))
+  }}
+
+
+  {{ text::note_block(text='
+  Firewall filters have a final implicit
+      $1 terminating action if no other terminating actions are defined.')
+    | replace(from="$1", to=text::emphasize(text="discard"))
+  }}
+
+
+  <h4>Flow Control</h4>
+  <p>
+    The {{ text::emphasize(text="next-term") }}
+ flow control
+    statement is used to force processing of the policy
+    to move to the next term stanza in the policy.
+  </p>
+
+  <h4>Action Modifiers</h4>
+  <p>
+    Actions modifiers allow the addition of things like
+    {{ text::emphasize(text="count") }}
+,
+    {{ text::emphasize(text="log") }}
+ and
+    {{ text::emphasize(text="syslog") }}
+ processing
+    to a terminating action.
+  </p>
+
+  {{ text::note_block(text='
+      Action modifiers have an implicit $1
+
+      terminating action.')
+    | replace(from="$1", to=text::emphasize(text="accept"))
+  }}
+
+  <h3 id="apply-firewall-filters">Apply Firewall Filters</h3>
+  <p>
+    Firewall filters can be applied in both the inbound and
+    out bound directions.
+  </p>
+  <p>
+    The protocol family for the firewall filter and the interface
+    must match.
+  </p>
+  <p>
+    An {{ text::emphasize(text="input-list") }}
+ or
+    {{ text::emphasize(text="output-list") }}
+ can be used
+    to apply multiple firewall filters to an interface.
+  </p>
+  <p>
+    Transit firewall filters act on traffic flowing from one interface
+    to another within a device.
+  </p>
+  <p>
+    Firewall filters can be applied to the lo0 interface to protect the
+    RE from unauthorized traffic. Evaluation of these filters is performed
+    by the PFE and is not processed by the RE.
+  </p>
+
+
+{% endblock page_content %}

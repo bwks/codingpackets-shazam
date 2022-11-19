@@ -1,0 +1,296 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    7 steps to configure VRRP.
+  </p>
+
+  <ul>
+    <li>Enable VRRPv3</li>
+    <li>Define a VRRP group number</li>
+    <li>Configure a virtual IP address</li>
+    <li>Configure a virtual link-local address (IPv6 only)</li>
+    <li>Configure a priority</li>
+    <li>Configure preempt (optional)</li>
+    <li>Configure router advertisement properties (IPv6 only)</li>
+  </ul>
+
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Enable VRRPv3.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols vrrp version-3`
+) }}
+
+
+  <p>
+    Define a VRRP group number. The below example uses
+    group {{ text::emphasize(text="112") }}
+.
+  </p>
+  <p>
+    Configure a virtual IP address.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 virtual-address 10.11.12.254
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 virtual-inet6-address fd00:10:11:12::ffff`
+) }}
+
+
+  <p>
+    Configure a virtual link-local address (IPv6 only). This
+    address must be from the same block as the link local address
+    of the interface.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 virtual-link-local-address fe80::10:11:12:ffff`
+) }}
+
+
+  <p>
+    Configure a priority.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 priority 110
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 priority 110`
+) }}
+
+
+  <p>
+    Configure preempt (optional).
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 preempt
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 preempt`
+) }}
+
+
+  <p>
+    Configure router advertisement properties (IPv6 only).
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols router-advertisement interface ge-0/0/9.112 prefix fd00:10:11:12::/64
+set protocols router-advertisement interface ge-0/0/9.112 max-advertisement-interval 4
+set protocols router-advertisement interface ge-0/0/9.112 virtual-router-only`
+) }}
+
+
+  <h3 id="topology">Topology</h3>
+
+  {{ image::boxed(path="network/topologies/2-router-1-switch.svg", width="600px") }}
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols vrrp version-3
+set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 virtual-address 10.11.12.254
+set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 priority 110
+set interfaces ge-0/0/9.112 family inet address 10.11.12.1/24 vrrp-group 112 preempt
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 virtual-inet6-address fd00:10:11:12::ffff
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 virtual-link-local-address fe80::10:11:12:ffff
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 priority 110
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::1/64 vrrp-inet6-group 112 preempt
+set protocols router-advertisement interface ge-0/0/9.112 prefix fd00:10:11:12::/64
+set protocols router-advertisement interface ge-0/0/9.112 prefix fd00:10:11:12::/64
+set protocols router-advertisement interface ge-0/0/9.112 max-advertisement-interval 4
+set protocols router-advertisement interface ge-0/0/9.112 virtual-router-only`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols vrrp version-3
+set interfaces ge-0/0/9.112 family inet address 10.11.12.2/24 vrrp-group 112 virtual-address 10.11.12.254
+set interfaces ge-0/0/9.112 family inet address 10.11.12.2/24 vrrp-group 112 priority 105
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::2/64 vrrp-inet6-group 112 virtual-inet6-address fd00:10:11:12::ffff
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::2/64 vrrp-inet6-group 112 virtual-link-local-address fe80::10:11:12:ffff
+set interfaces ge-0/0/9.112 family inet6 address fd00:10:11:12::2/64 vrrp-inet6-group 112 priority 105
+set protocols router-advertisement interface ge-0/0/9.112 prefix fd00:10:11:12::/64
+set protocols router-advertisement interface ge-0/0/9.112 max-advertisement-interval 4
+set protocols router-advertisement interface ge-0/0/9.112 virtual-router-only`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+
+  <p>
+    Show VRRP succinct info.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show vrrp brief
+
+# output
+
+Interface     State       Group   VR state VR Mode   Timer    Type   Address
+ge-0/0/9.112  up            112   master   Active      A  0.269 lcl    10.11.12.1
+                                                                vip    10.11.12.254
+ge-0/0/9.112  up            112   master   Active      A  0.031 lcl    fd00:10:11:12::1
+                                                                vip    fe80::10:11:12:ffff
+                                                                vip    fd00:10:11:12::ffff`
+) }}
+
+
+  <p>
+    Show VRRP detailed info.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show vrrp detail
+
+# output
+
+Physical interface: ge-0/0/9, Unit: 112, Vlan-id: 112, Address: 10.11.12.1/24
+  Index: 339, SNMP ifIndex: 543, VRRP-Traps: disabled, VRRP-Version: 3
+  Interface state: up, Group: 112, State: master, VRRP Mode: Active
+  Priority: 110, Advertisement interval: 1, Authentication type: none
+  Advertisement threshold: 3, Computed send rate: 0
+  Preempt: yes, Accept-data mode: no, VIP count: 1, VIP: 10.11.12.254
+  Advertisement Timer: 0.248s, Master router: 10.11.12.1
+  Virtual router uptime: 00:00:44, Master router uptime: 00:00:41
+  Virtual Mac: 00:00:5e:00:01:70
+  Preferred: yes
+  Tracking: disabled
+
+Physical interface: ge-0/0/9, Unit: 112, Vlan-id: 112, Address: fd00:10:11:12::1/64
+  Index: 339, SNMP ifIndex: 543, VRRP-Traps: disabled, VRRP-Version: 3
+  Interface state: up, Group: 112, State: master, VRRP Mode: Active
+  Priority: 110, Advertisement interval: 1, Authentication type: none
+  Advertisement threshold: 3, Computed send rate: 0
+  Preempt: yes, Accept-data mode: no, VIP count: 2, VIP: fe80::10:11:12:ffff, fd00:10:11:12::ffff
+  Advertisement Timer: 0.094s, Master router: fe80::2ab7:ad00:708b:5020
+  Virtual router uptime: 00:00:44, Master router uptime: 00:00:41
+  Virtual Mac: 00:00:5e:00:02:70
+  Preferred: yes
+  Tracking: disabled`
+) }}
+
+
+
+  <p>
+    Show VRRP statistics.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show vrrp extensive
+
+# output
+
+Interface: ge-0/0/9.112, Interface index :339, Groups: 2, Active :2
+  Interface VRRP PDU statistics
+    Advertisement sent                       :200
+    Advertisement received                   :8
+    Packets received                         :8
+    No group match received                  :0
+  Interface VRRP PDU error statistics
+    Invalid IPAH next type received          :0
+    Invalid VRRP TTL value received          :0
+    Invalid VRRP version received            :0
+    Invalid VRRP PDU type received           :0
+    Invalid VRRP authentication type received:0
+    Invalid VRRP IP count received           :0
+    Invalid VRRP checksum received           :0
+
+Physical interface: ge-0/0/9, Unit: 112, Vlan-id: 112, Address: 10.11.12.1/24
+  Index: 339, SNMP ifIndex: 543, VRRP-Traps: disabled, VRRP-Version: 3
+  Interface state: up, Group: 112, State: master, VRRP Mode: Active
+  Priority: 110, Advertisement interval: 1, Authentication type: none
+  Advertisement threshold: 3, Computed send rate: 0
+  Preempt: yes, Accept-data mode: no, VIP count: 1, VIP: 10.11.12.254
+  Advertisement Timer: 0.643s, Master router: 10.11.12.1
+  Virtual router uptime: 00:01:30, Master router uptime: 00:01:27
+  Virtual Mac: 00:00:5e:00:01:70
+  Preferred: yes
+  Tracking: disabled
+  Group VRRP PDU statistics
+    Advertisement sent                       :99
+    Advertisement received                   :4
+  Group VRRP PDU error statistics
+    Bad authentication Type received         :0
+    Bad password received                    :0
+    Bad MD5 digest received                  :0
+    Bad advertisement timer received         :0
+    Bad VIP count received                   :0
+    Bad VIPADDR received                     :0
+  Group state transition statistics
+    Idle to master transitions               :0
+    Idle to backup transitions               :1
+    Backup to master transitions             :1
+    Master to backup transitions             :0
+
+Physical interface: ge-0/0/9, Unit: 112, Vlan-id: 112, Address: fd00:10:11:12::1/64
+  Index: 339, SNMP ifIndex: 543, VRRP-Traps: disabled, VRRP-Version: 3
+  Interface state: up, Group: 112, State: master, VRRP Mode: Active
+  Priority: 110, Advertisement interval: 1, Authentication type: none
+  Advertisement threshold: 3, Computed send rate: 0
+  Preempt: yes, Accept-data mode: no, VIP count: 2, VIP: fe80::10:11:12:ffff, fd00:10:11:12::ffff
+  Advertisement Timer: 0.868s, Master router: fe80::2ab7:ad00:708b:5020
+  Virtual router uptime: 00:01:30, Master router uptime: 00:01:27
+  Virtual Mac: 00:00:5e:00:02:70
+  Preferred: yes
+  Tracking: disabled
+  Group VRRP PDU statistics
+    Advertisement sent                       :101
+    Advertisement received                   :4
+  Group VRRP PDU error statistics
+    Bad authentication Type received         :0
+    Bad password received                    :0
+    Bad MD5 digest received                  :0
+    Bad advertisement timer received         :0
+    Bad VIP count received                   :0
+    Bad VIPADDR received                     :0
+  Group state transition statistics
+    Idle to master transitions               :0
+    Idle to backup transitions               :1
+    Backup to master transitions             :1
+    Master to backup transitions             :0`
+) }}
+
+
+  <p>
+    Show IPv6 router advertisements.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ipv6 router-advertisement
+
+# output
+
+Interface: ge-0/0/9.112
+  Advertisements sent: 26, last sent 00:02:31 ago
+  Solicits received: 0
+  Advertisements received: 0
+  Solicited router advertisement unicast: Disable
+  IPv6 RA Preference: DEFAULT/MEDIUM
+  Group ID: 112
+    Advertisements Sent: 63, Advertisement last sent: 00:00:02 ago
+    Solicits Received: 0
+    Advertisements received: 0`
+) }}
+
+
+
+{% endblock page_content %}

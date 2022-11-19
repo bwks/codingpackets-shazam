@@ -1,0 +1,52 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Arrays are a collection of values of the same type.
+</p>
+
+{{ text::code_block(
+  header="go",
+  language="go",
+  code=`// create an array that can hold 2 elements
+var stuff [2]string
+
+// assign values to the array
+stuff[0] = "blah"
+stuff[1] = "bleh"
+
+// shortcut to create an array and assign values
+stuff := [2]string{"blah", "bleh"}
+
+// let the go compiler dynamically determine the length of the array
+stuff := [...]string{"blah", "bleh"}
+
+// iterating an array
+for i := 0; i < len(stuff); i++ {
+    // do something with stuff[i]
+}
+
+// iterating an array with range
+// the first position (i) is the iteration number
+// the second position (v) is the value
+for i, v := range stuff {
+    // do something with i and v
+}
+
+// if the iteration position is not required
+// _ is a throw away variable that does not need to be used
+for _, v := range stuff {
+    // do something with v
+}`
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>All elements of an array must be of the same type</li>
+  <li>Arrays are rarely used directly in Go</li>
+  <li>Arrays are the backing store for slices which is more commonly used for a list of elements</li>
+</ul>
+
+{% endblock page_content %}

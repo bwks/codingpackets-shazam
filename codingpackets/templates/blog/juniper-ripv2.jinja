@@ -1,0 +1,211 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    4 steps to configure RIPv2.
+  </p>
+
+  <ul>
+    <li>Define a RIP group</li>
+    <li>Assign interfaces to the RIP group</li>
+    <li>Define a routing policy to export routes</li>
+    <li>Assign the routing policy to the RIP group</li>
+  </ul>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Define a RIP group.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols rip group RIP-GROUP`
+) }}
+
+
+  <p>
+    Assign interfaces to the RIP group.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols rip group RIP-GROUP neighbor ge-0/0/2.0`
+) }}
+
+
+  <p>
+    Define a routing policy to export routes.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set policy-options policy-statement EXPORT-RIP term 1 from protocol direct
+set policy-options policy-statement EXPORT-RIP term 1 from protocol rip
+set policy-options policy-statement EXPORT-RIP term 1 then accept`
+) }}
+
+
+  <p>
+    Assign the routing policy to the RIP group.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols rip group RIP-GROUP export EXPORT-RIP`
+) }}
+
+
+  <h3 id="topology">Topology</h3>
+
+  {{ image::boxed(path="network/topologies/2-router.svg", width="600px") }}
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols rip group RIP-GROUP
+set protocols rip group RIP-GROUP neighbor ge-0/0/2.0
+set policy-options policy-statement EXPORT-RIP term 1 from protocol direct
+set policy-options policy-statement EXPORT-RIP term 1 from protocol rip
+set policy-options policy-statement EXPORT-RIP term 1 then accept
+set protocols rip group RIP-GROUP export EXPORT-RIP`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols rip group RIP-GROUP
+set protocols rip group RIP-GROUP neighbor ge-0/0/1.0
+set policy-options policy-statement EXPORT-RIP term 1 from protocol direct
+set policy-options policy-statement EXPORT-RIP term 1 from protocol rip
+set policy-options policy-statement EXPORT-RIP term 1 then accept
+set protocols rip group RIP-GROUP export EXPORT-RIP`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+
+  <p>
+    Show RIP neighbors.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show rip neighbor
+
+# output
+
+                  Local  Source          Destination     Send   Receive   In
+Neighbor          State  Address         Address         Mode   Mode     Met
+--------          -----  -------         -----------     ----   -------  ---
+ge-0/0/2.0           Up 10.1.12.1       224.0.0.9       mcast  both       1`
+) }}
+
+
+  <p>
+    Show RIP routing table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route protocol rip
+
+# output
+
+inet.0: 57 destinations, 58 routes (57 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.23.0/24       *[RIP/100] 00:06:21, metric 2, tag 0
+                    > to 10.1.12.2 via ge-0/0/2.0
+&lt;snip&gt;
+10.255.1.2/32      *[RIP/100] 00:06:21, metric 2, tag 0
+                    > to 10.1.12.2 via ge-0/0/2.0
+224.0.0.9/32       *[RIP/100] 00:08:35, metric 1
+                      MultiRecv`
+) }}
+
+
+  <p>
+    Show advertised RIP routes.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route advertising-protocol rip 10.1.12.1
+
+# output
+
+inet.0: 57 destinations, 58 routes (57 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.13.0/24       *[Direct/0] 05:05:40
+                    > via ge-0/0/3.0
+&lt;snip&gt;
+10.255.1.1/32      *[Direct/0] 05:05:40
+                    > via lo0.0`
+) }}
+
+
+  <p>
+    Show received RIP routes.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route receive-protocol rip 10.1.12.2
+
+# output
+
+inet.0: 57 destinations, 58 routes (57 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.23.0/24       *[RIP/100] 00:30:45, metric 2, tag 0
+                    > to 10.1.12.2 via ge-0/0/2.0
+&lt;snip&gt;
+10.255.1.2/32      *[RIP/100] 00:30:45, metric 2, tag 0
+                    > to 10.1.12.2 via ge-0/0/2.0
+
+inet6.0: 86 destinations, 86 routes (86 active, 0 holddown, 0 hidden)`
+) }}
+
+
+  <p>
+    Show RIP message exchange.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show rip statistics
+
+# output
+
+RIPv2 info: port 520; holddown 120s.
+    rts learned  rts held down  rqsts dropped  resps dropped
+              8              0              0              0
+
+ge-0/0/2.0:  8 routes learned; 8 routes advertised; timeout 180s; update interval 30s
+Counter                         Total   Last 5 min  Last minute
+-------                   -----------  -----------  -----------
+Updates Sent                       59           10            2
+Triggered Updates Sent              2            0            0
+Responses Sent                      0            0            0
+Bad Messages                        0            0            0
+RIPv1 Updates Received              0            0            0
+RIPv1 Bad Route Entries             0            0            0
+RIPv1 Updates Ignored               0            0            0
+RIPv2 Updates Received             56           10            2
+RIPv2 Bad Route Entries             0            0            0
+RIPv2 Updates Ignored               0            0            0
+Authentication Failures             0            0            0
+RIP Requests Received               1            0            0
+RIP Requests Ignored                0            0            0
+RIP Update Acks Received            0            0            0`
+) }}
+
+
+
+{% endblock page_content %}

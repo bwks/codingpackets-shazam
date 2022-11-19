@@ -1,0 +1,66 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    1 step to configure a static route.
+  </p>
+
+  <ul>
+    <li>Configure static route under routing-options section</li>
+  </ul>
+
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Configure static route under routing-options section.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options static route 10.1.23.0/24 next-hop 10.1.12.2`
+) }}
+
+
+  <h3 id="topology">Topology</h3>
+  {{ image::boxed(path="network/topologies/2-router.svg", width="600px") }}
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options static route 10.1.23.0/24 next-hop 10.1.12.2`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options static route 10.1.13.0/24 next-hop 10.1.12.1`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+  <p>
+    Show static route table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route protocol static
+
+# output
+
+inet.0: 50 destinations, 50 routes (50 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.23.0/24       *[Static/5] 00:00:07
+                    > to 10.1.12.2 via ge-0/0/2.0
+
+inet6.0: 86 destinations, 86 routes (86 active, 0 holddown, 0 hidden)`
+) }}
+
+
+{% endblock page_content %}

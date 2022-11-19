@@ -1,0 +1,878 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Juniper vQFX Vagrant box for use with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider.
+</p>
+<p>
+  With other Juniper VM's such as the vSRX and vMX there are some required steps to get the
+  KVM host prepped, these may be required for the vQFX also. I did not find any documentation
+  directly stating this but if you have issues
+  <a href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-install-preparing.html">
+    this</a> could be a good place to look.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin already installed. You can follow this
+  {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+  to get the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Juniper vQFX</b> - 17.4R1.16</li>
+  <li><b>Vagrant</b> - 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="vqfx-overview">vQFX Overview</h3>
+<p>
+  The vQFX is made up of two VMs, one for the routing engine (RE) that runs Junos and one for the
+  packet forwarding engine (PFE) that runs wind river linux.
+  Although there are two separate VMs, logically they act as a single device. Conceptually
+  a vQFX looks like the below diagram.
+</p>
+
+{{ image::boxed(path="blog/juniper-vqfx-vagrant-libvirt-box-installation/vqfx.svg", width="400px") }}
+
+<p>
+  The first two interfaces from each VM are reserved. The first is for management and the
+  second is used as a communication channel between the two VMs. Additionally the third
+  interface on the RE is unusable. The PFE only requires two interfaces. The RE supports an
+  additional 12 interfaces for data plane traffic.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Juniper provides ready built Vagrant boxes for use with the Virtualbox provider. Unfortunately
+  using the Vagrant mutate plugin to convert them to libvirt boxes was not successful. The PFE
+  Vagrant box can be reused with minimal work. The RE requires building from scratch.
+</p>
+<p>
+  Navigate to the Juniper software
+  {{ link::e(path="https://www.juniper.net/support/downloads/?p=vqfxeval#sw", description="download") }}
+  page and download the PFE {{ text::emphasize(text="Vagrant Package for Virtualbox (VQFX10K PFE)") }}
+
+  {{ link::e(path="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74232.html", description="box") }}.
+</p>
+<p>
+  For the RE download the {{ text::emphasize(text="VQFX10K RE Disk Image") }}
+
+  {{ link::e(path="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74230.html", description=".img") }}
+</p>
+
+
+{{ text::note_block(text='
+    You will likely need no request access to download these images which may involve raising
+    a case. AFAIK a valid support contract is not required to get access to these images.
+') }}
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into a directory for vQFX files. I like to keep my custom vagrant boxes under
+  {{ text::emphasize(text="~/vagrant/boxes/") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/juniper/vqfx
+cd ~/vagrant/boxes/juniper/vqfx`
+) }}
+
+
+<p>
+  Copy the {{ text::emphasize(text="PFE") }}
+ and {{ text::emphasize(text="RE") }}
+
+  files downloaded earlier to the {{ text::emphasize(text="~/vagrant/boxes/juniper/vqfx/") }}
+
+  directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp ~/Downloads/vqfx10k-pfe-virtualbox.box .
+cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .`
+) }}
+
+
+<h4><b>PFE Install</b></h4>
+<p>
+  Extract the HDD from the {{ text::emphasize(text="PFE") }}
+ Vagrant box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tar -xvf vqfx10k-pfe-virtualbox.box`
+) }}
+
+
+<p>
+  The PFE is already prepared as a Vagrant box so the only thing required to get it working
+  with libvirt is convert the disk to a qcow2 image and package it up as a libvirt box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qemu-img convert -f vmdk -O qcow2 packer-virtualbox-ovf-1520878605-disk001.vmdk pfe.qcow2`
+) }}
+
+
+
+<p>
+  The good folks who maintain the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  have a script can be used to convert {{ text::emphasize(text="qcow2") }}
+ images to a
+  vagrant box. Download the libvirt conversion script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh`
+) }}
+
+
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following
+  contents for the PFE box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`echo '{"provider":"libvirt","format":"qcow2","virtual_size":6}' > metadata.json`
+) }}
+
+
+<p>
+  Create a PFE vagrant box with the {{ text::emphasize(text="create_box.sh") }}
+ script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh pfe.qcow2
+
+# output
+
+{6}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> pfe.box created
+==> You can now add the box:
+==>   'vagrant box add pfe.box --name pfe'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="pfe.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`cat << EOF > pfe.json
+{
+  "name": "juniper/vqfx-pfe",
+  "description": "Juniper vQFX Packet Forwarding Engine",
+  "versions": [
+    {
+      "version": "17.4R1.16",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.box"
+        }
+      ]
+    }
+  ]
+}
+EOF`
+) }}
+
+
+
+<p>
+  Add the PFE box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add pfe.json
+
+# output
+
+==> box: Loading metadata for box 'pfe.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.json
+==> box: Adding box 'juniper/vqfx-pfe' (v17.4R1.16) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vqfx/pfe.box
+==> box: Successfully added box 'juniper/vqfx-pfe' (v17.4R1.16) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the PFE box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx   (libvirt, 3.4.2)
+arista/veos                   (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 18.2R1.9)
+juniper/vmx-vfp               (libvirt, 18.2R1.9)
+<span class="hljs-string">juniper/vqfx-pfe              (libvirt, 17.4R1.16)</span>`
+) }}
+
+
+<h4><b>RE Install</b></h4>
+<p>
+  The {{ text::emphasize(text="jinstall-vqfx-10-f-17.4R1.16.img") }}
+ is actually
+  a {{ text::emphasize(text="qcow2") }}
+ file so just rename it.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mv jinstall-vqfx-10-f-17.4R1.16.img re.qcow2`
+) }}
+
+
+<p>
+  Start up the RE.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vqfx-re \
+    --os-type unix \
+    --memory 1024 \
+    --vcpus=1 \
+    --import \
+    --disk path=re.qcow2,size=4,bus=ide,format=qcow2 \
+    --network=network:vagrant-libvirt,model=e1000 \
+    --network=network:vagrant-libvirt,model=e1000 \
+    --graphics none`
+) }}
+
+
+<p>
+  You will be automatically connected to the virtual console.
+</p>
+
+<h4><b>RE Configuration</b></h4>
+<p>
+  Login to the RE with the username {{ text::emphasize(text="root") }}
+ there is no
+  password.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`FreeBSD/amd64 (Amnesiac) (ttyu0)
+
+login: root
+
+root@:~ #
+root@:~ # cli
+root> configure`
+) }}
+
+
+<p>
+  Paste in the initial bootstrap configuration to allow SSH and set the
+  root password to {{ text::emphasize(text="Juniper") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set interfaces em0 unit 0 family inet dhcp
+set system services ssh root-login allow
+set system root-authentication plain-text-password
+
+New password: &lt;Juniper&gt;
+Retype new password: &lt;Juniper&gt;
+
+commit and-quit`
+) }}
+
+
+<p>
+  There is a limit to how many characters can be pasted into the terminal over the console so
+  grab the {{ text::emphasize(text="em0") }}
+ ip address and SSH to the guest to finish
+  the configuration.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show interfaces terse | match em0.0
+
+em0.0                  up    up   inet     192.168.121.36/24`
+) }}
+
+
+<p>From another terminal SSH to the IP to finalize the rest of the configuration.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh root@192.168.121.36
+Password: &lt;Juniper&gt;
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+root@vqfx:RE:0% cli`
+) }}
+
+
+<p>
+  Due to reasons I am unable to prove, but suspect is due the the em0 MAC address changing
+  when creating a Vagrant box, the em0 interface refused to get an IP address via DHCP on
+  boot. As a workaround I delete the em0 config prior to shutting the box down
+  after finalizing the bootstrap config and set a cron job to enable DHCP on the em0 interface
+  60 seconds after the RE boots up. Its a bit of a dodgy hack, but it works.
+</p>
+
+<p>
+  From the root shell create a {{ text::emphasize(text="bootup.sh") }}
+ script and
+  make it executable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# root shell
+
+cat << EOF > bootup.sh
+#! /bin/sh
+logger "STARTING sleep 60s to complete boot process"
+sleep 60
+logger "AFTER 60s"
+logger "STARTING configuration using script"
+/usr/sbin/cli -c 'configure;set interfaces em0.0 family inet dhcp;commit comment "Commit by script"'
+EOF
+
+chmod +x bootup.sh`
+) }}
+
+
+
+<p>
+  Edit the crontab with the {{ text::code(text="crontab -e") }}
+ command and add the following line.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# root shell
+
+@reboot /bin/sh /var/root/bootup.sh`
+) }}
+
+
+
+<p>
+  Now login to the Junos CLI and add the rest of the bootstrap config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`root@vqfx:RE:0% cli
+root> configure
+Entering configuration mode
+
+[edit]
+root#`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set system login user vagrant uid 2000
+set system login user vagrant class super-user
+set system login user vagrant authentication encrypted-password "$6$lUoxFIpU$ZiC3/b2UNpGvasntcvkNV4WVDJXBeZ.VqE6yPezbaGOos17vM9BhlTH.LBJb9DZE8fCoBtH0RWNhrbaYpZqxJ/"
+set system login user vagrant authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system root-authentication encrypted-password "$1$nq.N1UsY$JxA/ESAj3KuXseXE597gg0"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system host-name vqfx
+set system services ssh root-login allow
+set system services netconf ssh
+commit and-quit`
+) }}
+
+
+<p>
+  Exit out and confirm you can SSH in with the vagrant user and the vagrant
+  {{ text::emphasize(text="insecure_private_key") }}
+ key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh vagrant@192.168.121.36 -i ~/.vagrant.d/insecure_private_key
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+{master:0}
+vagrant@vqfx>`
+) }}
+
+
+<p>
+  Finally switch back to the virtual console terminal session to delete the em0 interface
+  and shutdown the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`delete interfaces em0
+commit and-quit
+request system power-off`
+) }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<p>
+  With that done we will now convert the RE to a Vagrant box.
+</p>
+
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following
+  contents for the RE box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`echo '{"provider":"libvirt","format":"qcow2","virtual_size":4}' > metadata.json`
+) }}
+
+
+<p>
+  Create an RE vagrant box with the {{ text::emphasize(text="create_box.sh") }}
+ script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh vqfx-re.qcow2
+
+# output
+
+{4}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> vqfx-re.box created
+==> You can now add the box:
+==>   'vagrant box add vqfx-re.box --name vqfx-re'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="re.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`cat << EOF > re.json
+{
+  "name": "juniper/vqfx-re",
+  "description": "Juniper vQFX Routing Engine",
+  "versions": [
+    {
+      "version": "17.4R1.16",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.box"
+        }
+      ]
+    }
+  ]
+}
+EOF`
+) }}
+
+
+
+<p>
+  Add the RE box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add re.json
+
+# output
+
+==> box: Loading metadata for box 're.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.json
+==> box: Adding box 'juniper/vqfx-re' (v17.4R1.16) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vqfx/re.box
+==> box: Successfully added box 'juniper/vqfx-re' (v17.4R1.16) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the RE box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx   (libvirt, 3.4.2)
+arista/veos                   (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 18.2R1.9)
+juniper/vmx-vfp               (libvirt, 18.2R1.9)
+juniper/vqfx-pfe              (libvirt, 17.4R1.16)
+<span class="hljs-string">juniper/vqfx-re               (libvirt, 17.4R1.16)</span>`
+) }}
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that the boxes are installed create a {{ text::emphasize(text="Vagrantfile") }}
+
+  and confirm you can build VMs with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/vqfx-test && cd ~/vqfx-test`
+) }}
+
+
+<p>
+  Add a {{ text::emphasize(text="Vagrantfile") }}
+ to the test directory with the
+  following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def get_mac(oui="28:b7:ad")
+  "Generate a MAC address"
+  nic = (1..3).map{"%0.2x"%rand(256)}.join(":")
+  return "#{oui}:#{nic}"
+end
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "vqfx-re-01" do |node|
+    guest_name = "vqfx-re-01"
+    node.vm.box = "juniper/vqfx-re"
+    node.vm.box_version = "17.4R1.16"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.cpus = 1
+      domain.memory = 1024
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 2
+      domain.nic_model_type = "e1000"
+    end
+
+    node.vm.network :private_network,
+      # vqfx-re-01-int1 <--> vqfx-pfe-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.1",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.15.121.2",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+    node.vm.network :private_network,
+      # vqfx-re-01-int2 reserved interface
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.1",
+      :libvirt__tunnel_local_port => 10002,
+      :libvirt__tunnel_ip => "127.6.6.6",
+      :libvirt__tunnel_port => 10666,
+      :libvirt__iface_name => "bh-int2",
+      auto_config: false
+
+  end
+  config.vm.define "vqfx-pfe-01" do |node|
+    guest_name = "vqfx-pfe-01"
+    node.vm.box = "juniper/vqfx-pfe"
+    node.vm.box_version = "17.4R1.16"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.cpus = 1
+      domain.memory = 2048
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 1
+      domain.nic_model_type = "e1000"
+    end
+
+    node.vm.network :private_network,
+      # vqfx-pfe-01-int1 <--> vqfx-re-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.15.121.2",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.15.121.1",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+  end
+
+end`
+) }}
+
+
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+ and confirm you can login to the RE.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'vqfx-re-01' up with 'libvirt' provider...
+Bringing machine 'vqfx-pfe-01' up with 'libvirt' provider...
+==> vqfx-re-01: Checking if box 'juniper/vqfx-re' is up to date...
+==> vqfx-pfe-01: Checking if box 'juniper/vqfx-pfe' is up to date...
+==> vqfx-pfe-01: Creating image (snapshot of base box volume).
+==> vqfx-re-01: Creating image (snapshot of base box volume).
+==> vqfx-pfe-01: Creating domain with the following settings...
+==> vqfx-re-01: Creating domain with the following settings...
+==> vqfx-re-01:  -- Name:              bradmin_vqfx-test_vqfx-re-01
+==> vqfx-re-01:  -- Domain type:       kvm
+==> vqfx-pfe-01:  -- Name:              bradmin_vqfx-test_vqfx-pfe-01
+==> vqfx-re-01:  -- Cpus:              1
+==> vqfx-pfe-01:  -- Domain type:       kvm
+==> vqfx-re-01:
+==> vqfx-pfe-01:  -- Cpus:              1
+==> vqfx-re-01:  -- Feature:           acpi
+==> vqfx-pfe-01:
+==> vqfx-re-01:  -- Feature:           apic
+==> vqfx-pfe-01:  -- Feature:           acpi
+==> vqfx-re-01:  -- Feature:           pae
+==> vqfx-pfe-01:  -- Feature:           apic
+==> vqfx-re-01:  -- Memory:            1024M
+==> vqfx-pfe-01:  -- Feature:           pae
+==> vqfx-re-01:  -- Management MAC:
+==> vqfx-pfe-01:  -- Memory:            2048M
+==> vqfx-re-01:  -- Loader:
+==> vqfx-pfe-01:  -- Management MAC:
+==> vqfx-re-01:  -- Base box:          juniper/vqfx-re
+==> vqfx-pfe-01:  -- Loader:
+==> vqfx-re-01:  -- Storage pool:      disk1
+==> vqfx-pfe-01:  -- Base box:          juniper/vqfx-pfe
+==> vqfx-re-01:  -- Image:             /disk1/libvirt/images/bradmin_vqfx-test_vqfx-re-01.img (4G)
+==> vqfx-re-01:  -- Volume Cache:      default
+==> vqfx-re-01:  -- Kernel:
+==> vqfx-re-01:  -- Initrd:
+==> vqfx-pfe-01:  -- Storage pool:      disk1
+==> vqfx-re-01:  -- Graphics Type:     vnc
+==> vqfx-re-01:  -- Graphics Port:     -1
+==> vqfx-pfe-01:  -- Image:             /disk1/libvirt/images/bradmin_vqfx-test_vqfx-pfe-01.img (6G)
+==> vqfx-re-01:  -- Graphics IP:       127.0.0.1
+==> vqfx-pfe-01:  -- Volume Cache:      default
+==> vqfx-pfe-01:  -- Kernel:
+==> vqfx-re-01:  -- Graphics Password: Not defined
+==> vqfx-pfe-01:  -- Initrd:
+==> vqfx-re-01:  -- Video Type:        cirrus
+==> vqfx-pfe-01:  -- Graphics Type:     vnc
+==> vqfx-re-01:  -- Video VRAM:        9216
+==> vqfx-pfe-01:  -- Graphics Port:     -1
+==> vqfx-re-01:  -- Sound Type:
+==> vqfx-pfe-01:  -- Graphics IP:       127.0.0.1
+==> vqfx-pfe-01:  -- Graphics Password: Not defined
+==> vqfx-re-01:  -- Keymap:            en-us
+==> vqfx-pfe-01:  -- Video Type:        cirrus
+==> vqfx-re-01:  -- TPM Path:
+==> vqfx-pfe-01:  -- Video VRAM:        9216
+==> vqfx-re-01:  -- INPUT:             type=mouse, bus=ps2
+==> vqfx-pfe-01:  -- Sound Type:
+==> vqfx-pfe-01:  -- Keymap:            en-us
+==> vqfx-pfe-01:  -- TPM Path:
+==> vqfx-pfe-01:  -- INPUT:             type=mouse, bus=ps2
+==> vqfx-re-01: Creating shared folders metadata...
+==> vqfx-re-01: Starting domain.
+==> vqfx-re-01: Waiting for domain to get an IP address...
+==> vqfx-pfe-01: Creating shared folders metadata...
+==> vqfx-pfe-01: Starting domain.
+==> vqfx-pfe-01: Waiting for domain to get an IP address...
+==> vqfx-pfe-01: Waiting for SSH to become available...
+==> vqfx-pfe-01: Configuring and enabling network interfaces...
+==> vqfx-re-01: Waiting for SSH to become available...
+==> vqfx-re-01: Configuring and enabling network interfaces...`
+) }}
+
+
+<p>
+  Confirm you can login to the RE box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Host terminal
+
+vagrant ssh vqfx-re-01
+--- JUNOS 17.4R1.16 built 2017-12-19 20:03:37 UTC
+{master:0}
+vagrant@vqfx>
+
+# Now in vagrant box terminal
+
+vagrant@vqfx> show version
+fpc0:
+--------------------------------------------------------------------------
+Hostname: vqfx
+Model: vqfx-10000
+Junos: 17.4R1.16 limited
+JUNOS Base OS boot [17.4R1.16]
+JUNOS Base OS Software Suite [17.4R1.16]
+JUNOS Crypto Software Suite [17.4R1.16]
+JUNOS Online Documentation [17.4R1.16]
+JUNOS Kernel Software Suite [17.4R1.16]
+JUNOS Packet Forwarding Engine Support (qfx-10-f) [17.4R1.16]
+JUNOS Routing Software Suite [17.4R1.16]
+JUNOS jsd [i386-17.4R1.16-jet-1]
+JUNOS SDN Software Suite [17.4R1.16]
+JUNOS Enterprise Software Suite [17.4R1.16]
+JUNOS Web Management [17.4R1.16]
+JUNOS py-base-i386 [17.4R1.16]
+JUNOS py-extensions-i386 [17.4R1.16]`
+) }}
+
+
+<p>
+  Confirm that the RE is connected to the PFE.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vqfx> show chassis fpc
+                     Temp  CPU Utilization (%)   CPU Utilization (%)  Memory    Utilization (%)
+Slot State            (C)  Total  Interrupt      1min   5min   15min  DRAM (MB) Heap     Buffer
+  0  Online           Testing  81        28        0      0      0    1024        0         77
+  1  Empty
+  2  Empty
+  3  Empty
+  4  Empty
+  5  Empty
+  6  Empty
+  7  Empty
+  8  Empty
+  9  Empty
+
+{master:0}`
+) }}
+
+
+
+<p>
+  We have confirmed we can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> vqfx-pfe-01: Removing domain...
+==> vqfx-re-01: Removing domain...`
+) }}
+
+
+
+<p>Remove the original downloaded images.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rm -f ~/vagrant/boxes/juniper/vqfx/{jinstall-vqfx-10-f-17.4R1.16.img,packer-virtualbox-ovf-1520878605-disk001.vmdk, vqfx10k-pfe-virtualbox.box}
+
+# output
+
+virsh undefine vqfx-re
+Domain vqfx-re has been undefined`
+) }}
+
+
+<p>
+  As a final note, the vQFX has a bunch of interface config (et/xe-0/0/0 - 71) defined. I
+  found that if you delete this config before packaging up the Vagrant box, Vagrant will
+  not be able to SSH to the RE as part of the build process. I could not figure out why so
+  I left the config in the base box. The below config can be used to delete all the interface
+  config on boot with a provisioner.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`wildcard range delete interfaces et-0/0/[0-71]
+wildcard range delete interfaces xe-0/0/[0-71]
+wildcard range delete interfaces xe-0/0/[0-71]:[0-3]`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Juniper vQFX is a community driven project, its great that Juniper is offering virtual
+  flavors of their devices for testing and training purposes. As with the vMX the vQFX requires
+  two VMs but I think its worth the effort to be able to test the Juniper switching features.
+</p>
+
+{% endblock page_content %}

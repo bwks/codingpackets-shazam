@@ -1,0 +1,165 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I am working on a project where I need to push to both a 
+  github and bitbucket repository as the project is stored 
+  in both of these locations. I do not have the ability 
+  to sync between the two using either github or bitbuckets 
+  built in tools. This post goes through the process of 
+  setting up your git environment in order to easily push 
+  to both repository providers.
+</p>
+
+<h3 id="software-used-in-this-post">Software Used in this Post</h3>
+<p>
+  The following software versions where used in this post.
+</p>
+<ul>
+  <li>Ubuntu - 2004</li>
+  <li>git - 2.25.1</li>
+</ul>
+
+<h3 id="credentials">Credentials</h3>
+<p>
+  When authenticating to Github and Bitbucket I have to use 
+  two different authentication methods. For Github I am 
+  using {{ text::emphasize(text="SSH") }}
+ key based 
+  authentication and for Bitbucket I am using 
+  {{ text::emphasize(text="HTTP") }}
+ based authentication.
+</p>
+
+<h4>Github Authentication</h4>
+<p>
+  I wont re-hash the method to use SSH keys for authentication on 
+  github. The process is covered well in
+  {{ link::e(path="https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh", description="this") }}
+  github article.
+</p>
+
+
+<h4>Bitbucket Authentication</h4>
+<p>
+  To make authenticating to Bitbucket more user friendly I will be 
+  using the
+  {{ link::e(path="https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage", description="git credential store") }}.
+  This allows you to store you credentials in your home directory so 
+  that you dont have to enter your username/password each time you 
+  access the repository over HTTP.
+</p>
+
+<p>
+  Use the {{ text::code(text="git config") }}
+ command to enable the 
+  {{ text::emphasize(text="credential store") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="shell",
+  code='git config --global credential.helper store'
+) }}
+
+<h3 id="git-remotes">Git Remotes</h3>
+<p>
+  Enable the required {{ text::emphasize(text="remotes") }}
+ 
+  in the local config. I am first cloning down the repo from Github. 
+  This sets up the Github repo as the 
+  {{ text::emphasize(text="origin") }}
+ remote.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# github
+  
+clone git@github.com git@github.com:&lt;user-name&gt;/&lt;repo-name&gt;.git'
+) }}
+
+<p>
+  Next up add the {{ text::emphasize(text="bitbucket") }}
+ remote.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# bitbucket
+ 
+git remote add bitbucket https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git'
+) }}
+
+<p>
+  Confirm that your remotes are correct.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='git remote -v
+  
+# output
+  
+origin  git@github.com:&lt;user-name&gt;/&lt;repo-name&gt;.git (fetch)
+origin  git@github.com:&lt;user-name&gt;/&lt;repo-name&gt;.git (push)
+bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git (fetch)
+bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git (push)'
+) }}
+
+<p>
+  Enable the the credentials store for the project.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='git config credential.helper store'
+) }}
+
+{{ text::note_block(text='
+  The first time you connect a remote git will ask you for 
+  your credentials. The credentials will be stored in the 
+  $1 file 
+  and the permissions will be set to 0600 so only you have 
+  rw access.')
+  | replace(from="$1", to=text::emphasize(text="~/.git-credentials"))
+}}
+
+<h3 id="git-alias">Git Alias</h3>
+<p>
+  Now for the magic{{ text::emphasize(text="git alias") }}
+ 
+  incantation. Create a git alias named 
+  {{ text::emphasize(text="pushall") }}
+ that will 
+  cycle through the remotes pushing changes to all of them.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="shell",
+  code="git config --global alias.pushall '!git remote | xargs -L1 git push --all'"
+) }}
+
+<p>
+  When you want to push to the remotes you use the {{ text::code(text="git pushall") }}
+ 
+  command and voila! Git will connect to each one pushing the changes to 
+  them.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="shell",
+  code="git pushall"
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I showed you how to push a local git repository 
+  to multiple git service providers using different authentication 
+  methods.
+</p>
+{% endblock page_content %} 

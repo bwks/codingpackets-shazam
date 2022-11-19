@@ -1,0 +1,44 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Functions group operations into a unit of code.
+</p>
+<p>
+  A function is defined with the {{ text::emphasize(text="func") }}
+ keyword
+</p>
+<p>
+  A function name, its parameters and return types make up a functions 
+   {{ text::emphasize(text="signature") }}
+
+</p>
+
+{{ text::code_block(
+  header="go",
+  language="go",
+  code=`// Basic function that accepts no arguments and returns nothing
+func stuff() {
+    // do stuff
+}
+
+// Function that accepts an argument
+func stuff(s string) {
+    // do stuff with 's'
+}
+
+// Function that accepts arguments and returns a string
+func stuffAndThings(s string, t string) string {
+    return s + t
+}
+
+// Function that accepts arguments and returns multiple strings
+func stuffAndThings(s string, t string) (string, string) {
+    // do stuff with s and t.
+    return s, t
+}`
+) }}
+
+{% endblock page_content %}

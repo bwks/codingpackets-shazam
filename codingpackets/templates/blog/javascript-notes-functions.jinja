@@ -1,0 +1,88 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="overview">Overview</h3>
+<ul>
+  <li>Functions allow you to implement repeatable block of code.</li>
+  <li>Functions are first class objects.</li>
+  <li>Functions are called in order to execute the code within the function.</li>
+  <li>Functions have a variable scope that is local to the function itself.</li>
+</ul>
+
+<h3 id="standard-functions">Standard Functions</h3>
+
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Basic function that accepts a parameter
+function functionName(param) {
+  // Do stuff with param
+  // optionally return something
+}
+
+// Typescript version with type hints
+function functionName(param: string) {
+  // Do stuff with param
+  // optionally return something
+}
+
+// Parameters can have default values
+function functionName(param1, param2="blah") {
+  // Do stuff with params
+  // optionally optionally return something
+}
+
+// Typescript version with default values
+function functionName(param1: string, param2: string="blah") {
+  // Do stuff with params
+  // optionally return something
+}
+
+// Call a function
+stuff("things");'
+) }}
+
+<h3 id="anonymous-functions">Anonymous Functions</h3>
+<p>
+  Anonymous functions are just functions without a name. They
+  can optionally be assigned to a variable.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='function(param) {
+  // Do stuff with param;
+  // optionally return something
+}
+
+const functionName = function(param) {
+  // Do stuff with param;
+  // optionally return something
+}'
+) }}
+
+<h3 id="arrow-functions">Arrow Functions</h3>
+<p>
+  Arrow functions are a shorthand syntax for anonymous functions.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='(param) => {
+  // Do stuff with param;
+  // optionally return something
+}
+
+// Assign arrow function to variable
+const functionName = (param) => {
+  // Do stuff with param;
+  // optionally return something
+}
+
+// If an Arrow function has one statement and returns a value
+// it can be written on a single line.
+const functionName = (param) => `Say: ${param}`'
+) }}
+
+{% endblock page_content %}

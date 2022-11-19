@@ -1,0 +1,108 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+  <h3 id="overview">Overview</h3>
+  <p>
+    Trace options are similar to running a debug in other vendors.
+  </p>
+
+  <h3 id="enable-tracing">Enable Tracing</h3>
+  <p>
+    When tracing is enabled the results are stored in
+    a trace file in the
+    {{ text::emphasize(text="/var/log/") }}
+ directory
+    or sent to a remote syslog server.
+  </p>
+  <p>
+    Remote logging is configured under the
+    {{ text::emphasize(text="system > tracing") }}
+
+    configuration hierarchy.
+  </p>
+  <p>
+    The architecture of Junos allow for the enabling of
+    trace options in production without severely impacting
+    a devices operational stability.
+  </p>
+  <p>
+    Tracing can be enabled at various levels of the configuration
+    hierarchy such as the {{ text::emphasize(text="protocols") }}
+
+    and {{ text::emphasize(text="interfaces") }}
+ levels.
+  </p>
+  {{ text::code_block(
+  header="config",
+  language="text",
+  code=`protocols {
+    ospf {
+        traceoptions {
+            file FILE-NAME [OPTIONS].. ;
+            flag FLAG-TYPE ;
+            flag FLAG-TYPE detail ;
+        }
+    }
+}`
+) }}
+
+
+  {{ text::important_block(text='
+      In order to avoid unnecessary resource utilization
+      disable tracing when debugging is complete.
+  ') }}
+
+
+  <h3 id="options">Options</h3>
+  <p>
+    There are a number of option available when enabling tracing as
+    outline below.
+  </p>
+  <ul>
+    <li><b>file</b> - Name of the trace file</li>
+    <li><b>size</b> - Maximum size of the file (default: 128KB)</li>
+    <li><b>files</b> - Number of files to archive (default: 10)</li>
+    <li><b>no-stamp</b> - Do not place timestamp at start of lines in file (default: Timestamp added)</li>
+    <li><b>replace</b> - Overwrite existing file (default: Append to file)</li>
+    <li><b>readable</b> - Allow any user to view file (default: False)</li>
+    <li><b>no-world-readable</b> - Only user who configured the file can view (default)</li>
+  </ul>
+
+
+  <h3 id="view-trace-files">View Trace Files</h3>
+  <p>
+    The {{ text::code(text="show log &lt;FILENAME&gt;") }}
+ command is used to
+    view a tracefile.
+  </p>
+  <p>
+    The {{ text::code(text="monitor start &lt;FILENAME&gt;") }}
+ command starts
+    real-time monitoring of the file.
+  </p>
+  <p>
+    The {{ text::code(text="monitor stop &lt;FILENAME&gt;") }}
+ command stops
+    real-time monitoring of the file.
+  </p>
+  <p>
+    The {{ text::kbd(text="ESC") }}
+ + {{ text::kbd(text="q") }}
+ key combination starts/stops
+    syslog output to the screen.
+  </p>
+
+  <h3 id="cleanup-trace-files">Cleanup Trace Files</h3>
+  <p>
+    The {{ text::code(text="clear log &lt;FILENAME&gt;") }}
+ command is used to
+    delete the contents of a trace file.
+  </p>
+  <p>
+    The {{ text::code(text="file delete &lt;FILENAME&gt;") }}
+ command is used
+    to delete a trace file.
+  </p>
+
+
+{% endblock page_content %}

@@ -1,0 +1,251 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    3 steps to configure OSPFv3.
+  </p>
+
+  <ul>
+    <li>Create a router-id (optional)</li>
+    <li>Assign OSPF neighbor facing interfaces to OSPF area</li>
+    <li>Inject routes into OSPF via passive interfaces</li>
+  </ul>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Create a router-id.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1`
+) }}
+
+
+  <p>
+    Assign OSPF neighbor facing interfaces to OSPF area.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols ospf3 area 0.0.0.0 interface ge-0/0/2.0
+
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/2.0`
+) }}
+
+
+  <p>
+    Inject routes into OSPF via passive interfaces.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols ospf3 area 0.0.0.13 interface ge-0/0/3.0 passive
+
+set protocols ospf3 realm ipv4-unicast area 0.0.0.13 interface ge-0/0/3.0 passive`
+) }}
+
+
+  <h3 id="topology">Topology</h3>
+
+  {{ image::boxed(path="network/topologies/2-router.svg", width="600px") }}
+
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf3 area 0.0.0.13 interface ge-0/0/3.0 passive
+set protocols ospf3 realm ipv4-unicast area 0.0.0.13 interface ge-0/0/3.0 passive`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.2
+set protocols ospf3 area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf3 realm ipv4-unicast area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf3 area 0.0.0.14 interface ge-0/0/4.0 passive
+set protocols ospf3 realm ipv4-unicast area 0.0.0.14 interface ge-0/0/4.0 passive`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+  <p>
+    Show OSPF interfaces.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf3 interface
+
+# output
+
+Interface           State   Area            DR ID           BDR ID          Nbrs
+ge-0/0/2.0          DR      0.0.0.0         10.255.1.1      10.255.1.2         1
+ge-0/0/3.0          DRother 0.0.0.13        0.0.0.0         0.0.0.0            0`
+) }}
+
+
+  <p>
+    Show OSPF neighbors.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf3 neighbor
+
+# output
+
+ID               Interface              State     Pri   Dead
+10.255.1.2       ge-0/0/2.0             Full      128     37
+  Neighbor-address fe80::2ab7:adff:fe8b:8b46`
+) }}
+
+
+  <p>
+    Show OSPF routing table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route protocol ospf3
+
+# output
+
+inet.0: 50 destinations, 50 routes (50 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.24.0/24       *[OSPF3/10] 00:02:54, metric 2
+                    > to 10.1.12.2 via ge-0/0/2.0
+
+inet6.0: 88 destinations, 88 routes (88 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+fd00:10:1:24::/64  *[OSPF3/10] 00:02:54, metric 2
+                    > to fe80::2ab7:adff:fe8b:8b46 via ge-0/0/2.0
+ff02::5/128        *[OSPF3/10] 00:04:06, metric 1
+                      MultiRecv`
+) }}
+
+
+  <p>
+    Show OSPF topology table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf3 route realm ipv4-unicast
+
+# output
+
+Prefix                                       Path  Route      NH   Metric
+                                             Type  Type       Type
+10.255.1.1;0.0.0.1                           Intra Transit    IP   1
+  NH-interface ge-0/0/2.0
+10.255.1.2                                   Intra Area BR    IP   1
+  NH-interface ge-0/0/2.0, NH-addr 10.1.12.2
+10.1.12.0/24                                 Intra Network    IP   1
+  NH-interface ge-0/0/2.0
+10.1.13.0/24                                 Intra Network    IP   1
+  NH-interface ge-0/0/3.0
+10.1.24.0/24                                 Inter Network    IP   2
+  NH-interface ge-0/0/2.0, NH-addr 10.1.12.2
+
+
+show ospf3 route
+
+# output
+
+Prefix                                       Path  Route      NH   Metric
+                                             Type  Type       Type
+10.255.1.1;0.0.0.1                           Intra Transit    IP   1
+  NH-interface ge-0/0/2.0
+10.255.1.2                                   Intra Area BR    IP   1
+  NH-interface ge-0/0/2.0, NH-addr fe80::2ab7:adff:fe8b:8b46
+fd00:10:1:12::/64                            Intra Network    IP   1
+  NH-interface ge-0/0/2.0
+fd00:10:1:13::/64                            Intra Network    IP   1
+  NH-interface ge-0/0/3.0
+fd00:10:1:24::/64                            Inter Network    IP   2
+  NH-interface ge-0/0/2.0, NH-addr fe80::2ab7:adff:fe8b:8b46`
+) }}
+
+
+  <p>
+    show OSPF link state database.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf3 database
+
+# output
+
+    OSPF3 database, Area 0.0.0.0
+ Type       ID               Adv Rtr           Seq         Age  Cksum  Len
+Router     *0.0.0.0          10.255.1.1       0x80000001   352  0xcc17  40
+Router      0.0.0.0          10.255.1.2       0x80000001   353  0xc61c  40
+Network    *0.0.0.1          10.255.1.1       0x80000001   352  0x7072  32
+InterArPfx *0.0.0.1          10.255.1.1       0x80000002   409  0x3e87  36
+InterArPfx  0.0.0.1          10.255.1.2       0x80000002   348  0x6b48  36
+IntraArPfx *0.0.0.2          10.255.1.1       0x80000001   352  0x2960  44
+
+    OSPF3 database, Area 0.0.0.13
+ Type       ID               Adv Rtr           Seq         Age  Cksum  Len
+InterArPfx *0.0.0.1          10.255.1.1       0x80000002   409  0x2c9a  36
+InterArPfx *0.0.0.2          10.255.1.1       0x80000001   342  0x6f44  36
+IntraArPfx *0.0.0.1          10.255.1.1       0x80000001   414  0x4f3b  44
+
+    OSPF3 Link-Local database, interface ge-0/0/2.0 Area 0.0.0.0
+ Type       ID               Adv Rtr           Seq         Age  Cksum  Len
+Link       *0.0.0.1          10.255.1.1       0x80000002   374  0x74d5  56
+Link        0.0.0.1          10.255.1.2       0x80000002   348  0x1895  56`
+) }}
+
+
+  <p>
+    Show OSPF message exchange.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf3 statistics
+
+# output
+
+Packet type             Total                  Last 5 seconds
+                   Sent      Received        Sent      Received
+   Hello            141           118           1             1
+     DbD              3             2           0             0
+   LSReq              1             1           0             0
+LSUpdate              2             3           0             0
+   LSAck              3             2           0             0
+
+DBDs retransmitted     :                    0, last 5 seconds :          0
+LSAs flooded           :                    4, last 5 seconds :          0
+LSAs flooded high-prio :                    0, last 5 seconds :          0
+LSAs retransmitted     :                    0, last 5 seconds :          0
+LSAs transmitted to nbr:                    3, last 5 seconds :          0
+LSAs requested         :                    2, last 5 seconds :          0
+LSAs acknowledged      :                    6, last 5 seconds :          0
+
+Flood queue depth      :               0
+Total rexmit entries   :               0
+db summaries           :               0
+lsreq entries          :               0
+
+Receive errors:
+  None`
+) }}
+
+
+
+{% endblock page_content %}

@@ -1,0 +1,1182 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Juniper vSRX Vagrant Libvirt Box Install</h1>
+  <div class="">
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: 12th of May 2018
+      </p>
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 3rd of December 2017
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will install a Juniper vSRX for use with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+
+  provider. Prior to installing the vSRX there are some required steps to get the KVM host
+  prepped which I will not cover. These steps are covered in the Juniper
+  documentation <a href="https://www.juniper.net/documentation/en_US/vsrx/topics/task/installation/security-vsrx-kvm-server-prep.html">
+  here</a>.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I originally covered this topic in December 2017. I have learned alot of lessons since then
+    and there have been some nice additions to Vagrant to make things a bit more seamless.
+    This post is a revamp of that previous post.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Juniper vSRX</b> - 18.1R1.9</li>
+  <li><b>Vagrant</b> - Vagrant 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+  <li><b>Ubuntu</b> - 1604</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Juniper does not provide a Vagrant Libvirt box, but they do provide a
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ image. You will
+  need to download the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ from the Juniper software
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vsrx#sw" target=_blank>download</a> section.
+</p>
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    You will need either a valid support contract or rights to download this image. Prior to
+    working in my current role I was able to raise a case with Juniper support requesting
+    access to the vSRX image for the purpose of preparing for my new role.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into directory for vSRX files. I like to keep my custom vagrant boxes under
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/</i>
+.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/juniper
+cd ~/vagrant/boxes/juniper</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Copy the qcow2 file downloaded earlier to the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper</i>
+ directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/media-vsrx-vmdisk-15.1X49-D120.3.qcow2 .</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The maintainers of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin have
+  a script that can be used to convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ images to
+  a vagrant box. Download the libvirt conversion script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a bootstrap configuration file named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">juniper.conf</i>
+
+  with following contents that will be applied on boot to the vSRX.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">system {
+    host-name vsrx;
+    root-authentication {
+        encrypted-password "$1$nq.N1UsY$JxA/ESAj3KuXseXE597gg0"; ## SECRET-DATA
+        ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"; ## SECRET-DATA
+    }
+    login {
+        user vagrant {
+            uid 2000;
+            class super-user;
+            authentication {
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"; ## SECRET-DATA
+            }
+        }
+    }
+    services {
+        ssh {
+            root-login allow;
+        }
+        netconf {
+            ssh;
+        }
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any any;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+    license {
+        autoupdate {
+            url https://ae1.juniper.net/junos/key_retrieval;
+        }
+    }
+}
+interfaces {
+    fxp0 {
+        unit 0 {
+            family inet {
+                dhcp;
+            }
+        }
+    }
+}
+security {
+    forwarding-options {
+        family {
+            inet6 {
+                mode packet-based;
+            }
+            mpls {
+                mode packet-based;
+            }
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I am creating this VM in packet-mode. This essentially makes the vSRX a router. To use the vSRX as
+    a firewall omit the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">security > forwarding-options</i> stanza.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Place the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">juniper.conf</i>
+ file in a directory named
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iso_dir</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ls -l iso_dir
+# output
+
+
+total 4
+-rw-rw-r-- 1 bradmin bradmin 2050 Nov 29 23:13 juniper.conf</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create an iso image named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bootstrap.iso</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkisofs -l -o bootstrap.iso iso_dir
+
+# output
+
+I: -input-charset not specified, using utf-8 (detected in locale settings)
+Total translation table size: 0
+Total rockridge attributes bytes: 0
+Total directory bytes: 0
+Path table size(bytes): 10
+Max brk space used 0
+176 extents written (0 MB)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now lets build the vSRX VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vsrx \
+    --os-type linux \
+    --os-variant rhel7 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 4096 \
+    --disk path=junos-media-vsrx-x86-64-vmdisk-18.1R1.9.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=bootstrap.iso,device=cdrom,bus=ide \
+    --boot hd \
+    --network=network:vagrant-libvirt,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  A virtual console will be connected to the VM and you will be able to see the VM boot up.
+  Once the VM is booted login with the username <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+ and
+  password <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Juniper</i>
+ and check the IP address assigned to
+  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">fxp0.0</i>
+ interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vsrx (ttyd0)
+
+login: root
+Password:
+
+--- JUNOS 18.1R1.9 Kernel 64-bit  JNPR-11.0-20180308.0604c57_buil
+root@vsrx%
+root@vsrx% cli
+root@vsrx> show interfaces terse | match fxp0.0
+
+# output
+
+fxp0.0                  up    up   inet     192.168.121.99/24</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  From another host terminal confirm that it is possible to SSH to the VM with the
+  Vagrant <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
+
+ssh vagrant@192.168.121.99 -i ~/.vagrant.d/insecure_private_key
+
+# now logged into guest vsrx
+
+--- JUNOS 18.1R1.9 Kernel 64-bit  JNPR-11.0-20180308.0604c57_buil
+vagrant@vsrx></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  If you can successfully SSH to the vSRX with the Vagrant
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+
+  its time to package the VM into a Vagrant box. First shutdown the VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request system power-off
+
+# output
+
+Power Off the system ? [yes,no] (no) yes
+
+
+*** FINAL System shutdown message from vagrant@vsrx ***
+
+System going down IMMEDIATELY</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<p>
+  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+ file with the following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{"provider":"libvirt","format":"qcow2","virtual_size":16}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Use the previously downloaded <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+ script to
+  make a Vagrant box from the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ image.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh junos-media-vsrx-x86-64-vmdisk-18.1R1.9.qcow2
+
+# output
+
+{16}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 4768798720 (4.5GiB, 24MiB/s)
+==> junos-media-vsrx-x86-64-vmdisk-18.1R1.9.box created
+==> You can now add the box:
+==>   'vagrant box add junos-media-vsrx-x86-64-vmdisk-18.1R1.9.box --name junos-media-vsrx-x86-64-vmdisk-18.1R1.9'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vsrx.json</i>
+ so that the
+  box is added with the correct version number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
+  "name": "juniper/vsrx",
+  "description": "Juniper vSRX",
+  "versions": [
+    {
+      "version": "18.1R1.9-packetmode",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/junos-media-vsrx-x86-64-vmdisk-18.1R1.9.box"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Add the box to Vagrant using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vsrx.json</i>
+ file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vsrx.json
+
+# output
+
+==> box: Loading metadata for box 'vsrx.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vsrx.json
+==> box: Adding box 'juniper/vsrx' (v18.1R1.9-packetmode) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/junos-media-vsrx-x86-64-vmdisk-18.1R1.9.box
+==> box: Successfully added box 'juniper/vsrx' (v18.1R1.9-packetmode) for 'libvirt'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the vsrx box was added successfully.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx   (libvirt, 3.6.0)
+.
+. &lt;snip&gt;
+.
+juniper/vsrx                  (libvirt, 12.1X47-D15.4-packetmode)
+juniper/vsrx                  (libvirt, 12.1X47-D15.4)
+<span class="hljs-string">juniper/vsrx                  (libvirt, 18.1R1.9-packetmode)</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="vagrantfile">Vagrantfile</h3>
+<p>
+  Use this <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+ to test out the new vSRX Vagrant box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+cwd = Dir.pwd.split("/").last
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "rt01" do |node|
+    hostname = "rt01"
+    node.vm.box = "juniper/vsrx"
+    node.vm.box_version = "18.1R1.9-packetmode"
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    # Limit CPU once Box has finished booting.
+    node.trigger.after :up do |trigger|
+      trigger.name = "Finished Message"
+      trigger.info = "Machine is up! : #{cwd}_#{hostname}"
+      trigger.run = {inline: "virsh schedinfo #{cwd}_#{hostname} --set vcpu_quota=33000"}
+    end
+
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 1
+      domain.disk_bus = "ide"
+      domain.cpus = 2
+      domain.memory = 4096
+    end
+
+  end
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    You may get 100% CPU on the host machine, the only way I could get this down without
+    drastically affecting the box performance was to reduce the CPU scheduler access to 33%
+    using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">virsh schedinfo</i>
+ command. I am using a new feature in Vagrant 2.1.0
+    called <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vagrantup.com/docs/triggers/index.html" target=_blank>triggers</a> to execute
+    the required command automatically once the box has booted up.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Lets <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+ and make sure we can connect to the vSRX.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
+
+# output
+
+Bringing machine 'rt01' up with 'libvirt' provider...
+==> rt01: Checking if box 'juniper/vsrx' is up to date...
+==> rt01: Uploading base box image as volume into libvirt storage...
+==> rt01: Creating image (snapshot of base box volume).
+==> rt01: Creating domain with the following settings...
+==> rt01:  -- Name:              vsrx_rt01
+==> rt01:  -- Domain type:       kvm
+==> rt01:  -- Cpus:              2
+==> rt01:
+==> rt01:  -- Feature:           acpi
+==> rt01:  -- Feature:           apic
+==> rt01:  -- Feature:           pae
+==> rt01:  -- Memory:            4096M
+==> rt01:  -- Management MAC:
+==> rt01:  -- Loader:
+==> rt01:  -- Base box:          juniper/vsrx
+==> rt01:  -- Storage pool:      disk1
+==> rt01:  -- Image:             /var/lib/libvirt/images/vsrx_rt01.img (16G)
+==> rt01:  -- Volume Cache:      default
+==> rt01:  -- Kernel:
+==> rt01:  -- Initrd:
+==> rt01:  -- Graphics Type:     vnc
+==> rt01:  -- Graphics Port:     -1
+==> rt01:  -- Graphics IP:       127.0.0.1
+==> rt01:  -- Graphics Password: Not defined
+==> rt01:  -- Video Type:        cirrus
+==> rt01:  -- Video VRAM:        9216
+==> rt01:  -- Sound Type:
+==> rt01:  -- Keymap:            en-us
+==> rt01:  -- TPM Path:
+==> rt01:  -- INPUT:             type=mouse, bus=ps2
+==> rt01: Creating shared folders metadata...
+==> rt01: Starting domain.
+==> rt01: Waiting for domain to get an IP address...
+==> rt01: Waiting for SSH to become available...
+==> rt01: Configuring and enabling network interfaces...
+    rt01: SSH address: 192.168.121.175:22
+    rt01: SSH username: vagrant
+    rt01: SSH auth method: private key
+==> rt01: Running triggers after up ...
+==> rt01: Running trigger: Finished Message...
+==> rt01: Machine is up! : vsrx_rt01
+    rt01: Running local: Inline script
+    rt01: virsh schedinfo vsrx_rt01 --set vcpu_quota=33000
+    rt01: Scheduler      : posix
+    rt01: cpu_shares     : 1024
+    rt01: vcpu_period    : 100000
+    rt01: vcpu_quota     : 33000
+    rt01: emulator_period: 100000
+    rt01: emulator_quota : -1</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now SSH into vSRX.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
+
+vagrant ssh
+
+# now in vSRX shell
+
+Last login: Sat May 12 04:39:58 2018
+--- JUNOS 18.1R1.9 Kernel 64-bit  JNPR-11.0-20180308.0604c57_buil
+vagrant@vsrx> show version
+Hostname: vsrx
+Model: vsrx
+Junos: 18.1R1.9</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now that we are able to connect now lets clean up the box.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
+
+vagrant destroy -f
+
+# output
+
+==> rt01: Removing domain...</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>Remove the original KVM image.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f junos-media-vsrx-x86-64-vmdisk-18.1R1.9.qcow2
+virsh undefine vsrx
+
+# output
+
+Domain vsrx has been undefined</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The vSRX is a staple platform in the Juniper product line. If you made it this far you
+  will have a modern Juniper vSRX Vagrant box configured for use with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ provider. Now it's time to go out
+  and build some Juniper labs.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/vsrx/topics/task/installation/security-vsrx-kvm-server-prep.html" target=_blank>https://www.juniper.net/documentation/en_US/vsrx/topics/task/installation/security-vsrx-kvm-server-prep.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/vsrx/topics/task/multi-task/security-vsrx-with-kvm-installing.html" target=_blank>https://www.juniper.net/documentation/en_US/vsrx/topics/task/multi-task/security-vsrx-with-kvm-installing.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liaat/liaatvirtinstalloptions.htm" target=_blank>https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liaat/liaatvirtinstalloptions.htm</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://superuser.com/questions/1267567/vagrant-with-freebsd-guest-and-windows-10-host-fails-to-connect" target=_blank>https://superuser.com/questions/1267567/vagrant-with-freebsd-guest-and-windows-10-host-fails-to-connect</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vagrantup.com/docs/triggers/index.html" target=_blank>https://www.vagrantup.com/docs/triggers/index.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#vagrant" class="text-xl">vagrant</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#libvirt" class="text-xl">libvirt</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#download">
+            Download
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install">
+            Install
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vagrantfile">
+            Vagrantfile
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

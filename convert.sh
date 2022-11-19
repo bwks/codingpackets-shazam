@@ -1,9 +1,7 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/eve-ng-add-extrahop-appliances.jinja \
-codingpackets/templates/blog/eve-ng-add-palo-alto-panos-10-vm.jinja \
-codingpackets/templates/blog/eve-ng-firefox-and-zoc-terminal.jinja \
+codingpackets/templates/blog/kali-linux-cloud-init-image.jinja \
 "
 
 for FILENAME in $files; do
@@ -22,11 +20,16 @@ for FILENAME in $files; do
 
   sed -i -e 's/nb\.warningBlock(/text::warning_block(text=/g' $FILENAME
 
+  sed -i -e 's/nb\.tipBlock(/text::tip_block(text=/g' $FILENAME
+
   sed -i -e 's/qt\.quoteBlock(/text::quote_block(/g' $FILENAME
 
   sed -i -e 's/bi\.boxedImage(/image::boxed(path=/g' $FILENAME
 
+  sed -i -e 's/libvirt-console-exit.njk/libvirt-console-exit.jinja/g' $FILENAME
+
   sed -i -r -e 's/<span class="hljs-comment">(.*?)<\/span>/\1/g' $FILENAME
+
 
 
   # /<div class="code-block-caption-darkmode text-center">[\r\n\s]+<span class="code-block-title-darkmode">(.*?)<\/span>[\r\n\s]+<\/div>[\r\n\s]+<div class="code-block-left-darkmode">[\r\n\s]+<pre><code class="text hljs">[\r\n\s]+([\S\s]+)<\/code>[\r\n\s]+<\/pre>[\r\n\s]+<\/div>/gm

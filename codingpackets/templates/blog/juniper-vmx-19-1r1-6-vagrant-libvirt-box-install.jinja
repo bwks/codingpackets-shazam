@@ -1,0 +1,1404 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Juniper vMX 19.1R1.6 Vagrant box for use with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider. This post is an update
+  to a previous post
+  {{ link::i(path="/blog/juniper-vmx-vagrant-libvirt-box-install", description="post") }}
+  that covers an earlier version.
+</p>
+<p>
+  Prior to installing the vMX there are some required steps to get the KVM host
+  prepped which I will not cover. These steps are covered in the Juniper documentation
+  <a href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-install-preparing.html">
+    here</a>.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin already installed. You can follow this
+  {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+  to get the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Juniper vMX</b> - 19.1R1.6</li>
+  <li><b>Vagrant</b> - 2.2.4</li>
+  <li><b>vagrant-libvirt</b> - 0.0.45</li>
+</ul>
+
+<h3 id="vmx-overview">vMX Overview</h3>
+<p>
+  The vMX is made up of two VMs, one for control plane and one for the forwarding plane.
+  Although there are two separate VMs, logically they act as a single device. Conceptually
+  a vMX looks like the below diagram.
+</p>
+{{ image::boxed(path="blog/juniper-vmx-vagrant-libvirt-box-installation/vmx.svg", width="400px") }}
+
+
+<p>
+  The first two interfaces from each VM are reserved. The first is for management and the
+  second is used as a communication channel between the two VMs. The VCP only requires
+  two interfaces. The VFP supports an additional 10 interfaces for data plane traffic.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Navigate to the Juniper software
+  {{ link::e(path="https://www.juniper.net/support/downloads/?p=vmx", description="download") }}
+  page and download the {{ text::emphasize(text="kvm") }}
+ image.
+</p>
+
+{{ text::note_block(text='
+    You will likely need either a valid Juniper support contract and/or request access to
+    download the vMX image.
+') }}
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into a directory for vMX files. I like to keep my custom vagrant boxes under
+  {{ text::emphasize(text="~/vagrant/boxes/") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/juniper/vmx
+cd ~/vagrant/boxes/juniper/vmx`
+) }}
+
+
+<p>
+  Copy the {{ text::emphasize(text="vmx-bundle-19.1R1.6.tgz") }}
+ file downloaded
+  earlier to the {{ text::emphasize(text="~/vagrant/boxes/juniper/vmx/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp ~/Downloads/vmx-bundle-19.1R1.6.tgz .`
+) }}
+
+
+<p>
+  Extract the {{ text::emphasize(text="vmx-bundle-19.1R1.6.tgz") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tar -xvf vmx-bundle-19.1R1.6.tgz`
+) }}
+
+
+<p>
+  The vMX requires two VMs. One for the control plane and one for the forwarding plane. Copy
+  the required files from the extracted directory to the
+  {{ text::emphasize(text="~/vagrant/boxes/juniper/vmx/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp vmx/images/junos-vmx-x86-64-19.1R1.6.qcow2 vcp-hda.qcow2
+cp vmx/images/vmxhdd.img vcp-hdb.qcow2
+cp vmx/images/metadata-usb-re.img vcp-hdc.img
+cp vmx/images/vFPC-20190315.img vfp-hda.img`
+) }}
+
+
+<p>
+  Create a network for the link between the two VMs. Create a file called
+  {{ text::emphasize(text="vmx-int") }}
+ with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="xml",
+  code=`&lt;network&gt;
+  &lt;name&gt;vmx-int&lt;/name&gt;
+  &lt;bridge name='vmx-int' stp='on' delay='0'/&gt;
+  &lt;mac address='52:54:00:0c:9f:5c'/&gt;
+&lt;/network&gt;`
+) }}
+
+
+<p>
+  Now add and start the {{ text::emphasize(text="vmx-int") }}
+ network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-define vmx-int.xml
+virsh net-start vmx-int`
+) }}
+
+<p>
+  Open two terminal windows (be sure the navigate to the
+  {{ text::emphasize(text="~/vagrant/boxes/juniper/vmx/") }}
+ directory)
+  and launch both of the vMX vms.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+virt-install \
+    --name vmx-vcp \
+    --memory 1024 \
+    --vcpus=1 \
+    --import \
+    --disk path=vcp-hda.qcow2,size=16,bus=ide,format=qcow2 \
+    --disk path=vcp-hdb.qcow2,size=1,bus=ide,format=qcow2 \
+    --disk path=vcp-hdc.img,size=1,bus=ide,format=raw \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vmx-int,model=virtio \
+    --graphics none`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+virt-install \
+    --name vmx-vfp \
+    --memory 4096 \
+    --vcpus=3 \
+    --import \
+    --disk path=vfp-hda.img,size=16,bus=ide,format=raw \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vmx-int,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --graphics none`
+) }}
+
+
+<p>
+  You will be automatically connected to the virtual console on both VMs.
+</p>
+
+<h4><b>VCP Configuration</b></h4>
+<p>
+  Login to the VCP with the username {{ text::emphasize(text="root") }}
+ there is no
+  password.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+FreeBSD/amd64 (Amnesiac) (ttyu0)
+
+login: root
+
+--- JUNOS 19.1R1.6 Kernel 64-bit  JNPR-11.0-20190305.df99236_buil
+root@:~ #
+root@:~ # cli
+root> configure`
+) }}
+
+
+<p>
+  Paste in the initial bootstrap configuration to allow SSH and set the
+  root password to {{ text::emphasize(text="Juniper") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+delete chassis auto-image-upgrade
+set system services ssh root-login allow
+set system root-authentication plain-text-password
+
+New password: &lt;Juniper&gt;
+Retype new password: &lt;Juniper&gt;
+
+commit and-quit`
+) }}
+
+
+<p>
+  There is a limit to how many characters can be pasted into the terminal over the console so
+  grab the {{ text::emphasize(text="fxp0") }}
+ ip address and SSH to the guest to finish
+  the configuration.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+show interfaces terse | match fxp0.0
+
+fxp0.0                  up    up   inet     192.168.121.151/24`
+) }}
+
+
+<p>From another terminal SSH to the IP and paste in the rest of the bootstrap configuration.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+ssh root@192.168.121.151
+Password: &lt;Juniper&gt;
+Last login: Sat Aug 31 11:17:32 2019 from 192.168.121.1
+--- JUNOS 19.1R1.6 Kernel 64-bit  JNPR-11.0-20190305.df99236_buil
+root@:~ # cli
+root> configure
+Entering configuration mode
+
+[edit]
+root#`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+set system login user vagrant uid 2000
+set system login user vagrant class super-user
+set system login user vagrant authentication encrypted-password "$6$lUoxFIpU$ZiC3/b2UNpGvasntcvkNV4WVDJXBeZ.VqE6yPezbaGOos17vM9BhlTH.LBJb9DZE8fCoBtH0RWNhrbaYpZqxJ/"
+set system login user vagrant authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system root-authentication encrypted-password "$1$nq.N1UsY$JxA/ESAj3KuXseXE597gg0"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system host-name vmx
+set system services ssh root-login allow
+set system services netconf ssh
+commit and-quit`
+) }}
+
+
+<p>
+  Exit out and confirm you can SSH in with the vagrant user and the vagrant
+  {{ text::emphasize(text="insecure_private_key") }}
+ key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+ssh vagrant@192.168.121.151 -i ~/.vagrant.d/insecure_private_key
+--- JUNOS 19.1R1.6 Kernel 64-bit  JNPR-11.0-20190305.df99236_buil
+vagrant@vmx>`
+) }}
+
+
+<p>
+  That's it for the VCP configuration, confirm that the VFP is connected to the VCP. In the
+  output below slot 0 is online indicating the connection the the VFP is good.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+show chassis fpc
+                     Temp  CPU Utilization (%)   CPU Utilization (%)  Memory    Utilization (%)
+Slot State            (C)  Total  Interrupt      1min   5min   15min  DRAM (MB) Heap     Buffer
+  0  Online           Testing  10         0       24     21     12    511        31          0
+  1  Empty
+  2  Empty
+  3  Empty
+  4  Empty
+  5  Empty
+  6  Empty
+  7  Empty
+  8  Empty
+  9  Empty
+ 10  Empty
+ 11  Empty`
+) }}
+
+
+<p>
+  If that's all well and good power off the VCP.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VCP
+
+request system power-off
+
+Power Off the system ? [yes,no] (no) yes`
+) }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<h4><b>VFP Configuration</b></h4>
+<p>
+  Login to the VFP with the username / password {{ text::emphasize(text="root") }}
+ and
+  prepare the VM for use with Vagrant.
+</p>
+<p>
+  First up edit the SSH config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+sed -i  's/PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
+sed -i  's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i  's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+service sshd restart`
+) }}
+
+
+
+<p>
+  Set the root password to {{ text::emphasize(text="Juniper") }}.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+passwd
+New password: &lt;Juniper&gt;
+Retype new password:  &lt;Juniper&gt;`
+) }}
+
+<p>
+  Again due to the character limit when connected to the console grab the
+  {{ text::emphasize(text="ext") }}
+ IP address and SSH to the guest.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+ip addr | grep 192.168.121
+    inet 192.168.121.107/24 brd 192.168.121.255 scope global ext`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+ssh root@192.168.121.107
+root@192.168.121.107s password: &lt;Juniper&gt;
+Last login: Thu Aug 30 13:26:03 2018
+root@localhost:~#`
+) }}
+
+
+<p>
+  The VFP uses the Windriver linux OS and most of the file system is read only. I could not
+  figure out how to add users so I will utilize the root user to login to this host with Vagrant.
+  I also could not write to the {{ text::emphasize(text="/root") }}
+ directory which is
+  the root users default home directory so I will change that to
+  {{ text::emphasize(text="/etc/root") }}
+. I will also utilize the Vagrant
+  {{ text::emphasize(text="insecure_private_key") }}
+ with the root user.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+sed -i  's/root:x:0:0:root:\/root:\/bin\/sh/root:x:0:0:root:\/etc\/root:\/bin\/sh/' /etc/passwd
+mkdir -p /etc/root/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key" >> /etc/root/.ssh/authorized_keys`
+) }}
+
+
+<p>
+  The sshd service is always disabled when the VFP boots. Add a cron task to restart the sshd
+  service every minute. This forces the sshd service to start up a minute after the VFP boots.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+crontab -e
+
+# Add this line
+
+* * * * * /bin/service sshd restart`
+) }}
+
+
+
+{{ text::note_block(text=`
+    When the sshd service restarts if you are connected to the box via SSH you will be
+    disconnected. This is not a big deal as you do not need to connect to the VFP during
+    normal use of Vagrant.
+`) }}
+
+<p>
+  Exit out and confirm you can SSH in with the
+  {{ text::emphasize(text="vagrant") }}
+ user and the vagrant
+  {{ text::emphasize(text="insecure_private_key") }}
+ key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+ssh root@192.168.121.107 -i ~/.vagrant.d/insecure_private_key
+
+Last login: Thu Aug 30 13:29:22 2018 from 192.168.121.1
+root@localhost:~#`
+) }}
+
+
+<p>
+  If you logged in successfully shutdown the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# VFP
+
+/sbin/shutdown -h now`
+) }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<h4><b>VCP Box Creation</b></h4>
+
+<p>
+  The good folks who maintain the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  have a script can be used to convert {{ text::emphasize(text="qcow2") }}
+ images to a
+  vagrant box. Download the libvirt conversion script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh`
+) }}
+
+
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following
+  contents for the VCP box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`echo '{"provider":"libvirt","format":"qcow2","virtual_size":28}' > metadata.json`
+) }}
+
+
+
+{{ text::tip_block(text=`
+      $1 on Linkedin provided me with
+      a great tip regrading the vMX VCP. When the VPC first loads the base chassis MAC address is auto generated
+      as part of the HDA image bootup. If you clone the HDA image after the initial
+      configuration it will have the same base MAC as other vMX's and some things will not work. Luckily, the device
+      configs are stored on HDB. We will therefore make a fresh copy of the HDA disk prior to
+      packaging it with the Vagrant box. This will ensure that each box has a unique base MAC address.
+      Thank you Paul for the excellent tip!
+  `) 
+  | replace(from="$1", to=link::e(path="https://www.linkedin.com/in/paul-bashurin-127b2a10/", description="Paul Bashurin"))
+  }}
+
+  <p>
+    Copy the original HDA disk: {{ text::emphasize(text="junos-vmx-x86-64-19.1R1.6.qcow2") }}
+ overwriting
+    the existing HDA disk.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp vmx/images/junos-vmx-x86-64-19.1R1.6.qcow2 vcp-hda.qcow2`
+) }}
+
+
+<p>
+  Create a VCP vagrant box with the {{ text::emphasize(text="create_box.sh") }}
+ script.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh vcp-hda.qcow2
+
+# output
+
+{28}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> vcp-hda.box created
+==> You can now add the box:
+==>   'vagrant box add vcp-hda.box --name vcp-hda'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="vcp.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`cat << EOF > vcp.json
+{
+  "name": "juniper/vmx-vcp",
+  "description": "Juniper vMX-VCP",
+  "versions": [
+    {
+      "version": "19.1R1.6",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp-hda.box"
+        }
+      ]
+    }
+  ]
+}
+EOF`
+) }}
+
+
+
+<p>
+  Add the VCP box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add vcp.json
+
+# output
+
+==> box: Loading metadata for box 'vcp.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp.json
+==> box: Adding box 'juniper/vmx-vcp' (v19.1R1.6) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp-hda.box
+==> box: Successfully added box 'juniper/vmx-vcp' (v19.1R1.6) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the VCP box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+<span class="hljs-string">juniper/vmx-vcp               (libvirt, 19.1R1.6)</span>`
+) }}
+
+
+<p>
+  The VCP also requires the {{ text::emphasize(text="HDB") }}
+ and
+  {{ text::emphasize(text="HDC") }}
+ drives from the initial VCP build. There is a
+  limitation of the {{ text::emphasize(text="vagrant-libvirt") }}
+ provider where it
+  can only package in one storage volume with the box. Create a directory to store these
+  volumes and they will be copied by Vagrant prior to building a box using the
+  {{ link::e(path="https://www.vagrantup.com/docs/triggers/", description="triggers") }} feature.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir /opt/vagrant/storage
+sudo chmod 0775 /opt/vagrant/storage/
+sudo chown root:libvirtd /opt/vagrant/storage/
+
+mv vcp-hdb.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-19.1R1.6-base.qcow2
+mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img`
+) }}
+
+
+
+<h4><b>VFP Box Creation</b></h4>
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following
+  contents for the VCP box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`echo '{"provider":"libvirt","format":"qcow2","virtual_size":3}' > metadata.json`
+) }}
+
+
+<p>
+  Convert {{ text::emphasize(text="vfp-hda.img") }}
+ to the
+  {{ text::emphasize(text="qcow2") }}
+ format.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qemu-img convert -f raw -O qcow2 vfp-hda.img vfp-hda.qcow2`
+) }}
+
+
+<p>
+  Create a VFP vagrant box with the {{ text::emphasize(text="create_box.sh") }}
+ script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh vfp-hda.qcow2
+
+# output
+
+{3}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 333250560 (318MiB, 17MiB/s)
+==> vfp-hda.box created
+==> You can now add the box:
+==>   'vagrant box add vfp-hda.box --name vfp-hda'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="vfp.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`cat << EOF > vfp.json
+{
+  "name": "juniper/vmx-vfp",
+  "description": "Juniper vMX-VFP",
+  "versions": [
+    {
+      "version": "19.1R1.6",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp-hda.box"
+        }
+      ]
+    }
+  ]
+}
+EOF`
+) }}
+
+
+<p>
+  Add the VFP box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add vfp.json
+
+# output
+
+==> box: Loading metadata for box 'vfp.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp.json
+==> box: Adding box 'juniper/vmx-vfp' (v19.1R1.6) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp-hda.box
+==> box: Successfully added box 'juniper/vmx-vfp' (v19.1R1.6) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the VFP box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 19.1R1.6)
+<span class="hljs-string">juniper/vmx-vfp               (libvirt, 19.1R1.6)</span>`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that the boxes are installed create a {{ text::emphasize(text="Vagrantfile") }}
+
+  and confirm you can build VMs with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/vmx-test && cd ~/vmx-test`
+) }}
+
+
+<p>
+  Add a {{ text::emphasize(text="Vagrantfile") }}
+ to the test directory with the
+  following contents
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Created: 2019-08-31--16-34-00
+
+def get_mac(oui="28:b7:ad")
+  "Generate a MAC address"
+  nic = (1..3).map{"%0.2x"%rand(256)}.join(":")
+  return "#{oui}:#{nic}"
+end
+
+cwd = Dir.pwd.split("/").last
+username = ENV['USER']
+domain_prefix = "#{username}_#{cwd}"
+domain_uuid = "7337619b-ec2c-56c3-a21f-cc95bd57ddf8"
+
+Vagrant.require_version ">= 2.1.0"
+Vagrant.configure("2") do |config|
+
+  config.vm.define "r1" do |node|
+    guest_name = "r1"
+    node.vm.box = "juniper/vmx-vcp"
+    node.vm.box_version = "19.1R1.6"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 1
+      domain.memory = 1024
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 1
+      domain.storage :file, :path => "#{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2", :size => "99155968", :type => "qcow2", :bus => "ide", :device => "hdb", :allow_existing => true
+      domain.storage :file, :path => "#{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img", :size => "10485760", :type => "raw", :bus => "ide", :device => "hdc", :allow_existing => true
+    end
+
+    add_volumes = [
+      "virsh vol-create-as default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 99155968",
+      "sleep 1",
+      "virsh vol-upload --pool default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-19.1R1.6-base.qcow2",
+      "sleep 1",
+      "virsh vol-create-as default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img 10485760",
+      "sleep 1",
+      "virsh vol-upload --pool default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img",
+      "sleep 1"
+    ]
+    add_volumes.each do |i|
+      node.trigger.before :up do |trigger|
+        trigger.name = "add-volumes"
+        trigger.info = "Adding Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    delete_volumes = [
+      "virsh vol-delete #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 default",
+      "virsh vol-delete #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img default"
+    ]
+    delete_volumes.each do |i|
+      node.trigger.after :destroy do |trigger|
+        trigger.name = "remove-volumes"
+        trigger.info = "Removing Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    node.vm.network :private_network,
+      # r1-internal-1 <--> r1-vfp-internal-1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.1",
+      :libvirt__tunnel_local_port => 11001,
+      :libvirt__tunnel_ip => "127.69.69.2",
+      :libvirt__tunnel_port => 11001,
+      :libvirt__iface_name => "r1-internal-1-#{domain_uuid}",
+      auto_config: false
+
+  end
+  config.vm.define "r1-vfp" do |node|
+    guest_name = "r1-vfp"
+    node.vm.box = "juniper/vmx-vfp"
+    node.vm.box_version = "19.1R1.6"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+    node.ssh.username = "root"
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 3
+      domain.memory = 4096
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 11
+    end
+
+
+    node.vm.network :private_network,
+      # r1-vfp-internal-1 <--> r1-internal-1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.2",
+      :libvirt__tunnel_local_port => 11001,
+      :libvirt__tunnel_ip => "127.69.69.1",
+      :libvirt__tunnel_port => 11001,
+      :libvirt__iface_name => "r1-vfp-internal-1-#{domain_uuid}",
+      auto_config: false
+
+    node.vm.network :private_network,
+      # r1-vfp-ge-0/0/0 <--> r2-vfp-ge-0/0/0
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.2",
+      :libvirt__tunnel_local_port => 10000,
+      :libvirt__tunnel_ip => "127.69.69.4",
+      :libvirt__tunnel_port => 10000,
+      :libvirt__iface_name => "r1-vfp-ge-0/0/0-#{domain_uuid}",
+      auto_config: false
+
+  end
+  config.vm.define "r2" do |node|
+    guest_name = "r2"
+    node.vm.box = "juniper/vmx-vcp"
+    node.vm.box_version = "19.1R1.6"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 1
+      domain.memory = 1024
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 1
+      domain.storage :file, :path => "#{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2", :size => "99155968", :type => "qcow2", :bus => "ide", :device => "hdb", :allow_existing => true
+      domain.storage :file, :path => "#{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img", :size => "10485760", :type => "raw", :bus => "ide", :device => "hdc", :allow_existing => true
+    end
+
+    add_volumes = [
+      "virsh vol-create-as default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 99155968",
+      "sleep 1",
+      "virsh vol-upload --pool default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-19.1R1.6-base.qcow2",
+      "sleep 1",
+      "virsh vol-create-as default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img 10485760",
+      "sleep 1",
+      "virsh vol-upload --pool default #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img",
+      "sleep 1"
+    ]
+    add_volumes.each do |i|
+      node.trigger.before :up do |trigger|
+        trigger.name = "add-volumes"
+        trigger.info = "Adding Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    delete_volumes = [
+      "virsh vol-delete #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdb-19.1R1.6-base.qcow2 default",
+      "virsh vol-delete #{domain_prefix}-#{guest_name}-#{domain_uuid}-vmx-vcp-hdc-19.1R1.6-base.img default"
+    ]
+    delete_volumes.each do |i|
+      node.trigger.after :destroy do |trigger|
+        trigger.name = "remove-volumes"
+        trigger.info = "Removing Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    node.vm.network :private_network,
+      # r2-internal-1 <--> r2-vfp-internal-1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.3",
+      :libvirt__tunnel_local_port => 11001,
+      :libvirt__tunnel_ip => "127.69.69.4",
+      :libvirt__tunnel_port => 11001,
+      :libvirt__iface_name => "r2-internal-1-#{domain_uuid}",
+      auto_config: false
+
+  end
+  config.vm.define "r2-vfp" do |node|
+    guest_name = "r2-vfp"
+    node.vm.box = "juniper/vmx-vfp"
+    node.vm.box_version = "19.1R1.6"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+    node.ssh.username = "root"
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 3
+      domain.memory = 4096
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 11
+    end
+
+    node.vm.network :private_network,
+      # r2-vfp-internal-1 <--> r2-internal-1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.4",
+      :libvirt__tunnel_local_port => 11001,
+      :libvirt__tunnel_ip => "127.69.69.3",
+      :libvirt__tunnel_port => 11001,
+      :libvirt__iface_name => "r2-vfp-internal-1-#{domain_uuid}",
+      auto_config: false
+
+    node.vm.network :private_network,
+      # r2-vfp-ge-0/0/0 <--> r1-vfp-ge-0/0/0
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.69.69.4",
+      :libvirt__tunnel_local_port => 10000,
+      :libvirt__tunnel_ip => "127.69.69.2",
+      :libvirt__tunnel_port => 10000,
+      :libvirt__iface_name => "r2-vfp-ge-0/0/0-#{domain_uuid}",
+      auto_config: false
+
+  end
+
+end`
+) }}
+
+<p>
+  The two triggers in the {{ text::emphasize(text="Vagrantfile") }}
+ are used to copy
+  the {{ text::emphasize(text="HDB") }}
+ and {{ text::emphasize(text="HDC") }}
+
+  base storage volumes that are required by the VCP prior to build. They also delete to
+  storage volumes when the VCP is destroyed.
+</p>
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+ and confirm you can login to the VCP.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'r1' up with 'libvirt' provider...
+Bringing machine 'r1-vfp' up with 'libvirt' provider...
+Bringing machine 'r2' up with 'libvirt' provider...
+Bringing machine 'r2-vfp' up with 'libvirt' provider...
+==> r1: Running action triggers before up ...
+==> r1-vfp: Checking if box 'juniper/vmx-vfp' version '19.1R1.6' is up to date...
+==> r2: Running action triggers before up ...
+==> r1: Running trigger: add-volumes...
+==> r2-vfp: Checking if box 'juniper/vmx-vfp' version '19.1R1.6' is up to date...
+==> r2: Running trigger: add-volumes...
+==> r1: Adding Volumes
+==> r2: Adding Volumes
+    r1: Running local: Inline script
+    r1: virsh vol-create-as default bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 99155968
+    r2: Running local: Inline script
+    r2: virsh vol-create-as default bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 99155968
+    r1: Vol bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 created
+    r2: Vol bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 created
+==> r2-vfp: Creating image (snapshot of base box volume).
+==> r1: Running trigger: add-volumes...
+==> r2: Running trigger: add-volumes...
+==> r1-vfp: Creating image (snapshot of base box volume).
+==> r1: Adding Volumes
+==> r2: Adding Volumes
+    r1: Running local: Inline script
+    r1: sleep 1
+    r2: Running local: Inline script
+    r2: sleep 1
+==> r2-vfp: Creating domain with the following settings...
+==> r1-vfp: Creating domain with the following settings...
+==> r1-vfp:  -- Name:              bradmin_vmx-test_r1-vfp
+==> r2-vfp:  -- Name:              bradmin_vmx-test_r2-vfp
+==> r1-vfp:  -- Domain type:       kvm
+==> r2-vfp:  -- Domain type:       kvm
+==> r1-vfp:  -- Cpus:              3
+==> r2-vfp:  -- Cpus:              3
+==> r1-vfp:  -- Feature:           acpi
+==> r2-vfp:  -- Feature:           acpi
+==> r2-vfp:  -- Feature:           apic
+==> r1-vfp:  -- Feature:           apic
+==> r2-vfp:  -- Feature:           pae
+==> r1-vfp:  -- Feature:           pae
+==> r2-vfp:  -- Memory:            4096M
+==> r1-vfp:  -- Memory:            4096M
+==> r1-vfp:  -- Management MAC:
+==> r2-vfp:  -- Management MAC:
+==> r1-vfp:  -- Loader:
+==> r2-vfp:  -- Loader:
+==> r1-vfp:  -- Nvram:
+==> r1-vfp:  -- Base box:          juniper/vmx-vfp
+==> r1-vfp:  -- Storage pool:      default
+==> r2-vfp:  -- Nvram:
+==> r1-vfp:  -- Image:             /var/lib/libvirt/images/bradmin_vmx-test_r1-vfp.img (3G)
+==> r2-vfp:  -- Base box:          juniper/vmx-vfp
+==> r1-vfp:  -- Volume Cache:      default
+==> r2-vfp:  -- Storage pool:      default
+==> r1-vfp:  -- Kernel:
+==> r2-vfp:  -- Image:             /var/lib/libvirt/images/bradmin_vmx-test_r2-vfp.img (3G)
+==> r1-vfp:  -- Initrd:
+==> r2-vfp:  -- Volume Cache:      default
+==> r1-vfp:  -- Graphics Type:     vnc
+==> r1-vfp:  -- Graphics Port:     -1
+==> r2-vfp:  -- Kernel:
+==> r1-vfp:  -- Graphics IP:       127.0.0.1
+==> r2-vfp:  -- Initrd:
+==> r2-vfp:  -- Graphics Type:     vnc
+==> r1-vfp:  -- Graphics Password: Not defined
+==> r1-vfp:  -- Video Type:        cirrus
+==> r1-vfp:  -- Video VRAM:        9216
+==> r2-vfp:  -- Graphics Port:     -1
+==> r1-vfp:  -- Sound Type:
+==> r2-vfp:  -- Graphics IP:       127.0.0.1
+==> r1-vfp:  -- Keymap:            en-us
+==> r1-vfp:  -- TPM Path:
+==> r1-vfp:  -- INPUT:             type=mouse, bus=ps2
+==> r2-vfp:  -- Graphics Password: Not defined
+==> r2-vfp:  -- Video Type:        cirrus
+==> r2-vfp:  -- Video VRAM:        9216
+==> r2-vfp:  -- Sound Type:
+==> r1-vfp: Creating shared folders metadata...
+==> r2-vfp:  -- Keymap:            en-us
+==> r2-vfp:  -- TPM Path:
+==> r1-vfp: Starting domain.
+==> r2-vfp:  -- INPUT:             type=mouse, bus=ps2
+==> r1: Running trigger: add-volumes...
+==> r2: Running trigger: add-volumes...
+==> r1: Adding Volumes
+==> r2: Adding Volumes
+==> r1-vfp: Waiting for domain to get an IP address...
+    r1: Running local: Inline script
+    r1: virsh vol-upload --pool default bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-19.1R1.6-base.qcow2
+    r2: Running local: Inline script
+    r2: virsh vol-upload --pool default bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-19.1R1.6-base.qcow2
+==> r2-vfp: Creating shared folders metadata...
+==> r2-vfp: Starting domain.
+==> r2-vfp: Waiting for domain to get an IP address...
+==> r2: Running trigger: add-volumes...
+==> r2: Adding Volumes
+==> r1: Running trigger: add-volumes...
+==> r1: Adding Volumes
+    r2: Running local: Inline script
+    r2: sleep 1
+    r1: Running local: Inline script
+    r1: sleep 1
+==> r2: Running trigger: add-volumes...
+==> r2: Adding Volumes
+    r2: Running local: Inline script
+    r2: virsh vol-create-as default bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img 10485760
+==> r1: Running trigger: add-volumes...
+==> r1: Adding Volumes
+    r1: Running local: Inline script
+    r1: virsh vol-create-as default bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img 10485760
+    r2: Vol bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img created
+==> r2: Running trigger: add-volumes...
+==> r2: Adding Volumes
+    r2: Running local: Inline script
+    r2: sleep 1
+    r1: Vol bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img created
+==> r1: Running trigger: add-volumes...
+==> r1: Adding Volumes
+    r1: Running local: Inline script
+    r1: sleep 1
+==> r2: Running trigger: add-volumes...
+==> r2: Adding Volumes
+    r2: Running local: Inline script
+    r2: virsh vol-upload --pool default bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img
+==> r1: Running trigger: add-volumes...
+==> r1: Adding Volumes
+    r1: Running local: Inline script
+    r1: virsh vol-upload --pool default bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img
+==> r2: Running trigger: add-volumes...
+==> r2: Adding Volumes
+    r2: Running local: Inline script
+    r2: sleep 1
+==> r1: Running trigger: add-volumes...
+==> r1: Adding Volumes
+    r1: Running local: Inline script
+    r1: sleep 1
+==> r2: Checking if box 'juniper/vmx-vcp' version '19.1R1.6' is up to date...
+==> r1: Checking if box 'juniper/vmx-vcp' version '19.1R1.6' is up to date...
+==> r2: Uploading base box image as volume into libvirt storage...
+==> r1: Creating image (snapshot of base box volume).
+==> r2: Creating image (snapshot of base box volume).
+==> r1: Creating domain with the following settings...
+==> r1:  -- Name:              bradmin_vmx-test_r1
+==> r1:  -- Domain type:       kvm
+==> r1:  -- Cpus:              1
+==> r2: Creating domain with the following settings...
+==> r2:  -- Name:              bradmin_vmx-test_r2
+==> r1:  -- Feature:           acpi
+==> r2:  -- Domain type:       kvm
+==> r1:  -- Feature:           apic
+==> r2:  -- Cpus:              1
+==> r1:  -- Feature:           pae
+==> r2:  -- Feature:           acpi
+==> r1:  -- Memory:            1024M
+==> r1:  -- Management MAC:
+==> r2:  -- Feature:           apic
+==> r2:  -- Feature:           pae
+==> r1:  -- Loader:
+==> r1:  -- Nvram:
+==> r2:  -- Memory:            1024M
+==> r1:  -- Base box:          juniper/vmx-vcp
+==> r2:  -- Management MAC:
+==> r1:  -- Storage pool:      default
+==> r2:  -- Loader:
+==> r1:  -- Image:             /var/lib/libvirt/images/bradmin_vmx-test_r1.img (28G)
+==> r2:  -- Nvram:
+==> r1:  -- Volume Cache:      default
+==> r1:  -- Kernel:
+==> r2:  -- Base box:          juniper/vmx-vcp
+==> r1:  -- Initrd:
+==> r2:  -- Storage pool:      default
+==> r1:  -- Graphics Type:     vnc
+==> r2:  -- Image:             /var/lib/libvirt/images/bradmin_vmx-test_r2.img (28G)
+==> r1:  -- Graphics Port:     -1
+==> r1:  -- Graphics IP:       127.0.0.1
+==> r2:  -- Volume Cache:      default
+==> r2:  -- Kernel:
+==> r1:  -- Graphics Password: Not defined
+==> r2:  -- Initrd:
+==> r1:  -- Video Type:        cirrus
+==> r2:  -- Graphics Type:     vnc
+==> r1:  -- Video VRAM:        9216
+==> r1:  -- Sound Type:
+==> r2:  -- Graphics Port:     -1
+==> r1:  -- Keymap:            en-us
+==> r2:  -- Graphics IP:       127.0.0.1
+==> r1:  -- TPM Path:
+==> r2:  -- Graphics Password: Not defined
+==> r1:  -- Disks:         hdb(qcow2,99155968), hdc(raw,10485760)
+==> r1:  -- Disk(hdb):     /var/lib/libvirt/images/bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 (Remove only manually) Not created - using existed.
+==> r2:  -- Video Type:        cirrus
+==> r1:  -- Disk(hdc):     /var/lib/libvirt/images/bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img (Remove only manually) Not created - using existed.
+==> r2:  -- Video VRAM:        9216
+==> r1:  -- INPUT:             type=mouse, bus=ps2
+==> r2:  -- Sound Type:
+==> r2:  -- Keymap:            en-us
+==> r2:  -- TPM Path:
+==> r2:  -- Disks:         hdb(qcow2,99155968), hdc(raw,10485760)
+==> r2:  -- Disk(hdb):     /var/lib/libvirt/images/bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 (Remove only manually) Not created - using existed.
+==> r2:  -- Disk(hdc):     /var/lib/libvirt/images/bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img (Remove only manually) Not created - using existed.
+==> r1: Creating shared folders metadata...
+==> r2:  -- INPUT:             type=mouse, bus=ps2
+==> r1: Starting domain.
+==> r1: Waiting for domain to get an IP address...
+==> r1-vfp: Waiting for SSH to become available...
+==> r2-vfp: Waiting for SSH to become available...
+==> r2: Creating shared folders metadata...
+==> r2: Starting domain.
+==> r2: Waiting for domain to get an IP address...
+==> r1-vfp: Configuring and enabling network interfaces...
+==> r2-vfp: Configuring and enabling network interfaces...
+==> r1: Waiting for SSH to become available...
+==> r2: Waiting for SSH to become available...
+==> r2: Configuring and enabling network interfaces...
+==> r1: Configuring and enabling network interfaces...`
+) }}
+
+
+<p>
+  Confirm you can login to the VCP box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Host terminal
+
+vagrant ssh r1
+Last login: Sat Aug 31 11:41:52 2019 from 192.168.121.1
+--- JUNOS 19.1R1.6 Kernel 64-bit  JNPR-11.0-20190305.df99236_buil
+vagrant@vmx>
+
+# Now in vagrant box terminal
+
+vagrant@vmx> show version
+Hostname: vmx
+Model: vmx
+Junos: 19.1R1.6
+JUNOS OS Kernel 64-bit  [20190305.df99236_builder_stable_11]
+JUNOS OS libs [20190305.df99236_builder_stable_11]
+JUNOS OS runtime [20190305.df99236_builder_stable_11]
+JUNOS OS time zone information [20190305.df99236_builder_stable_11]
+JUNOS network stack and utilities [20190321.051058_builder_junos_191_r1]
+JUNOS libs [20190321.051058_builder_junos_191_r1]
+JUNOS OS libs compat32 [20190305.df99236_builder_stable_11]
+JUNOS OS 32-bit compatibility [20190305.df99236_builder_stable_11]
+.
+. &lt;snip&gt;
+.
+JUNOS AppId Services [20190321.051058_builder_junos_191_r1]
+JUNOS Services Application Level Gateways [20190321.051058_builder_junos_191_r1]
+JUNOS Services AACL Container package [20190321.051058_builder_junos_191_r1]
+JUNOS Extension Toolkit [20190321.051058_builder_junos_191_r1]
+JUNOS J-Insight [20190321.051058_builder_junos_191_r1]
+JUNOS Online Documentation [20190321.051058_builder_junos_191_r1]
+JUNOS jail runtime [20190305.df99236_builder_stable_11]`
+) }}
+
+{{ text::note_block(text='
+    At this point you can add a trial license if you desire. The trial license can be found
+    $1 and the process for installing it can be found $2.
+') 
+  | replace(from="$1", to=link::e(path="https://www.juniper.net/us/en/dm/free-vmx-trial/E421992502.txt", description="here"))
+  | replace(from="$2", to=link::e(path="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-licenses-managing.html", description="here"))
+}}
+
+<p>
+  We have confirmed we can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> r2-vfp: Removing domain...
+==> r2: Removing domain...
+==> r2: Running action triggers after destroy ...
+==> r2: Running trigger: remove-volumes...
+==> r2: Removing Volumes
+    r2: Running local: Inline script
+    r2: virsh vol-delete bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 default
+    r2: Vol bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 deleted
+==> r2: Running trigger: remove-volumes...
+==> r2: Removing Volumes
+    r2: Running local: Inline script
+    r2: virsh vol-delete bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img default
+    r2: Vol bradmin_vmx-test-r2-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img deleted
+==> r1-vfp: Removing domain...
+==> r1: Removing domain...
+==> r1: Running action triggers after destroy ...
+==> r1: Running trigger: remove-volumes...
+==> r1: Removing Volumes
+    r1: Running local: Inline script
+    r1: virsh vol-delete bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 default
+    r1: Vol bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdb-19.1R1.6-base.qcow2 deleted
+==> r1: Running trigger: remove-volumes...
+==> r1: Removing Volumes
+    r1: Running local: Inline script
+    r1: virsh vol-delete bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img default
+    r1: Vol bradmin_vmx-test-r1-7337619b-ec2c-56c3-a21f-cc95bd57ddf8-vmx-vcp-hdc-19.1R1.6-base.img deleted`
+) }}
+
+
+<p>Remove the original KVM images.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rm -f ~/vagrant/boxes/juniper/vmx/*.{img,qcow2}
+rm -rf ~/vagrant/boxes/juniper/vmx/vmx
+
+# output
+
+virsh undefine vmx-vcp
+Domain vmx-vcp has been undefined
+
+virsh undefine vmx-vfp
+Domain vmx-vfp has been undefined`
+) }}
+
+
+<p>
+  Remove the {{ text::emphasize(text="vmx-int") }}
+ network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-destroy vmx-int
+virsh net-undefine vmx-int`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Juniper vMX is great for use in a lab to test out Juniper related features. They
+  require two VMs but I think that is worth the extra effort to be able to run a vMX for
+  routing based labs instead of vSRX in packet mode.
+</p>
+
+{% endblock page_content %}

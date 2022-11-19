@@ -1,0 +1,244 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">
+    Overview
+  </h3>
+  <p>
+    Juniper protocol-independent routing covers IP routing components
+    such as static routes and the various route tables within Junos
+    that are not particular to any dynamic routing protocol.
+  </p>
+  <h3 id="routing-table">
+    Routing Table
+  </h3>
+  <p>
+    The RE holds a copy of all routes from all
+    protocols in its routing table. The
+    {{ text::emphasize(text="best") }}
+ routes based
+    on the {{ text::emphasize(text="protocol preference") }}
+
+    are declared {{ text::emphasize(text="active") }}
+ and
+    placed in the forwarding table.
+    The forwarding table is shared with the PFE.
+  </p>
+  <h3 id="forwarding-table">
+    Forwarding Table
+  </h3>
+  <p>
+    The PFE stores a local copy of the forwarding table
+    received from the RE containing the
+    {{ text::emphasize(text="best") }}
+ routes to each
+    destination.
+  </p>
+  <p>
+    Both the layer 2 and layer 3 forwarding tables are received
+    from the RE.
+  </p>
+  <h3 id="configured-routes">
+    Configured Routes
+  </h3>
+  <p>
+    Within Junos there are three types of administrator
+    configurable routes.
+  </p>
+  <ul>
+    <li>Static Routes</li>
+    <li>Aggregated Routes</li>
+    <li>Generated Routes</li>
+  </ul>
+
+  <h3 id="static-routes">Static Routes</h3>
+  <p>
+    A static route defines a destination prefix and the
+    next-hop (IP or label) to reach the destination.
+  </p>
+
+  {{ text::important_block(text='
+    For a static route to be present in the routing table the $1'
+    )
+    | replace(from="$1", to=text::emphasize(text="next-hop must be valid."))  
+   }}
+
+  <h3 id="next-hop">
+    Next-Hop
+  </h3>
+  <p>
+    For a route to be present in the routing table, the route must
+    have a valid next-hop. For a next-hop to be valid the router
+    must be able to forward traffic to the next-hop address.
+  </p>
+
+  <h4>Next-Hop Options</h4>
+  <p>
+    There are a number of next-hop options which can be applied to
+    protocol-independent routes outlined in the table below.
+  </p>
+
+{{ table::default(
+  header=["Next-Hop Option", "Description", "Application"],
+  rows=[
+      "<b>Directly Connected IP Address</b> | An adjacent IP address on a physically connected subnet. | Static",
+      "<b>Remote IP Address</b> | A non-adjacent IP address. A recursive looking will be performed to determine the interface leading towards the IP address. | Static",
+      "<b>reject</b> | Assigns the route as a Null route and lookup matching the route are dropped. If packets are dropped due to a rejected route the router will send an ICMP 'Destination Host Unreachable' back to the source. | Static <br>Aggregate",
+      "<b>discard</b> | Same as reject routes except no ICMP messages are sent and the routes are silently dropped. | Static <br> Aggregate",
+      "<b>Qualified Next-Hop</b> | Allows the assignment of multiple next-hop addresses for a prefix. Used with a preference value and equivalent to a floating static routes. | Static",
+      "<b>Label Switched Path (LSP)</b> | Enables the assignment of and MPLS label as a next-hop. Matching route lookups are forwarded with a label value instead of an IP address. | Static",
+  ],
+) }}
+
+
+  <h3 id="route-attributes">
+    Route Attributes
+  </h3>
+  <p>
+    As well as next-hop options, attributes can also be assigned to
+    all locally configured routes. The various attributes are defined
+    in the table below.
+  </p>
+
+{{ table::default(
+  header=["Attribute", "Description"],
+  rows=[
+    "<b>active</b> | Default attribute. Removes a route from the routing table if the next-hop become unavailable.",
+    "<b>passive</b> | Opposite of active, allows a route to stay in the routing table if the next-hop become unavailable.",
+    "<b>install</b> | Default attribute. Installs a usable static route into the PFE.",
+    "<b>no-install</b> | Opposite of the install attribute. A usable static route is not installed into the PFE.",
+    "<b>as-path</b> | Manual assignment of BGP AS path attributes to the route.",
+    "<b>community</b> | Manual assignment of BGP communities to the route.",
+    "<b>metric</b> | Use the determine route preference when multiple next-hops to the same destination exist.",
+    "<b>readvertise</b> | Default attribute. Allows a route to be exported from the routing table and redistributed into another routing protocol.",
+    "<b>no-readvertise</b> | Opposite of advertise. Prevents the route from being exported from the routing table and redistributed into another routing protocol.",
+    "<b>preference</b> | Alters the default preference value of a route.",
+    "<b>no-retain</b> | Default attribute. Route is removed from the forwarding table if the routing process is shutdown.",
+    "<b>retain</b> | Opposite of retain. Route will remain in the forwarding table if the routing process is shutdown.",
+  ],
+) }}
+
+
+
+
+  <h3 id="aggregate-routes">
+    Aggregate Routes
+  </h3>
+  <p>
+    Aggregate routes are used to announce a collection of multiple
+    smaller routes summarized into a single route announcement.
+  </p>
+  <h4>Contributing Routes</h4>
+  <p>
+    For an aggregate route to be present in the routing table at
+    least one of its more specific routes must be present in the
+    routing table. Thus the more specific routes are known as
+    contributing routes.
+  </p>
+  <h4>Primary Contributing Route</h4>
+  <p>
+    The route with the numerically smallest prefix is selected as
+    the primary contributing route. An administrator can influence
+    the selection using routing policy.
+  </p>
+
+  <h3 id="generated-routes">
+    Generated Routes
+  </h3>
+  <p>
+    Generated routes are identical to an aggregate route except
+    that a generated route has an IP address defined for its
+    next-hop and the ability to apply the
+    {{ text::emphasize(text="discard") }}
+ option.
+  </p>
+  <p>
+    Contributing routes must have an IP address for a next-hop
+    or come from a connected P2P interface. Additionally, routes
+    with a next-hop options of either
+    {{ text::emphasize(text="discard") }}
+ or
+    {{ text::emphasize(text="reject") }}
+ cannot contribute.
+  </p>
+
+  <h3 id="martian-routes">
+    Martian Routes
+  </h3>
+  <p>
+    Martian routes are prefixes that should never be publicly
+    routed on the internet. Prefixes that fall into the
+    category of a martian route will not be placed in the
+    routing table. Additionally, martian routes received via
+    routing protocols will be ignored.
+  </p>
+  {{ text::note_block(text='
+    <p>
+      RFC 1918 IP block are excluded from the martian routes
+      filtering policy.
+  ') }}
+
+  <h3 id="routing-tables">
+    Routing Tables
+  </h3>
+  <p>
+    Junos includes a number of different routing tables
+    for various protocols as outlined in the table below.
+  </p>
+
+{{ table::default(
+  header=["Table", "Description"],
+  rows=[
+      "<b>inet.0</b> | IPv4 unicast routes.",
+      "<b>inet.1</b> | IPv4 multicast forwarding cache.",
+      "<b>inet.2</b> | IPv4 unicast routes for the purpose of Reverse Path Forwarding (RPF) check.",
+      "<b>inet.3</b> | MPLS LSP egress IP addresses",
+      "<b>inet.4</b> | Information learned using the multicast source discovery protocol (MSDP).",
+      "<b>inet6.0</b> | IPv6 unicast routes.",
+      "<b>inet6.1</b> | IPv6 multicast forwarding cache.",
+      "<b>mpls.0</b> | Actually a switching table storing MPLS label values.",
+      "<b>bgp.l3vpn.0</b> | Routing information for BGP L3VPNs.",
+      "<b>bgp.l2vpn.0</b> | Routing information for BGP L2VPNs.",
+  ],
+) }}
+
+
+
+
+  <h3 id="routing-preference">
+    Routing Preference
+  </h3>
+  <p>
+    When a prefix is learned by more than one protocol
+    Junos selects the most believable route based on the
+    preference. The lower the preference the more believable
+    the route. The default preferences are listed in the
+    table below.
+  </p>
+
+{{ table::default(
+  header=["Source", "Preference"],
+  rows=[
+      "<b>Direct</b> | 0",
+      "<b>Local</b> | 0",
+      "<b>Static</b> | 5",
+      "<b>RSVP</b> | 7",
+      "<b>LDP</b> | 9",
+      "<b>OSPF Internal</b> | 10",
+      "<b>IS-IS Level 1 Internal</b> | 15",
+      "<b>IS-IS Level 2 Internal</b> | 18",
+      "<b>RIP / RIPNG</b> | 100",
+      "<b>PIM</b> | 105",
+      "<b>Aggregate / Generated</b> | 130",
+      "<b>OSPF External</b> | 150",
+      "<b>IS-IS Level 1 External</b> | 160",
+      "<b>IS-IS Level 2 External</b> | 165",
+      "<b>BGP</b> | 170",
+      "<b>MSDP</b> | 175",
+  ],
+) }}
+
+
+
+{% endblock page_content %}

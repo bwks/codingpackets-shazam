@@ -1,0 +1,231 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    3 steps to configure OSPFv2.
+  </p>
+
+  <ul>
+    <li>Create a router-id (optional)</li>
+    <li>Assign OSPF neighbor facing interfaces to OSPF area</li>
+    <li>Inject routes into OSPF via passive interfaces</li>
+  </ul>
+
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Create a router-id.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1`
+) }}
+
+
+  <p>
+    Assign OSPF neighbor facing interfaces to OSPF area.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols ospf area 0.0.0.0 interface ge-0/0/2.0`
+) }}
+
+
+  <p>
+    Inject routes into OSPF via passive interfaces.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols ospf area 0.0.0.13 interface ge-0/0/3.0 passive
+set protocols ospf area 0.0.0.14 interface ge-0/0/4.0 passive`
+) }}
+
+
+  <h3 id="topology">Topology</h3>
+
+  {{ image::boxed(path="network/topologies/2-router.svg", width="600px") }}
+
+
+  <h4>P1R1</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.1
+set protocols ospf area 0.0.0.0 interface ge-0/0/2.0
+set protocols ospf area 0.0.0.13 interface ge-0/0/3.0 passive
+set protocols ospf area 0.0.0.14 interface ge-0/0/4.0 passive`
+) }}
+
+
+  <h4>P1R2</h4>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set routing-options router-id 10.255.1.2
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+set protocols ospf area 0.0.0.23 interface ge-0/0/3.0 passive
+set protocols ospf area 0.0.0.24 interface ge-0/0/4.0 passive`
+) }}
+
+
+  <h3 id="verification">Verification</h3>
+  <p>
+    Show OSPF interfaces.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf interface
+
+# output
+
+Interface           State   Area            DR ID           BDR ID          Nbrs
+ge-0/0/2.0          BDR     0.0.0.0         10.255.1.2      10.255.1.1         1
+ge-0/0/3.0          DRother 0.0.0.13        0.0.0.0         0.0.0.0            0
+ge-0/0/4.0          DRother 0.0.0.14        0.0.0.0         0.0.0.0            0`
+) }}
+
+
+  <p>
+    Show OSPF neighbors.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf neighbor
+
+# output
+
+Address          Interface              State     ID               Pri  Dead
+10.1.12.2        ge-0/0/2.0             Full      10.255.1.2       128    37`
+) }}
+
+
+  <p>
+    Show OSPF routing table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show route protocol ospf
+
+# output
+
+inet.0: 52 destinations, 52 routes (52 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.23.0/24       *[OSPF/10] 00:03:15, metric 2
+                    > to 10.1.12.2 via ge-0/0/2.0
+10.1.24.0/24       *[OSPF/10] 00:03:15, metric 2
+                    > to 10.1.12.2 via ge-0/0/2.0
+224.0.0.5/32       *[OSPF/10] 00:03:25, metric 1
+                      MultiRecv
+
+inet6.0: 86 destinations, 86 routes (86 active, 0 holddown, 0 hidden)`
+) }}
+
+
+  <p>
+    Show OSPF topology table.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf route
+
+# output
+
+Topology default Route Table:
+
+Prefix             Path  Route      NH       Metric NextHop       Nexthop
+                   Type  Type       Type            Interface     Address/LSP
+10.255.1.2         Intra Area BR    IP            1 ge-0/0/2.0    10.1.12.2
+10.1.12.0/24       Intra Network    IP            1 ge-0/0/2.0
+10.1.13.0/24       Intra Network    IP            1 ge-0/0/3.0
+10.1.14.0/24       Intra Network    IP            1 ge-0/0/4.0
+10.1.23.0/24       Inter Network    IP            2 ge-0/0/2.0    10.1.12.2
+10.1.24.0/24       Inter Network    IP            2 ge-0/0/2.0    10.1.12.2`
+) }}
+
+
+  <p>
+    show OSPF link state database.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf database
+
+# output
+
+    OSPF database, Area 0.0.0.0
+ Type       ID               Adv Rtr           Seq      Age  Opt  Cksum  Len
+Router  *10.255.1.1       10.255.1.1       0x80000002   267  0x22 0xe106  36
+Router   10.255.1.2       10.255.1.2       0x80000003   271  0x22 0xdd06  36
+Network  10.1.12.2        10.255.1.2       0x80000001   272  0x22 0xf703  32
+Summary *10.1.13.0        10.255.1.1       0x80000002   267  0x22 0xc0b   28
+Summary *10.1.14.0        10.255.1.1       0x80000002   267  0x22 0x115   28
+Summary  10.1.23.0        10.255.1.2       0x80000002   311  0x22 0x9774  28
+Summary  10.1.24.0        10.255.1.2       0x80000002   311  0x22 0x8c7e  28
+
+    OSPF database, Area 0.0.0.13
+ Type       ID               Adv Rtr           Seq      Age  Opt  Cksum  Len
+Router  *10.255.1.1       10.255.1.1       0x80000001   272  0x22 0xc23e  36
+Summary *10.1.12.0        10.255.1.1       0x80000003   262  0x22 0x1502  28
+Summary *10.1.14.0        10.255.1.1       0x80000002   267  0x22 0x115   28
+Summary *10.1.23.0        10.255.1.1       0x80000001   262  0x22 0xa963  28
+Summary *10.1.24.0        10.255.1.1       0x80000001   262  0x22 0x9e6d  28
+
+    OSPF database, Area 0.0.0.14
+ Type       ID               Adv Rtr           Seq      Age  Opt  Cksum  Len
+Router  *10.255.1.1       10.255.1.1       0x80000001   272  0x22 0xcb34  36
+Summary *10.1.12.0        10.255.1.1       0x80000003   262  0x22 0x1502  28
+Summary *10.1.13.0        10.255.1.1       0x80000002   267  0x22 0xc0b   28
+Summary *10.1.23.0        10.255.1.1       0x80000001   262  0x22 0xa963  28
+Summary *10.1.24.0        10.255.1.1       0x80000001   262  0x22 0x9e6d  28`
+) }}
+
+
+  <p>
+    Show OSPF message exchange.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ospf statistics
+
+# output
+
+Packet type             Total                  Last 5 seconds
+                   Sent      Received        Sent      Received
+   Hello             43            40           0             0
+     DbD              3             2           0             0
+   LSReq              1             1           0             0
+LSUpdate              2             2           0             0
+   LSAck              2             2           0             0
+
+DBDs retransmitted     :                    0, last 5 seconds :          0
+LSAs flooded           :                    3, last 5 seconds :          0
+LSAs flooded high-prio :                    0, last 5 seconds :          0
+LSAs retransmitted     :                    0, last 5 seconds :          0
+LSAs transmitted to nbr:                    1, last 5 seconds :          0
+LSAs requested         :                    3, last 5 seconds :          0
+LSAs acknowledged      :                    5, last 5 seconds :          0
+
+Flood queue depth      :               0
+Total rexmit entries   :               0
+db summaries           :               0
+lsreq entries          :               0
+
+Receive errors:
+  None`
+) }}
+
+
+
+{% endblock page_content %}

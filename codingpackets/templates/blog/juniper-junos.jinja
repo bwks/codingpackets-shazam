@@ -1,0 +1,145 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Junos is the name of the operating system that is used
+    to manage Juniper network devices. Fun fact Junos is built
+    on a base of FreeBSD and is designed to be modular and secure
+    while providing a uniform user interface across all platforms.
+  </p>
+
+  <h3 id="junos-features">
+    Junos Features
+  </h3>
+  <h4>Common Code Base</h4>
+  <p>
+    The Junos operating system unlike other network vendors
+    use a common code base across multiple product lines
+    such the the MX, QFX, EX and SRX series devices.
+  </p>
+
+  <h4>Modular</h4>
+  <p>
+    Junos OS processes run in their own protected memory space.
+    This prevent an errant process interfering with any other
+    processes.
+  </p>
+
+  <h4>Separate Control/Data Plane</h4>
+  <p>
+    The control and data plane are split into two separate engines.
+    The routing engine (RE) and the packet forwarding engine (PFE)
+    respectively. The RE and the PFE are connected via in 'internal'
+    link where all communication between the two is passed. This
+    architecture enables HA features such as in-service software
+    upgrades (ISSU) and graceful routing engine switchover (GRES)
+  </p>
+
+  <h4>Architecture</h4>
+  {{ image::boxed(path="blog/juniper-junos/junos.svg", width="600px") }}
+
+  <h3 id="routing-engine">
+    Routing Engine
+  </h3>
+  <p>
+    The routing engine is the brains of the operation.
+    The RE maintains the routing, bridging and primary
+    forwarding tables as well as performs all protocol
+    processing. Additionally the RE controls things
+    such as the interfaces and chassis hardware as well
+    as user access via the CLI or J-WEB.
+  </p>
+  <p>
+    The RE holds a copy of all routes from all
+    protocols in its routing table. The
+    {{ text::emphasize(text="best") }}
+ routes are
+    declared {{ text::emphasize(text="active") }}
+ and
+    placed in the forwarding table.
+    The forwarding table is shared with the PFE.
+  </p>
+  <p>
+    The RE also manages the microcode that runs on the PFE.
+    In turn the PFE forwards hardware and environment status
+    information to the RE to action as required.
+  </p>
+
+  <h3 id="packet-forwarding-engine">
+    Packet Forwarding Engine
+  </h3>
+  <p>
+    The Packet Forwarding Engine is responsible for forwarding
+    transit traffic based on a local copy of the forwarding table
+    received from the RE. The PFE usually runs on separate
+    hardware to the RE and generally use ASICs to provide
+    high speed forwarding capabilities. Local copies of the forwarding
+    tables allow the PFE to continue to forward traffic during
+    any control plane instability.
+  </p>
+  <p>
+    Most types of ICMP messages are processed by the PFE for example:
+    ICMP unreachable and TTL expired messages.
+  </p>
+
+  <h3 id="transit-traffic">Transit Traffic</h3>
+  <p>
+    Transit traffic is defined as traffic that traverses the
+    forwarding plane without the need to be punted to the
+    control plane.
+  </p>
+
+  <h3 id="exception-traffic">Exception Traffic</h3>
+  <p>
+    Exception traffic is defined as traffic requiring
+    processing by the control plane. Some examples of
+    such traffic are as follows.
+  </p>
+  <ul>
+    <li>Routing protocol updates</li>
+    <li>Pings</li>
+    <li>Replies to traffic sourced from the RE</li>
+    <li>IP packets with options fields set</li>
+  </ul>
+  <p>
+    Exception traffic is rate limited over the internal
+    link to prevent DoS of the control plane. This
+    default rate limiting is not configurable with
+    preference given to local and control traffic.
+  </p>
+
+  <h3 id="software-versions">Software Versions</h3>
+  <p>
+    Junos software versions have the format
+    {{ text::emphasize(text="M.NZB.S") }}
+. For example,
+    the version {{ text::emphasize(text="17.2R1.13") }}
+
+    mapping is outlined below.
+  </p>
+  <ul>
+    <li><B>M</B> - Major release number (17)</li>
+    <li><B>N</B> - Minor release number (2)</li>
+    <li><B>Z</B> - Type of release (R)</li>
+    <li><B>B</B> - Build number (1)</li>
+    <li><B>S</B> - Spin number (13)</li>
+  </ul>
+
+  <p>
+    Additionally the {{ text::emphasize(text="type") }}
+
+    of release can have the following values
+  </p>
+
+  <ul>
+    <li><b>R<i>x</i></b> - Ship version, 1 for first revenue ship (FRS) 2 onwards are maintenance releases</li>
+    <li><b>B</b> - Beta release</li>
+    <li><b>I</b> - Internal release</li>
+    <li><b>S</b> - Service release to resolve customer issue. Suffixed to the base R<i>x</i> number eg; R1-S4.4</li>
+    <li><b>X</b> - Special exception release</li>
+  </ul>
+
+
+{% endblock page_content %}

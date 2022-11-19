@@ -1,0 +1,142 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ text::emphasize(text="Javascript") }}
+ is a dynamically type language. The types 
+  of variables are evaluated at runtime based on the contents 
+  of the variable.
+</p>
+<p>
+  {{ text::emphasize(text="Typescript") }}
+ is a superset of Javascript which adds static 
+  typing to the language (amongst other things).
+</p>
+<p>
+  There are two kinds of types in Javascript; Primative and Reference.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="Primative") }}
+ - Stored on the stack in the memory location assigned to the variable.</li>
+  <li>{{ text::emphasize(text="Reference") }}
+ - Stored on the heap as a pointer to a location in memory.</li>
+</ul>
+
+<h3 id="primative-types">Primative Types</h3>
+
+<h4>String</h4>
+<p>
+  Strings can be defined with either {{ text::emphasize(text="'single'") }}
+
+  or {{ text::emphasize(text='"double"') }}
+ quotes.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a String
+const name = "Jim Bob";'
+) }}
+
+<h4>Number</h4>
+<p>
+  There is a single number type in Javascript to 
+  represent all numbers (int, float, etc..)
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a Number
+const age = 42;'
+) }}
+
+<h4>Boolean</h4>
+<p>
+  Booleans are {{ text::emphasize(text="true") }}
+ 
+  or {{ text::emphasize(text="false") }}
+ values.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a Boolean
+const smoker = false;'
+) }}
+
+<h4>Null</h4>
+<p>
+  A {{ text::emphasize(text="null") }}
+ value 
+  represents the intentional absence of any object value.
+  {{ text::emphasize(text="null") }}
+ is a 
+  {{ text::emphasize(text="falsey") }}
+ value.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a Null
+const shoes = null;'
+) }}
+
+<h4>Undefined</h4>
+<p>
+  A variable is {{ text::emphasize(text="undefined") }}
+ 
+  when it is declared with no defined value.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a variable with an undefined value
+let pants;'
+) }}
+
+<h4>Symbol</h4>
+<p>
+  Symbols were added to Javascript in ES6. Symbols 
+  represent values that are guaranteed to be unique.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define a symbol
+const shirt = Symbol();'
+) }}
+
+<h3 id="reference-types">Reference Types</h3>
+
+<h4>Array</h4>
+<p>
+  An {{ text::emphasize(text="array") }}
+ is an 
+  indexed list of values.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define an Array
+const stuffAndThings = ["stuff", "things"];'
+) }}
+
+<h4>Object Literal</h4>
+<p>
+  An {{ text::emphasize(text="object") }}
+ is a 
+  hash of key/value pairs.
+</p>
+{{ text::code_block(
+  header="javascript",
+  language="javascript",
+  code='// Define an Object
+const stuffAndThings = {
+  stuff: "stuff",
+  things: "things"
+};'
+) }}
+
+{% endblock page_content %}

@@ -1,0 +1,505 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %} 
+
+<h3 id="intro">Intro</h3>
+<p>
+  I was recently working with a customer to deploy 
+  an ExtraHop Cloud Sensor (EDA) in Google Cloud Platform (GCP)
+  with Terraform. Deploying in the cloud is not as 
+  straight forward as deploying in other virtualized 
+  environments such as VMware. Thankfully, Terraform 
+  helps us complete this process via code so we don't have 
+  to die a slow death by a thousand clicks.
+</p>
+<p>
+  In this post, I will show you how to deploy an EDA 
+  in GCP with Terraform. 
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Terraform - 1.1.7</li>
+  <li>gcloud - 378.0.0</li>
+  <li>ExtraHop Discover Appliance - 8.8.0</li>
+</ul>
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<h4>Terraform and gcloud</h4>
+<p>
+  This post assumes that you already have Terraform and 
+  the gcloud CLI tools installed and setup. For instructions 
+  on how to set these tools up check out 
+  {{ link::i(path="/blog/terraform-google-cloud-platform-setup", description="this") }}
+  post.
+</p>
+
+<h4>EDA Deployment File</h4>
+<p>
+  An EDA deployment file for GCP which can be downloaded 
+  from the 
+    {{ link::e(
+      path="https://customers.extrahop.com/downloads/virtual-appliances", 
+        description="customer portal"
+    ) }}. The deployment file should be saved in the same 
+    location as your {{ text::emphasize(text="main.tf") }}
+ file.
+</p>
+
+<h4>EDA License</h4>
+<p>
+  Not strictly required to deploy the instance, but to 
+  enable the capture interface on the EDA, a license is required.
+</p>
+
+<h3 id="lab-topology">Lab Topology</h3>
+<p>
+  In this post, we will be building the following infrastructure.
+</p>
+{{ image::boxed(path="blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp.png", width="800px") }}
+<p>
+  The following points summarize this above topology.
+</p>
+<ul>
+  <li>There are 2 Virtual Private Clouds (VPC):</li>
+  <ul>
+    <li>{{ text::emphasize(text="mgmt-vpc") }}
+ for the manamgement interface of an EDA.</li>
+    <li>{{ text::emphasize(text="capture-vpc") }}
+ for workloads that have their traffic mirrored to an EDA and the EDA capture interface.</li>
+  </ul>
+  <li>The {{ text::emphasize(text="mgmt-vpc") }}
+ has a single subnet {{ text::emphasize(text="10.0.0.0/24") }}
+.</li>
+  <li>The {{ text::emphasize(text="capture-vpc") }}
+ has 2 subnets:</li>
+  <ul>
+    <li>{{ text::emphasize(text="172.16.0.0/24") }}
+ for the capture target.</li>
+    <li>{{ text::emphasize(text="172.16.1.0/24") }}
+ for workload VMs.</li>
+  </ul>
+  <li>{{ text::emphasize(text="eda01") }}
+ is the ExtraHop sensor that is capturing packets.</li>
+  <li>{{ text::emphasize(text="deb01") }}
+ is a workload VM that has its traffic mirrored to {{ text::emphasize(text="eda01") }}
+.</li>
+  <li>
+    The instance group {{ text::emphasize(text="extrahop-ig") }}
+ is required to group the {{ text::emphasize(text="mgmt-vpc") }}
+ VPC
+    {{ text::emphasize(text="extrahop-mgmt-net") }}
+ subnet and {{ text::emphasize(text="eda01") }}
+ VM together for use as a load balancer backend.
+  </li>
+  <li>A load balancer is required to mirror traffic between VMs in GCP. The load balancer has the following components:</li>
+  <ul>
+    <li>A backend service {{ text::emphasize(text="extrahop-lb-be") }}
+ that's attached to {{ text::emphasize(text="capture-vpc") }}
+ VPC.</li>
+    <li>A backend that's attached to the {{ text::emphasize(text="extrahop-ig") }}
+ instance group.</li>
+    <li>A frontend {{ text::emphasize(text="extrahop-lb-fe") }}
+ that's attached to the {{ text::emphasize(text="extrahop-capture-net") }}
+ subnet.</li>
+  </ul>
+  <li>A traffic mirror policy (denoted by the pink line) is used to mirror traffic from the {{ text::emphasize(text="deb01") }}
+ VM to the load balancer frontend.</li>
+  <li>{{ text::emphasize(text="eda01") }}
+ and {{ text::emphasize(text="deb01") }}
+ have external IP addresses assigned (denoted by the red line) allowing them to access the internet.</li>
+</ul>
+
+<h3 id="terraform-code">Terraform Code</h3>
+<p>
+  For simplicity I have placed all of the code for this post 
+  in the {{ text::emphasize(text="main.tf") }}
+ file. 
+  The code is split into sections denoted by comments ({{ text::emphasize(text="//") }}
+).
+</p>
+<p>
+  If you are following along, you will need to update the 
+  {{ text::emphasize(text="Variables") }}
+ section to 
+  suit your environment.
+</p>
+
+{{ text::code_block(
+  header="main.tf",
+  language="terraform",
+  code='// Variables
+variable "gcp_project" {
+  type    = string
+  default = "&lt;project-name&gt;-&lt;project-id&gt;"
+}
+
+variable "gcp_region" {
+  type    = string
+  default = "australia-southeast1"
+}
+
+variable "gcp_zone" {
+  type    = string
+  default = "australia-southeast1-a"
+}
+
+variable "storage_bucket_name" {
+  type    = string
+  default = "extrahop-&lt;random-id&gt;"
+}
+
+variable "eda_version" {
+  type    = string
+  default = "8.8.0.1450"
+}
+
+variable "my_public_ip" {
+  type    = string
+  default = "&lt;your-public-ip&gt;/32"
+}
+
+// Provider
+provider "google" {
+  project = var.gcp_project
+  region  = var.gcp_region
+  zone    = var.gcp_zone
+}
+
+// Storage Bucket
+resource "google_storage_bucket" "extrahop_bucket" {
+  name          = var.storage_bucket_name
+  location      = var.gcp_region
+  force_destroy = true
+}
+
+resource "google_storage_bucket_object" "eda_image" {
+  name   = "extrahop-eda-gcp-${var.eda_version}.tar.gz"
+  source = "extrahop-eda-gcp-${var.eda_version}.tar.gz"
+  bucket = var.storage_bucket_name
+}
+
+// VPCs
+resource "google_compute_network" "mgmt_vpc" {
+  name                    = "mgmt-vpc"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "extrahop_mgmt_net" {
+  name          = "extrahop-mgmt-net"
+  ip_cidr_range = "10.0.0.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.mgmt_vpc.id
+}
+
+resource "google_compute_network" "capture_vpc" {
+  name                    = "capture-vpc"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "extrahop_capture_net" {
+  name          = "extrahop-capture-net"
+  ip_cidr_range = "172.16.0.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.capture_vpc.id
+}
+
+resource "google_compute_subnetwork" "workloads_net" {
+  name          = "workloads-net"
+  ip_cidr_range = "172.16.1.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.capture_vpc.id
+}
+
+// Firewall Rules
+resource "google_compute_firewall" "allow_me_to_eda" {
+  name      = "allow-me-to-eda"
+  network   = google_compute_network.mgmt_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = [var.my_public_ip]
+}
+resource "google_compute_firewall" "allow_me_to_deb" {
+  name      = "allow-me-to-deb"
+  network   = google_compute_network.capture_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = [var.my_public_ip]
+}
+resource "google_compute_firewall" "allow_workload_to_capture_in" {
+  name      = "allow-workload-to-capture-in"
+  network   = google_compute_network.capture_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = ["172.16.1.0/24"]
+}
+
+// eda01
+resource "google_compute_instance" "eda01" {
+  name         = "eda01"
+  machine_type = "e2-medium"
+  zone         = var.gcp_zone
+  boot_disk {
+    source = google_compute_disk.eda01_datastore.self_link
+  }
+  attached_disk {
+    source = google_compute_disk.eda01_pcap.self_link
+  }
+  network_interface {
+    network    = google_compute_network.mgmt_vpc.name
+    subnetwork = google_compute_subnetwork.extrahop_mgmt_net.name
+    access_config {
+      network_tier = "STANDARD"
+    }
+  }
+  network_interface {
+    network    = google_compute_network.capture_vpc.name
+    subnetwork = google_compute_subnetwork.extrahop_capture_net.name
+  }
+}
+
+resource "google_compute_instance_group" "extrahop_ig" {
+  name    = "extrahop-ig"
+  zone    = var.gcp_zone
+  network = google_compute_network.mgmt_vpc.id
+  instances = [
+    google_compute_instance.eda01.self_link,
+  ]
+}
+
+// deb01
+resource "google_compute_instance" "deb01" {
+  name         = "deb01"
+  machine_type = "e2-medium"
+  zone         = var.gcp_zone
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+  network_interface {
+    network    = google_compute_network.capture_vpc.name
+    subnetwork = google_compute_subnetwork.workloads_net.name
+    access_config {
+      network_tier = "STANDARD"
+    }
+  }
+}
+
+// Load balancer
+resource "google_compute_health_check" "extrahop_hc" {
+  name               = "extrahop-hc"
+  check_interval_sec = 15
+  timeout_sec        = 5
+  tcp_health_check {
+    port = "443"
+  }
+}
+
+resource "google_compute_region_backend_service" "extrahop_lb_be" {
+  name          = "extrahop-lb-be"
+  region        = var.gcp_region
+  protocol      = "UDP"
+  network       = google_compute_network.capture_vpc.self_link
+  health_checks = [google_compute_health_check.extrahop_hc.id]
+  backend {
+    group = google_compute_instance_group.extrahop_ig.self_link
+  }
+}
+
+resource "google_compute_forwarding_rule" "extrahop_lb_fe" {
+  name   = "extrahop-lb-fe"
+  region = var.gcp_region
+  load_balancing_scheme  = "INTERNAL"
+  backend_service        = google_compute_region_backend_service.extrahop_lb_be.id
+  ip_protocol            = "UDP"
+  all_ports              = true
+  network                = google_compute_network.capture_vpc.name
+  subnetwork             = google_compute_subnetwork.extrahop_capture_net.name
+  is_mirroring_collector = true
+}
+
+// Traffic Mirror
+resource "google_compute_packet_mirroring" "extrahop_pm" {
+  name   = "extrahop-pm"
+  region = var.gcp_region
+  network {
+    url = google_compute_network.capture_vpc.self_link
+  }
+  collector_ilb {
+    url = google_compute_forwarding_rule.extrahop_lb_fe.self_link
+  }
+  mirrored_resources {
+    subnetworks {
+      url = google_compute_subnetwork.workloads_net.self_link
+    }
+  }
+  filter {
+    cidr_ranges  = []
+    direction    = "BOTH"
+    ip_protocols = []
+  }
+}'
+) }}
+
+{{ text::note_block(text='
+  For this lab I am NOT using the recommended image size for
+  an EDA in GCP. The recommended size is an 
+  $1.
+') 
+  | replace(from="$1", to=text::emphasize(text="n1-standard-4 (4 vCPU, 15 GB memory)"))
+}}
+
+<h3 id="build">Build</h3>
+<p>
+  Now, building the environment is a simple as running the 
+  {{ text::code(text="terraform apply") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='terraform apply -auto-approve
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+.
+. output omitted
+.
+Apply complete! Resources: 20 added, 0 changed, 0 destroyed.'
+) }}
+
+<h3 id="post-deployment">Post Deployment</h3>
+<p>
+  Once the deployment is complete, there are a couple of manual tasks required 
+  to enable the EDA to capture traffic.
+</p>
+<h4>Apply License</h4>
+<p>
+  For an EDA to enable its capture interface a license must be 
+  applied. A license can be purchased from your ExtraHop account team.
+</p>
+
+<h4>Capture Settings</h4>
+<p>
+  The default discovery mode for an EDA is 
+  {{ text::emphasize(text="Layer 2") }}
+ discovery, which discovers 
+  devices in its broadcast domain. There is no broadcast domain in a VPC. 
+  Therefore, we need to enable {{ text::emphasize(text="Layer 3") }}
+ 
+  discovery and, define the subnets that contain devices we want to track 
+  as an asset. 
+</p>
+<p>
+  To change the device discovery mode and set the remote networks (subnets), 
+  navigate to:
+</p>
+
+{{ text::breadcrumbs(items=[
+"System Settings ($1)",
+"All Administration",
+"Capture",
+"Device Discovery",
+]) 
+| replace(from="$1", to='<i class="fas fa-cog"></i>')
+}}
+
+
+<p>
+  To enable L3 discovery, under the {{ text::emphasize(text="Local Device Discovery") }}
+ 
+  section, tick the {{ text::emphasize(text="Enable local device discovery") }}
+ 
+  checkbox.
+</p>
+<p>
+  To configure remote networks, under the {{ text::emphasize(text="Remote Device Discovery") }}
+ 
+  section, enter the desired prefixes. We will add 
+  {{ text::emphasize(text="172.16.1.0/24") }}
+ from our 
+  {{ text::emphasize(text="workloads-net") }}
+ subnet.
+</p>
+<p>
+  Once layer 3 discovery is enabled and the config is saved, restart the 
+  capture service. To restart the capture, naviage to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>System Settings (<i class="fas fa-cog"></i>)</li>
+    <li>All Administration</li>
+    <li>Shutdown or Restart</li>
+  </ul>
+</div>
+<p>
+  Now click the {{ text::emphasize(text="Restart") }}
+ action 
+  for the {{ text::emphasize(text="Capture Status") }}
+ item.
+</p>
+
+<h3 id="verification">Verification</h3>
+<p>
+  Lets confirm that the {{ text::emphasize(text="eda01") }}
+ can see 
+  {{ text::emphasize(text="deb01") }}
+ in its data feed.
+</p>
+<p>
+  {{ text::emphasize(text="deb01") }}
+ received the IP address 
+  {{ text::emphasize(text="172.16.1.2") }}
+ via DHCP. In the UI search 
+  bar on the top right, search for the IP {{ text::emphasize(text="172.16.1.2") }}
+.
+  Clicking into the result takes you to the asset page.
+</p>
+{{ image::boxed(path="blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp-device.png", width="800px") }}
+
+<p>
+  We can see that {{ text::emphasize(text="172.16.1.2") }}
+ is discovered 
+  as a remote device and is having its traffic analized.
+</p>
+
+<h3 id="clean-up">Clean Up</h3>
+<p>
+  Don't forget to run {{ text::code(text="terraform destroy") }}
+ to clean up all the 
+  infrastructure and save yourself some {{ text::emphasize(text="$DOLLARS") }}
+.
+</p>
+
+<h3 id="cost">Cost</h3>
+<p>
+  I was working no this post on and off for 2 days. I destroyed the infrastructure when 
+  I wasn't working on it to keep the costs down. All up, it cost $1.61 AUD to build 
+  and test this lab while also writing this blog post.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to deploy an ExtraHop Discover Appliance 
+  on Google Cloud Platform using Terraform. This was a pretty fun one for 
+  me, thank you for joining me on this journey.
+</p>
+<p>
+  If this post was of interest, look out for a future post, where I will 
+  add Google Big Query as a record store in order to save detailed transaction data 
+  that can be queried from the EDA.
+</p>
+{% endblock page_content %}

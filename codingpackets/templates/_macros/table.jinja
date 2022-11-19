@@ -65,9 +65,24 @@
   </div>
   <div class="">
     {% for reference in references %}
-      <span id="references-{{ loop.index }}" class="pr-2">{{ loop.index }}</span> <span>{{ reference }}</span>
+      <span id="references-{{ loop.index }}" class="pr-2">{{ loop.index }})</span> <span>{{ reference }}</span><br>
     {% endfor %}
   </div>
 </div>
 <!-- TABLE REFERENCES END -->
+{% endmacro %}
+
+{% macro bibliography(bibliography) %}
+<!-- TABLE BIBLIOGRAPHY START -->
+<div id="bibliography" class="pb-2">
+  <div class="">
+    <h3>Bibliography</h3>
+  </div>
+  <div class="">
+    {% for bib in bibliography %}
+      <span id="bibliography-{{ loop.index }}" class="pr-2">{{ loop.index }})</span> <span>{{ bib }}</span><br>
+    {% endfor %}
+  </div>
+</div>
+<!-- TABLE BIBLIOGRAPHY END -->
 {% endmacro %}

@@ -1,0 +1,606 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  The Juniper operating system is known as Junos. The Juniper CLI is an application that is
+  used to manage, monitor and configure Juniper devices. The CLI is full of great features
+  to make managing them easier. This is a quick reference guide and not an exhaustive list
+  of features. Seek the links section at the bottom of the post for more detailed references.
+</p>
+
+<h3 id="cli-modes">CLI Modes</h3>
+<p>
+  Junos has a number of CLI modes which can be identified by the current prompt.
+</p>
+
+<h4><b>Operational Mode</b></h4>
+<p>
+  Operational mode provides commands to monitor, manage and maintain Juniper devices.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vsrx>`
+) }}
+
+
+<h4><b>Configuration Mode</b></h4>
+<p>
+  Device configuration
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vsrx#`
+) }}
+
+
+<h4><b>Unix Shell</b></h4>
+<p>
+  Junos is built on top of BSD and the unix shell is available.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`root@vsrx%`
+) }}
+
+
+
+<p>
+  Junos commands are case sensitive.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show version # valid command
+
+Show VERSION # not a valid command`
+) }}
+
+
+<h3 id="getting-help">Getting Help</h3>
+<p>
+  Junos has a number of on board help options.
+</p>
+
+<h4><b>Question Mark</b></h4>
+<p>Question mark {{ text::kbd(text="?") }}
+ provides context sensitive Help</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sh?
+show ?`
+) }}
+
+
+<h4><b>Tab Completion</b></h4>
+<p>
+  the {{ text::kbd(text="Tab") }}
+ key completes keywords or shows possible completions for ambiguous commands.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vsrx> s &lt;Tab&gt;
+               ^
+'s' is ambiguous.
+Possible completions:
+  save                 Save information to file
+  set                  Set CLI properties, date/time, craft interface message
+  show                 Show system information
+  ssh                  Start secure shell on another host
+  start                Start shell`
+) }}
+
+
+<h4><b>Space Completion</b></h4>
+<p>
+  By default the {{ text::kbd(text="Space") }}
+ key auto-completes commands in a similar way to
+  Tab completion. This behaviour can be set as follows.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set cli complete-on-space (off | on)`
+) }}
+
+
+<h4><b>Onboard Documentation</b></h4>
+<p>
+  Junos also has built in documentation.
+</p>
+<p>
+  The {{ text::code(text="help reference") }}
+ commands provide documentation similar to Unix MAN pages.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`help reference ospf area`
+) }}
+
+
+<p>
+  The {{ text::code(text="help apropos") }}
+ is used to search all keywords in the documentation or
+  command descriptions.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`help apropos users # show all commands with 'users' statements or 'users' in the description`
+) }}
+
+
+<h3 id="displaying-output">Displaying Output</h3>
+<p>
+  There are a number of ways to alter the output of Junos commands
+</p>
+<h4><b>Pipe Operator</b></h4>
+<p>
+  The Pipe {{ text::kbd(text="|") }}
+ operator can be used to filter command outputs. Filters can also be
+  chained together.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show config | display set | match security`
+) }}
+
+
+<h3 id="working-with-files">Working With Files</h3>
+<p>
+  The {{ text::code(text="file") }}
+ command is used to manage files.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`file show &lt;location&gt;`
+) }}
+
+
+<h4><b>Copying Files</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`file copy /source-url/filename /destination/filename
+
+file copy test.txt ftp://blah:blah@blah.com/some/directory/filename`
+) }}
+
+
+<h3 id="daemons">Daemons</h3>
+<p>
+  Processes in Junos run in protected memory space called Daemons. Its possible to restart a
+  misbehaving or failed process such as {{ text::emphasize(text="lldp") }}
+. Processors
+  are restarted from operational mode with the {{ text::code(text="restart") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`restart lldpd-service &lt;gracefully|immediately|soft&gt;`
+) }}
+
+
+<h3 id="requesting-things">Requesting Things</h3>
+<p>
+  The {{ text::code(text="request") }}
+ command is used to restart modules or the device, upgrade
+  software, cleanup storage, etc...
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request system software add &lt;package-name&gt;
+request system reboot`
+) }}
+
+
+<h3 id="logs">Logs</h3>
+<p>
+  Log files are stored in the {{ text::emphasize(text="/var/log/") }}
+ folder. Logs can
+  be viewed with the {{ text::code(text="show log") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show log messages`
+) }}
+
+<p>
+  The log files can be very long, view the last {{ text::emphasize(text="<i>N</i>") }}
+
+  number of messages by {{ text::emphasize(text="'|'") }}
+ piping to
+  {{ text::emphasize(text="last &lt;number of messages&gt;") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show log messages | last 10`
+) }}
+
+
+
+<h3 id="configuration-mode">Configuration Mode</h3>
+<p>Junos has 3 configuration modes</p>
+<h4><b>Standard Mode</b></h4>
+<ul>
+  <li>All users share the same candidate configuration.</li>
+  <li>Entered with the {{ text::code(text="configure") }}
+ or {{ text::code(text="edit") }}
+ commands.</li>
+  <li>Non committed changes are preserved on exit of configuration mode.</li>
+</ul>
+
+<h4><b>Exclusive Mode</b></h4>
+<ul>
+  <li>Creates and exclusive lock on the candidate configuration
+    and no other users can edit it.</li>
+  <li>Entered with the {{ text::code(text="configure exclusive") }}
+ command.</li>
+  <li>Non committed changes are discarded on exit.</li>
+</ul>
+
+<h4><b>Private Mode</b></h4>
+<ul>
+  <li>Creates a private candidate configuration space where the
+    changes are only visible to the user.</li>
+  <li>Entered with the {{ text::code(text="configure private") }}
+ command.</li>
+  <li>Only the changes in the private config are applied avoiding
+    conflicts withing any other users that are editing the config.</li>
+  <li>Non committed changes are discarded on exit.</li>
+</ul>
+
+{{ text::note_block(text='
+    Best practice is to use either the configure exclusive or private
+    modes for editing the configuration.
+') }}
+
+<h4><b>Configuration Syntax</b></h4>
+<p>
+  There are two types of configuration syntax: Set and Stanza
+</p>
+
+<h4><b>Set Syntax</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set protocols lldp interface all`
+) }}
+
+
+<h4><b>Stanza Syntax</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`protocols {
+    lldp {
+        interface all;
+    }
+}`
+) }}
+
+
+<p>
+  Set commands can be pasted directly into configuration mode.
+</p>
+<p>
+  Stanza syntax needs to be entered using the {{ text::code(text="load") }}
+
+  command. There are different methods of loading a stanza config.
+</p>
+<ul>
+  <li><b>merge</b> Merge contents with existing configuration</li>
+  <li><b>override</b> Override existing configuration</li>
+  <li><b>patch</b> Load patch file into configuration</li>
+  <li><b>replace</b> Replace configuration data</li>
+  <li><b>update</b> Update existing configuration</li>
+</ul>
+
+<h4><b>Navigating The Config Hierarchy</b></h4>
+<p>
+  When you first enter configuration mode you are at the {{ text::emphasize(text="top") }}
+
+  of the configuration hierarchy.
+</p>
+<p>
+  The prompt identifies which level of the hierarchy you are currently at.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`[edit] # top of configuration hierarchy
+
+vagrant@vsrx# edit interfaces ge-0/0/2
+
+[edit interfaces ge-0/0/2] # interfaces > ge-0/0/2 configuration
+
+vagrant@vsrx#`
+) }}
+
+
+<p>
+  Move {{ text::emphasize(text="up") }}
+ one level with the {{ text::code(text="up") }}
+ command.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`[edit interfaces ge-0/0/2] # interfaces > ge-0/0/2 configuration level
+
+vagrant@vsrx# up
+
+[edit interfaces] # interfaces configuration level
+
+vagrant@vsrx#`
+) }}
+
+
+<p>
+  Move back to the {{ text::emphasize(text="top") }}
+ with the {{ text::code(text="top") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`[edit interfaces ge-0/0/2] # interfaces > ge-0/0/2 configuration level
+
+vagrant@vsrx# top
+
+[edit] # top configuration level
+
+vagrant@vsrx#`
+) }}
+
+
+<h4><b>Candidate Configuration</b></h4>
+<p>
+  Changes made to the configuration are placed in a {{ text::emphasize(text="staging") }}
+
+  area called a {{ text::emphasize(text="candidate") }}
+ configuration. Changes need
+  to be {{ text::emphasize(text="committed") }}
+ to the running configuration before they
+  take effect.
+</p>
+
+<h4><b>Checking Configuration</b></h4>
+<p>
+  Junos has a built in syntax and configuration validator. Use the {{ text::code(text="commit check") }}
+
+  command to validate all required commands are present and the syntax is correct.
+</p>
+<p>
+  The {{ text::code(text="show | compare") }}
+ command will output a unix style diff outlining the changes
+  that will be made to the running config if the candidate config is applied.
+</p>
+
+<h4><b>Applying Configuration</b></h4>
+<p>
+  Candidate configuration is applied to the running config with the {{ text::code(text="commit") }}
+ command.
+</p>
+<p>
+  An automatic rollback timer can be enabled using the
+  {{ text::code(text="commit confirmed &lt;time-in-minutes&gt;") }}
+ command. If the change is not confirmed
+  within the time limit the config will be automatically rolled back to the previous config
+  revision. This is very handy when applying changes on remote devices.
+</p>
+<p>
+  Comments can also be added to a commit using the {{ text::code(text="commit comment") }}
+ command.
+</p>
+
+
+{{ text::note_block(text='
+  Best practice is the perform a $1
+  and $2 prior to committing a candidate config to the running config.
+') 
+  | replace(from="$1", to=text::code(text="show | compare"))
+  | replace(from="$1", to=text::code(text="commit check"))
+}}
+
+<p>
+  Config can be committed at a designated time using the
+  {{ text::code(text="commit at &lt;time&gt;") }}
+ command which is usefull for
+  syncronizing commits.
+</p>
+
+<h4><b>Configuration Rollback</b></h4>
+<p>
+  The {{ text::code(text="rollback") }}
+ command can be used to discard the current candidate config.
+</p>
+<p>
+  By default the last 50 configuration changes are stored on box. The <code>show system
+  commit</code>
+
+
+
+ command can be used to view them.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vsrx> show system commit
+0   2018-04-09 11:05:11 UTC by root via cli
+1   2018-04-09 11:01:21 UTC by root via cli
+2   2015-03-27 06:16:06 UTC by root via cli
+3   2015-03-27 06:11:54 UTC by root via other`
+) }}
+
+<p>
+  Rollback to a previous version of config with the {{ text::code(text="rollback &lt;revision-number&gt;") }}
+
+  command. When rolling back to a previous configuration, it becomes the current candidate
+  configuration and needs to be committed to be applied to the running configuration.
+</p>
+
+{{ text::note_block(text='
+    Configuration revision $1 is the current running config.
+') 
+| replace(from="$1", to=text::code(text="0"))
+}}
+
+<h4><b>Rescue Config</b></h4>
+<p>
+  If the active config gets corrupted for some reason a file named <span class="emphasize-text-darkmode">
+          rescue.gz</span>
+
+
+
+ in the {{ text::emphasize(text="/config/") }}
+ directory will be loaded.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@vsrx> file copy /config/juniper.conf.gz /config/rescue.gz`
+) }}
+
+
+{{ text::note_block(text='
+    Best practice is to keep a known good config as the rescue config.
+') }}
+
+<h4><b>Delete Config</b></h4>
+<p>
+  The {{ text::code(text="delete") }}
+ command can be used to remove a section of config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`delete interfaces ge-0/0/0`
+) }}
+
+
+<h4><b>Deactivate Config</b></h4>
+<p>
+  The {{ text::code(text="deactivate") }}
+ command disable a section of config
+  rather than delete it.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`deactivate interfaces ge-0/0/0`
+) }}
+
+<h4><b>Copying Config</b></h4>
+<p>
+  The {{ text::code(text="copy") }}
+ command can be used to copy a section of config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`copy interfaces ge-0/0/0 to ge-0/0/1`
+) }}
+
+
+<h4><b>Rename Config</b></h4>
+<p>
+  The {{ text::code(text="rename") }}
+ command can be used to change a section of config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rename interfaces ge-0/0/0 to ge-0/0/1`
+) }}
+
+
+<h4><b>Insert Config</b></h4>
+<p>
+  The {{ text::code(text="insert") }}
+ command can be used to move a section of config
+  to another place in the hierarchy.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`insert term four before term two`
+) }}
+
+
+<h4><b>Replace Config</b></h4>
+<p>
+  The {{ text::code(text="replace") }}
+ command can be used to override a pattern
+  in the config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`replace pattern ge-0/0/0 with ge-0/0/1`
+) }}
+
+
+
+<h4><b>Configuration Comments</b></h4>
+<p>
+  The {{ text::code(text="annotate") }}
+ command can be used to add comments to the running configuration.
+</p>
+
+
+<h4><b>Configuration Groups</b></h4>
+<p>
+  Configuration groups allow you to apply common configurations to many places. For example
+  access port share many common config elements, a config group can be used to apply the
+  common elements to all access ports.
+</p>
+<p>
+  Where a group is applied in the configuration hierarchy matters, for example.
+</p>
+<ul>
+  <li>{{ text::code(text="set apply-group SOME-GROUP") }}
+ applies to the entire config.</li>
+  <li>{{ text::code(text="set interfaces apply-group SOME-GROUP") }}
+ applies to the interfaces hierarchy.</li>
+</ul>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`set groups SOME-GROUP some-configuration
+set some-config-hierarchy SOME-GROUP`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Junos is a very well thought out and operator friendly CLI. It has great features to make working with the CLI
+  not so much of a chore as some other network products. Juniper also has a couple of great Day One books
+  dedicated to operating the Juniper CLI which are well worth reading (and free) check out the links below to
+  find them.
+</p>
+
+{% endblock page_content %}

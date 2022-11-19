@@ -1,0 +1,290 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Junos routing policy allows an administrator to alter the
+    default behaviour of a routing protocol. All routing protocols
+    try to determine the best path to a destination based on the
+    protocols definition of the best "metric". The Junos routing
+    policy framework allows an administrator to influence the
+    best path based on their business needs.
+  </p>
+
+  <h3 id="usage-examples">Usage Examples</h3>
+  <ul>
+    <li>Alter the best path to a destination</li>
+    <li>Modify or ignore routes that are advertised to you</li>
+    <li>Modify or ignore routes that are advertised to your neighbours</li>
+    <li>Redistribute routes between protocols</li>
+  </ul>
+
+  <h3 id="policy-application">Policy Application</h3>
+  <p>
+    There are two places routing policy can be applied.
+  </p>
+  <ul>
+    <li><b>Inbound</b> - Import policy</li>
+    <li><b>Outbound</b> - Export policy</li>
+  </ul>
+  <p>
+    The use of a routing policy alters a routers
+    {{ text::emphasize(text="view") }}
+ of the network
+    topology. If you apply a policy inbound it will alter the local routers
+    perception of the network topology. Applying a policy outbound will
+    alter a neighbours perception of the network topology.
+  </p>
+
+  <p>
+    BGP policies can be applied at three levels.
+    The below list is order from the most to least preferred.
+  </p>
+  <ul>
+    <li>Neighbor</li>
+    <li>Group</li>
+    <li>Global</li>
+  </ul>
+  <p>
+    Less preferred policies are ignored if a more preferred match is
+    also configured.
+  </p>
+
+  <h3 id="policy-processing">Policy Processing</h3>
+  <ul>
+    <li>
+      Routing policy is only evaluated against {{ text::emphasize(text="active") }}
+
+      routes in the routing table.
+    </li>
+    <li>
+      Policies are evaluated in a daisy-chain order known as a
+      {{ text::emphasize(text="policy-chain") }}
+.
+    </li>
+    <li>
+      Evaluation is halted once a policy match is found and the policy
+      contains a
+      {{ text::emphasize(text="terminating action") }}
+.
+    </li>
+    <li>
+      If no match is found evaluation will continue to the
+      {{ text::emphasize(text="next policy") }}
+.
+    </li>
+    <li>
+      If no match is found in any policy the
+      {{ text::emphasize(text="default policy") }}
+ will
+      be evaluated.
+    </li>
+
+  </ul>
+
+  <h3 id="terminating-action">Terminating Action</h3>
+  <p>
+    Terminating actions define how a route match is utilised.
+    The options are {{ text::emphasize(text="accept") }}
+
+    and {{ text::emphasize(text="reject") }}
+. Their usage
+    is as follows.
+  </p>
+  <ul>
+    <li><b>Accept</b> - Route will be placed in the routing table and advertised to neighbours</li>
+    <li><b>Reject</b> - Route is ignored and will not be placed in the routing table</li>
+  </ul>
+
+  <h3 id="action-modifiers">Action Modifiers</h3>
+  <p>
+    Prior to a route being accepted or rejected by a terminating action
+    the routes attributes can be modified. Below are some common usage
+    examples of action modifiers.
+  </p>
+  <ul>
+    <li><b>local-preference</b> - Set the BGP local-preference attribute</li>
+    <li><b>metric</b> - Set the metric for a route</li>
+    <li><b>next-hop</b> - Set the next-hop interface for a route</li>
+    <li><b>origin</b> - Set the BGP origin attribute</li>
+    <li><b>preference</b> - Set the routes preference (AD)</li>
+  </ul>
+
+  <h3 id="flow-control">Flow Control</h3>
+  <p>
+    There are two flow control statements that can be used within routing policy.
+  </p>
+  <ul>
+    <li><b>next term</b> - Moves to the next term in the current policy</li>
+    <li><b>next policy</b> - Moves to the next policy in the policy chain</li>
+  </ul>
+
+  <h3 id="policy-configuration">Policy Configuration</h3>
+  <p>
+    There are two methods to define a routing policy.
+    {{ text::emphasize(text="term based") }}
+ and
+    {{ text::emphasize(text="non-term based") }}
+.
+  </p>
+
+  <p>
+    Non-term based policies can only have one set
+    of match/action statements.
+  </p>
+
+  {{ text::code_block(
+  header="config",
+  language="text",
+  code=`policy-options {
+    policy-statement POLICY-NAME {
+        from {
+            MATCH-CONDITIONS;
+        }
+        then {
+            ACTIONS;
+        }
+    }
+}`
+) }}
+
+
+  <h4>Term Based</h4>
+  <p>
+    Term based policies allow for more than one set
+    of match/action statements using a
+    {{ text::emphasize(text="term") }}
+ block.
+  </p>
+
+  {{ text::code_block(
+  header="config",
+  language="text",
+  code=`policy-options {
+    policy-statement POLICY-NAME {
+        term TERM-NAME {
+            from {
+                MATCH-CONDITIONS;
+            }
+            then {
+                ACTIONS;
+            }
+        }
+        term TERM-NAME {
+            from {
+                MATCH-CONDITIONS;
+            }
+            then {
+                ACTIONS;
+            }
+        }
+    }
+}`
+) }}
+
+  {{ text::note_block(text='
+      If a $1 does not contain a $1 the $3 is evaluated.
+  ') 
+  | replace(from="$1", to=text::emphasize(text="term"))
+  | replace(from="$2", to=text::emphasize(text="terminating action"))
+  | replace(from="$3", to=text::emphasize(text="next-term"))
+  }}
+
+
+  <h3 id="route-filters">Route Filters</h3>
+  <p>
+    Route filters are used to apply routing policy to a specific
+    route (or set of routes). There are a number of methods to
+    match a route(s) which are outlined below.
+  </p>
+
+  <h4>exact</h4>
+  <ul>
+    <li>The exact prefix</li>
+    <li>{{ text::code(text="192.168.0.0/16") }}
+
+
+
+</li>
+  </ul>
+
+  <h4>longer</h4>
+  <ul>
+    <li>Prefixes more specific than the defined prefix</li>
+    <li>{{ text::code(text="192.168.0.0/16 longer") }}
+
+
+
+</li>
+  </ul>
+
+  <h4>orlonger</h4>
+  <ul>
+    <li>Defined prefix plus more specific prefixes</li>
+    <li>{{ text::code(text="192.168.0.0/16 orlonger") }}
+
+
+
+</li>
+  </ul>
+
+  <h4>upto</h4>
+  <ul>
+    <li>Defined prefix and prefixes up to a defined prefix length</li>
+    <li>{{ text::code(text="192.168.0.0/16 upto /18") }}
+
+
+
+</li>
+  </ul>
+
+  <h4>prefix-length-range</h4>
+  <ul>
+    <li>Defined prefix and routes between a defined prefix length start and end</li>
+    <li>{{ text::code(text="192.168.0.0/16 prefix-length-range /17-/18") }}
+</li>
+  </ul>
+
+  <h4>through</h4>
+  <ul>
+    <li>Defined prefixes and any prefixes in between</li>
+    <li>{{ text::code(text="192.168.0.0/16 through 192.168.0.0/19") }}
+
+  </li>
+  </ul>
+
+  <h3 id="radix-tree">Radix Tree</h3>
+  <p>
+    A radix tree is used to match prefixes based on the route filter conditions.
+    The below diagram<sup>{{ link::i(path="#references-1", description="[1]") }}</sup> is a sample radix tree.
+  </p>
+  {{ image::boxed(path="blog/juniper-routing-policy/radix-tree-1.png", width="700px") }}
+
+  <p>
+    The below diagram<sup>{{ link::i(path="#references-2", description="[2]") }}</sup>
+    illustrates how route filters affect the selection
+    of prefixes in the radix tree.
+  </p>
+  {{ image::boxed(path="blog/juniper-routing-policy/radix-tree-2.png", width="700px") }}
+
+  <h3 id="default-routing-policy">Default Routing Policy</h3>
+  <p>
+    The default manner in which Junos handles routing policy is
+    outlined in the table below.
+  </p>
+
+
+{{ table::default(
+  header=["Protocol", "Import", "Export"],
+  rows=[
+      "BGP | Accept all received IPv4/6 routes and place them in the inet.0/6 table. | Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.",
+      "OSPF/v3 | Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. | Reject everything. OSPF uses flooding to advertise local and learned routes.",
+      "IS-IS | Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. | Reject everything. IS-IS uses flooding to advertise local and learned routes.",
+      "RIP/ng | Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. | Reject everything. An export policy is required to export RIP/ng routes.",
+  ],
+) }}
+
+
+{% endblock page_content %}

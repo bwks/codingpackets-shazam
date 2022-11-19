@@ -1,0 +1,985 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">ExtraHop Discover Appliance GCP Deployment With Terraform</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 27th of March 2022
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+             
+
+<h3 id="intro">Intro</h3>
+<p>
+  I was recently working with a customer to deploy 
+  an ExtraHop Cloud Sensor (EDA) in Google Cloud Platform (GCP)
+  with Terraform. Deploying in the cloud is not as 
+  straight forward as deploying in other virtualized 
+  environments such as VMware. Thankfully, Terraform 
+  helps us complete this process via code so we don't have 
+  to die a slow death by a thousand clicks.
+</p>
+<p>
+  In this post, I will show you how to deploy an EDA 
+  in GCP with Terraform. 
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Terraform - 1.1.7</li>
+  <li>gcloud - 378.0.0</li>
+  <li>ExtraHop Discover Appliance - 8.8.0</li>
+</ul>
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<h4>Terraform and gcloud</h4>
+<p>
+  This post assumes that you already have Terraform and 
+  the gcloud CLI tools installed and setup. For instructions 
+  on how to set these tools up check out 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/terraform-google-cloud-platform-setup">this</a>
+  post.
+</p>
+
+<h4>EDA Deployment File</h4>
+<p>
+  An EDA deployment file for GCP which can be downloaded 
+  from the 
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://customers.extrahop.com/downloads/virtual-appliances" target=_blank>customer portal</a>. The deployment file should be saved in the same 
+    location as your <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.tf</i>
+ file.
+</p>
+
+<h4>EDA License</h4>
+<p>
+  Not strictly required to deploy the instance, but to 
+  enable the capture interface on the EDA, a license is required.
+</p>
+
+<h3 id="lab-topology">Lab Topology</h3>
+<p>
+  In this post, we will be building the following infrastructure.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="800px" 
+    src="/img/blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp.png" alt="blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp.png">
+</div>
+<!-- IMAGE END -->
+
+<p>
+  The following points summarize this above topology.
+</p>
+<ul>
+  <li>There are 2 Virtual Private Clouds (VPC):</li>
+  <ul>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
+ for the manamgement interface of an EDA.</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+ for workloads that have their traffic mirrored to an EDA and the EDA capture interface.</li>
+  </ul>
+  <li>The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
+ has a single subnet <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">10.0.0.0/24</i>
+.</li>
+  <li>The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+ has 2 subnets:</li>
+  <ul>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.0.0/24</i>
+ for the capture target.</li>
+    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.0/24</i>
+ for workload VMs.</li>
+  </ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+ is the ExtraHop sensor that is capturing packets.</li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+ is a workload VM that has its traffic mirrored to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+.</li>
+  <li>
+    The instance group <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-ig</i>
+ is required to group the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
+ VPC
+    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-mgmt-net</i>
+ subnet and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+ VM together for use as a load balancer backend.
+  </li>
+  <li>A load balancer is required to mirror traffic between VMs in GCP. The load balancer has the following components:</li>
+  <ul>
+    <li>A backend service <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-lb-be</i>
+ that's attached to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+ VPC.</li>
+    <li>A backend that's attached to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-ig</i>
+ instance group.</li>
+    <li>A frontend <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-lb-fe</i>
+ that's attached to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-capture-net</i>
+ subnet.</li>
+  </ul>
+  <li>A traffic mirror policy (denoted by the pink line) is used to mirror traffic from the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+ VM to the load balancer frontend.</li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+ have external IP addresses assigned (denoted by the red line) allowing them to access the internet.</li>
+</ul>
+
+<h3 id="terraform-code">Terraform Code</h3>
+<p>
+  For simplicity I have placed all of the code for this post 
+  in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.tf</i>
+ file. 
+  The code is split into sections denoted by comments (<i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">//</i>
+).
+</p>
+<p>
+  If you are following along, you will need to update the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Variables</i>
+ section to 
+  suit your environment.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">main.tf</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-terraform hljs px-5 dark:opacity-80 rounded-b">// Variables
+variable "gcp_project" {
+  type    = string
+  default = "&lt;project-name&gt;-&lt;project-id&gt;"
+}
+
+variable "gcp_region" {
+  type    = string
+  default = "australia-southeast1"
+}
+
+variable "gcp_zone" {
+  type    = string
+  default = "australia-southeast1-a"
+}
+
+variable "storage_bucket_name" {
+  type    = string
+  default = "extrahop-&lt;random-id&gt;"
+}
+
+variable "eda_version" {
+  type    = string
+  default = "8.8.0.1450"
+}
+
+variable "my_public_ip" {
+  type    = string
+  default = "&lt;your-public-ip&gt;/32"
+}
+
+// Provider
+provider "google" {
+  project = var.gcp_project
+  region  = var.gcp_region
+  zone    = var.gcp_zone
+}
+
+// Storage Bucket
+resource "google_storage_bucket" "extrahop_bucket" {
+  name          = var.storage_bucket_name
+  location      = var.gcp_region
+  force_destroy = true
+}
+
+resource "google_storage_bucket_object" "eda_image" {
+  name   = "extrahop-eda-gcp-${var.eda_version}.tar.gz"
+  source = "extrahop-eda-gcp-${var.eda_version}.tar.gz"
+  bucket = var.storage_bucket_name
+}
+
+// VPCs
+resource "google_compute_network" "mgmt_vpc" {
+  name                    = "mgmt-vpc"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "extrahop_mgmt_net" {
+  name          = "extrahop-mgmt-net"
+  ip_cidr_range = "10.0.0.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.mgmt_vpc.id
+}
+
+resource "google_compute_network" "capture_vpc" {
+  name                    = "capture-vpc"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "extrahop_capture_net" {
+  name          = "extrahop-capture-net"
+  ip_cidr_range = "172.16.0.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.capture_vpc.id
+}
+
+resource "google_compute_subnetwork" "workloads_net" {
+  name          = "workloads-net"
+  ip_cidr_range = "172.16.1.0/24"
+  region        = var.gcp_region
+  network       = google_compute_network.capture_vpc.id
+}
+
+// Firewall Rules
+resource "google_compute_firewall" "allow_me_to_eda" {
+  name      = "allow-me-to-eda"
+  network   = google_compute_network.mgmt_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = [var.my_public_ip]
+}
+resource "google_compute_firewall" "allow_me_to_deb" {
+  name      = "allow-me-to-deb"
+  network   = google_compute_network.capture_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = [var.my_public_ip]
+}
+resource "google_compute_firewall" "allow_workload_to_capture_in" {
+  name      = "allow-workload-to-capture-in"
+  network   = google_compute_network.capture_vpc.name
+  direction = "INGRESS"
+
+  allow {
+    protocol = "all"
+  }
+  source_ranges = ["172.16.1.0/24"]
+}
+
+// eda01
+resource "google_compute_instance" "eda01" {
+  name         = "eda01"
+  machine_type = "e2-medium"
+  zone         = var.gcp_zone
+  boot_disk {
+    source = google_compute_disk.eda01_datastore.self_link
+  }
+  attached_disk {
+    source = google_compute_disk.eda01_pcap.self_link
+  }
+  network_interface {
+    network    = google_compute_network.mgmt_vpc.name
+    subnetwork = google_compute_subnetwork.extrahop_mgmt_net.name
+    access_config {
+      network_tier = "STANDARD"
+    }
+  }
+  network_interface {
+    network    = google_compute_network.capture_vpc.name
+    subnetwork = google_compute_subnetwork.extrahop_capture_net.name
+  }
+}
+
+resource "google_compute_instance_group" "extrahop_ig" {
+  name    = "extrahop-ig"
+  zone    = var.gcp_zone
+  network = google_compute_network.mgmt_vpc.id
+  instances = [
+    google_compute_instance.eda01.self_link,
+  ]
+}
+
+// deb01
+resource "google_compute_instance" "deb01" {
+  name         = "deb01"
+  machine_type = "e2-medium"
+  zone         = var.gcp_zone
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+  network_interface {
+    network    = google_compute_network.capture_vpc.name
+    subnetwork = google_compute_subnetwork.workloads_net.name
+    access_config {
+      network_tier = "STANDARD"
+    }
+  }
+}
+
+// Load balancer
+resource "google_compute_health_check" "extrahop_hc" {
+  name               = "extrahop-hc"
+  check_interval_sec = 15
+  timeout_sec        = 5
+  tcp_health_check {
+    port = "443"
+  }
+}
+
+resource "google_compute_region_backend_service" "extrahop_lb_be" {
+  name          = "extrahop-lb-be"
+  region        = var.gcp_region
+  protocol      = "UDP"
+  network       = google_compute_network.capture_vpc.self_link
+  health_checks = [google_compute_health_check.extrahop_hc.id]
+  backend {
+    group = google_compute_instance_group.extrahop_ig.self_link
+  }
+}
+
+resource "google_compute_forwarding_rule" "extrahop_lb_fe" {
+  name   = "extrahop-lb-fe"
+  region = var.gcp_region
+  load_balancing_scheme  = "INTERNAL"
+  backend_service        = google_compute_region_backend_service.extrahop_lb_be.id
+  ip_protocol            = "UDP"
+  all_ports              = true
+  network                = google_compute_network.capture_vpc.name
+  subnetwork             = google_compute_subnetwork.extrahop_capture_net.name
+  is_mirroring_collector = true
+}
+
+// Traffic Mirror
+resource "google_compute_packet_mirroring" "extrahop_pm" {
+  name   = "extrahop-pm"
+  region = var.gcp_region
+  network {
+    url = google_compute_network.capture_vpc.self_link
+  }
+  collector_ilb {
+    url = google_compute_forwarding_rule.extrahop_lb_fe.self_link
+  }
+  mirrored_resources {
+    subnetworks {
+      url = google_compute_subnetwork.workloads_net.self_link
+    }
+  }
+  filter {
+    cidr_ranges  = []
+    direction    = "BOTH"
+    ip_protocols = []
+  }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  For this lab I am NOT using the recommended image size for
+  an EDA in GCP. The recommended size is an 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">n1-standard-4 (4 vCPU, 15 GB memory)</i>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="build">Build</h3>
+<p>
+  Now, building the environment is a simple as running the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform apply</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform apply -auto-approve
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+.
+. output omitted
+.
+Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="post-deployment">Post Deployment</h3>
+<p>
+  Once the deployment is complete, there are a couple of manual tasks required 
+  to enable the EDA to capture traffic.
+</p>
+<h4>Apply License</h4>
+<p>
+  For an EDA to enable its capture interface a license must be 
+  applied. A license can be purchased from your ExtraHop account team.
+</p>
+
+<h4>Capture Settings</h4>
+<p>
+  The default discovery mode for an EDA is 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Layer 2</i>
+ discovery, which discovers 
+  devices in its broadcast domain. There is no broadcast domain in a VPC. 
+  Therefore, we need to enable <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Layer 3</i>
+ 
+  discovery and, define the subnets that contain devices we want to track 
+  as an asset. 
+</p>
+<p>
+  To change the device discovery mode and set the remote networks (subnets), 
+  navigate to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">System Settings (<i class="fas fa-cog"></i>)</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">All Administration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Capture</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Device Discovery</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+<p>
+  To enable L3 discovery, under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Local Device Discovery</i>
+ 
+  section, tick the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Enable local device discovery</i>
+ 
+  checkbox.
+</p>
+<p>
+  To configure remote networks, under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Remote Device Discovery</i>
+ 
+  section, enter the desired prefixes. We will add 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.0/24</i>
+ from our 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">workloads-net</i>
+ subnet.
+</p>
+<p>
+  Once layer 3 discovery is enabled and the config is saved, restart the 
+  capture service. To restart the capture, naviage to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>System Settings (<i class="fas fa-cog"></i>)</li>
+    <li>All Administration</li>
+    <li>Shutdown or Restart</li>
+  </ul>
+</div>
+<p>
+  Now click the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Restart</i>
+ action 
+  for the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Capture Status</i>
+ item.
+</p>
+
+<h3 id="verification">Verification</h3>
+<p>
+  Lets confirm that the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+ can see 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+ in its data feed.
+</p>
+<p>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+ received the IP address 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+ via DHCP. In the UI search 
+  bar on the top right, search for the IP <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+.
+  Clicking into the result takes you to the asset page.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="800px" 
+    src="/img/blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp-device.png" alt="blog/extrahop-discover-appliance-gcp-deployment-with-terraform/extrahop-gcp-device.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  We can see that <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+ is discovered 
+  as a remote device and is having its traffic analized.
+</p>
+
+<h3 id="clean-up">Clean Up</h3>
+<p>
+  Don't forget to run <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform destroy</i>
+ to clean up all the 
+  infrastructure and save yourself some <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">$DOLLARS</i>
+.
+</p>
+
+<h3 id="cost">Cost</h3>
+<p>
+  I was working no this post on and off for 2 days. I destroyed the infrastructure when 
+  I wasn't working on it to keep the costs down. All up, it cost $1.61 AUD to build 
+  and test this lab while also writing this blog post.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to deploy an ExtraHop Discover Appliance 
+  on Google Cloud Platform using Terraform. This was a pretty fun one for 
+  me, thank you for joining me on this journey.
+</p>
+<p>
+  If this post was of interest, look out for a future post, where I will 
+  add Google Big Query as a record store in order to save detailed transaction data 
+  that can be queried from the EDA.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.extrahop.com/current/deploy-eda-gcp/" target=_blank>https://docs.extrahop.com/current/deploy-eda-gcp/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.extrahop.com/current/deploy-eda-gcp/" target=_blank>https://docs.extrahop.com/current/deploy-eda-gcp/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/vpc/docs/using-packet-mirroring" target=_blank>https://cloud.google.com/vpc/docs/using-packet-mirroring</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/vpc/docs/using-firewalls" target=_blank>https://cloud.google.com/vpc/docs/using-firewalls</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/vpc/docs/using-packet-mirroring" target=_blank>https://cloud.google.com/vpc/docs/using-packet-mirroring</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/vpc/docs/vpc" target=_blank>https://cloud.google.com/vpc/docs/vpc</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#extrahop" class="text-xl">extrahop</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#gcp" class="text-xl">gcp</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#terraform" class="text-xl">terraform</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
+            Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-flight-check">
+            Pre-Flight Check
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-topology">
+            Lab Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#terraform-code">
+            Terraform Code
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#build">
+            Build
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#post-deployment">
+            Post Deployment
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#clean-up">
+            Clean Up
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#cost">
+            Cost
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,585 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Go Notes: Types</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 8th of February 2021
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Go has many built in types that are found in other 
+  programming languages. It also supports the creation 
+  of custom types.
+</p>
+<p>
+  Each type has a default zero value that is used when 
+  a variable is declared but not yet assigned a value.
+</p>
+
+<h4>Boolean</h4>
+<p>
+  Booleans are <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">true</i>
+ or 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">false</i>
+ values. The 
+  zero value for a boolean is <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">false</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">go</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-go hljs px-5 dark:opacity-80 rounded-b">// Declare a boolean with its zero value
+
+var stuff bool // false
+
+// Declare a boolean and set its value
+
+things := true</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Integer</h4>
+<p>
+  Go supports a number of both of <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">signed</i>
+  and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">unsigned</i>
+ integer types. They range in from one to four bytes in size.
+</p>
+<p>
+  The default zero value for all integer types is 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">0</i>
+
+</p>
+<p>
+  A <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">byte</i>
+  is an alias for <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">uint8</i>. 
+  In practice <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">byte</i>
+  is preferred over <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">uint8</i>
+</p>
+<p>
+  On a 32-bit CPU an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">int/uint</i>
+  is an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">int32/uint32</i>. 
+  On most 64-bit CPU's an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">int/uint</i>
+  is an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">int64/uint64</i>
+</p>
+<p>
+  The most common integer types are listed below.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Name</th>
+        
+          <th class="pt-1 pb-2 px-2">Value Range</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">int8 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> -128 to 127</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">int16 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> -32768 to 32767</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">int32 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> -2147483648 to 2147483647</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">int64 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> -9223372036854775808 to 9223372036854775807</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">uint8 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 0 to 255</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">uint16 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 0 to 65536</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">uint32 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 0 to 4294967295</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">uint64 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 0 to 18446744073709551615</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h4>Float</h4>
+<p>
+  Go supports two types of floats; 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">float32</i>
+ 
+  and   <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">float64</i>
+ 
+</p>
+<p>
+  The default zero value for a float is 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">0</i>
+
+</p>
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    A floating point number in Go cannot represent an exact 
+    decimal value. They should not be used for anything that 
+    requires exact decimal precision.
+  </p>
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h4>Strings</h4>
+<p>
+  Strings in Go are represented with the double quote 
+  characters <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">""</i>
+.
+</p>
+<p>
+  The default zero value for a string is an empty 
+  string <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">""</i>
+.
+</p>
+<p>
+  Strings in Go are immutable, once they are assigned the 
+  value cannot be changed.
+</p>
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Go does not have any automatic type promotion/conversion</li>
+  <li>If required, types must be explicitly converted</li>
+  <li>There are no truthy/falsy values in Go</li>
+</ul>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://learning.oreilly.com/library/view/learning-go/9781492077206/ch02.html" target=_blank>https://learning.oreilly.com/library/view/learning-go/9781492077206/ch02.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#golang" class="text-xl">golang</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#considerations">
+            Considerations
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

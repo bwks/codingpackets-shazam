@@ -1,0 +1,65 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A pointer "points" to the memory address
+  of a value rather than the value itself.
+</p>
+<p>
+  Pointers in golang are assigned to variables 
+  using {{ text::emphasize(text="&") }}
+
+  operator. The {{ text::emphasize(text="&") }}
+
+  operator is the {{ text::emphasize(text="address") }}
+ 
+  operator.
+</p>
+<p>
+  Addresses are "dereferenced" with the 
+ {{ text::emphasize(text="*") }}
+
+  operator. Dereferencing a pointer gives 
+  you back the value.
+</p>
+<p>
+  The zero value for a pointer is 
+  {{ text::emphasize(text="nil") }}
+
+</p>
+<p>
+  A pointer type is a type that represents a
+  pointer. Pointer types are declared with 
+  a {{ text::emphasize(text="*") }}
+ 
+  prior to the type.
+</p>
+
+
+{{ text::code_block(
+  header="go",
+  language="go",
+  code='// Create a pointer variable with a nil value
+var stuff *str
+
+// Dereference a pointer to access the value.
+// Get the address of the stuff variable
+&stuff
+
+// Dereference a pointer that is passed to a function
+func changePointer(p *int) {
+    // Notice the syntax to dereference is altered
+    *p = 20
+}'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>If a nil value pointer is passed to a function the value cannot be reassigned</li>
+  <li>Pointers should be used to modify a variable when a function expects an interface</li>
+  <li>If you try to dereference a nil pointer the program will panic.</li>
+</ul>
+
+{% endblock page_content %}

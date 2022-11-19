@@ -1,0 +1,171 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This will just be a quick post on how to install Golang on Ubuntu 1804. There will be no
+  earth shattering knowledge bombs, it's more of a documentation post for myself. Others
+  may or may not find it useful.
+</p>
+
+<h4>Code versions used for this lab</h4>
+<ul>
+  <li>Ubuntu - 1804</li>
+  <li>Golang - 1.15.1</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Download the Golang package for your system and architecture.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -OL https://dl.google.com/go/go1.15.1.linux-amd64.tar.gz`
+) }}
+
+<h3 id="install">Install</h3>
+<p>
+  Once downloaded, extract the tar file to install Golang.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tar -C /usr/local -xzf go1.15.1.linux-amd64.tar.gz`
+) }}
+<p>
+  This will create a binary here: {{ text::emphasize(text="/usr/local/go/bin/go") }}
+
+</p>
+
+<h3 id="configure">Configure</h3>
+<p>
+  In order to effectively utilise go you will need to setup a couple of environment variables.
+  The first one adds the the {{ text::code(text="go") }}
+ binary to your {{ text::emphasize(text="$PATH") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.zshrc`
+) }}
+
+{{ text::note_block(text='
+    I am using $1
+ for my shell, update the correct rc file
+    based on the shell you are using.
+') 
+  | replace(from="$1", to=text::emphasize(text="zsh"))
+}}
+
+
+<p>
+  The next one defines the root directory for your {{ text::emphasize(text="$GOPATH") }}
+.
+  Your {{ text::emphasize(text="$GOPATH") }}
+ is the location of your Go workspace. All of
+  your go projects will get built under this workspace.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo 'export GOPATH=$HOME/go' >> ~/.zshrc`
+)
+ }}
+
+{{ text::note_block(text='
+    The default $1 is $2.
+    I am explicitly defining it for my setup, you may want to change the default location.
+')
+| replace(from="$1", to=text::emphasize(text="$GOPATH"))
+| replace(from="$2", to=text::emphasize(text="$HOME/go"))
+ }}
+
+<p>
+  Finally source your rc file to load the variables into your environment and
+  create the {{ text::emphasize(text="$GOPATH") }}
+ workspace directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`source ~/.zshrc
+mkdir $GOPATH`
+) }}
+
+<h3 id="verify-install">Verify Install</h3>
+<p>
+  Confirm that Go is installed correctly.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`go version
+
+# output
+
+go version go1.12.9 linux/amd64`
+) }}
+
+<h3 id="first-go-program">First Go Program</h3>
+<p>
+  Create a project directory under your {{ text::emphasize(text="$GOPATH") }}
+ workspace.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd $GOPATH
+mkdir hello && cd hello`
+) }}
+
+<p>
+  Create a {{ text::emphasize(text="hello.go") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="golang",
+  code=`// hello.go
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Printf("hello, world\n")
+}`
+) }}
+
+<p>
+  Compile the project into a binary.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`go build`
+) }}
+
+<p>
+  A binary {{ text::code(text="hello") }}
+ will be created, execute the binary and bask in your glory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`./hello
+
+# output
+
+hello, world`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  That's it. Go installed, configured and ready to be stretched to its limits.
+</p>
+{% endblock page_content %}

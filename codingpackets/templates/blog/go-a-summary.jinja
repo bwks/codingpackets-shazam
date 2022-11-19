@@ -1,0 +1,92 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This post has been in my drafts for a while, and its 
+  time to finish it off. Over the last couple of years I 
+  have been learning Go off and on. It was one of my goals 
+  for 2021 to learn Go well and I spent a fair amount 
+  of time digging into Go at the first half of this year.
+</p>
+<p>
+  I have decided to give up on Go and this post is a 
+  bit of a brain dump on what I liked/disliked about the 
+  language.
+</p>
+
+<h3 id="pros">Pros</h3>
+<p>
+  Go has a lot of pro's:
+  <ul>
+    <li>Batteries included standard library</li>
+    <li>Healthy package echosystem</li>
+    <li>Excellent docs</li>
+    <li>Lots of examples (blogs/stack overflow) out there</li>
+    <li>Compiles binaries to multiple OS's and CPU architectures with all dependencies included</li>
+    <li>Fast compilation, REALLY fast compared to some other compiled languages</li>
+  </ul>
+</p>
+
+<h3 id="cons">Cons</h3>
+<p>
+  None of these are show stoppers and more related to my 
+  personal feelings when I write Go code.
+</p>
+<p>
+  The main thing that I didn't really like about Go is the 
+  error handling model. Sometimes it feels like every second 
+  line of code is error handling related: 
+  {{ text::code(text="if err != nil {}") }}
+. If I never have to write this 
+  again it will be to soon.
+</p>
+<p>
+  Another thing was automatic export of capitalized names. 
+  Anything starting with a capital letter becomes exported. 
+  It's a nice shortcut, but it means you can't uppercase constants 
+  if you don't want them to be exported. 
+</p>
+<p>
+  Finally, I don't really like camel case which is the convention 
+  in the Go ecosystem. I find it uncomfortable to read.
+</p>
+
+<h3 id="on-the-plus-side">On the Plus Side</h3>
+<p>
+  For my {{ text::emphasize(text="$JOB") }}
+, 
+  I managed to get a pretty good package built. 
+  It would SSH to hundreds of network devices and collect a bunch 
+  of pre/post change baseline commands in under a couple of seconds. 
+  I had to run this on a Windows jump host where I could not 
+  install python (or any other) runtime. I was able to sneak 
+  my tiny executable onto the box to get what I needed. The cross 
+  compilation and bundled in dependency features of Go really helped here.
+</p>
+
+<p>
+  I did also learn some useful stuff (aside from Go itself) like:
+</p>
+<ul>
+  <li>The CSP concurrency model</li>
+  <li>The stack vs the heap</li>
+  <li>Behaviour based testing methodology</li>
+  <li>Avoiding premature optimization</li>
+</ul>
+
+<p>
+  All in all, not a wasted experience. I would recommend giving 
+  it a "Go" if you have the need/cycles.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Go is a fine language, I just don't really like it. To me personally, 
+  it feels more like a chore that I don't want to do and I get no joy from.
+  For now, I am closing the book on Go.
+</p>
+
+
+{% endblock page_content %}

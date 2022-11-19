@@ -80,15 +80,15 @@ $1
 Code Blocks
 ```
 <div class="code-block-caption-darkmode text-center">
-  <span class="code-block-title-darkmode">(.*?)</span>
-
-</div>
-<div class="code-block-left-darkmode">
+\s+<span class="code-block-title-darkmode">(.*?)</span>
+\s+
+\s+</div>
+\s+<div class="code-block-left-darkmode">
 \s+<pre><code class="(.*?) hljs">
 (.*?(.|[\n])*?)
 \s+</code>
-</pre>
-</div>
+\s+</pre>
+\s+</div>
 ```
 
 ```
@@ -97,17 +97,5 @@ Code Blocks
   language="$2",
   code=`$3`
 ) }}
-```
 
-```
-<div class="code-block-caption-darkmode text-center">
-  <span class="code-block-title-darkmode">(.*?)</span>
-
-</div>
-<div class="code-block-left-darkmode">
-\s+<pre><code class="(.*?) hljs">
-(.*?(.|[\n])*?)
-\s+</code>
-</pre>
-</div>
 ```

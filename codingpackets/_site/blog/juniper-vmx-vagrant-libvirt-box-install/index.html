@@ -1,0 +1,1925 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Juniper vMX Vagrant Libvirt Box Install</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 31st of August 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Juniper vMX Vagrant box for use with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ provider. There are a fair few steps
+  so strap in Alice, we are going on a trip down the rabbit hole.
+</p>
+<p>
+  Prior to installing the vMX there are some required steps to get the KVM host
+  prepped which I will not cover. These steps are covered in the Juniper documentation
+  <a href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-install-preparing.html">
+    here</a>.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin already installed. You can follow this
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
+  to get the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Juniper vMX</b> - 18.2R1.9</li>
+  <li><b>Vagrant</b> - 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="vmx-overview">vMX Overview</h3>
+<p>
+  The vMX is made up of two VMs, one for control plane and one for the forwarding plane.
+  Although there are two separate VMs, logically they act as a single device. Conceptually
+  a vMX looks like the below diagram.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="400px" 
+    src="/img/blog/juniper-vmx-vagrant-libvirt-box-installation/vmx.svg" alt="blog/juniper-vmx-vagrant-libvirt-box-installation/vmx.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  The first two interfaces from each VM are reserved. The first is for management and the
+  second is used as a communication channel between the two VMs. The VCP only requires
+  two interfaces. The VFP supports an additional 10 interfaces for data plane traffic.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Navigate to the Juniper software
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vmx" target=_blank>download</a>
+  page and download the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">kvm</i>
+ image.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    You will likely need either a valid Juniper support contract and/or request access to
+    download the vMX image.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into a directory for vMX files. I like to keep my custom vagrant boxes under
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/</i>
+.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/juniper/vmx
+cd ~/vagrant/boxes/juniper/vmx</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Copy the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-bundle-18.2R1.9.tgz</i>
+ file downloaded
+  earlier to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+ directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/vmx-bundle-18.2R1.9.tgz .</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Extract the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-bundle-18.2R1.9.tgz</i>
+ file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tar -xvf vmx-bundle-18.2R1.9.tgz</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The vMX requires two VMs. One for the control plane and one for the forwarding plane. Copy
+  the required files from the extracted directory to the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+ directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp vmx/images/junos-vmx-x86-64-18.2R1.9.qcow2 vcp-hda.qcow2
+cp vmx/images/vmxhdd.img vcp-hdb.qcow2
+cp vmx/images/metadata-usb-re.img vcp-hdc.img
+cp vmx/images/vFPC-20180605.img vfp-hda.img</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a network for the link between the two VMs. Create a file called
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+ with the following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network&gt;
+  &lt;name&gt;vmx-int&lt;/name&gt;
+  &lt;bridge name='vmx-int' stp='on' delay='0'/&gt;
+  &lt;mac address='52:54:00:0c:9f:5c'/&gt;
+&lt;/network&gt;</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now add and start the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+ network.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vmx-int.xml
+virsh net-start vmx-int</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Open two terminal windows (be sure the navigate to the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+ directory)
+  and launch both of the vMX vms.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+virt-install \
+    --name vmx-vcp \
+    --memory 1024 \
+    --vcpus=1 \
+    --import \
+    --disk path=vcp-hda.qcow2,size=16,bus=ide,format=qcow2 \
+    --disk path=vcp-hdb.qcow2,size=1,bus=ide,format=qcow2 \
+    --disk path=vcp-hdc.img,size=1,bus=ide,format=raw \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vmx-int,model=virtio \
+    --graphics none</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+virt-install \
+    --name vmx-vfp \
+    --memory 4096 \
+    --vcpus=3 \
+    --import \
+    --disk path=vfp-hda.img,size=16,bus=ide,format=raw \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vmx-int,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --network=network:vagrant-libvirt,model=virtio \
+    --graphics none</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  You will be automatically connected to the virtual console on both VMs.
+</p>
+
+<h4><b>VCP Configuration</b></h4>
+<p>
+  Login to the VCP with the username <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+ there is no
+  password.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+FreeBSD/amd64 (Amnesiac) (ttyu0)
+
+login: root
+
+--- JUNOS 18.2R1.9 Kernel 64-bit  JNPR-11.0-20180614.6c3f819_buil
+root@:~ #
+root@:~ # cli
+root> configure</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Paste in the initial bootstrap configuration to allow SSH and set the
+  root password to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Juniper</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+delete chassis auto-image-upgrade
+set system services ssh root-login allow
+set system root-authentication plain-text-password
+
+New password: &lt;Juniper&gt;
+Retype new password: &lt;Juniper&gt;
+
+commit and-quit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  There is a limit to how many characters can be pasted into the terminal over the console so
+  grab the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">fxp0</i>
+ ip address and SSH to the guest to finish
+  the configuration.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+show interfaces terse | match fxp0.0
+
+fxp0.0                  up    up   inet     192.168.121.151/24</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>From another terminal SSH to the IP and paste in the rest of the bootstrap configuration.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+ssh root@192.168.121.151
+Password: &lt;Juniper&gt;
+Last login: Thu Aug 30 13:11:05 2018
+--- JUNOS 18.2R1.9 Kernel 64-bit  JNPR-11.0-20180614.6c3f819_buil
+root@:~ # cli
+root> configure
+Entering configuration mode
+
+[edit]
+root#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+set system login user vagrant uid 2000
+set system login user vagrant class super-user
+set system login user vagrant authentication encrypted-password "$6$lUoxFIpU$ZiC3/b2UNpGvasntcvkNV4WVDJXBeZ.VqE6yPezbaGOos17vM9BhlTH.LBJb9DZE8fCoBtH0RWNhrbaYpZqxJ/"
+set system login user vagrant authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system root-authentication encrypted-password "$1$nq.N1UsY$JxA/ESAj3KuXseXE597gg0"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+set system host-name vmx
+set system services ssh root-login allow
+set system services netconf ssh
+commit and-quit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Exit out and confirm you can SSH in with the vagrant user and the vagrant
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+ key.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+ssh vagrant@192.168.121.151 -i ~/.vagrant.d/insecure_private_key
+--- JUNOS 18.2R1.9 Kernel 64-bit  JNPR-11.0-20180614.6c3f819_buil
+vagrant@vmx></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  That's it for the VCP configuration, confirm that the VFP is connected to the VCP. In the
+  output below slot 0 is online indicating the connection the the VFP is good.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+show chassis fpc
+                     Temp  CPU Utilization (%)   CPU Utilization (%)  Memory    Utilization (%)
+Slot State            (C)  Total  Interrupt      1min   5min   15min  DRAM (MB) Heap     Buffer
+  0  Online           Testing  10         0       24     21     12    511        31          0
+  1  Empty
+  2  Empty
+  3  Empty
+  4  Empty
+  5  Empty
+  6  Empty
+  7  Empty
+  8  Empty
+  9  Empty
+ 10  Empty
+ 11  Empty</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  If that's all well and good power off the VCP.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
+
+request system power-off
+
+Power Off the system ? [yes,no] (no) yes</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<h4><b>VFP Configuration</b></h4>
+<p>
+  Login to the VFP with the username / password <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+ and
+  prepare the VM for use with Vagrant.
+</p>
+<p>
+  First up edit the SSH config.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+sed -i  's/PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
+sed -i  's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i  's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+service sshd restart</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Again due to the character limit when connected to the console grab the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ext</i>
+ IP address and SSH to the guest.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+ip addr | grep 192.168.121
+    inet 192.168.121.107/24 brd 192.168.121.255 scope global ext</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+ssh root@192.168.121.107
+root@192.168.121.107's password: &lt;root&gt;
+Last login: Thu Aug 30 13:26:03 2018
+root@localhost:~#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The VFP uses the Windriver linux OS and most of the file system is read only. I could not
+  figure out how to add users so I will utilize the root user to login to this host with Vagrant.
+  I also could not write to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/root</i>
+ directory which is
+  the root users default home directory so I will change that to
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/root</i>
+. I will also utilize the Vagrant
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+ with the root user.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+sed -i  's/root:x:0:0:root:\/root:\/bin\/sh/root:x:0:0:root:\/etc\/root:\/bin\/sh/' /etc/passwd
+mkdir -p /etc/root/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key" >> /etc/root/.ssh/authorized_keys</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The sshd service is always disabled when the VFP boots. Add a cron task to restart the sshd
+  service every minute. This forces the sshd service to start up a minute after the VFP boots.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+crontab -e
+
+# Add this line
+
+* * * * * /bin/service sshd restart</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    When the sshd service restarts if you are connected to the box via SSH you will be
+    disconnected. This is not a big deal as you do not need to connect to the VFP during
+    normal use of Vagrant.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Exit out and confirm you can SSH in with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant</i>
+ user and the vagrant
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+ key.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+ssh root@192.168.121.107 -i ~/.vagrant.d/insecure_private_key
+
+Last login: Thu Aug 30 13:29:22 2018 from 192.168.121.1
+root@localhost:~#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  If you logged in successfully shutdown the VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
+
+/sbin/shutdown -h now</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<h4><b>VCP Box Creation</b></h4>
+
+<p>
+  The good folks who maintain the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ plugin
+  have a script can be used to convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ images to a
+  vagrant box. Download the libvirt conversion script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+ with the following
+  contents for the VCP box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":28}' > metadata.json</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a VCP vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+ script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh vcp-hda.qcow2
+
+# output
+
+{28}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
+==> vcp-hda.box created
+==> You can now add the box:
+==>   'vagrant box add vcp-hda.box --name vcp-hda'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vcp.json</i>
+ so that the
+  box is added with the correct version number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > vcp.json
+{
+  "name": "juniper/vmx-vcp",
+  "description": "Juniper vMX-VCP",
+  "versions": [
+    {
+      "version": "18.2R1.9",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp-hda.box"
+        }
+      ]
+    }
+  ]
+}
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Add the VCP box to Vagrant.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vcp.json
+
+# output
+
+==> box: Loading metadata for box 'vcp.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp.json
+==> box: Adding box 'juniper/vmx-vcp' (v18.2R1.9) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vmx/vcp-hda.box
+==> box: Successfully added box 'juniper/vmx-vcp' (v18.2R1.9) for 'libvirt'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the VCP box was added successfully
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+<span class="hljs-string">juniper/vmx-vcp               (libvirt, 18.2R1.9)</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The VCP also requires the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">hdb</i>
+ and
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">hdc</i>
+ drives from the initial VCP build. There is a
+  limitation of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ provider where it
+  can only package in one storage volume with the box. Create a directory to store these
+  volumes and they will be copied by Vagrant prior to building a box using the
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vagrantup.com/docs/triggers/" target=_blank>triggers</a> feature.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir /opt/vagrant/storage
+sudo chmod 0775 /opt/vagrant/storage/
+sudo chown root:libvirtd /opt/vagrant/storage/
+
+mv vcp-hdb.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-18.2R1.9-base.qcow2
+mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h4><b>VFP Box Creation</b></h4>
+<p>
+  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+ with the following
+  contents for the VCP box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":3}' > metadata.json</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vfp-hda.img</i>
+ to the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+ format.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img convert -f raw -O qcow2 vfp-hda.img vfp-hda.qcow2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a VFP vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+ script.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh vfp-hda.qcow2
+
+# output
+
+{3}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 333250560 (318MiB, 17MiB/s)
+==> vfp-hda.box created
+==> You can now add the box:
+==>   'vagrant box add vfp-hda.box --name vfp-hda'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vfp.json</i>
+ so that the
+  box is added with the correct version number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > vfp.json
+{
+  "name": "juniper/vmx-vfp",
+  "description": "Juniper vMX-VFP",
+  "versions": [
+    {
+      "version": "18.2R1.9",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp-hda.box"
+        }
+      ]
+    }
+  ]
+}
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Add the VFP box to Vagrant.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vfp.json
+
+# output
+
+==> box: Loading metadata for box 'vfp.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp.json
+==> box: Adding box 'juniper/vmx-vfp' (v18.2R1.9) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/juniper/vmx/vfp-hda.box
+==> box: Successfully added box 'juniper/vmx-vfp' (v18.2R1.9) for 'libvirt'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the VFP box was added successfully
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+extreme/xos                   (libvirt, 22.4.1.4)
+juniper/vmx-vcp               (libvirt, 18.2R1.9)
+<span class="hljs-string">juniper/vmx-vfp               (libvirt, 18.2R1.9)</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that the boxes are installed create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+
+  and confirm you can build VMs with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/vmx-test && cd ~/vmx-test</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Add a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+ to the test directory with the
+  following contents
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def get_mac(oui="28:b7:ad")
+  "Generate a MAC address"
+  nic = (1..3).map{"%0.2x"%rand(256)}.join(":")
+  return "#{oui}:#{nic}"
+end
+
+cwd = Dir.pwd.split("/").last
+username = ENV['USER']
+domain_prefix = "#{username}_#{cwd}"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "vmx-vcp-01" do |node|
+    guest_name = "vmx-vcp-01"
+    node.vm.box = "juniper/vmx-vcp"
+    node.vm.box_version = "18.2R1.9"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 1
+      domain.memory = 1024
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 1
+      domain.storage :file, :path => "#{username}-#{guest_name}-vmx-vcp-hdb-18.2R1.9-base.qcow2", :size => "196870144", :type => "qcow2", :bus => "ide", :device => "hdb", :allow_existing => true
+      domain.storage :file, :path => "#{username}-#{guest_name}-vmx-vcp-hdc-18.2R1.9-base.img", :size => "16777216", :type => "raw", :bus => "ide", :device => "hdc", :allow_existing => true
+    end
+    add_volumes = [
+      "virsh vol-create-as disk1 #{username}-#{guest_name}-vmx-vcp-hdb-18.2R1.9-base.qcow2 196870144",
+      "sleep 1",
+      "virsh vol-upload --pool disk1 #{username}-#{guest_name}-vmx-vcp-hdb-18.2R1.9-base.qcow2 /opt/vagrant/storage/vmx-vcp-hdb-18.2R1.9-base.qcow2",
+      "sleep 1",
+      "virsh vol-create-as disk1 #{username}-#{guest_name}-vmx-vcp-hdc-18.2R1.9-base.img 16777216",
+      "sleep 1",
+      "virsh vol-upload --pool disk1 #{username}-#{guest_name}-vmx-vcp-hdc-18.2R1.9-base.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img",
+      "sleep 1"
+    ]
+    add_volumes.each do |i|
+      node.trigger.before :up do |trigger|
+        trigger.name = "add-volumes"
+        trigger.info = "Adding Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    delete_volumes = [
+      "virsh vol-delete #{username}-#{guest_name}-vmx-vcp-hdb-18.2R1.9-base.qcow2 disk1",
+      "virsh vol-delete #{username}-#{guest_name}-vmx-vcp-hdc-18.2R1.9-base.img disk1"
+    ]
+    delete_volumes.each do |i|
+      node.trigger.after :destroy do |trigger|
+        trigger.name = "remove-volumes"
+        trigger.info = "Removing Volumes"
+        trigger.run = {inline: i}
+      end
+    end
+
+    node.vm.network :private_network,
+      # vmx-vcp-01-int1 <--> vmx-vfp-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.255.255.1",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.255.255.2",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+  end
+  config.vm.define "vmx-vfp-01" do |node|
+    guest_name = "vmx-vfp-01"
+    node.vm.box = "juniper/vmx-vfp"
+    node.vm.box_version = "18.2R1.9"
+    node.vm.guest = :tinycore
+    node.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+    node.ssh.insert_key = false
+    node.ssh.username = "root"
+
+    node.vm.provider :libvirt do |domain|
+      domain.default_prefix = "#{domain_prefix}"
+      domain.cpus = 3
+      domain.memory = 4096
+      domain.disk_bus = "ide"
+      domain.nic_adapter_count = 11
+    end
+
+    node.vm.network :private_network,
+      # vmx-vfp-01-int1 <--> vmx-vcp-01-int1
+      :mac => "#{get_mac()}",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.255.255.2",
+      :libvirt__tunnel_local_port => 10001,
+      :libvirt__tunnel_ip => "127.255.255.1",
+      :libvirt__tunnel_port => 10001,
+      :libvirt__iface_name => "internal",
+      auto_config: false
+
+  end
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The two triggers in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+ are used to copy
+  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">hdb</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">hdc</i>
+
+  base storage volumes that are required by the VCP prior to build. They also delete to
+  storage volumes when the VCP is destroyed.
+</p>
+
+<p>
+  Now <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+ and confirm you can login to the VCP.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
+
+# output
+
+Bringing machine 'vmx-vcp-1' up with 'libvirt' provider...
+Bringing machine 'vmx-vfp-1' up with 'libvirt' provider...
+==> vmx-vcp-1: Running triggers before up ...
+==> vmx-vfp-1: Checking if box 'juniper/vmx-vfp' is up to date...
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-create-as disk1 vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img 1G
+    vmx-vcp-1: Vol vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img created
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: sleep 1
+==> vmx-vfp-1: Uploading base box image as volume into libvirt storage...
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-upload --pool disk1 vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img /opt/vagrant/storage/vmx-vcp-hdb-18.2R1.9-base.img
+Progress: 36%
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: sleep 1
+==> vmx-vfp-1: Creating image (snapshot of base box volume).
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+==> vmx-vfp-1: Creating domain with the following settings...
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-create-as disk1 vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img 1G
+==> vmx-vfp-1:  -- Name:              vmx-test_vmx-vfp-1
+==> vmx-vfp-1:  -- Domain type:       kvm
+==> vmx-vfp-1:  -- Cpus:              3
+==> vmx-vfp-1:
+==> vmx-vfp-1:  -- Feature:           acpi
+==> vmx-vfp-1:  -- Feature:           apic
+==> vmx-vfp-1:  -- Feature:           pae
+==> vmx-vfp-1:  -- Memory:            4096M
+==> vmx-vfp-1:  -- Management MAC:
+==> vmx-vfp-1:  -- Loader:
+==> vmx-vfp-1:  -- Base box:          juniper/vmx-vfp
+==> vmx-vfp-1:  -- Storage pool:      disk1
+==> vmx-vfp-1:  -- Image:             /disk1/libvirt/images/vmx-test_vmx-vfp-1.img (3G)
+==> vmx-vfp-1:  -- Volume Cache:      default
+==> vmx-vfp-1:  -- Kernel:
+==> vmx-vfp-1:  -- Initrd:
+==> vmx-vfp-1:  -- Graphics Type:     vnc
+==> vmx-vfp-1:  -- Graphics Port:     -1
+==> vmx-vfp-1:  -- Graphics IP:       127.0.0.1
+==> vmx-vfp-1:  -- Graphics Password: Not defined
+==> vmx-vfp-1:  -- Video Type:        cirrus
+==> vmx-vfp-1:  -- Video VRAM:        9216
+==> vmx-vfp-1:  -- Sound Type:
+==> vmx-vfp-1:  -- Keymap:            en-us
+==> vmx-vfp-1:  -- TPM Path:
+==> vmx-vfp-1:  -- INPUT:             type=mouse, bus=ps2
+==> vmx-vfp-1: Creating shared folders metadata...
+==> vmx-vfp-1: Starting domain.
+    vmx-vcp-1: Vol vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img created
+==> vmx-vfp-1: Waiting for domain to get an IP address...
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: sleep 1
+==> vmx-vcp-1: Running trigger: add-volumes...
+==> vmx-vcp-1: Adding Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-upload --pool disk1 vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img
+
+==> vmx-vcp-1: Checking if box 'juniper/vmx-vcp' is up to date...
+==> vmx-vcp-1: Uploading base box image as volume into libvirt storage...
+==> vmx-vcp-1: Creating image (snapshot of base box volume).
+==> vmx-vfp-1: Waiting for SSH to become available...
+==> vmx-vcp-1: Creating domain with the following settings...
+==> vmx-vcp-1:  -- Name:              vmx-test_vmx-vcp-1
+==> vmx-vcp-1:  -- Domain type:       kvm
+==> vmx-vcp-1:  -- Cpus:              1
+==> vmx-vcp-1:
+==> vmx-vcp-1:  -- Feature:           acpi
+==> vmx-vcp-1:  -- Feature:           apic
+==> vmx-vcp-1:  -- Feature:           pae
+==> vmx-vcp-1:  -- Memory:            1024M
+==> vmx-vcp-1:  -- Management MAC:
+==> vmx-vcp-1:  -- Loader:
+==> vmx-vcp-1:  -- Base box:          juniper/vmx-vcp
+==> vmx-vcp-1:  -- Storage pool:      disk1
+==> vmx-vcp-1:  -- Image:             /disk1/libvirt/images/vmx-test_vmx-vcp-1.img (28G)
+==> vmx-vcp-1:  -- Volume Cache:      default
+==> vmx-vcp-1:  -- Kernel:
+==> vmx-vcp-1:  -- Initrd:
+==> vmx-vcp-1:  -- Graphics Type:     vnc
+==> vmx-vcp-1:  -- Graphics Port:     -1
+==> vmx-vcp-1:  -- Graphics IP:       127.0.0.1
+==> vmx-vcp-1:  -- Graphics Password: Not defined
+==> vmx-vcp-1:  -- Video Type:        cirrus
+==> vmx-vcp-1:  -- Video VRAM:        9216
+==> vmx-vcp-1:  -- Sound Type:
+==> vmx-vcp-1:  -- Keymap:            en-us
+==> vmx-vcp-1:  -- TPM Path:
+==> vmx-vcp-1:  -- Disks:         hdb(qcow2,1G), hdc(raw,1G)
+==> vmx-vcp-1:  -- Disk(hdb):     /disk1/libvirt/images/vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img (Remove only manually) Not created - using existed.
+==> vmx-vcp-1:  -- Disk(hdc):     /disk1/libvirt/images/vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img (Remove only manually) Not created - using existed.
+==> vmx-vcp-1:  -- INPUT:             type=mouse, bus=ps2
+==> vmx-vcp-1: Creating shared folders metadata...
+==> vmx-vcp-1: Starting domain.
+==> vmx-vcp-1: Waiting for domain to get an IP address...
+==> vmx-vfp-1: Configuring and enabling network interfaces...
+==> vmx-vcp-1: Waiting for SSH to become available...
+==> vmx-vcp-1: Configuring and enabling network interfaces...</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm you can login to the VCP box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host terminal
+
+vagrant ssh vmx-vcp-1
+Last login: Thu Aug 30 13:18:44 2018 from 192.168.121.1
+--- JUNOS 18.2R1.9 Kernel 64-bit  JNPR-11.0-20180614.6c3f819_buil
+vagrant@vmx>
+
+# Now in vagrant box terminal
+
+vagrant@vmx> show version
+Hostname: vmx
+Model: vmx
+Junos: 18.2R1.9
+JUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]
+JUNOS OS libs [20180614.6c3f819_builder_stable_11]
+JUNOS OS runtime [20180614.6c3f819_builder_stable_11]
+JUNOS OS time zone information [20180614.6c3f819_builder_stable_11]
+JUNOS network stack and utilities [20180628.003405_builder_junos_182_r1]
+JUNOS libs [20180628.003405_builder_junos_182_r1]
+JUNOS OS libs compat32 [20180614.6c3f819_builder_stable_11]
+.
+. &lt;snip&gt;
+.
+JUNOS AppId Services [20180628.003405_builder_junos_182_r1]
+JUNOS Services Application Level Gateways [20180628.003405_builder_junos_182_r1]
+JUNOS Services AACL Container package [20180628.003405_builder_junos_182_r1]
+JUNOS Extension Toolkit [20180628.003405_builder_junos_182_r1]
+JUNOS J-Insight [20180628.003405_builder_junos_182_r1]
+JUNOS Online Documentation [20180628.003405_builder_junos_182_r1]
+JUNOS jail runtime [20180614.6c3f819_builder_stable_11]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    At this point you can add a trial license if you desire. The trial license can be found
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/us/en/dm/free-vmx-trial/E421992502.txt" target=_blank>here</a> and the process for installing it can be found <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/task/installation/vmx-licenses-managing.html" target=_blank>here</a>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<p>
+  We have confirmed we can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> vmx-vfp-1: Removing domain...
+==> vmx-vcp-1: Removing domain...
+==> vmx-vcp-1: Running triggers after destroy ...
+==> vmx-vcp-1: Running trigger: remove-volumes...
+==> vmx-vcp-1: Removing Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-delete vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img disk1
+    vmx-vcp-1: Vol vmx-vcp-1-vmx-vcp-hdb-18.2R1.9.img deleted
+==> vmx-vcp-1: Running trigger: remove-volumes...
+==> vmx-vcp-1: Removing Volumes
+    vmx-vcp-1: Running local: Inline script
+    vmx-vcp-1: virsh vol-delete vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img disk1
+    vmx-vcp-1: Vol vmx-vcp-1-vmx-vcp-hdc-18.2R1.9.img deleted</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>Remove the original KVM images.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f ~/vagrant/boxes/juniper/vmx/*.{img,qcow2}
+rm -rf ~/vagrant/boxes/juniper/vmx/vmx
+
+# output
+
+virsh undefine vmx-vcp
+Domain vmx-vcp has been undefined
+
+virsh undefine vmx-vfp
+Domain vmx-vfp has been undefined</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Remove the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+ network.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-destroy vmx-int
+virsh net-undefine vmx-int</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Juniper vMX is great for use in a lab to test out Juniper related features. They
+  require two VMs but I think that is worth the extra effort to be able to run a vMX for
+  routing based labs instead of vSRX in packet mode.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/vmx14.1/topics/concept/vmx-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/vmx14.1/topics/concept/vmx-overview.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://www.eve-ng.net/documentation/howto-s/109-howto-juniper-vmx-16-x-17-x" target=_blank>http://www.eve-ng.net/documentation/howto-s/109-howto-juniper-vmx-16-x-17-x</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://matt.dinham.net/juniper-vmx-getting-started-guide/" target=_blank>http://matt.dinham.net/juniper-vmx-getting-started-guide/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/us/en/dm/free-vmx-trial/" target=_blank>https://www.juniper.net/us/en/dm/free-vmx-trial/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#vagrant" class="text-xl">vagrant</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#libvirt" class="text-xl">libvirt</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vmx-overview">
+            vMX Overview
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#download">
+            Download
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install">
+            Install
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

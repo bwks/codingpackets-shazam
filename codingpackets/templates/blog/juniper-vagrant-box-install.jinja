@@ -1,0 +1,114 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  This blog covers how to install Juniper boxes for use with Vagrant. This post assumes that you already have a
+  working vagrant install.
+</p>
+
+<h3 id="plugins">Plugins</h3>
+<p>
+  Firstly install the Juniper plugins to enable Vagrant to communicate to the boxes correctly.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant plugin install vagrant-host-shell vagrant-junos
+
+# output
+
+Installing the 'vagrant-host-shell' plugin. This can take a few minutes...
+Installed the plugin 'vagrant-host-shell (0.0.4)'!
+Installing the 'vagrant-junos' plugin. This can take a few minutes...
+Installed the plugin 'vagrant-junos (0.2.1)'!`
+) }}
+
+
+<h3 id="box-install">Box Install</h3>
+<p>
+  Next install the {{ link::e(path="https://app.vagrantup.com/juniper/", description="Juniper") }} boxes that are hosted on vagrant cloud.
+  There are currently four Juniper boxes available.
+</p>
+
+<ul>
+  <li><b>juniper/ffp-12.1X47-D15.4-packetmode</b> SRX firewall in packet mode</li>
+  <li><b>juniper/ffp-12.1X47-D15.4</b> SRX firewall</li>
+  <li><b>juniper/vqfx10k-re</b> QFX 10k Routing Engine</li>
+  <li><b>juniper/vqfx10k-pfe</b> QFX 10k Packet Forwarding Engine</li>
+</ul>
+<p>
+  The vQFX10k has two modes; minimal with just the routing engine and full with both the routing and packet
+  forwarding engines.
+</p>
+
+<p>
+  Use the {{ text::code(text="vagrant box add juniper/&lt;box-name&gt;") }}
+ to add Juniper boxes.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Example
+
+vagrant box add juniper/vqfx10k-re
+
+# output
+
+==> box: Loading metadata for box 'juniper/vqfx10k-re'
+    box: URL: https://vagrantcloud.com/juniper/vqfx10k-re
+==> box: Adding box 'juniper/vqfx10k-re' (v0.2.0) for provider: virtualbox
+    box: Downloading: https://app.vagrantup.com/juniper/boxes/vqfx10k-re/versions/0.2.0/providers/virtualbox.box
+==> box: Successfully added box 'juniper/vqfx10k-re' (v0.2.0) for 'virtualbox'!`
+) }}
+
+<p>
+  Once the box(s) are downloaded you can start using them in your Vagrant environments. Check which boxes
+  are installed with the {{ text::code(text="vagrant box list") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (virtualbox, 3.3.2)
+centos/7                             (virtualbox, 1705.02)
+<span class="hljs-string">juniper/ffp-12.1X47-D15.4            (virtualbox, 0.5.0)</span>
+
+
+
+
+<span class="hljs-string">juniper/ffp-12.1X47-D15.4-packetmode (virtualbox, 0.5.0)</span>
+
+
+
+
+<span class="hljs-string">juniper/vqfx10k-pfe                  (virtualbox, 0.1.0)</span>
+
+
+
+
+<span class="hljs-string">juniper/vqfx10k-re                   (virtualbox, 0.2.0)</span>`
+) }}
+
+
+
+<h3 id="sample-vagrant-files">Sample Vagrant Files</h3>
+<p>The following github repos contain sample Vagrantfiles.</p>
+<p>
+  {{ link::e(path="https://github.com/Juniper/vqfx10k-vagrant", description="vqfx10k") }}<br>
+  {{ link::e(path="https://github.com/JNPRAutomate/vagrant-junos", description="vsrx") }}<br>
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you followed along you will have Juniper Vagrant boxes installed and ready for use. Check out the sample
+  {{ text::emphasize(text="Vagrantfiles") }}
+ in the links above to build out some environments with Juniper and Vagrant.
+</p>
+
+{% endblock page_content %}
