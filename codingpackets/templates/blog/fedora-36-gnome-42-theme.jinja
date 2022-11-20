@@ -1,0 +1,113 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  I recently started using Fedora 36 which uses Gnome 42. 
+  It is really nice out of the box, but I wanted to change 
+  the theme. Gnome 42 requires the themes to be installed in 
+  a different location to prevous versions of Gnome. In this 
+  post I will show you where to install Gnome 42 themes. 
+</p>
+
+<h3 id="theme">Theme</h3>
+<p>
+  In this post I will be installing the 
+    {{ link::e(
+    path="https://github.com/Fausto-Korpsvart/Tokyo-Night-GTK-Theme", 
+    description="Tokyo Night"
+) }}
+   theme. Download the repo as a Zip file, then unzip the file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='unzip Tokyo-Night-GTK-Theme-master.zip'
+) }}
+
+<h4>Theme Directories</h4>
+<p>
+  Depending on the version of GTK themes need to be placed 
+  in the correct directory. Place the themes in the following 
+  directories.
+</p>
+<ul>
+  <li>
+    GTK3 - {{ text::emphasize(text="~/.themes/") }}
+.
+  </li>
+  <li>
+    GTK4 - {{ text::emphasize(text="~/.config/gtk-4.0/") }}
+.
+  </li>
+</ul>
+
+<p>
+  Create the required directories.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir ~/.themes
+mkdir -p ~/.config/gtk-4.0/'
+) }}
+
+<h4>Install Theme</h4>
+<p>
+  Move the GTK3 theme to the {{ text::emphasize(text="~/.themes/") }}
+ 
+  directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cp -r ~/Downloads/Tokyo-Night-GTK-Theme-mthemes go in theaster/themes/Tokyonight* ~/.themes'
+) }}
+
+<p>
+  Move the GTK4 theme to the {{ text::emphasize(text="~/.config/gtk-4.0/") }}
+ 
+  directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cp -r Tokyo-Night-GTK-Theme-master/themes/Gnome42/* ~/.config/gtk-4.0/'
+) }}
+
+<p>
+  Now rename the desired GTK4 theme to {{ text::emphasize(text="gtk.css") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cp ~/.config/gtk-4.0/gtk-Tokyonight-Dark-B.css ~/.config/gtk-4.0/gtk.css'
+) }}
+
+<h4>Select Theme</h4>
+<p>
+  GTK3 themes can be selected with Gnome tweaks application. The GTK4 theme 
+  will be automatically activated.
+</p>
+
+{{ text::note_block(text='
+    Any open GTK4 windows will need to be restarted to activate 
+    the theme.
+') }}
+
+<p>
+  And thats it! Shinny new themes for Fedora 36 and Gnome 42 🥳
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to install themes for fedora 36 with Gnome 
+  42. Nothing left to do now except enjoy!
+</p>
+{% endblock page_content %}

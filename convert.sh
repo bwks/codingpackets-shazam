@@ -1,7 +1,7 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/kali-linux-cloud-init-image.jinja \
+codingpackets/templates/blog/network-lab-base.jinja \
 "
 
 for FILENAME in $files; do
@@ -27,6 +27,10 @@ for FILENAME in $files; do
   sed -i -e 's/bi\.boxedImage(/image::boxed(path=/g' $FILENAME
 
   sed -i -e 's/libvirt-console-exit.njk/libvirt-console-exit.jinja/g' $FILENAME
+
+  sed -i -e 's/ipaddress-nh/font-mono/g' $FILENAME
+
+  sed -i -e 's/class="ipaddress"/class="font-mono"/g' $FILENAME
 
   sed -i -r -e 's/<span class="hljs-comment">(.*?)<\/span>/\1/g' $FILENAME
 

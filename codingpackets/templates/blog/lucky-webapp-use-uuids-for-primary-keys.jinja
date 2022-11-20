@@ -1,0 +1,321 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  By default, new Lucky projects use the 
+  {{ text::emphasize(text="Int64") }}
+ 
+  type for primary keys.
+  In this post I will cover the process of changing the
+  Lucky database primary keys type from an 
+  {{ text::emphasize(text="Int64") }}
+ to a 
+  {{ text::emphasize(text="UUID") }}
+.
+</p>
+
+<h3 id="software-used">Software Used</h3>
+<p>
+  The following software versions are used in this 
+  post.
+</p>
+<ul>
+  <li>Crystal - 1.1.1</li>
+  <li>Lucky - 0.28.0</li>
+  <li>PostgreSQL - 13.4</li>
+</ul>
+
+<h3 id="credits">Credits</h3>
+<p>
+  <a href="https://stephencodes.com/blog/switching-lucky-to-uuids/">
+  This</a> 
+  excellent post by Stephen Dolan outlines most of the 
+  process and without his guide, I would not known 
+  how to do this. There are a couple of extra steps that 
+  I needed to also complete which I assume was due to 
+  an earlier version of Lucky used in his post.
+</p>
+
+{{ text::warning_block(text='
+<p>
+  This post assumes you are working with a newly initialized 
+  app, it does not cover migrating existing data. 
+  At the end of this post I am completely resetting 
+  the database.
+</p>
+') }}
+
+<p>
+  Create a migration file to enable the 
+  {{ text::emphasize(text="pgcrypto") }}
+ 
+  extension.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='touch db/migrations/00000000000001_enable_pgcrypto.cr'
+) }}
+
+<p> 
+  Add the following contents to the 
+  {{ text::emphasize(text="db/migrations/00000000000001_enable_pgcrypto.cr") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='class EnablePgcrypto::V00000000000001 < Avram::Migrator::Migration::V1
+  def migrate
+    execute "CREATE EXTENSION IF NOT EXISTS pgcrypto"
+  end
+
+  def rollback
+    execute "DROP EXTENSION pgcrypto"
+  end
+end'
+) }}
+
+<p>
+  Rename the user migration file so the migration 
+  happens after the 
+  {{ text::emphasize(text="pgcrypto") }}
+ 
+  migration step.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mv db/migrations/00000000000001_create_users.cr db/migrations/00000000000002_create_users.cr'
+) }}
+
+<p>
+  Update the 
+  {{ text::emphasize(text="db/migrations/00000000000002_create_users.cr") }}
+
+  file to use the 
+  {{ text::emphasize(text="UUID") }}
+ type and also 
+  rename the class.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# db/migrations/00000000000002_create_users.cr
+# class CreateUsers::V00000000000001 < Avram::Migrator::Migration::V1
+class CreateUsers::V00000000000002 < Avram::Migrator::Migration::V1
+  def migrate
+    enable_extension "citext"
+
+    create table_for(User) do
+      # primary_key id : Int64
+      primary_key id : UUID
+      add_timestamps
+      add email : String, unique: true, case_sensitive: false
+      add encrypted_password : String
+    end
+  end
+
+  def rollback
+    drop table_for(User)
+    disable_extension "citext"
+  end
+end'
+) }}
+
+<p>
+  Update the 
+  {{ text::emphasize(text="src/models/base_model.cr") }}
+
+  file to use the {{ text::emphasize(text="UUID") }}
+ 
+  type for the 
+  {{ text::emphasize(text="primary_key") }}
+ field on 
+  all tables. Other default parameters such as 
+  {{ text::emphasize(text="timestamps") }}
+
+  can also be set here. 
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/models/base_model.cr
+abstract class BaseModel < Avram::Model
+  # Add this macro
+  macro default_columns
+    primary_key id : UUID
+    timestamps
+  end
+  def self.database : Avram::Database.class
+    AppDatabase
+  end
+end'
+) }}
+
+
+<p>
+  Update the 
+  {{ text::emphasize(text="src/pages/password_resets/new_page.cr") }}
+
+  file to use the {{ text::emphasize(text="UUID") }}
+ 
+  type for the 
+  {{ text::emphasize(text="user_id") }}
+ field.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/pages/password_resets/new_page.cr
+class PasswordResets::NewPage < AuthLayout
+  needs operation : ResetPassword
+  # needs user_id : Int64
+  needs user_id : UUID
+
+  def content
+    h1 "Reset your password"
+    render_password_reset_form(@operation)
+  end
+
+  private def render_password_reset_form(op)
+    form_for PasswordResets::Create.with(@user_id) do
+      mount Shared::Field, attribute: op.password, label_text: "Password", &.password_input(autofocus: "true")
+      mount Shared::Field, attribute: op.password_confirmation, label_text: "Confirm Password", &.password_input
+
+      submit "Update Password", flow_id: "update-password-button"
+    end
+  end
+end'
+) }}
+
+<p>
+  Update the 
+  {{ text::emphasize(text="src/actions/password_resets/create.cr") }}
+
+  file to use the {{ text::emphasize(text="UUID") }}
+ 
+  type for the 
+  {{ text::emphasize(text="user_id") }}
+ field.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/actions/password_resets/create.cr
+class PasswordResets::Create < BrowserAction
+  include Auth::PasswordResets::Base
+  include Auth::PasswordResets::TokenFromSession
+
+  post "/password_resets/:user_id" do
+    ResetPassword.update(user, params) do |operation, user|
+      if operation.saved?
+        session.delete(:password_reset_token)
+        sign_in user
+        flash.success = "Your password has been reset"
+        redirect to: Home::Index
+      else
+        # html NewPage, operation: operation, user_id: user_id.to_i64
+        html NewPage, operation: operation, user_id: UUID.new(user_id)
+      end
+    end
+  end
+end'
+) }}
+
+<p>
+  Update the 
+  {{ text::emphasize(text="src/actions/password_resets/edit.cr") }}
+
+  file to use the {{ text::emphasize(text="UUID") }}
+ 
+  type for the 
+  {{ text::emphasize(text="user_id") }}
+ field.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/actions/password_resets/edit.cr
+class PasswordResets::Edit < BrowserAction
+  include Auth::PasswordResets::Base
+  include Auth::PasswordResets::TokenFromSession
+
+  get "/password_resets/:user_id/edit" do
+    # html NewPage, operation: ResetPassword.new, user_id: user_id.to_i64
+    html NewPage, operation: ResetPassword.new, user_id: UUID.new(user_id)
+  end
+end'
+) }}
+
+<p>
+  Update the 
+  {{ text::emphasize(text="src/models/user_token.cr") }}
+
+  file to return a {{ text::emphasize(text="UUID") }}
+ from the  
+  {{ text::emphasize(text="user_id") }}
+ param. Also 
+  update the return type to {{ text::emphasize(text="UUID") }}
+.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/models/user_token.cr
+# Generates and decodes JSON Web Tokens for Authenticating users.
+class UserToken
+  Habitat.create { setting stubbed_token : String? }
+  ALGORITHM = JWT::Algorithm::HS256
+
+  def self.generate(user : User) : String
+    payload = {"user_id" => user.id}
+
+    settings.stubbed_token || create_token(payload)
+  end
+
+  def self.create_token(payload)
+    JWT.encode(payload, Lucky::Server.settings.secret_key_base, ALGORITHM)
+  end
+
+  # def self.decode_user_id(token : String) : Int64?
+  def self.decode_user_id(token : String) : UUID?
+    payload, _header = JWT.decode(token, Lucky::Server.settings.secret_key_base, ALGORITHM)
+    # payload["user_id"].to_s.to_i64
+    UUID.new(payload["user_id"].to_s)
+  rescue e : JWT::Error
+    Lucky::Log.dexter.error { {jwt_decode_error: e.message} }
+    nil
+  end
+
+  # Used in tests to return a fake token to test against.
+  def self.stub_token(token : String)
+    temp_config(stubbed_token: token) do
+      yield
+    end
+  end
+end'
+) }}
+
+<p>
+  Once that is completed, setup the DB and run the 
+  migrations with the {{ text::code(text="lucky db.reset") }}
+ 
+  cli command.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we setup UUIDs for the primary key 
+  field on a postgres database for a Lucky webapp.
+</p>
+
+{% endblock page_content %}

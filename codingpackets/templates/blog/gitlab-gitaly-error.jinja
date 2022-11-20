@@ -1,0 +1,145 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  After a power failure of the instance hosting my gitlab server I began
+  getting errors when trying to access existing projects (404) or create
+  new projects (503) from the web interface. I could see the list of projects
+  but if I clicked on the link to any of them I would get a 404 errors.
+  Likewise, if I tried to create a new project I would end up with a 503
+  error.
+</p>
+
+<p>
+  My Gitlab instance is running on CentOS 7 using the following software versions.
+</p>
+<ul>
+  <li><b>GitLab</b> 11.11.3</li>
+  <li><b>GitLab Shell</b> 9.1.0</li>
+  <li><b>GitLab Workhorse</b> v8.7.0</li>
+  <li><b>GitLab API</b> v4</li>
+  <li><b>Ruby</b> 2.5.3p105</li>
+  <li><b>Rails</b> 5.1.7</li>
+  <li><b>PostgreSQL</b> 9.6.11</li>
+</ul>
+
+<h3 id="the-problem">The Problem</h3>
+<p>
+  Looking at the {{ text::emphasize(text="/var/log/gitlab/gitlab-rails/production.log") }}
+
+  I could see errors related to the 404 and 503 errors I was getting in the web interface.
+  Initially I thought the repos may have either been wiped or the database was
+  corrupted.
+</p>
+<p>
+  Looking in the {{ text::emphasize(text="/var/opt/gitlab/git-data/repositories/") }}
+
+  directory I could see all my repos still in tact <i>phew</i>!
+</p>
+<p>
+  Ok time to check the status of the Gitlab services. Running the {{ text::code(text="gitlab-rake gitlab:check") }}
+
+  command revealed that there was an error with the {{ text::emphasize(text="Gitaly") }}
+
+  service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo gitlab-rake gitlab:check
+
+# output
+
+Checking GitLab subtasks ...
+
+Checking GitLab Shell ...
+
+GitLab Shell: ... GitLab Shell version >= 9.1.0 ? ... OK (9.1.0)
+Running /opt/gitlab/embedded/service/gitlab-shell/bin/check
+Check GitLab API access: OK
+Redis available via internal API: OK
+
+Access to /var/opt/gitlab/.ssh/authorized_keys: OK
+gitlab-shell self-check successful
+
+Checking GitLab Shell ... Finished
+
+Checking Gitaly ...
+
+<span class="hljs-literal">Gitaly: ... default ... FAIL: 14:Connect Failed</span>
+
+
+Checking Gitaly ... Finished
+
+Checking Sidekiq ...
+.
+.
+.
+&lt;snip&gt;`
+) }}
+
+
+<p>
+  Cool. WTF is Gitaly? I went on a {{ link::e(path="https://duckduckgo.com/", description="duck hunt") }}
+  and to my surprise found no references to burly Italian men and beautiful Italian
+  women doing a git merge :/
+</p>
+<p>
+  I did find the documentation {{ link::e(path="https://docs.gitlab.com/ee/administration/gitaly/", description="page") }}
+  which states:
+</p>
+
+{{ text::quote_block(attribution="https://docs.gitlab.com/ee/administration/gitaly/", 
+  text="Gitaly is the service that provides high-level RPC access to Git repositories.
+    Without it, no other components can read or write Git data. GitLab components that access
+    Git repositories (gitlab-rails, gitlab-shell, gitlab-workhorse) act as clients to Gitaly.
+    End users do not have direct access to Gitaly.
+") }}
+
+<h3 id="the-fix">The Fix</h3>
+<p>
+  More {{ link::e(path="https://duckduckgo.com/", description="duck hunting") }} for the error
+  {{ text::emphasize(text="Gitaly: ... default ... FAIL: 14:Connect Failed") }}
+
+  lead me to this
+  {{ link::e(path="https://forum.gitlab.com/t/gitaly-fail-14-connect-failed/26137", description="page") }}
+  that looked similar to the issue I was facing.
+</p>
+
+<p>
+  Sure enough, looking at the {{ text::emphasize(text="/var/log/gitlab/gitaly/current") }}
+
+  directory revealed the same errors as the issue linked above.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tail /var/log/gitlab/gitaly/current
+
+# output
+
+2019-06-22_09:48:35.16733 time="2019-06-22T09:48:35Z" level=fatal msg="find gitaly" error="strconv.Atoi: parsing \"\": invalid syntax" wrapper=16691
+2019-06-22_09:48:36.17871 time="2019-06-22T09:48:36Z" level=fatal msg="find gitaly" error="strconv.Atoi: parsing \"\": invalid syntax" wrapper=16706
+2019-06-22_09:48:37.19001 time="2019-06-22T09:48:37Z" level=fatal msg="find gitaly" error="strconv.Atoi: parsing \"\": invalid syntax" wrapper=16721`
+) }}
+
+
+<p>
+  After checking the {{ text::emphasize(text="/var/opt/gitlab/gitaly/gitaly.pid") }}
+
+  I found that it was empty so I {{ text::code(text="rm") }}
+ the file and restarted the Gitlab
+  services with the {{ text::code(text="sudo gitlab-ctl restart") }}
+ command. After that the
+  {{ text::code(text="gitlab-rake gitlab:check") }}
+ came back all green.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Success! I am now able to access existing projects and create new projects without
+  getting any errors. Problem solved.
+</p>
+{% endblock page_content %}

@@ -1,0 +1,366 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Most of the labs I build are for learning purposes and I find that I
+  burn a lot of time doing boilerplate tasks and not actually
+  working on the feature(s) im trying to test.
+</p>
+<p>
+  I wanted to build a lab where I could chop and change device types
+  from the same vendor ie: Juniper vSRX and vMX and/or devices
+  from different vendors ie: Juniper and Arista without having
+  to spend any time updating the lab diagram with the changes in interface
+  numbering and device icons.
+</p>
+<p>
+  The lab should also be suitable for a hand full of devices but also
+  able to scale out to a large topolgy (for a lab).
+</p>
+<p>
+  Finally I wanted to have an easy to grok IP addressing and VLAN scheme
+  with the base configs built and applied with code.
+</p>
+<p>
+  This post is a record of my effort making a generic base lab dream a reality.
+</p>
+
+<h3 id="goals">Goals</h3>
+<ul>
+  <li>
+    100% virtualized and managed with Vagrant.
+  </li>
+  <li>
+    Vendor neutral icons.
+  </li>
+  <li>
+    Vendor neutral interface numbering.
+  </li>
+  <li>
+    Base IP addressing and VLANs pre-configured with code.
+  </li>
+  <li>
+    Base configuration applied with automation.
+  </li>
+  <li>
+    All code version controlled with git.
+  </li>
+</ul>
+
+<h3 id="pods">Pods</h3>
+<p>
+  The lab can scale up to four pods with each pod contains the following devices.
+</p>
+<ul>
+  <li>8 routers</li>
+  <li>1 switch</li>
+</ul>
+<p>
+  This configuration allows me to build a lab with 4x Switches and 32x Routers.
+</p>
+
+<h3 id="interface-numbering">Interface Numbering</h3>
+<p>
+  Interface numbering is not consistent across vendors and even between
+  device models from the same vendor. Below is an example of the first
+  data interface from a sample of devices.
+</p>
+
+{{ table::default(
+  header=["Device Type", "Interface Numbering"],
+  rows=[
+  "Juniper vSRX/vMX | ge-0/0/0",
+  "Juniper vQFX | xe-0/0/0",
+  "Cisco IOSv | gig0/1",
+  "Cisco IOSXRv | gig0/0/0/0",
+  "Arista vEOS | eth1",
+  "Cumulus VX | swp1",
+  ],
+) }}
+
+
+
+<p>
+  Since my labs are managed with Vagrant the first interface of a VM will
+  be reserved for Vagrant communication purposes. Some devices have a dedicated
+  management port, some such as the IOSv image do not and burn the first data
+  port for management.
+</p>
+<p>
+  To meet the requirement of not having to update the interfaces on the
+  diagram this means I cannot use interface 0. Therefore the lab skips any
+  interface starting with 0 and start the connections at interface 1.
+</p>
+<p>
+  In the lab the topology the interface port numbers align to the various
+  interface naming conventions for each vendor/device type, for example:
+  Interface 1 on a Juniper vMX would be ge-0/0/1 and on an Arista vEOS
+  it would be eth1.
+</p>
+
+<h3 id="topology">Topology</h3>
+<h4><b>Routers</b></h4>
+<p>
+  Routers are connected in a full mesh. On each router the port number of an
+  interface is connected to the router of the same number. For example interface
+  1 on each router connects to R1, interface 2 connects to R2.
+</p>
+
+{{ image::boxed(path="blog/network-lab-base/lab-1.svg", width="900px") }}
+
+
+<h4><b>Switches</b></h4>
+<p>
+  Each router also has a link to the pods switch on interface 9. This link is
+  a trunk and connectivity to any router in any pod can be achieved by
+  creating sub-interfaces and trunking VLANs.
+</p>
+{{ image::boxed(path="blog/network-lab-base/lab-2.svg", width="900px") }}
+
+<p>
+  Inter-pod switches are also connected in a full mesh. Links between the pod
+  switches are configured as trunks with all VLANs allowed. As with the routers
+  On each switch the port number of an interface is connected to the switch of
+  the same number.
+</p>
+
+{{ image::boxed(path="blog/network-lab-base/lab-3.svg", width="900px") }}
+
+<h3 id="device-naming">Device Naming</h3>
+<p>
+  Devices are named according to the following standard.
+</p>
+
+{{ table::default(
+  header=["Device"],
+  rows=[
+  '<span class="font-mono">P&lt;local-pod&gt;&lt;device-type&gt;&lt;local-router&gt;/24</span>',
+  ],
+) }}
+
+<p>
+  For example router 1 in pod 1 is named {{ text::emphasize(text="P1R1") }}
+ the
+  switch in pod1 is named {{ text::emphasize(text="P1SW1") }}
+
+</p>
+
+<h3 id="subnets">Subnets</h3>
+<p>
+  The subnets should be easy to grock without having to keep looking
+  at the diagram to see what network is assigned between hosts and
+  what ip is assigned to each interface.
+</p>
+<p>
+  IPv4 addresses with be allocated from the RFC1918 <span class="ipaddress">10.0.0.0/8</span>
+
+
+  range. IPv6 addresses with be allocated from the RFC4193 <span class="ipaddress">FC00::/7</span>
+
+
+  range.
+</p>
+<p>
+  Point-to-Point interface subnets will be allocated a
+  {{ text::emphasize(text="/24") }}
+ for IPv4 addresses and a
+  {{ text::emphasize(text="/64") }}
+ for IPv6 addresses.
+</p>
+
+<H3 id="point-to-point-interfaces">Point-to-point Interfaces</H3>
+<p>
+  Point-to-point Interfaces 1-8 directly connect to each router within a pod.
+</p>
+<h4><b>Intra-pod Point-to-point Interface Subnet</b></h4>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>IPv4</b> | <span class="font-mono">10.&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span>',
+    '<b>IPv6</b> | <span class="font-mono">fd00:10:&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span>',
+  ],
+) }}
+
+<h4><b>Example Subnet Allocation</b></h4>
+<p>
+  Below is an example subnet and IP address allocation between P1R1
+  and P1R7.
+</p>
+
+{{ table::default(
+  header=["", "IPv4", "IPv6", "Interface"],
+  rows=[
+    '<b>Network</b> | <span class="font-mono">10.1.17.0/24</span> | <span class="font-mono">fd00:10:1:17::/64</span> | <span class="font-mono"></span>',
+    '<b>P1R1</b> | <span class="font-mono">10.1.17.1/24</span> | <span class="font-mono">fd00:10:1:17::1/64</span> | <span class="font-mono">7</span>',
+    '<b>P1R7</b> | <span class="font-mono">10.1.17.7/24</span> | <span class="font-mono">fd00:10:1:17::7/64</span> | <span class="font-mono">1</span>',
+  ],
+) }}
+
+
+<h3 id="point-to-point-sub-interfaces">Point-to-point Sub-interfaces</h3>
+<p>
+  Interface 9 connects to a switch within a pod and sub-interfaces
+  are used to create logical point-to-point connections between devices.
+</p>
+<h3 id="vlans">VLANs</h3>
+<p>
+  VLAN numbering follows a similar pattern to the IP addressing schema.
+</p>
+<h4><b>Intra-pod Sub-interface Subnet</b></h4>
+<p>
+  Interface 9.XXX
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>IPv4</b> | <span class="font-mono">10.&lt;local-pod&gt;&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span>',
+    '<b>IPv6</b> | <span class="font-mono">fd00:10:&lt;local-pod&gt;&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span>',
+    '<b>VLAN</b> | <span class="font-mono">&lt;pod-number&gt;&lt;low-router&gt;&lt;high-router&gt;</span>',
+  ],
+) }}
+
+<p>
+  Below is an example subnet and IP address and VLAN allocation between P1R1
+  and P1R7.
+</p>
+
+{{ table::default(
+  header=["", "IPv4", "IPv6"],
+  rows=[
+    '<b>Network</b> | <span class="font-mono">10.11.17.0/24</span> | <span class="font-mono">fd00:10:11:17::/64</span>',
+    '<b>P1R1</b> | <span class="font-mono">10.11.17.1/24</span> | <span class="font-mono">fd00:10:11:17::1/64</span>',
+    '<b>P1R7</b> | <span class="font-mono">10.11.17.7/24</span> | <span class="font-mono">fd00:10:11:17::7/64</span>',
+    '<b>Interface</b> | <span class="font-mono">9.117</span> | <span class="font-mono">9.117</span>',
+    '<b>VLAN</b> | <span class="font-mono">117</span> | <span class="font-mono">117</span>',
+  ],
+) }}
+
+<h4><b>Inter-pod Sub-interface Subnet</b></h4>
+<p>
+  Interface 9.XXXX
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>IPv4</b> | <span class="font-mono">10.&lt;low-pod&gt;&lt;high-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-pod&gt;&lt;local-router&gt;/24</span>',
+    '<b>IPv6</b> | <span class="font-mono">fd00:10:&lt;low-pod&gt;&lt;high-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-pod&gt;&lt;local-router&gt;/64</span>',
+    '<b>VLAN</b> | <span class="font-mono">&lt;low-pod&gt;&lt;high-pod&gt;&lt;low-router&gt;&lt;high-router&gt;</span>',
+  ],
+) }}
+
+<p>
+  Below is an example subnet and IP address and VLAN allocation between P1R1
+  and P3R5.
+</p>
+
+{{ table::default(
+  header=["", "IPv4", "IPv6"],
+  rows=[
+    '<b>Network</b> | <span class="font-mono">10.13.15.0/24</span> | <span class="font-mono">fd00:10:13:15::/64</span>',
+    '<b>P1R1</b> | <span class="font-mono">10.13.15.11/24</span> | <span class="font-mono">fd00:10:13:15::11/64</span>',
+    '<b>P3R5</b> | <span class="font-mono">10.13.15.57/24</span> | <span class="font-mono">fd00:10:13:15::57/64</span>',
+    '<b>Interface</b> | <span class="font-mono">9.1315</span> | <span class="font-mono">9.1315</span>',
+    '<b>VLAN</b> | <span class="font-mono">1315</span> | <span class="font-mono">1315</span>',
+  ],
+) }}
+
+<h3 id="loopbacks">Loopbacks</h3>
+<p>
+  Each router will have an IPv4 and IPv6 loopback assigned.
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>IPv4</b> | <span class="font-mono">10.255.&lt;local-pod&gt;.&lt;local-router&gt;/24</span>',
+    '<b>IPv6</b> | <span class="font-mono">fd00:10:255:&lt;local-pod&gt;::&lt;local-router&gt;/64</span>',
+  ],
+) }}
+
+
+<p>
+  Below is an example IP address allocation for P1R1.
+</p>
+
+{{ table::default(
+  header=["", "IPv4", "IPv6"],
+  rows=[
+    '<b>P1R1</b> | <span class="font-mono">10.255.1.1/32</span> | <span class="font-mono">fd00:10:255:1::1/128</span>',
+  ],
+) }}
+
+<h3 id="non-p2p-links">Non-P2P links</h3>
+<p>
+  Networks and VLANs with more than 2 hosts for example a DMVPN overlay
+  network will be assigned on a case by case basis and documented within
+  that particular lab.
+</p>
+
+<h3 id="bgp-autonomous-system-numbering">BGP Autonomous System Numbering</h3>
+<p>
+  Pod level iBGP AS
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>Autonomous System</b> | <span class="font-mono">65&lt;local-pod&gt;00</span>',
+  ],
+) }}
+
+
+<p>
+  Below is an example iBGP AS allocation for Pod 1.
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>Pod 1</b> | <span class="font-mono">65100</span>',
+  ],
+) }}
+
+<p>
+  Router level eBGP AS
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>Autonomous System</b> | <span class="font-mono">65&lt;local-pod&gt;0&lt;local-router&gt;</span>',
+  ],
+) }}
+
+<p>
+  Below is an example eBGP AS allocation for P1R1.
+</p>
+
+{{ table::default(
+  header=[],
+  rows=[
+    '<b>P1R1</b> | <span class="font-mono">65101</span>',
+  ],
+) }}
+
+
+<h3 id="code">Code</h3>
+<p>
+  This code for this lab is hosted on github and can be found
+  {{ link::e(path="https://github.com/bwks/labs", description="here") }}.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Labs are a great learning tool, I have been using this base topology
+  for a couple of weeks tweaking it here and there and it's in a state
+  that is working quite well for me. This is a half documentation half
+  sharing post so feel free to use the lab if you think it will be
+  useful.
+</p>
+
+{% endblock page_content %}

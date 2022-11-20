@@ -1,0 +1,1536 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Network Lab Base</h1>
+  <div class="">
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: 18th of February 2019
+      </p>
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 9th of January 2019
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Most of the labs I build are for learning purposes and I find that I
+  burn a lot of time doing boilerplate tasks and not actually
+  working on the feature(s) im trying to test.
+</p>
+<p>
+  I wanted to build a lab where I could chop and change device types
+  from the same vendor ie: Juniper vSRX and vMX and/or devices
+  from different vendors ie: Juniper and Arista without having
+  to spend any time updating the lab diagram with the changes in interface
+  numbering and device icons.
+</p>
+<p>
+  The lab should also be suitable for a hand full of devices but also
+  able to scale out to a large topolgy (for a lab).
+</p>
+<p>
+  Finally I wanted to have an easy to grok IP addressing and VLAN scheme
+  with the base configs built and applied with code.
+</p>
+<p>
+  This post is a record of my effort making a generic base lab dream a reality.
+</p>
+
+<h3 id="goals">Goals</h3>
+<ul>
+  <li>
+    100% virtualized and managed with Vagrant.
+  </li>
+  <li>
+    Vendor neutral icons.
+  </li>
+  <li>
+    Vendor neutral interface numbering.
+  </li>
+  <li>
+    Base IP addressing and VLANs pre-configured with code.
+  </li>
+  <li>
+    Base configuration applied with automation.
+  </li>
+  <li>
+    All code version controlled with git.
+  </li>
+</ul>
+
+<h3 id="pods">Pods</h3>
+<p>
+  The lab can scale up to four pods with each pod contains the following devices.
+</p>
+<ul>
+  <li>8 routers</li>
+  <li>1 switch</li>
+</ul>
+<p>
+  This configuration allows me to build a lab with 4x Switches and 32x Routers.
+</p>
+
+<h3 id="interface-numbering">Interface Numbering</h3>
+<p>
+  Interface numbering is not consistent across vendors and even between
+  device models from the same vendor. Below is an example of the first
+  data interface from a sample of devices.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Device Type</th>
+        
+          <th class="pt-1 pb-2 px-2">Interface Numbering</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Juniper vSRX/vMX </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> ge-0/0/0</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Juniper vQFX </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> xe-0/0/0</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Cisco IOSv </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> gig0/1</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Cisco IOSXRv </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> gig0/0/0/0</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Arista vEOS </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> eth1</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Cumulus VX </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> swp1</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<p>
+  Since my labs are managed with Vagrant the first interface of a VM will
+  be reserved for Vagrant communication purposes. Some devices have a dedicated
+  management port, some such as the IOSv image do not and burn the first data
+  port for management.
+</p>
+<p>
+  To meet the requirement of not having to update the interfaces on the
+  diagram this means I cannot use interface 0. Therefore the lab skips any
+  interface starting with 0 and start the connections at interface 1.
+</p>
+<p>
+  In the lab the topology the interface port numbers align to the various
+  interface naming conventions for each vendor/device type, for example:
+  Interface 1 on a Juniper vMX would be ge-0/0/1 and on an Arista vEOS
+  it would be eth1.
+</p>
+
+<h3 id="topology">Topology</h3>
+<h4><b>Routers</b></h4>
+<p>
+  Routers are connected in a full mesh. On each router the port number of an
+  interface is connected to the router of the same number. For example interface
+  1 on each router connects to R1, interface 2 connects to R2.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/network-lab-base/lab-1.svg" alt="blog/network-lab-base/lab-1.svg">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h4><b>Switches</b></h4>
+<p>
+  Each router also has a link to the pods switch on interface 9. This link is
+  a trunk and connectivity to any router in any pod can be achieved by
+  creating sub-interfaces and trunking VLANs.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/network-lab-base/lab-2.svg" alt="blog/network-lab-base/lab-2.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Inter-pod switches are also connected in a full mesh. Links between the pod
+  switches are configured as trunks with all VLANs allowed. As with the routers
+  On each switch the port number of an interface is connected to the switch of
+  the same number.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/network-lab-base/lab-3.svg" alt="blog/network-lab-base/lab-3.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="device-naming">Device Naming</h3>
+<p>
+  Devices are named according to the following standard.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Device</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><span class="font-mono">P&lt;local-pod&gt;&lt;device-type&gt;&lt;local-router&gt;/24</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  For example router 1 in pod 1 is named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">P1R1</i>
+ the
+  switch in pod1 is named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">P1SW1</i>
+
+</p>
+
+<h3 id="subnets">Subnets</h3>
+<p>
+  The subnets should be easy to grock without having to keep looking
+  at the diagram to see what network is assigned between hosts and
+  what ip is assigned to each interface.
+</p>
+<p>
+  IPv4 addresses with be allocated from the RFC1918 <span class="ipaddress">10.0.0.0/8</span>
+
+
+  range. IPv6 addresses with be allocated from the RFC4193 <span class="ipaddress">FC00::/7</span>
+
+
+  range.
+</p>
+<p>
+  Point-to-Point interface subnets will be allocated a
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/24</i>
+ for IPv4 addresses and a
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/64</i>
+ for IPv6 addresses.
+</p>
+
+<H3 id="point-to-point-interfaces">Point-to-point Interfaces</H3>
+<p>
+  Point-to-point Interfaces 1-8 directly connect to each router within a pod.
+</p>
+<h4><b>Intra-pod Point-to-point Interface Subnet</b></h4>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv4</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">10.&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv6</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h4><b>Example Subnet Allocation</b></h4>
+<p>
+  Below is an example subnet and IP address allocation between P1R1
+  and P1R7.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+          <th class="pt-1 pb-2 px-2">IPv4</th>
+        
+          <th class="pt-1 pb-2 px-2">IPv6</th>
+        
+          <th class="pt-1 pb-2 px-2">Interface</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Network</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.1.17.0/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">fd00:10:1:17::/64</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono"></span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.1.17.1/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">fd00:10:1:17::1/64</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">7</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R7</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.1.17.7/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">fd00:10:1:17::7/64</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">1</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<h3 id="point-to-point-sub-interfaces">Point-to-point Sub-interfaces</h3>
+<p>
+  Interface 9 connects to a switch within a pod and sub-interfaces
+  are used to create logical point-to-point connections between devices.
+</p>
+<h3 id="vlans">VLANs</h3>
+<p>
+  VLAN numbering follows a similar pattern to the IP addressing schema.
+</p>
+<h4><b>Intra-pod Sub-interface Subnet</b></h4>
+<p>
+  Interface 9.XXX
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv4</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">10.&lt;local-pod&gt;&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv6</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:&lt;local-pod&gt;&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>VLAN</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">&lt;pod-number&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  Below is an example subnet and IP address and VLAN allocation between P1R1
+  and P1R7.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+          <th class="pt-1 pb-2 px-2">IPv4</th>
+        
+          <th class="pt-1 pb-2 px-2">IPv6</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Network</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.11.17.0/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:11:17::/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.11.17.1/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:11:17::1/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R7</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.11.17.7/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:11:17::7/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Interface</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">9.117</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">9.117</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>VLAN</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">117</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">117</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h4><b>Inter-pod Sub-interface Subnet</b></h4>
+<p>
+  Interface 9.XXXX
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv4</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">10.&lt;low-pod&gt;&lt;high-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-pod&gt;&lt;local-router&gt;/24</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv6</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:&lt;low-pod&gt;&lt;high-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-pod&gt;&lt;local-router&gt;/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>VLAN</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">&lt;low-pod&gt;&lt;high-pod&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  Below is an example subnet and IP address and VLAN allocation between P1R1
+  and P3R5.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+          <th class="pt-1 pb-2 px-2">IPv4</th>
+        
+          <th class="pt-1 pb-2 px-2">IPv6</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Network</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.13.15.0/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:13:15::/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.13.15.11/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:13:15::11/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P3R5</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.13.15.57/24</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:13:15::57/64</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Interface</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">9.1315</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">9.1315</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>VLAN</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">1315</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">1315</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h3 id="loopbacks">Loopbacks</h3>
+<p>
+  Each router will have an IPv4 and IPv6 loopback assigned.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv4</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">10.255.&lt;local-pod&gt;.&lt;local-router&gt;/24</span></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>IPv6</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:255:&lt;local-pod&gt;::&lt;local-router&gt;/64</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<p>
+  Below is an example IP address allocation for P1R1.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+          <th class="pt-1 pb-2 px-2">IPv4</th>
+        
+          <th class="pt-1 pb-2 px-2">IPv6</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> <span class="font-mono">10.255.1.1/32</span> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">fd00:10:255:1::1/128</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h3 id="non-p2p-links">Non-P2P links</h3>
+<p>
+  Networks and VLANs with more than 2 hosts for example a DMVPN overlay
+  network will be assigned on a case by case basis and documented within
+  that particular lab.
+</p>
+
+<h3 id="bgp-autonomous-system-numbering">BGP Autonomous System Numbering</h3>
+<p>
+  Pod level iBGP AS
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Autonomous System</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">65&lt;local-pod&gt;00</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<p>
+  Below is an example iBGP AS allocation for Pod 1.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Pod 1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">65100</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  Router level eBGP AS
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>Autonomous System</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">65&lt;local-pod&gt;0&lt;local-router&gt;</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  Below is an example eBGP AS allocation for P1R1.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900"><b>P1R1</b> </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <span class="font-mono">65101</span></td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<h3 id="code">Code</h3>
+<p>
+  This code for this lab is hosted on github and can be found
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/labs" target=_blank>here</a>.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Labs are a great learning tool, I have been using this base topology
+  for a couple of weeks tweaking it here and there and it's in a state
+  that is working quite well for me. This is a half documentation half
+  sharing post so feel free to use the lab if you think it will be
+  useful.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#goals">
+            Goals
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pods">
+            Pods
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#interface-numbering">
+            Interface Numbering
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#topology">
+            Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#device-naming">
+            Device Naming
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#subnets">
+            Subnets
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#point-to-point-interfaces">
+            Point-to-point Interfaces
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#point-to-point-sub-interfaces">
+            Point-to-point Sub-interfaces
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vlans">
+            VLANs
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#loopbacks">
+            Loopbacks
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#non-p2p-links">
+            Non-P2P links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#bgp-autonomous-system-numbering">
+            BGP Autonomous System Numbering
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#code">
+            Code
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

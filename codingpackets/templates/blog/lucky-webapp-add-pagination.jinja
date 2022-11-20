@@ -1,0 +1,187 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to add pagination 
+  to a Lucky webapp and also style the pagination links 
+  with Bootrap and Font Awesome Icons.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li>Lucky - 0.28.0</li>
+  <li>Font Awesome (Free) - 5.15.4</li>
+  <li>Bootstrap - 5.1.0</li>
+</ul>
+
+<h3 id="enable-pagination">Enable Pagination</h3>
+<p>
+  Pagination is built into Lucky, it just needs to be 
+  enabled. How awesome is that!
+</p>
+<p>
+  In the 
+  {{ text::emphasize(text="src/actions/browser_action.cr") }}
+ 
+  file, enable pagination by including 
+  {{ text::emphasize(text="Lucky::Paginator::BackendHelpers") }}
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/actions/browser_action.cr
+abstract class BrowserAction < Lucky::Action
+  # ...
+  include Lucky::Paginator::BackendHelpers
+  # ...
+end') }}
+
+<h3 id="customise-paginator">Customise Paginator</h3>
+<p>
+  Lucky comes with 3 built-in styles for pagination. 
+</p>
+  <ul>
+    <li>SimpleNav</li>
+    <li>BootstrapNav</li>
+    <li>BulmaNav</li>
+  </ul>
+<p>
+  Using the template for the built-in Bootstrap paginator from 
+  <a href="https://github.com/luckyframework/lucky/blob/master/src/lucky/paginator/components/bootstrap_nav.cr">
+  here</a>, we can customise our navigation links based on 
+  our tastes/needs.
+  I made a couple of alterations to use FontAwesome icons in 
+  place of {{ text::emphasize(text="Previous") }}
+, 
+  {{ text::emphasize(text="Next") }}
+ and the 
+  {{ text::emphasize(text="Ellipsis") }}
+.
+</p>
+
+<p>
+  Create a file 
+  {{ text::emphasize(text="/src/components/shared/pagination_links.cr") }}
+ 
+  with the following contents that will be used for 
+  styling the paginator.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code=' # /src/components/shared/pagination_links.cr
+class Shared::PaginationLinks < BaseComponent
+  needs pages : Lucky::Paginator
+
+  def render
+    nav aria_label: "pagination " do
+      ul class: "pagination justify-content-center" do
+        previous_link
+        page_links
+        next_link
+      end
+    end
+  end
+
+  def page_links
+    pages.series(begin: 1, left_of_current: 1, right_of_current: 1, end: 1).each do |item|
+      render_page_item(item)
+    end
+  end
+
+  def render_page_item(page : Lucky::Paginator::Page)
+    li class: "page-item" do
+      a page.number, href: page.path, class: "page-link"
+    end
+  end
+
+  def render_page_item(page : Lucky::Paginator::CurrentPage)
+    li class: "page-item active disabled" do
+      a page.number, href: page.path, class: "page-link"
+    end
+  end
+
+  def render_page_item(gap : Lucky::Paginator::Gap)
+    li class: "page-item" do
+      a class: "page-link disabled" do
+        i class: "fas fa-ellipsis-h"
+      end
+    end
+  end
+
+  def previous_link
+    li class: "page-item #{"disabled" if pages.first_page?}" do
+      a href: pages.path_to_previous.to_s, class: "page-link" do
+        i class: "fas fa-angle-left"
+      end
+    end
+  end
+
+  def next_link
+    li class: "page-item #{"disabled" if pages.last_page? || pages.total == 0}" do
+      a href: pages.path_to_next.to_s, class: "page-link" do
+        i class: "fas fa-angle-right"
+      end
+    end
+  end
+end') }}
+
+<h3 id="paginate-results">Paginate Results</h3>
+<p>
+  To paginate some records, use the 
+  {{ text::emphasize(text="paginate()") }}
+ 
+  method on an action where a queries results should be 
+  paginated.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/actions/sites/index.cr
+class Sites::Index < BrowserAction
+  get "/sites" do
+    site_pages, sites = paginate(SiteQuery.new)
+    html IndexPage, sites: sites, site_pages: site_pages
+  end
+end') }}
+
+<p>
+  Now in the associated page view, tell the 
+  page it needs a {{ text::emphasize(text="Lucky::Paginator") }}
+ 
+  variable and mount the 
+  {{ text::emphasize(text="Shared::PaginationLinks") }}
+
+  component.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='# src/pages/sites/index.cr
+class Sites::IndexPage < MainLayout
+  needs site_pages : Lucky::Paginator
+  needs sites : SiteQuery
+  # ...
+  def render
+    # ...
+    mount Shared::PaginationLinks, site_pages
+  end
+end') }}
+
+<p>
+  And that's it! Doctor you are being paged 😁
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we added pagination to our 
+  Lucky webapp and also styled the paginator with Bootstrap 
+  and FontAwesome Icons.
+</p>
+
+{% endblock page_content %}

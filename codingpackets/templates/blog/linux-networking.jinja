@@ -1,0 +1,394 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Configuring network components in linux can differ from distribution to distribution. I usually find myself
+  searching for the information found here so this is part documentation for me and part blog post for
+  anyone else who cares to read past the introduction.
+</p>
+<p>
+  This post covers various network related tasks on the following operating systems.
+</p>
+<ul>
+  <li>Centos 7</li>
+  <li>Ubuntu 1604</li>
+  <li>Cumulus 3.4.3</li>
+</ul>
+
+<h3 id="interfaces">Interfaces</h3>
+
+<h4><b>Configuration Files</b></h4>
+<p>
+  Network interface configurations are stored in files in the following locations.
+</p>
+
+
+{{ table::default(
+  header=["Operating System", "Location"],
+  rows=[
+    "<b>Centos</b> | $1",
+    "<b>Ubuntu</b> | $2",
+    "<b>Cumulus</b> | $3",
+  ],
+) 
+  | replace(from="$1", to=text::emphasize(text="/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;"))
+  | replace(from="$2", to=text::emphasize(text="/etc/network/interfaces.d/&lt;ifname&gt;"))
+  | replace(from="$3", to=text::emphasize(text="/etc/network/interfaces.d/&lt;ifname&gt;.intf"))
+}}
+
+
+<h4><b>Apply Configuration</b></h4>
+<p>
+  After interface configuration files are updated the network service needs to be reloaded for the configuration
+  to be applied.
+</p>
+
+{{ table::default(
+  header=["Operating System", "Location"],
+  rows=[
+    "<b>Centos</b> | $1",
+    "<b>Ubuntu</b> | $2",
+    "<b>Cumulus</b> | $2",
+  ],
+) 
+  | replace(from="$1", to=text::code(text="sudo systemctl restart network.service"))
+  | replace(from="$2", to=text::code(text="sudo systemctl restart networking.service"))
+}}
+
+<h3 id="dhcp-ip-address">DHCP IP Address</h3>
+<p>
+  DHCP v4/6 is used to automatically assign IP address and related information such as default gatway, search domains
+  and DNS servers to a host.
+</p>
+<h4><b>Centos</b></h4>
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/sysconfig/network-scripts/ifcfg-eth0
+
+DEVICE=eth0
+TYPE=Ethernet
+BOOTPROTO=dhcp
+ONBOOT=yes
+PERSISTENT_DHCLIENT=yes
+IPV6INIT=yes
+DHCPV6C=yes`
+) }}
+
+
+<h4><b>Ubuntu</b></h4>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces
+
+auto eth0
+iface eth0 inet dhcp
+iface eth0 inet6 dhcp`
+) }}
+
+
+<h4><b>Cumulus</b></h4>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces
+
+auto eth0
+iface eth0 inet dhcp
+iface eth0 inet6 dhcp`
+) }}
+
+
+<h3 id="static-ip-address">Static IP Address</h3>
+<p>
+  The following table defines static IPv4/6 configuration to be applied to the network interfaces.
+</p>
+<h4><b>IP Address Configuration</b></h4>
+
+{{ table::default(
+  header=["", "IPv4", "IPv6"],
+  rows=[
+    '<b>Address</b> | <span class="font-mono">10.1.1.10</span> | <span class="font-mono">fd00:4a26:d09b:d911::10</span>',
+    '<b>Network</b> | <span class="font-mono">10.1.1.0/24</span> | <span class="font-mono">fd00:4a26:d09b:d911::/64</span>',
+    '<b>Gateway</b> | <span class="font-mono">10.1.1.1</span> | <span class="font-mono">fd00:4a26:d09b:d911::1</span>',
+    '<b>DNS</b> | <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> | <span class="font-mono">2001:4860:4860::8888</span><br><span class="font-mono">2001:4860:4860::8844</span>',
+    '<b>Search Domain</b> | <span class="font-mono">lab.local</span> | <span class="font-mono">lab.local</span>',
+  ],
+) 
+}}
+
+
+<h4><b>Centos</b></h4>
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/sysconfig/network-scripts/ifcfg-eth1
+
+TYPE=Ethernet
+NAME=eth1
+DEVICE=eth1
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=10.1.1.10
+PREFIX=24
+GATEWAY=10.1.1.1
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=no
+IPV6ADDR=fd00:4a26:d09b:d911::10/64
+IPV6_DEFAULTGW=fd00:4a26:d09b:d911::1
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+DOMAIN=lab.local
+DNS1=8.8.8.8
+DNS2=8.8.4.4
+DNS3=2001:4860:4860::8888
+DNS4=2001:4860:4860::8844`
+) }}
+
+
+<h4><b>Ubuntu</b></h4>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/eth1
+
+auto eth1
+iface eth1 inet static
+    address 10.1.1.10
+    netmask 255.255.255.0
+    gateway 10.1.1.1
+    dns-search lab.local
+    dns-nameservers 8.8.8.8 8.8.4.4
+iface eth1 inet6 static
+    address fd00:4a26:d09b:d911::10/64
+    gateway fd00:4a26:d09b:d911::1
+    dns-search lab.local
+    dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844`
+) }}
+
+
+<h4><b>Cumulus</b></h4>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/swp1.intf
+
+auto swp1
+iface swp1 inet static
+    address 10.1.1.10/24
+    address fd00:4a26:d09b:d911::10/64
+    gateway 10.1.1.1
+    gateway fd00:4a26:d09b:d911::1`
+) }}
+
+<p>
+  In Cumulus linux the {{ text::emphasize(text="nameserver") }}
+ and
+  {{ text::emphasize(text="search") }}
+ domain properties are configured in the
+  {{ text::emphasize(text="/etc/resolv.conf") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/resolv.conf
+
+search lab.local
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+nameserver 2001:4860:4860::8888
+nameserver 2001:4860:4860::8844`
+) }}
+
+
+<h3 id="loopback-interface">Loopback Interface</h3>
+<h4><b>Centos</b></h4>
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/sysconfig/network-scripts/ifcfg-lo:1
+
+NAME=lo:1
+DEVICE=lo:1
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=10.1.1.10
+PREFIX=24
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=no
+IPV6ADDR=fd00:4a26:d09b:d911::10/64
+IPV6_FAILURE_FATAL=no`
+) }}
+
+
+
+<h4><b>Ubuntu</b></h4>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/lo:1
+
+auto lo:1
+iface lo:1 inet static
+    address 10.1.1.10
+    mask 255.255.255.0
+iface lo:1 inet6 static
+    address fd00:4a26:d09b:d911::10/64`
+) }}
+
+
+<h4><b>Cumulus</b></h4>
+<p>
+  Loopback IP Addresses in Cumulus Linux should be configured in the
+  {{ text::emphasize(text="/etc/network/interfaces") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces
+
+auto lo
+iface lo inet loopback
+    address 10.1.1.10/24
+    address fd00:4a26:d09b:d911::10/64`
+) }}
+
+
+
+<h3 id="vlan-l3-interface">VLAN L3 Interface</h3>
+<h4><b>Centos</b></h4>
+<p>
+  Load the {{ text::emphasize(text="8021q") }}
+ kernel module.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo modprobe 8021q`
+) }}
+
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /etc/sysconfig/network-scripts/ifcfg-eth1:10
+
+NAME=eth1.10
+DEVICE=eth1.10
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=10.1.1.10
+PREFIX=24
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=no
+IPV6ADDR=fd00:4a26:d09b:d911::10/64
+IPV6_FAILURE_FATAL=no
+VLAN=yes`
+) }}
+
+
+
+<h4><b>Ubuntu</b></h4>
+<p>
+  Install {{ text::emphasize(text="vlan") }}
+ package to enable {{ text::emphasize(text="802.1q") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt-get install vlan`
+) }}
+
+
+<p>
+  Load the {{ text::emphasize(text="8021q") }}
+ kernel module.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo modprobe 8021q`
+) }}
+
+
+<p>Create a parent interface configuration.</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/eth1
+
+auto eth1
+iface eth1 inet manual`
+) }}
+
+
+<p>VLAN Interface configuration</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/eth1.10
+
+auto eth1.10
+iface eth1.10 inet static
+    vlan-raw-device eth1
+    address 10.1.1.10
+    netmask 255.255.255.0
+iface eth1.10 inet6 static
+    address fd00:4a26:d09b:d911::10/64`
+) }}
+
+
+<h4><b>Cumulus</b></h4>
+<p>
+  Cumulus Linux has the option of using a <a href="https://docs.cumulusnetworks.com/display/DOCS/VLAN-aware+Bridge+Mode+for+Large-scale+Layer+2+Environments">
+  vlan-aware</a> bridge which reduces the configuration required for large layer 2 networks. Note: Only one
+  {{ text::emphasize(text="vlan-aware") }}
+ bridge is allowed per-switch.
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/bridge.intf
+
+auto bridge
+iface bridge
+    bridge-ports swp1
+    bridge-vids 10
+    bridge-vlan-aware yes`
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /etc/network/interfaces.d/vlan10.intf
+
+auto vlan10
+iface vlan10
+    address 10.1.1.10/24
+    address fd00:4a26:d09b:d911::10/64
+    vlan-id 10
+    vlan-raw-device bridge`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Linux networking is a beast of a topic, there are many ways to do the same thing and many more ways when you
+  compare how things are done in different distributions. This page is a bit of a living document and will be
+  updated as I progress along the journey that is networking in Linux.
+</p>
+
+{% endblock page_content %}

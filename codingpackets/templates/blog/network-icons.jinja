@@ -1,0 +1,38 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I maintain two git repositories with various
+  {{ link::e(path="https://github.com/bwks/network-icons-svg", description="network") }}
+  and {{ link::e(path="https://github.com/bwks/vendor-icons-svg", description="vendor") }} icons
+  in SVG format. Feel free to use them, but do request the vendors permission to use their
+  trademark images, if what you are using them for is something that requires permission.
+</p>
+
+<h3 id="network-icons-sample">Network Icons Sample</h3>
+{{ image::boxed(path="blog/network-icons/network-icons.svg", width="70%") }}
+
+<h3 id="vendor-icons-sample">Vendor Icons Sample</h3>
+{{ image::boxed(path="blog/network-icons/vendor-icons.svg", width="70%") }}
+
+
+<h3 id="links-to-other-repositories">Links To Other Repositories</h3>
+
+{{ table::default(
+  header=["Description", "Link"],
+  rows=[
+    "Affinity symbol set | $1",
+    "Cloud Native Computing Foundation Artwork | $2",
+    "Cumulus Networks Artwork (DEAD) | $3",
+    "Networks Devices Vector Libraries | $4",
+  ],
+) 
+ | replace(from="$1", to=link::e(path="https://github.com/ecceman/affinity"))
+ | replace(from="$2", to=link::e(path="https://github.com/cncf/artwork"))
+ | replace(from="$3", to=link::e(path="https://cumulusnetworks.getbynder.com/web/344d4c5330da80b0/cumulus-networking-stencils/"))
+ | replace(from="$4", to=link::e(path="https://github.com/JF-Dumont/drawio-libs"))
+}}
+
+{% endblock page_content %}

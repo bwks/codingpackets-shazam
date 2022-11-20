@@ -1,0 +1,139 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover the process of adding 
+  searchable dropdown boxes to your Lucky webapp with the 
+  {{ text::emphasize(text="Select2") }}
+ 
+  Javascript library and styling them with Bootstrap 5.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li>Lucky - 0.28.0</li>
+  <li>Select2 - 4.1.0-rc.0</li>
+  <li>Bootstrap - 5.1.0</li>
+</ul>
+
+  {{ text::note_block(text='
+    <p>
+      I will be disabling turbolinks otherwise the dropdown 
+      does not load correctly on subsequent page 
+      visits.
+  ') }}
+
+<h3 id="installation">Installation</h3>
+<p>
+  From the terminal add the required packages with Yarn 
+  and remove turbolinks.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn add select2
+yarn add jquery
+yarn add select2-bootstrap-5-theme
+yarn remove turbolinks'
+) }}
+
+<h3 id="setup">Setup</h3>
+<p>
+  Import and configure Select2 into the 
+  {{ text::emphasize(text="src/js/app.js") }}
+ 
+  file and disable turbolinks.
+</p>
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code=`// src/js/app.js
+// Delete the turbolinks line
+// require("turbolinks").start();
+// ...
+import "select2/dist/js/select2";
+// ...  
+$(document).ready(function () {
+  // "content-search" is the CSS class name used by Select2
+  $('.content-search').select2({ 
+    theme: "bootstrap-5",
+  });
+});`
+) }}
+
+<p>
+  Import the SCSS into the 
+  {{ text::emphasize(text="src/css/app.scss") }}
+ 
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="scss",
+  code='// src/css/app.scss
+@import "select2/src/scss/core";
+@import "select2-bootstrap-5-theme/src/include-all";'
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  Apply the 
+  {{ text::emphasize(text="content-search") }}
+ CSS 
+  class to dropdowns you would like to use Select2.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='div class: "mb-3" do
+  label_for(operation.vrf_id, "VRF", class: "form-label")
+  select_input(operation.vrf_id, class: "form-control content-search") do
+    options_for_select(operation.vrf_id, options_for_vrfs)
+  end
+end'
+) }}
+<p>
+  And that's all there is to it, if everything is setup 
+  correctly, your dropdowns will now have a search box.
+</p>
+
+<h3 id="deprecation-warnings">Deprecation Warnings</h3>
+<p>
+  After installing the 
+  {{ text::emphasize(text="select2-bootstrap-5-theme") }}
+ 
+  I was getting some deprecation warnings from Dart related to 
+  division.
+</p>
+
+<p>
+  To work around this, update the 
+  {{ text::emphasize(text="webpack.mix.js") }}
+ 
+  file to silence the warnings.
+</p>
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code='// webpack.mix.js
+// Change this line
+// .sass("src/css/app.scss", "css"
+.sass("src/css/app.scss", "css", {
+  sassOptions: {
+    quietDeps: true,
+  },
+})') }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we installed and configured the Select2 
+  Javascript library, while also adding Bootstrap 5 styling to 
+  our dropdowns in a Lucky webapp.
+</p>
+
+{% endblock page_content %}

@@ -1,0 +1,357 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In November 2017 I had the chance to attended the Openstack summit in Sydney Australia.
+  I went to a great session lead by Phil Hopkins from Rackspace on how Openstack
+  Neutron utilizes network namespaces and VXLANs in linux to achieve multi-tenancy.
+  The contents of this blog came largely from that session.
+</p>
+<p>
+  In this blog I will build two Ubuntu hosts that have multi-tenant network stacks
+  for two customers; Microsoft and Apple. It would probably not be ideal if they
+  could see each others traffic and they also have the same overlapping IP address
+  ranges so it is imperative that tenancy seperation is maintained.
+</p>
+
+<h3 id="linux-network-components">Linux Network Components</h3>
+<p>
+  The {{ text::emphasize(text="iproute2") }}
+ and {{ text::emphasize(text="bridge-utils") }}
+ packages are used to
+  build the following four components that are used in openstack networking.
+</p>
+<ul>
+  <li>Virtual Ethernet Pairs</li>
+  <li>Linux Bridges</li>
+  <li>Network Namespaces</li>
+  <li>VXLAN Tunnels</li>
+</ul>
+
+<h4><b>Virtual Ethernet Pairs</b></h4>
+<p>
+  Virtual ethernet (veth) pairs are created by "directly" connecting two virtual
+  nics via a virtual patch cable similar to a pseudo-wire.
+  veth pairs are managed with the {{ text::code(text="ip link") }}
+ command.
+</p>
+
+<h4><b>Linux Bridges</b></h4>
+<p>
+  Linux bridges are the software equivalent of a physical unmanaged switch.
+  Linux bridges are managed with the {{ text::code(text="brctl") }}
+ command.
+</p>
+
+<h4><b>Network Namespaces</b></h4>
+<p>
+  Network namespaces provide logical isolation of networking resources. Each namespace
+  has its own set of the following resources.
+</p>
+<ul>
+  <li>Network interfaces</li>
+  <li>IP addresses</li>
+  <li>IP routing table</li>
+  <li>port numbers</li>
+  <li>{{ text::emphasize(text="/proc/net") }}
+ directory</li>
+</ul>
+
+{{ image::boxed(path="blog/linux-network-components-used-in-openstack/network-namespaces.svg", width="70%") }}
+
+<p>
+  Network namespaces are managed with the {{ text::code(text="ip netns") }}
+ command.
+</p>
+
+<h4><b>VXLAN Tunnels</b></h4>
+<p>
+  VXLAN is a method of encapsulating an ethernet frame in a UDP packet to acheive
+  layer 2 agacency and multi-tenancy across a layer 3 boundary.
+  VXLAN tunnel endpoints (VTEP)s are managed with the {{ text::code(text="ip link") }}
+
+  command.
+</p>
+
+
+<h3 id="lab-setup">Lab Setup</h3>
+<p>
+  To build this lab, I will be using {{ text::emphasize(text="vagrant") }}
+ with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider. For reference the code versions are as follows.
+</p>
+<ul>
+  <li>Host: Ubuntu - 1604</li>
+  <li>Guests: elastic/ubuntu-16.04-x86_64</li>
+  <li>Vagrant - 1.9.6</li>
+  <li>vagrant-libvirt - 0.0.40</li>
+</ul>
+
+<p>
+  The Vagrant file for this lab can be found
+  {{ link::e(path="https://raw.githubusercontent.com/bwks/vagrantfiles/master/linux-network-components-used-in-openstack.vagrantfile", description="here") }}.
+</p>
+
+<h4><b>Lab Diagram</b></h4>
+
+{{ image::boxed(path="blog/linux-network-components-used-in-openstack/network-namespaces-lab.svg", width="100%") }}
+
+<h3 id="requirements">Requirements</h3>
+<p>
+  The {{ text::emphasize(text="iproute2") }}
+ package will be the default in "most" modern linux
+  distributions out of the box.
+</p>
+<p>
+  Linux bridges are created using the {{ text::code(text="brctl") }}
+ command which is available in
+  the {{ text::emphasize(text="bridge-utils") }}
+ package. Ubuntu does not have it installed by default.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# On both guest machines
+
+sudo apt install -y bridge-utils`
+) }}
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Alright with all that out of the way, lets get to the configuration.
+</p>
+
+<h4><b>node01 configuration</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Create a network namespace for both companies
+
+sudo ip netns add microsoft
+sudo ip netns add apple
+
+# Create veth pairs for both companies
+
+sudo ip link add msft-veth0 type veth peer name msft-veth1
+sudo ip link add aapl-veth0 type veth peer name aapl-veth1
+
+# Add veth1 to each company's namespace
+
+sudo ip link set msft-veth1 netns microsoft
+sudo ip link set aapl-veth1 netns apple
+
+# Add the same ip to veth1 in both company namespaces
+
+sudo ip netns exec microsoft ip a add dev msft-veth1 10.1.0.4/24
+sudo ip netns exec apple ip a add dev aapl-veth1 10.1.0.4/24
+
+# Create a tenant-network linux bridge for each company
+
+sudo brctl addbr msft-br
+sudo brctl addbr aapl-br
+
+# Add a veth pair to each company's linux bridge
+
+sudo brctl addif msft-br msft-veth0
+sudo brctl addif aapl-br aapl-veth0
+
+# Create a point-to-point VXLAN interface for each company
+
+sudo ip link add msft-vxl-10 type vxlan id 10 remote 10.10.10.20 dev eth1
+sudo ip link add aapl-vxl-20 type vxlan id 20 remote 10.10.10.20 dev eth1
+
+# Add the point-to-point VXLAN interface to each company's tenant-network Linux bridge
+
+sudo brctl addif msft-br msft-vxl-10
+sudo brctl addif aapl-br aapl-vxl-20
+
+# Bring up the veth pairs
+
+sudo ip link set dev msft-veth0 up
+sudo ip link set dev aapl-veth0 up
+sudo ip netns exec microsoft ip link set dev msft-veth1 up
+sudo ip netns exec apple ip link set dev aapl-veth1 up
+
+# Bring up the loopback adapter inside the namespaces
+
+sudo ip netns exec microsoft ip link set dev lo up
+sudo ip netns exec apple ip link set dev lo up
+
+# Bring up each company's tenant-network bridge
+
+sudo ip link set dev msft-br up
+sudo ip link set dev aapl-br up
+
+# Bring up the VXLAN interface for each company
+
+sudo ip link set dev msft-vxl-10 up
+sudo ip link set dev aapl-vxl-20 up`
+) }}
+
+
+
+<h4><b>node02 configuration</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Create network namespace for both companies
+
+sudo ip netns add microsoft
+sudo ip netns add apple
+
+# Create veth pair for both companies
+
+sudo ip link add msft-veth0 type veth peer name msft-veth1
+sudo ip link add aapl-veth0 type veth peer name aapl-veth1
+
+# Add veth1 to each company's namespace
+
+sudo ip link set msft-veth1 netns microsoft
+sudo ip link set aapl-veth1 netns apple
+
+# Add same ip to veth1 in both company's namespace
+
+sudo ip netns exec microsoft ip a add dev msft-veth1 10.1.0.5/24
+sudo ip netns exec apple ip a add dev aapl-veth1 10.1.0.5/24
+
+# Create a tenant-network linux-bridge for each company
+
+sudo brctl addbr msft-br
+sudo brctl addbr aapl-br
+
+# Add veth pair to each company's linux-bridge
+
+sudo brctl addif msft-br msft-veth0
+sudo brctl addif aapl-br aapl-veth0
+
+# Create a point-to-point VXLAN interface for each company
+
+sudo ip link add msft-vxl-10 type vxlan id 10 remote 10.10.10.10 dev eth1
+sudo ip link add aapl-vxl-20 type vxlan id 20 remote 10.10.10.10 dev eth1
+
+# Add the point-to-point VXLAN interface to each company's tenant-network linux-bridge
+
+sudo brctl addif msft-br msft-vxl-10
+sudo brctl addif aapl-br aapl-vxl-20
+
+# Bring up the veth pairs
+
+sudo ip link set dev msft-veth0 up
+sudo ip link set dev aapl-veth0 up
+sudo ip netns exec microsoft ip link set dev msft-veth1 up
+sudo ip netns exec apple ip link set dev aapl-veth1 up
+
+# Bring up the loopback adapter inside the namespaces
+
+sudo ip netns exec microsoft ip link set dev lo up
+sudo ip netns exec apple ip link set dev lo up
+
+# Bring up each company's tenant-network bridge
+
+sudo ip link set dev msft-br up
+sudo ip link set dev aapl-br up
+
+# Bring up the VXLAN interface for each company
+
+sudo ip link set dev msft-vxl-10 up
+sudo ip link set dev aapl-vxl-20 up`
+) }}
+
+
+
+<h3 id="verification">Verification</h3>
+<p>
+  Now that the networks are built lets confirm they are working as expected.
+  The {{ text::code(text="ip netns exec") }}
+ command can be used to run commands from within
+  the context of a network namespace.
+</p>
+
+<p>
+  From the namespaces on node01 we can {{ text::code(text="ping") }}
+ to the
+  namespaces on node02 to confirm we have IP reachability.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Microsoft Namespace
+
+sudo ip netns exec microsoft ping -c 3 10.1.0.5
+
+# output
+
+PING 10.1.0.5 (10.1.0.5) 56(84) bytes of data.
+64 bytes from 10.1.0.5: icmp_seq=1 ttl=64 time=0.749 ms
+64 bytes from 10.1.0.5: icmp_seq=2 ttl=64 time=0.550 ms
+64 bytes from 10.1.0.5: icmp_seq=3 ttl=64 time=0.588 ms
+
+--- 10.1.0.5 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 0.550/0.629/0.749/0.086 ms
+
+# Apple Namespace
+
+sudo ip netns exec apple ping -c 3 10.1.0.5
+
+# output
+
+PING 10.1.0.5 (10.1.0.5) 56(84) bytes of data.
+64 bytes from 10.1.0.5: icmp_seq=1 ttl=64 time=0.825 ms
+64 bytes from 10.1.0.5: icmp_seq=2 ttl=64 time=0.621 ms
+64 bytes from 10.1.0.5: icmp_seq=3 ttl=64 time=0.527 ms
+
+--- 10.1.0.5 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1999ms
+rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms`
+) }}
+
+<p>
+  Further verification can be done with tcpdump, but I will leave this as an
+  exersize for the reader.
+</p>
+
+<h3 id="helpful-commands">Helpful Commands</h3>
+
+<p>
+  Get detailed information about a VTEP with the {{ text::emphasize(text="-d") }}
+ flag.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ip -d link show msft-vxl-10
+
+# output
+
+10: msft-vxl-10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master msft-br state UNKNOWN mode DEFAULT group default qlen 1000
+link/ether 52:21:24:75:0a:bc brd ff:ff:ff:ff:ff:ff promiscuity 1
+vxlan id 10 remote 10.10.10.20 dev eth1 srcport 0 0 dstport 8472 ageing 300
+bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_block off fastleave off learning on flood on addrgenmode eui64`
+) }}
+
+
+<p>
+  Use the {{ text::emphasize(text="-i") }}
+ flag with tcpdump when capturing within a namespace to
+  prevent buffering of the capture and have sent to stdout.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ip netns exec microsoft tcpdump -e -n -l -i msft-veth1`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Networking in linux has come a long way, with {{ text::emphasize(text="iproute2") }}
+ and {{ text::emphasize(text="brctl") }}
+
+  we learned how to configure multi-tenant network stacks that are used by Openstack Neutron.
+</p>
+{% endblock page_content %}

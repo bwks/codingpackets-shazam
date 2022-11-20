@@ -1,0 +1,503 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Narbik CCIE Routing and Switching v5.1 Workbook NETMAP</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 8th of June 2019
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchased Narbiks CCIE routing and switching v5.1 workbook bundle.
+  Some of the labs in the workbook use devices with serial interfaces. I run most
+  of my lab in Vagrant/KVM/Qemu. Qemu does not support serial interfaces and I
+  dont have any physical devices any more. Shit! What now?
+</p>
+
+<h3 id="emulators-emulators-emulators">Emulators, Emulators, Emulators</h3>
+<p>
+  After searching around, both GNS3 and EVE-NG looked promising. I have not used GNS3
+  for years and support for devices with serial interfaces is mostly supported using
+  the Dynamips emulator. I didnt want to go down that route unless really necessary.
+  The workbook was written to be compatible with EVE-NG and IOL images looks to be
+  well supported. There is a bit of messing around with licensing to get it working
+  and its probably legally pretty shaky so I didnt want to use that either.
+  In another life I worked at a $NETWORK_VENDOR and long story short I had an old WEB-IOL
+  VM that I had held on to. I fired it up and after 7 years in cold storage what do
+  you know. It worked!
+</p>
+
+<h3 id="netmap">NETMAP</h3>
+<p>
+  The below NETMAP file is used to build the topology for the workbook.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">/* Narbik CCIE R&S v5.1 workbook NETMAP */
+/* Device to hostname mapping */
+/* R1 -> R1 */
+/* R2 -> R2 */
+/* R3 -> R3 */
+/* R4 -> R4 */
+/* R5 -> R5 */
+/* R6 -> R6 */
+/* R7 -> R7 */
+/* R8 -> R8 */
+/* R9 -> R9 */
+/* R10 -> R10 */
+/* R11 -> SW1 */
+/* R12 -> SW2 */
+/* R13 -> SW3 */
+/* R14 -> SW4 */
+
+/* SWITCHES: * R1: * -c R1.txt -e1 -s3 */
+/* SWITCHES: * R2: * -c R2.txt -e1 -s3 */
+/* SWITCHES: * R3: * -c R3.txt -e1 -s3 */
+/* SWITCHES: * R4: * -c R4.txt -e1 -s3 */
+/* SWITCHES: * R5: * -c R5.txt -e1 -s3 */
+/* SWITCHES: * R6: * -c R6.txt -e1 -s3 */
+/* SWITCHES: * R7: * -c R7.txt -e1 -s1 */
+/* SWITCHES: * R8: * -c R8.txt -e1 -s1 */
+/* SWITCHES: * R9: * -c R9.txt -e1 -s1 */
+/* SWITCHES: * R10: * -c R10.txt -e1 -s1 */
+/* SWITCHES: * R11: * -c SW1.txt -e6 -s0 * l2 */
+/* SWITCHES: * R12: * -c SW2.txt -e6 -s0 * l2 */
+/* SWITCHES: * R13: * -c SW3.txt -e6 -s0 * l2 */
+/* SWITCHES: * R14: * -c SW4.txt -e6 -s0 * l2 */
+
+/* Serial Connections */
+1:1/2 2:1/1 /* R1 to R2 */
+1:1/3 3:1/1 /* R1 to R3 */
+1:2/0 4:1/1 /* R1 to R4 */
+1:2/1 5:1/1 /* R1 to R5 */
+1:2/2 6:1/1 /* R1 to R6 */
+2:1/3 3:1/2 /* R2 to R3 */
+2:2/0 4:1/2 /* R2 to R4 */
+2:2/1 5:1/2 /* R2 to R5 */
+2:2/2 6:1/2 /* R2 to R6 */
+3:2/0 4:1/3 /* R3 to R4 */
+3:2/1 5:1/3 /* R3 to R5 */
+3:2/2 6:1/3 /* R3 to R6 */
+4:2/1 5:2/0 /* R4 to R5 */
+4:2/2 6:2/0 /* R4 to R6 */
+5:2/2 6:2/1 /* R5 to R6 */
+
+/* Ethernet Network */
+11:0/1 1:0/0  /* SW1 to R1 */
+11:0/2 2:0/0  /* SW1 to R2 */
+11:0/3 3:0/0  /* SW1 to R3 */
+11:1/0 4:0/0  /* SW1 to R4 */
+11:1/1 5:0/0  /* SW1 to R5 */
+11:1/2 6:0/0  /* SW1 to R6 */
+11:1/3 7:0/0  /* SW1 to R7 */
+11:2/0 8:0/0  /* SW1 to R8 */
+11:2/1 9:0/0  /* SW1 to R9 */
+11:2/2 10:0/0 /* SW1 to R10 */
+11:3/0 12:3/0 /* SW1 to SW2 */
+11:3/1 12:3/1 /* SW1 to SW2 */
+11:3/2 12:3/2 /* SW1 to SW2 */
+11:4/0 13:4/0 /* SW1 to SW3 */
+11:4/1 13:4/1 /* SW1 to SW3 */
+11:5/0 14:5/0 /* SW1 to SW4 */
+11:5/1 14:5/1 /* SW1 to SW4 */
+
+12:0/1 1:0/1  /* SW2 to R1 */
+12:0/2 2:0/1  /* SW2 to R2 */
+12:0/3 3:0/1  /* SW2 to R3 */
+12:1/0 4:0/1  /* SW2 to R4 */
+12:1/1 5:0/1  /* SW2 to R5 */
+12:1/2 6:0/1  /* SW2 to R6 */
+12:1/3 7:0/1  /* SW2 to R7 */
+12:4/0 14:4/0 /* SW2 to SW4 */
+12:4/1 14:4/1 /* SW2 to SW4 */
+12:5/0 13:5/0 /* SW2 to SW3 */
+12:5/1 13:5/1 /* SW2 to SW3 */
+
+13:2/0  8:0/1 /* SW3 to R8 */
+13:2/1  9:0/1 /* SW3 to R9 */
+13:3/0 14:3/0 /* SW3 to SW4 */
+13:3/1 14:3/1 /* SW3 to SW4 */
+
+14:2/2  10:0/1 /* SW4 to R10 */</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  IOL is a bit of an ancient monster. It was (maybe still is) used internally
+  at $NETWORK_VENDOR so there is very little documentation out in the wild for
+  it. Luckily I some how managed to remember how to drive it.
+  There are pirate copies out there, but most of the world has moved onto
+  GNS3/EVE-NG/VIRL etc... use one of those instead. Unless of course
+  you are a tragic/weird/unhinged individual like me then knock yourself out.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://micronicstraining.com/product/rs-workbook-bundle-v5-0/" target=_blank>https://micronicstraining.com/product/rs-workbook-bundle-v5-0/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.eve-ng.net/documentation/howto-s/62-howto-add-cisco-iou-iol" target=_blank>https://www.eve-ng.net/documentation/howto-s/62-howto-add-cisco-iou-iol</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.gns3.com/1o4IX8nXISl5gb4BwoSFrUht3MeTjkzHM1TCeWAe669g/index.html" target=_blank>https://docs.gns3.com/1o4IX8nXISl5gb4BwoSFrUht3MeTjkzHM1TCeWAe669g/index.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#iol" class="text-xl">iol</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#narbik" class="text-xl">narbik</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ccie" class="text-xl">ccie</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#emulators-emulators-emulators">
+            Emulators, Emulators, Emulators
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#netmap">
+            NETMAP
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,91 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Ubuntu 1804 server uses {{ link::e(path="https://netplan.io/", description="netplan") }}
+  for network management. This post will cover how to create a bridge interface with
+  {{ text::emphasize(text="netplan") }}
+ in order to have multiple virtual
+  machines share the same physical interface.
+</p>
+
+<p>
+  Create the following {{ text::emphasize(text="/etc/netplan/01-netcfg.yaml") }}
+
+  file in order to configure the bridge interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="yaml",
+  code=`sudo tee /etc/netplan/01-netcfg.yaml > /dev/null << "EOF"
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno1:
+      dhcp4: no
+      dhcp6: no
+  bridges:
+    br0:
+      interfaces: [eno1]
+      dhcp4: no
+      dhcp6: no
+      addresses: [10.0.0.10/24]
+      gateway4: 10.0.0.1
+      nameservers:
+        addresses: [10.0.0.5]
+      parameters:
+        stp: false
+        forward-delay: 0
+EOF`
+) }}
+
+<p>
+  There are a couple of things I would like to highlight.
+</p>
+<ul>
+  <li><b>networkd</b> - The network management daemon</li>
+  <li><b>eno1</b> - The name of the physical interface</li>
+  <li><b>br0</b> - The name of the bridge interface</li>
+</ul>
+
+<p>
+  Rename the default {{ text::emphasize(text="cloud-init") }}
+ network
+  file. This will prevent {{ text::emphasize(text="cloud-init") }}
+ from
+  attempting to configure the network on reboot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mv /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.old`
+) }}
+
+
+<p>
+  Finally disable network portion of the
+  {{ text::emphasize(text="cloud-init") }}
+ config by creating the the below
+  {{ text::emphasize(text="/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tee /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg > /dev/null << "EOF"
+network: {config: disabled}
+EOF`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  This post covered how to create a bridge interface using netplan on Ubuntu 1804
+  server edition. This allows you to have multiple VMs share a single physical interface.
+</p>
+{% endblock page_content %}

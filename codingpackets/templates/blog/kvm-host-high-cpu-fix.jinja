@@ -1,0 +1,119 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I run my labs on an Ubuntu 1604 host using KVM for the hypervisor and some of the network
+  VM images (Cisco CRS1000v, Juniper vMX, etc..) run with very high CPU. A recent thread on
+  Twitter helped me to find a solution to this problem so I will outline it here as it may
+  be helpful for others.
+</p>
+
+<p>
+  For reference the following software was used in this post.
+</p>
+<ul>
+  <li><b>Ubuntu</b> - 1604</li>
+  <li><b>KVM</b> - 2.5.0</li>
+</ul>
+
+<h3 id="the-question">The Question</h3>
+<p>
+  Tony E {{ link::e(path="https://twitter.com/showipintbri", description="@showipintbri") }} asked the following
+  question to the twitterverse regarding running the CSR1000v in eve-ng (which uses KVM as
+  its hypervisor).
+</p>
+
+{{ image::boxed(path="blog/kvm-host-high-cpu-fix/twitter-1.png", width="600px") }}
+
+<h3 id="the-solution">The Solution</h3>
+<p>
+  {{ link::e(path="https://twitter.com/Kroupouk666", description="@Kroupouk666") }} was kind enough to offer a
+  potential solution which involves setting the KVM
+  {{ text::emphasize(text="halt_poll_ns") }}
+ parameter to
+  {{ text::emphasize(text="0") }}
+.
+</p>
+
+{{ image::boxed(path="blog/kvm-host-high-cpu-fix/twitter-2.png", width="600px") }}
+
+<p>
+  I run my labs with Vagrant using the libvirt provider and I have been using Vagrant triggers
+  to throttle the CPU of these type of hosts that run with very high CPU. This potential solution,
+  if it works, is much more agreeable so I figured I'd give it a try. First I checked the existing
+  value which was {{ text::emphasize(text="200000") }}
+ and apparently the default.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cat /sys/module/kvm/parameters/halt_poll_ns
+
+# output
+200000`
+) }}
+
+
+<p>
+  Next up I changed the value to {{ text::emphasize(text="0") }}
+ as suggested.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo 0 | sudo tee /sys/module/kvm/parameters/halt_poll_ns
+
+# output
+0`
+) }}
+
+
+<p>
+  Incredibly it worked! I found that on the vMX and CSR1000v the CPU usage went from 100% on
+  2x CPUs down to around 30% which is a huge improvement. Also there was no need to reboot
+  the host which was a plus. The below illustrates the difference between the before and after
+  CPU usage.
+</p>
+
+<h4><b>Before</b></h4>
+{{ image::boxed(path="blog/kvm-host-high-cpu-fix/vmx-cpu-before.svg", width="900px") }}
+
+<h4><b>After</b></h4>
+{{ image::boxed(path="blog/kvm-host-high-cpu-fix/vmx-cpu-after.svg", width="900px") }}
+
+<p>
+  Apparently Cisco provided the solution to {{ link::e(path="https://twitter.com/Kroupouk666", description="@Kroupouk666") }}
+  as a result of him filing a bug.
+</p>
+
+{{ image::boxed(path="blog/kvm-host-high-cpu-fix/twitter-3.png", width="600px") }}
+
+<h3 id="permanent-fix">Permanent Fix</h3>
+<p>
+  The change will be lost on reboot, to make the change permanent add an
+  entry to the modprobe config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "options kvm halt_poll_ns=0" | sudo tee --append /etc/modprobe.d/qemu-system-x86.conf
+
+# output
+options kvm halt_poll_ns=0`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The power of the community helped me to solve an issue that has been bugging me for some time.
+  Thank you very much to {{ link::e(path="https://twitter.com/showipintbri", description="@showipintbri") }}
+  for asking the question and {{ link::e(path="https://twitter.com/Kroupouk666", description="@Kroupouk666") }}
+  for providing the solution.
+</p>
+
+{% endblock page_content %}

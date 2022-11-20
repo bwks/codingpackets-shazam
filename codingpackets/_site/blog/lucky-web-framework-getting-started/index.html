@@ -1,0 +1,1111 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Lucky Web Framework Getting Started</h1>
+  <div class="">
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        updated: 24th of August 2021
+      </p>
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 20th of August 2021
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  I am a big fan of the web framework Ruby on Rails. 
+  Recently, I have been looking into the Crystal 
+  programming language and was excited to find out 
+  there are a couple of options for web frameworks 
+  similar in philosophy to Rails. One of those options 
+  is <a class="text-sky-600 no-underline hover:text-sky-800" href="https://luckyframework.org/" target=_blank>Lucky</a>.
+</p>
+<p>
+  <i>
+    "Lucky is a web framework written in Crystal. 
+    It helps you work quickly, catch bugs at compile time, 
+    and deliver blazing fast responses."
+  </i>
+</p>
+<p>
+  In this post I will show you how to install and start a 
+  project with the Lucky web framework.
+</p>
+
+<h3 id="software-used">Software Used</h3>
+<p>
+  The following software versions are used in this 
+  post.
+</p>
+<ul>
+  <li>Ubuntu - 20.04 Server</li>
+  <li>Crystal - 1.1.1</li>
+  <li>Lucky - 0.28.0</li>
+  <li>Overmind - 2.2.2</li>
+  <li>PostgreSQL - 13.4</li>
+  <li>Node JS - v16.7.0</li>
+  <li>Yarn - 1.22.11</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-flight Check</h3>
+<p>
+  This post assumes that <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Crystal</i>
+,
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Postgres</i>
+ and 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Node JS + Yarn</i>
+ are already 
+  installed. Check the below posts for instructions for 
+  Ubuntu 2004.
+</p>
+<ul>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/postgresql-install">PostgreSQL</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/install-crystal-ubuntu-2004">Crystal</a></li>
+  <li><a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/node-js-and-yarn-install-ubuntu-2004">Node JS + Yarn</a></li>
+</ul>
+
+<h3 id="install-lucky">Install Lucky</h3>
+
+<p>
+  Install the dependencies.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt-get install -y libc6-dev libevent-dev libpcre2-dev libpcre3-dev libpng-dev libssl-dev libyaml-dev zlib1g-dev build-essential tmux</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Grab the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Lucky</i>
+ source
+  code.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">git clone https://github.com/luckyframework/lucky_cli
+cd lucky_cli
+git checkout v0.28.0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">shards</i>
+ command to install the required 
+  Crystal shards.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">shards install
+
+# output
+ 
+Resolving dependencies
+Fetching https://github.com/luckyframework/teeplate.git
+Fetching https://github.com/luckyframework/lucky_task.git
+Fetching https://github.com/crystal-ameba/ameba.git
+Fetching https://github.com/crystal-community/future.cr.git
+Using future (1.0.0)
+Using teeplate (0.8.4)
+Using lucky_task (0.1.0)
+Installing ameba (0.14.3)
+Postinstall of ameba: make bin && make run_file
+Writing shard.lock</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Build the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Lucky</i>
+ CLI binary.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">crystal build src/lucky.cr</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Move the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Lucky</i>
+ binary 
+  to a location in your path.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv lucky /usr/local/bin/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Lucky</i>
+
+  version that is installed.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">lucky -v
+  
+# output
+
+0.28.0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Clean up the Lucky source that was downloaded from 
+  Github.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd ..
+rm -rf lucky_cli/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="install-overmind">Install Overmind</h3>
+<p>
+  Lucky uses a process manager to watch assets 
+  and start the development server. I am using 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Overmind</i>
+, 
+  as its recommeded by the Lucky project.
+</p>
+
+<p>
+  Download the Overmind binary <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">gz</i>
+ file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O -L https://github.com/DarthSim/overmind/releases/download/v2.2.2/overmind-v2.2.2-linux-amd64.gz</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Uncompress the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">gz</i>
+ file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gunzip overmind-v2.2.2-linux-amd64.gz</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Add the executable bit to the Overmind binary.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod +x overmind-v2.2.2-linux-amd64</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Move the Overmind binary to a location in your path.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv overmind-v2.2.2-linux-amd64 /usr/local/bin/overmind</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Verify the Overmind version installed.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">overmind -v
+
+# output
+
+Overmind version 2.2.2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="database-user">Database User</h3>
+<p>
+  Before we go any further, lets get the 
+  Postgres Database user setup. I am using 
+  the default user that is found in the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">config/database.cr</i>
+
+  configuration file of a Lucky project. If you want to use 
+  a different user, then the details of the 
+  user will need to be updated in that file.
+</p>
+<p>
+  Create the application DB user.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo -u postgres createuser -s appuser -P
+
+# output
+
+Enter password for new role:
+Enter it again:</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Set environment variables for the DB user in 
+  your environment file. I am using 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ZSH</i>
+ for my 
+  shell so mine is in 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.zshrc</i>
+.
+  Use your prefered text editor to add the 
+  environment variables.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b"># ~/.zshrc
+export DB_USERNAME="appuser"
+export DB_PASSWORD="PASSWORD_FROM_PREVIOUS_STEP"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Source your <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">rc</i>
+ 
+  file to load in the environment variables.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">source ~/.zshrc</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="start-a-lucky-project">Start a Lucky Project</h3>
+<p>
+  The next step is to initialize the Lucky project. 
+  I will be creating a project named 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">testing123</i>
+ that has full 
+  HTML support (not just an API) and with authentication. The 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">lucky init</i>
+ command, has a handy interactive 
+  mode.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">lucky init
+  
+# output
+
+Welcome to Lucky v0.28.0 🎉
+
+Project name?: testing123
+
+Lucky can generate different types of projects
+
+Full (recommended for most apps)
+
+ ● Great for server rendered HTML or Single Page Applications
+ ● Webpack included
+ ● Setup to compile CSS and JavaScript
+ ● Support for rendering HTML
+
+API
+
+ ● Specialized for use with just APIs
+ ● No webpack
+ ● No static file serving or public folder
+ ● No HTML rendering folders
+
+API only or full support for HTML and Webpack? (api/full): full
+
+Lucky can be generated with email and password authentication
+
+  ● Sign in and sign up
+  ● Mixins for requiring sign in
+  ● Password reset
+  ● Token authentication for API endpoints
+  ● Generated files can easily be removed/customized later
+
+Generate authentication? (y/n): y
+
+-----------------------
+
+Done generating your Lucky project
+
+  ▸ cd into testing123
+  ▸ check database settings in config/database.cr
+  ▸ run script/setup
+  ▸ run lucky dev to start the server</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Change to the project directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd testing123/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Kick off the setup script to install all the 
+  required dependencies.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">script/setup
+  
+# output
+
+▸ Running System Check
+  ✔ Done
+
+▸ Installing node dependencies
+  yarn install v1.22.11
+  info No lockfile found.
+  [1/4] Resolving packages...
+warning browser-sync > socket.io > debug@4.1.1: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
+warning browser-sync > socket.io > engine.io > debug@4.1.1: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
+warning browser-sync > socket.io > socket.io-parser > debug@4.1.1: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
+warning laravel-mix > node-libs-browser > url > querystring@0.2.0: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+warning laravel-mix > webpack-dev-server > sockjs > uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+warning resolve-url-loader > rework > css > urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+warning resolve-url-loader > rework > css > source-map-resolve > urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+warning resolve-url-loader > rework > css > source-map-resolve > resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+  [2/4] Fetching packages...
+  info fsevents@2.3.2: The platform "linux" is incompatible with this module.
+  info "fsevents@2.3.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+  [3/4] Linking dependencies...
+warning " > compression-webpack-plugin@7.1.2" has unmet peer dependency "webpack@^5.1.0".
+warning " > sass-loader@10.2.0" has unmet peer dependency "webpack@^4.36.0 || ^5.0.0".
+  [4/4] Building fresh packages...
+  success Saved lockfile.
+  Done in 25.45s.
+
+▸ Compiling assets
+  yarn run v1.22.11
+  $ mix
+  ℹ Compiling Mix
+
+
+  Laravel Mix v6.0.28
+
+
+  ✔ Compiled Successfully in 765ms
+  ┌───────────────────────────────────┬──────────┐
+  │                              File │ Size     │
+  ├───────────────────────────────────┼──────────┤
+  │                        /js/app.js │ 73.6 KiB │
+  │                       css/app.css │ 5.37 KiB │
+  └───────────────────────────────────┴──────────┘
+  ✔ Mix: Compiled successfully in 814.75ms
+  Done in 2.24s.
+  ✔ Done
+
+▸ Installing shards
+  Resolving dependencies
+  Fetching https://github.com/luckyframework/lucky.git
+  Fetching https://github.com/luckyframework/authentic.git
+  Fetching https://github.com/luckyframework/pulsar.git
+  Fetching https://github.com/luckyframework/teeplate.git
+  Fetching https://github.com/luckyframework/carbon.git
+  Fetching https://github.com/luckyframework/carbon_sendgrid_adapter.git
+  Fetching https://github.com/luckyframework/lucky_env.git
+  Fetching https://github.com/luckyframework/lucky_task.git
+  Fetching https://github.com/crystal-community/jwt.git
+  Fetching https://github.com/luckyframework/lucky_flow.git
+  Fetching https://github.com/luckyframework/habitat.git
+  Fetching https://github.com/luckyframework/wordsmith.git
+  Fetching https://github.com/luckyframework/avram.git
+  Fetching https://github.com/luckyframework/shell-table.cr.git
+  Fetching https://github.com/luckyframework/dexter.git
+  Fetching https://github.com/will/crystal-pg.git
+  Fetching https://github.com/matthewmcgarvey/webdrivers.cr.git
+  Fetching https://github.com/luckyframework/lucky_router.git
+  Fetching https://github.com/spider-gazelle/bindata.git
+  Fetching https://github.com/spider-gazelle/openssl_ext.git
+  Fetching https://github.com/crystal-community/future.cr.git
+  Fetching https://github.com/crystal-loot/exception_page.git
+  Fetching https://github.com/luckyframework/cry.git
+  Fetching https://github.com/matthewmcgarvey/selenium.cr.git
+  Fetching https://github.com/crystal-lang/crystal-db.git
+  Fetching https://github.com/naqvis/crystar.git
+  Fetching https://github.com/sija/backtracer.cr.git
+  Installing lucky_task (0.1.0)
+  Installing habitat (0.4.7)
+  Installing wordsmith (0.3.0)
+  Installing db (0.10.1)
+  Installing pg (0.24.0)
+  Installing dexter (0.3.3)
+  Installing shell-table (0.9.3 at fefbc8b)
+  Installing pulsar (0.2.2)
+  Installing avram (0.21.1)
+  Postinstall of avram: script/precompile_tasks
+  Installing lucky_router (0.5.0)
+  Installing cry (0.4.3)
+  Installing backtracer (1.2.1)
+  Installing exception_page (0.2.0)
+  Installing future (1.0.0)
+  Installing teeplate (0.8.4)
+  Installing lucky (0.28.0)
+  Postinstall of lucky: script/precompile_tasks
+  Installing authentic (0.8.0)
+  Installing carbon (0.2.0)
+  Installing carbon_sendgrid_adapter (0.1.0)
+  Installing lucky_env (0.1.3)
+  Installing openssl_ext (2.1.5)
+  Installing bindata (1.9.1)
+  Installing jwt (1.5.1)
+  Installing selenium (0.9.1)
+  Installing crystar (0.2.0)
+  Installing webdrivers (0.4.0)
+  Installing lucky_flow (0.7.3)
+  Writing shard.lock
+
+▸ Creating the database
+  Done creating testing123_development
+
+▸ Verifying postgres connection
+  ✔ Connection verified
+
+▸ Migrating the database
+  Migrated CreateUsers::V00000000000001
+
+▸ Seeding the database with required and sample records
+  Done adding required data
+  Done adding sample data
+  ✔ Done
+
+▸ Run 'lucky dev' to start the app</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now start the dev server.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">lucky dev
+  
+# output
+
+system       | Tmux socket name: overmind-testing123-mgz0NPa-7OEepBqCCxXzFx
+system       | Tmux session ID: testing123
+system       | Listening at ./.overmind.sock
+system_check | Started with pid 88551...
+assets       | Started with pid 88557...
+web          | Started with pid 88553...
+web          | Beginning to watch your project
+web          | Compiling...
+yarn run v1.22.11
+$ mix watch
+
+assets       | ✔ Mix
+assets       |   Compiled successfully in 827.15ms
+assets       |
+assets       |
+assets       |
+assets       |    Laravel Mix v6.0.28
+assets       |
+assets       |
+assets       | ✔ Compiled Successfully in 772ms
+assets       | ┌───────────────────────────────────────────────────────────────────┬──────────┐
+assets       | │                                                              File │ Size     │
+assets       | ├───────────────────────────────────────────────────────────────────┼──────────┤
+assets       | │                                                        /js/app.js │ 73.6 KiB │
+assets       | │                                                       css/app.css │ 5.37 KiB │
+assets       | └───────────────────────────────────────────────────────────────────┴──────────┘
+web          | Done compiling
+yarn run v1.22.11
+$ /home/bradmin/code/crystal/lucky/testing123/node_modules/.bin/browser-sync start -c bs-config.js --port 3001 -p http://127.0.0.1:5000
+web          |
+web          |
+web          |    🎉 App running at http://127.0.0.1:3001
+web          |
+web          |
+web          | [Browsersync] Proxying: http://127.0.0.1:5000
+web          | [Browsersync] Access URLs:
+web          |  ----------------------------
+web          |  Local: http://localhost:3001
+web          |  ----------------------------
+web          | [Browsersync] Watching files...
+web          |
+web          | GET /
+web          |  ▸ Handled by Home::Index
+web          |  ▸ Rendered Lucky::WelcomePage
+web          |  ▸ Sent 200 OK (522.84µs)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="access-web-application">Access Web Application</h3>
+<p>
+  If all is well, you can access your shiny new 
+  Lucky application at 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">http://&lt;server-ip&gt;:30001</i>
+ !
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we setup an Ubuntu 2004 server with PostgreSQL 
+  to run a Crystal based Lucky web application. Look at you, 
+  you are a champion.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://luckyframework.org/" target=_blank>https://luckyframework.org/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://luckyframework.org/guides/getting-started/installing" target=_blank>https://luckyframework.org/guides/getting-started/installing</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/luckyframework/lucky" target=_blank>https://github.com/luckyframework/lucky</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/DarthSim/overmind" target=_blank>https://github.com/DarthSim/overmind</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#lucky" class="text-xl">lucky</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#crystal" class="text-xl">crystal</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software-used">
+            Software Used
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-flight-check">
+            Pre-flight Check
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-lucky">
+            Install Lucky
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-overmind">
+            Install Overmind
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#database-user">
+            Database User
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#start-a-lucky-project">
+            Start a Lucky Project
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#access-web-application">
+            Access Web Application
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

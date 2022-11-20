@@ -1,0 +1,108 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently had to migrate authentication for a service from FIPA to Active Directory.
+  It was a bit of fluffing around because the directory structure in FIPA did not exactly
+  align with the directory structure in AD. In this post I will demonstrate how to use
+  the {{ text::code(text="ldapsearch") }}
+ command to search an Active Directory LDAP tree.
+</p>
+
+<p>
+  You can use Powershell on the AD server In order to find out the required
+  details of the bind account.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Get-ADUser -Filter 'Name -like "some_user"' -SearchBase "DC=example,DC=com"
+
+DistinguishedName : CN=some_user,OU=some,OU=group,DC=example,DC=com
+Enabled           : True
+GivenName         : Some
+Name              : some_user
+ObjectClass       : user
+ObjectGUID        : 96f1ea93-4a9e-42a1-97b6-85f1790d2258
+SamAccountName    : some_user
+SID               : S-1-5-21-1263631716-347569959-4351110812-1290
+Surname           : User
+UserPrincipalName : some_user@example.com`
+) }}
+
+
+<p>
+  The {{ text::emphasize(text="DistinguishedName") }}
+ parameter or
+  the {{ text::emphasize(text="UserPrincipalName") }}
+ can be used
+  as the bind account parameter to search LDAP.
+</p>
+
+<p>
+  We can now use this information to search AD/LDAP via the {{ text::code(text="ldapsearch") }}
+
+  command from a linux host.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ldapsearch \
+    -H ldaps://ad01.example.com -x \
+    -b "OU=some,OU=group,DC=example,DC=com" \
+    -D "CN=some_user,OU=some,OU=group,DC=example,DC=com" -W`
+) }}
+
+
+<p>
+  If you are unable to import the certificates and trust the server is legitimate
+  you can ignore self signed certs by adding the
+  {{ text::emphasize(text="LDAPTLS_REQCERT=never") }}
+ parameter to the
+  query.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`LDAPTLS_REQCERT=never ldapsearch \
+    -H ldaps://ad01.example.com -x \
+    -b "OU=some,OU=group,DC=example,DC=com" \
+    -D "some_user@example.com" -W`
+) }}
+
+
+<p>
+  An explanation of the options used is as follows.
+</p>
+<ul>
+  <li><b>-H</b> - LDAP URI</li>
+  <li><b>-x</b> - Use simple authentication</li>
+  <li><b>-b</b> - Base DN search path</li>
+  <li><b>-D</b> - Bind DN</li>
+  <li><b>-W</b> - Ask for password</li>
+</ul>
+
+<p>
+  The output of the search yields a lot of useful information.
+  For example the DN of the groups a user belongs to can be
+  used to apply permissions.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`memberOf: CN=networks,OU=some,OU=group,DC=example,DC=com
+memberOf: CN=automation,OU=some,OU=group,DC=example,DC=com`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  That's it. Just a quick post with some examples on how to search an
+  Active Directory LDAP service using the {{ text::code(text="ldapsearch") }}
+ linux
+  command line utility.
+</p>
+
+{% endblock page_content %}

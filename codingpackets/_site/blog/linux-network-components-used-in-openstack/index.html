@@ -1,0 +1,804 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Linux Network Components Used In Openstack</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 8th of November 2017
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  In November 2017 I had the chance to attended the Openstack summit in Sydney Australia.
+  I went to a great session lead by Phil Hopkins from Rackspace on how Openstack
+  Neutron utilizes network namespaces and VXLANs in linux to achieve multi-tenancy.
+  The contents of this blog came largely from that session.
+</p>
+<p>
+  In this blog I will build two Ubuntu hosts that have multi-tenant network stacks
+  for two customers; Microsoft and Apple. It would probably not be ideal if they
+  could see each others traffic and they also have the same overlapping IP address
+  ranges so it is imperative that tenancy seperation is maintained.
+</p>
+
+<h3 id="linux-network-components">Linux Network Components</h3>
+<p>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bridge-utils</i>
+ packages are used to
+  build the following four components that are used in openstack networking.
+</p>
+<ul>
+  <li>Virtual Ethernet Pairs</li>
+  <li>Linux Bridges</li>
+  <li>Network Namespaces</li>
+  <li>VXLAN Tunnels</li>
+</ul>
+
+<h4><b>Virtual Ethernet Pairs</b></h4>
+<p>
+  Virtual ethernet (veth) pairs are created by "directly" connecting two virtual
+  nics via a virtual patch cable similar to a pseudo-wire.
+  veth pairs are managed with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ip link</i>
+ command.
+</p>
+
+<h4><b>Linux Bridges</b></h4>
+<p>
+  Linux bridges are the software equivalent of a physical unmanaged switch.
+  Linux bridges are managed with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">brctl</i>
+ command.
+</p>
+
+<h4><b>Network Namespaces</b></h4>
+<p>
+  Network namespaces provide logical isolation of networking resources. Each namespace
+  has its own set of the following resources.
+</p>
+<ul>
+  <li>Network interfaces</li>
+  <li>IP addresses</li>
+  <li>IP routing table</li>
+  <li>port numbers</li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/proc/net</i>
+ directory</li>
+</ul>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="70%" 
+    src="/img/blog/linux-network-components-used-in-openstack/network-namespaces.svg" alt="blog/linux-network-components-used-in-openstack/network-namespaces.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Network namespaces are managed with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ip netns</i>
+ command.
+</p>
+
+<h4><b>VXLAN Tunnels</b></h4>
+<p>
+  VXLAN is a method of encapsulating an ethernet frame in a UDP packet to acheive
+  layer 2 agacency and multi-tenancy across a layer 3 boundary.
+  VXLAN tunnel endpoints (VTEP)s are managed with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ip link</i>
+
+  command.
+</p>
+
+
+<h3 id="lab-setup">Lab Setup</h3>
+<p>
+  To build this lab, I will be using <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant</i>
+ with the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+ provider. For reference the code versions are as follows.
+</p>
+<ul>
+  <li>Host: Ubuntu - 1604</li>
+  <li>Guests: elastic/ubuntu-16.04-x86_64</li>
+  <li>Vagrant - 1.9.6</li>
+  <li>vagrant-libvirt - 0.0.40</li>
+</ul>
+
+<p>
+  The Vagrant file for this lab can be found
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://raw.githubusercontent.com/bwks/vagrantfiles/master/linux-network-components-used-in-openstack.vagrantfile" target=_blank>here</a>.
+</p>
+
+<h4><b>Lab Diagram</b></h4>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="100%" 
+    src="/img/blog/linux-network-components-used-in-openstack/network-namespaces-lab.svg" alt="blog/linux-network-components-used-in-openstack/network-namespaces-lab.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="requirements">Requirements</h3>
+<p>
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
+ package will be the default in "most" modern linux
+  distributions out of the box.
+</p>
+<p>
+  Linux bridges are created using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">brctl</i>
+ command which is available in
+  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bridge-utils</i>
+ package. Ubuntu does not have it installed by default.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># On both guest machines
+
+sudo apt install -y bridge-utils</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Alright with all that out of the way, lets get to the configuration.
+</p>
+
+<h4><b>node01 configuration</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Create a network namespace for both companies
+
+sudo ip netns add microsoft
+sudo ip netns add apple
+
+# Create veth pairs for both companies
+
+sudo ip link add msft-veth0 type veth peer name msft-veth1
+sudo ip link add aapl-veth0 type veth peer name aapl-veth1
+
+# Add veth1 to each company's namespace
+
+sudo ip link set msft-veth1 netns microsoft
+sudo ip link set aapl-veth1 netns apple
+
+# Add the same ip to veth1 in both company namespaces
+
+sudo ip netns exec microsoft ip a add dev msft-veth1 10.1.0.4/24
+sudo ip netns exec apple ip a add dev aapl-veth1 10.1.0.4/24
+
+# Create a tenant-network linux bridge for each company
+
+sudo brctl addbr msft-br
+sudo brctl addbr aapl-br
+
+# Add a veth pair to each company's linux bridge
+
+sudo brctl addif msft-br msft-veth0
+sudo brctl addif aapl-br aapl-veth0
+
+# Create a point-to-point VXLAN interface for each company
+
+sudo ip link add msft-vxl-10 type vxlan id 10 remote 10.10.10.20 dev eth1
+sudo ip link add aapl-vxl-20 type vxlan id 20 remote 10.10.10.20 dev eth1
+
+# Add the point-to-point VXLAN interface to each company's tenant-network Linux bridge
+
+sudo brctl addif msft-br msft-vxl-10
+sudo brctl addif aapl-br aapl-vxl-20
+
+# Bring up the veth pairs
+
+sudo ip link set dev msft-veth0 up
+sudo ip link set dev aapl-veth0 up
+sudo ip netns exec microsoft ip link set dev msft-veth1 up
+sudo ip netns exec apple ip link set dev aapl-veth1 up
+
+# Bring up the loopback adapter inside the namespaces
+
+sudo ip netns exec microsoft ip link set dev lo up
+sudo ip netns exec apple ip link set dev lo up
+
+# Bring up each company's tenant-network bridge
+
+sudo ip link set dev msft-br up
+sudo ip link set dev aapl-br up
+
+# Bring up the VXLAN interface for each company
+
+sudo ip link set dev msft-vxl-10 up
+sudo ip link set dev aapl-vxl-20 up</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h4><b>node02 configuration</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Create network namespace for both companies
+
+sudo ip netns add microsoft
+sudo ip netns add apple
+
+# Create veth pair for both companies
+
+sudo ip link add msft-veth0 type veth peer name msft-veth1
+sudo ip link add aapl-veth0 type veth peer name aapl-veth1
+
+# Add veth1 to each company's namespace
+
+sudo ip link set msft-veth1 netns microsoft
+sudo ip link set aapl-veth1 netns apple
+
+# Add same ip to veth1 in both company's namespace
+
+sudo ip netns exec microsoft ip a add dev msft-veth1 10.1.0.5/24
+sudo ip netns exec apple ip a add dev aapl-veth1 10.1.0.5/24
+
+# Create a tenant-network linux-bridge for each company
+
+sudo brctl addbr msft-br
+sudo brctl addbr aapl-br
+
+# Add veth pair to each company's linux-bridge
+
+sudo brctl addif msft-br msft-veth0
+sudo brctl addif aapl-br aapl-veth0
+
+# Create a point-to-point VXLAN interface for each company
+
+sudo ip link add msft-vxl-10 type vxlan id 10 remote 10.10.10.10 dev eth1
+sudo ip link add aapl-vxl-20 type vxlan id 20 remote 10.10.10.10 dev eth1
+
+# Add the point-to-point VXLAN interface to each company's tenant-network linux-bridge
+
+sudo brctl addif msft-br msft-vxl-10
+sudo brctl addif aapl-br aapl-vxl-20
+
+# Bring up the veth pairs
+
+sudo ip link set dev msft-veth0 up
+sudo ip link set dev aapl-veth0 up
+sudo ip netns exec microsoft ip link set dev msft-veth1 up
+sudo ip netns exec apple ip link set dev aapl-veth1 up
+
+# Bring up the loopback adapter inside the namespaces
+
+sudo ip netns exec microsoft ip link set dev lo up
+sudo ip netns exec apple ip link set dev lo up
+
+# Bring up each company's tenant-network bridge
+
+sudo ip link set dev msft-br up
+sudo ip link set dev aapl-br up
+
+# Bring up the VXLAN interface for each company
+
+sudo ip link set dev msft-vxl-10 up
+sudo ip link set dev aapl-vxl-20 up</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h3 id="verification">Verification</h3>
+<p>
+  Now that the networks are built lets confirm they are working as expected.
+  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ip netns exec</i>
+ command can be used to run commands from within
+  the context of a network namespace.
+</p>
+
+<p>
+  From the namespaces on node01 we can <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ping</i>
+ to the
+  namespaces on node02 to confirm we have IP reachability.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Microsoft Namespace
+
+sudo ip netns exec microsoft ping -c 3 10.1.0.5
+
+# output
+
+PING 10.1.0.5 (10.1.0.5) 56(84) bytes of data.
+64 bytes from 10.1.0.5: icmp_seq=1 ttl=64 time=0.749 ms
+64 bytes from 10.1.0.5: icmp_seq=2 ttl=64 time=0.550 ms
+64 bytes from 10.1.0.5: icmp_seq=3 ttl=64 time=0.588 ms
+
+--- 10.1.0.5 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 0.550/0.629/0.749/0.086 ms
+
+# Apple Namespace
+
+sudo ip netns exec apple ping -c 3 10.1.0.5
+
+# output
+
+PING 10.1.0.5 (10.1.0.5) 56(84) bytes of data.
+64 bytes from 10.1.0.5: icmp_seq=1 ttl=64 time=0.825 ms
+64 bytes from 10.1.0.5: icmp_seq=2 ttl=64 time=0.621 ms
+64 bytes from 10.1.0.5: icmp_seq=3 ttl=64 time=0.527 ms
+
+--- 10.1.0.5 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1999ms
+rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Further verification can be done with tcpdump, but I will leave this as an
+  exersize for the reader.
+</p>
+
+<h3 id="helpful-commands">Helpful Commands</h3>
+
+<p>
+  Get detailed information about a VTEP with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-d</i>
+ flag.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo ip -d link show msft-vxl-10
+
+# output
+
+10: msft-vxl-10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master msft-br state UNKNOWN mode DEFAULT group default qlen 1000
+link/ether 52:21:24:75:0a:bc brd ff:ff:ff:ff:ff:ff promiscuity 1
+vxlan id 10 remote 10.10.10.20 dev eth1 srcport 0 0 dstport 8472 ageing 300
+bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_block off fastleave off learning on flood on addrgenmode eui64</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-i</i>
+ flag with tcpdump when capturing within a namespace to
+  prevent buffering of the capture and have sent to stdout.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo ip netns exec microsoft tcpdump -e -n -l -i msft-veth1</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Networking in linux has come a long way, with <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">brctl</i>
+
+  we learned how to configure multi-tenant network stacks that are used by Openstack Neutron.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://blog.rackspace.com/a-users-look-at-openstack-networking-part-1" target=_blank>https://blog.rackspace.com/a-users-look-at-openstack-networking-part-1</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#linux" class="text-xl">linux</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#openstack" class="text-xl">openstack</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#linux-network-components">
+            Linux Network Components
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-setup">
+            Lab Setup
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#requirements">
+            Requirements
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#helpful-commands">
+            Helpful Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

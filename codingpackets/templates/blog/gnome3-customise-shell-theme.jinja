@@ -1,0 +1,169 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently re-installed Ubuntu 1804 on my laptop and I though I would
+  give the {{ link::e(path="https://system76.com/pop", description="PopOS") }} desktop
+  theme from {{ link::e(path="https://system76.com/", description="system76") }} a try.
+  The verdict? It's very very nice. Next time I do a re-install or get a new
+  laptop I think I will use PopOS which is based in Ubuntu anyway.
+  Side note: If a System76 distribution channel opens up here in
+  Australia I will probably go for a System76 system for my next laptop.
+</p>
+<p>
+  There where a couple of things that bugged me that I needed to change
+  in the gnome shell profile as the settings where not available
+  in Gnome tweak tools. Those things where:
+</p>
+<ul>
+  <li>Change the font on the top bar and drop downs menus</li>
+  <li>Change the font colour of the Gnome search box</li>
+</ul>
+<h3 id="create-custom-theme">Create Custom Theme</h3>
+<p>
+  The first thing to do was create a custom theme as I didnt want to mess
+  around with the default them. I am using the
+  {{ text::emphasize(text="Pop-dark") }}
+ theme.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp -r /usr/share/themes/Pop-dark/ ~/.themes/Pop-dark-bradmin
+sudo chown -R bradmin:bradmin ~/.themes/Pop-dark-bradmin`
+) }}
+
+
+<p>
+  Then it was just a matter of restarting tweak tools and selecting
+  the {{ text::emphasize(text="Pop-dark-bradmin") }}
+ theme.
+</p>
+
+<h3 id="change-top-bar-font">Change Top Bar Font</h3>
+<p>
+  The default PopOS font is {{ text::emphasize(text="Fira Sans") }}.
+  It a pretty nice font, but too blocky looking for my liking. I actually
+  really like the {{ link::e(path="https://design.ubuntu.com/font/", description="Ubuntu") }} fonts,
+  they look smooth and render really nicely on high res screens.
+</p>
+<p>
+  First I had to locate where the font was set.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`egrep -r "Fira Sans" ~/.themes/Pop-dark-bradmin/
+
+# output
+/home/bradmin/.themes/Pop-dark-bradmin/gnome-shell/pop.css  font-family: Fira Sans, Cantarell, Sans-Serif;
+/home/bradmin/.themes/Pop-dark-bradmin/gnome-shell/gnome-shell.css  font-family: Fira Sans, Cantarell, Sans-Serif;`
+) }}
+
+
+<p>
+  Alright, so it's set in the {{ text::emphasize(text="pop.css") }}
+ and
+  {{ text::emphasize(text="gnome-shell.css") }}
+ files. So I added
+  {{ text::emphasize(text="Ubuntu") }}
+ to the start of the
+  {{ text::emphasize(text="font-family") }}
+ in the {{ text::code(text="stage") }}
+
+  section and that solved that one.
+</p>
+
+{{ text::code_block(
+  header="css",
+  language="css",
+  code=`/* ~/.themes/Pop-dark-bradmin/gnome-shell/{pop,gnome-shell}.css */
+
+stage {
+  font-family: Ubuntu, Fira Sans, Cantarell, Sans-Serif;
+  font-size: 10.5pt;
+  font-weight: 400;
+  color: #FFFFFF;
+}`
+) }}
+
+
+
+
+<h3 id="change-search-box-font-colour">Change Search Box Font Colour</h3>
+<p>
+  This was a bit of a tricky one. The default font colour was really dark
+  and you could barely see the text.
+</p>
+<p>
+  I found this github
+  {{ link::e(path="https://github.com/pop-os/gnome-shell-theme/issues/32", description="issue") }}
+  referencing the problem I was facing and it was just a matter of finding the
+  files to change the font colour.
+</p>
+<p>
+  Turns out it is the same files as above {{ text::emphasize(text="pop.css") }}
+
+  and {{ text::emphasize(text="gnome-shell.css") }}
+
+</p>
+<p>
+  I commented out the {{ text::code(text="color: #49423e;") }}
+ lines in the {{ text::code(text=".search-entry") }}
+
+  and {{ text::code(text=".search-entry:focus") }}
+ sections in both files and that
+  was the fix for that issue.
+</p>
+
+{{ text::code_block(
+  header="css",
+  language="css",
+  code=`/* ~/.themes/Pop-dark-bradmin/gnome-shell/{pop,gnome-shell}.css */
+
+.search-entry {
+  width: 20em;
+  padding: 8px 12px;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.85);
+  /* color: #49423e; */
+  background-color: rgba(255, 255, 255, 0.01);
+  border-color: transparent;
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset 0 -2px rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+.search-entry:focus {
+  /* color: #49423e; */
+  color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.01);
+  border-color: transparent;
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset 0 -2px #faa41a;
+  background-color: rgba(255, 255, 255, 0.01);
+}`
+) }}
+
+
+<h3 id="reloading-gnome-settings">Reloading Gnome Settings</h3>
+<p>
+  I also found out the below methods of forcing a reload of the
+  gnome user shell config without having to logout/in again from
+  {{ link::e(path="https://askubuntu.com/questions/214856/how-to-reload-gnome-shell-theme-via-a-command", description="this") }}
+  post.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval 'Main.loadTheme();'
+gsettings set org.gnome.shell.extensions.user-theme name &lt;name-of-theme&gt;`
+) }}
+
+
+{% endblock page_content %}

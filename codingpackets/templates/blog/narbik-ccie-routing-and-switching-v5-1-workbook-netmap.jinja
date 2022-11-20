@@ -1,0 +1,131 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchased Narbiks CCIE routing and switching v5.1 workbook bundle.
+  Some of the labs in the workbook use devices with serial interfaces. I run most
+  of my lab in Vagrant/KVM/Qemu. Qemu does not support serial interfaces and I
+  dont have any physical devices any more. Shit! What now?
+</p>
+
+<h3 id="emulators-emulators-emulators">Emulators, Emulators, Emulators</h3>
+<p>
+  After searching around, both GNS3 and EVE-NG looked promising. I have not used GNS3
+  for years and support for devices with serial interfaces is mostly supported using
+  the Dynamips emulator. I didnt want to go down that route unless really necessary.
+  The workbook was written to be compatible with EVE-NG and IOL images looks to be
+  well supported. There is a bit of messing around with licensing to get it working
+  and its probably legally pretty shaky so I didnt want to use that either.
+  In another life I worked at a $NETWORK_VENDOR and long story short I had an old WEB-IOL
+  VM that I had held on to. I fired it up and after 7 years in cold storage what do
+  you know. It worked!
+</p>
+
+<h3 id="netmap">NETMAP</h3>
+<p>
+  The below NETMAP file is used to build the topology for the workbook.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`/* Narbik CCIE R&S v5.1 workbook NETMAP */
+/* Device to hostname mapping */
+/* R1 -> R1 */
+/* R2 -> R2 */
+/* R3 -> R3 */
+/* R4 -> R4 */
+/* R5 -> R5 */
+/* R6 -> R6 */
+/* R7 -> R7 */
+/* R8 -> R8 */
+/* R9 -> R9 */
+/* R10 -> R10 */
+/* R11 -> SW1 */
+/* R12 -> SW2 */
+/* R13 -> SW3 */
+/* R14 -> SW4 */
+
+/* SWITCHES: * R1: * -c R1.txt -e1 -s3 */
+/* SWITCHES: * R2: * -c R2.txt -e1 -s3 */
+/* SWITCHES: * R3: * -c R3.txt -e1 -s3 */
+/* SWITCHES: * R4: * -c R4.txt -e1 -s3 */
+/* SWITCHES: * R5: * -c R5.txt -e1 -s3 */
+/* SWITCHES: * R6: * -c R6.txt -e1 -s3 */
+/* SWITCHES: * R7: * -c R7.txt -e1 -s1 */
+/* SWITCHES: * R8: * -c R8.txt -e1 -s1 */
+/* SWITCHES: * R9: * -c R9.txt -e1 -s1 */
+/* SWITCHES: * R10: * -c R10.txt -e1 -s1 */
+/* SWITCHES: * R11: * -c SW1.txt -e6 -s0 * l2 */
+/* SWITCHES: * R12: * -c SW2.txt -e6 -s0 * l2 */
+/* SWITCHES: * R13: * -c SW3.txt -e6 -s0 * l2 */
+/* SWITCHES: * R14: * -c SW4.txt -e6 -s0 * l2 */
+
+/* Serial Connections */
+1:1/2 2:1/1 /* R1 to R2 */
+1:1/3 3:1/1 /* R1 to R3 */
+1:2/0 4:1/1 /* R1 to R4 */
+1:2/1 5:1/1 /* R1 to R5 */
+1:2/2 6:1/1 /* R1 to R6 */
+2:1/3 3:1/2 /* R2 to R3 */
+2:2/0 4:1/2 /* R2 to R4 */
+2:2/1 5:1/2 /* R2 to R5 */
+2:2/2 6:1/2 /* R2 to R6 */
+3:2/0 4:1/3 /* R3 to R4 */
+3:2/1 5:1/3 /* R3 to R5 */
+3:2/2 6:1/3 /* R3 to R6 */
+4:2/1 5:2/0 /* R4 to R5 */
+4:2/2 6:2/0 /* R4 to R6 */
+5:2/2 6:2/1 /* R5 to R6 */
+
+/* Ethernet Network */
+11:0/1 1:0/0  /* SW1 to R1 */
+11:0/2 2:0/0  /* SW1 to R2 */
+11:0/3 3:0/0  /* SW1 to R3 */
+11:1/0 4:0/0  /* SW1 to R4 */
+11:1/1 5:0/0  /* SW1 to R5 */
+11:1/2 6:0/0  /* SW1 to R6 */
+11:1/3 7:0/0  /* SW1 to R7 */
+11:2/0 8:0/0  /* SW1 to R8 */
+11:2/1 9:0/0  /* SW1 to R9 */
+11:2/2 10:0/0 /* SW1 to R10 */
+11:3/0 12:3/0 /* SW1 to SW2 */
+11:3/1 12:3/1 /* SW1 to SW2 */
+11:3/2 12:3/2 /* SW1 to SW2 */
+11:4/0 13:4/0 /* SW1 to SW3 */
+11:4/1 13:4/1 /* SW1 to SW3 */
+11:5/0 14:5/0 /* SW1 to SW4 */
+11:5/1 14:5/1 /* SW1 to SW4 */
+
+12:0/1 1:0/1  /* SW2 to R1 */
+12:0/2 2:0/1  /* SW2 to R2 */
+12:0/3 3:0/1  /* SW2 to R3 */
+12:1/0 4:0/1  /* SW2 to R4 */
+12:1/1 5:0/1  /* SW2 to R5 */
+12:1/2 6:0/1  /* SW2 to R6 */
+12:1/3 7:0/1  /* SW2 to R7 */
+12:4/0 14:4/0 /* SW2 to SW4 */
+12:4/1 14:4/1 /* SW2 to SW4 */
+12:5/0 13:5/0 /* SW2 to SW3 */
+12:5/1 13:5/1 /* SW2 to SW3 */
+
+13:2/0  8:0/1 /* SW3 to R8 */
+13:2/1  9:0/1 /* SW3 to R9 */
+13:3/0 14:3/0 /* SW3 to SW4 */
+13:3/1 14:3/1 /* SW3 to SW4 */
+
+14:2/2  10:0/1 /* SW4 to R10 */`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  IOL is a bit of an ancient monster. It was (maybe still is) used internally
+  at $NETWORK_VENDOR so there is very little documentation out in the wild for
+  it. Luckily I some how managed to remember how to drive it.
+  There are pirate copies out there, but most of the world has moved onto
+  GNS3/EVE-NG/VIRL etc... use one of those instead. Unless of course
+  you are a tragic/weird/unhinged individual like me then knock yourself out.
+</p>
+{% endblock page_content %}

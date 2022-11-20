@@ -1,0 +1,884 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+  <h1 class="pb-1 sm:pb-2">Linux Routing On The Host With FRR</h1>
+  <div class="">
+    
+    
+      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+        published: 5th of January 2018
+      </p>
+    
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  We've all been there, it's supposed to be a relatively simple change and then BOOM! Spanning tree
+  topology change blows up the network :( There is a movement in the data centre space to push the layer 2
+  boundary down into the host to avoid the bandwidth waste of spanning tree link blocking and the
+  nightmare failure scenarios of technologies to <i>"prevent"</i> spanning tree issues like MLAG and VSS.
+</p>
+<p>
+  Current data centre design utilizing MLAG.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/linux-routing-on-the-host-with-frr/linux-mlag-topology.svg" alt="blog/linux-routing-on-the-host-with-frr/linux-mlag-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<div>
+  Future data centre design utilizing routing on the host.
+</div>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/linux-routing-on-the-host-with-frr/linux-routed-host-topology.svg" alt="blog/linux-routing-on-the-host-with-frr/linux-routed-host-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Pete Lumbis of Cumulus Networks has written an excellent blog
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cumulusnetworks.com/blog/independence-l2-data-centers/" target=_blank>post</a> describing the evolution
+  of data centre design from legacy models to the routed host model. It's a quick read that covers the topic
+  very well.
+</p>
+<p>
+  This post will cover enabling routing on the host by installing FRR on an Ubuntu 1604 host and configuring
+  BGP peering with Cumulus Linux switches.
+</p>
+<p>
+  Free Range Routing (<a class="text-sky-600 no-underline hover:text-sky-800" href="https://frrouting.org/" target=_blank>FRR</a>) is an open source IP routing suite for linux.
+  FRR is a fork of the <a class="text-sky-600 no-underline hover:text-sky-800" href="http://www.nongnu.org/quagga/" target=_blank>Quagga</a> project with over 130 contributors and support
+  from vendors such as Big Switch and Cumulus Networks. FRR aims to implement seemless integration with the native
+  linux network stacks and currently supports the BGP, OSPF, ISIS, RIP routing protocols with support for EIGRP
+  on the way.
+</p>
+
+<h3 id="topology">Topology</h3>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/linux-routing-on-the-host-with-frr/linux-roh-lab-topology.svg" alt="blog/linux-routing-on-the-host-with-frr/linux-roh-lab-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Ubuntu Minimal</b> - 16.04</li>
+  <li><b>Free Range Routing</b> - 3.0.2</li>
+  <li><b>Cumulus Linux</b> - 3.4.3</li>
+</ul>
+
+<h3 id="switch-configuration">Switch Configuration</h3>
+<p>
+  First up I will configure the leaf switches, for this task I will use the network command line utiliy
+  (<a class="text-sky-600 no-underline hover:text-sky-800" href="https://cumulusnetworks.com/blog/cumulus-linux-network-command-line-utlility/" target=_blank>NCLU</a>).
+</p>
+
+<h4><b>leaf01</b></h4>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Configure interfaces
+
+sudo net add interface swp1 ipv6 nd ra-interval 5
+sudo net del interface swp1 ipv6 nd suppress-ra
+sudo net add loopback lo ip address 10.2.0.1/32
+
+# Configure BGP
+
+sudo net add bgp autonomous-system 65201
+sudo net add bgp router-id 10.2.0.1
+sudo net add bgp bestpath as-path multipath-relax
+sudo net add bgp bestpath compare-routerid
+sudo net add bgp neighbor fabric peer-group
+sudo net add bgp neighbor fabric remote-as external
+sudo net add bgp neighbor fabric description Internal Fabric Network
+sudo net add bgp neighbor fabric capability extended-nexthop
+sudo net add bgp neighbor swp1 interface peer-group fabric
+sudo net add bgp ipv4 unicast network 10.2.0.1/32
+sudo net add bgp ipv6 unicast neighbor fabric activate
+
+# Save configuration
+
+sudo net commit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>leaf02</b></h4>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Configure interfaces
+
+sudo net add interface swp1 ipv6 nd ra-interval 5
+sudo net del interface swp1 ipv6 nd suppress-ra
+sudo net add loopback lo ip address 10.2.0.2/32
+
+# Configure BGP
+
+sudo net add bgp autonomous-system 65202
+sudo net add bgp router-id 10.2.0.2
+sudo net add bgp bestpath as-path multipath-relax
+sudo net add bgp bestpath compare-routerid
+sudo net add bgp neighbor fabric peer-group
+sudo net add bgp neighbor fabric remote-as external
+sudo net add bgp neighbor fabric description Internal Fabric Network
+sudo net add bgp neighbor fabric capability extended-nexthop
+sudo net add bgp neighbor swp1 interface peer-group fabric
+sudo net add bgp ipv4 unicast network 10.2.0.2/32
+sudo net add bgp ipv6 unicast neighbor fabric activate
+
+# Save configuration
+
+sudo net commit</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="frr-installation">FRR Installation</h3>
+<p>
+  Alright, lets move onto the host machine. I had to do an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">apt update</i>
+ otherwise I
+  would get an error when installing the required packages.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt update -y</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Install the dependencies.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install -y iproute libc-ares2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Download and install the FRR package.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># download
+
+wget https://github.com/FRRouting/frr/releases/download/frr-3.0.2/frr_3.0.2-1-ubuntu16.04.1_amd64.deb
+
+# install
+
+sudo dpkg -i frr_3.0.2-1-ubuntu16.04.1_amd64.deb</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="frr-configuration">FRR Configuration</h3>
+<p>
+  Add the uplink interfaces to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/network/interfaces</i>
+ config file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">auto eth1
+iface eth1 inet manual
+
+auto eth2
+iface eth2 inet manual</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Enable the routing daemons in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/frr/daemons</i>
+ config file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># Change no to yes
+
+zebra=yes
+bgpd=yes</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/frr/frr.conf</i>
+ for the BGP configurations
+  with the the following contents.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">!
+service integrated-vtysh-config
+!
+int lo
+ ip address 10.3.0.1/32
+ ip address 30.30.30.30/32
+!
+interface eth1
+ ipv6 nd ra-interval 5
+ no ipv6 nd suppress-ra
+!
+interface eth2
+ ipv6 nd ra-interval 5
+ no ipv6 nd suppress-ra
+!
+router bgp 65301
+ bgp router-id 10.3.0.1
+ bgp bestpath as-path multipath-relax
+ bgp bestpath compare-routerid
+ neighbor fabric peer-group
+ neighbor fabric remote-as external
+ neighbor fabric description Internal Fabric Network
+ neighbor fabric capability extended-nexthop
+ neighbor eth1 interface peer-group fabric
+ neighbor eth2 interface peer-group fabric
+ !
+ address-family ipv4 unicast
+  network 10.3.0.1/32
+  network 30.30.30.30/32
+  neighbor fabric prefix-list host-routes-out out
+ exit-address-family
+ !
+ address-family ipv6 unicast
+  neighbor fabric activate
+ exit-address-family
+!
+ip prefix-list host-routes-out seq 100 permit 10.3.0.1/32
+ip prefix-list host-routes-out seq 200 permit 30.30.30.30/32
+ip prefix-list host-routes-out seq 300 deny 0.0.0.0/0 le 32
+!
+line vty
+!
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Restart the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">networking</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">frr</i>
+ services.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart networking.service
+sudo systemctl restart frr.service</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Did you notice that no IP addresses where configured for the BGP peering ? This is possible with the use of BGP
+  unnumbered. BGP unnumbered; specified in <a class="text-sky-600 no-underline hover:text-sky-800" href="https://tools.ietf.org/html/rfc5549" target=_blank>rfc5549</a>
+  allows for the advertising of an IPv4 route with an IPv6 next-hop. The above configuration uses
+  IPv6 dynamic link local neighbor discovery for the BGP peering address. More info can be
+  found <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.cumulusnetworks.com/display/DOCS/Border+Gateway+Protocol+-+BGP#BorderGatewayProtocol-BGP-unnumbered" target=_blank>here</a> and
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://support.cumulusnetworks.com/hc/en-us/articles/212561648-Configuring-BGP-Unnumbered-with-Cisco-IOS" target=_blank>here</a>.
+</p>
+<p>
+  Alright, that's all the config out of the way lets move onto verifing the operation.
+</p>
+
+<h3 id="verification">Verification</h3>
+<p>
+  Verify BGP peering is up and prefixes are learned
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">host01# show bgp ipv4 unicast summary
+
+# output
+
+BGP router identifier 10.3.0.1, local AS number 65301 vrf-id 0
+BGP table version 4
+RIB entries 7, using 952 bytes of memory
+Peers 2, using 42 KiB of memory
+Peer groups 1, using 72 bytes of memory
+
+Neighbor        V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
+eth1            4      65201      62      62        0    0    0 <span class="hljs-string">00:02:51</span>
+            <span class="hljs-string">1</span>
+
+eth2            4      65202      61      61        0    0    0 <span class="hljs-string">00:02:50</span>
+            <span class="hljs-string">1</span>
+
+
+Total number of neighbors 2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the prefixes being learned via BGP.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">host01# show ip route
+
+# output
+
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+        O - OSPF, I - IS-IS, B - BGP, P - PIM, N - NHRP, T - Table,
+        v - VNC, V - VNC-Direct,
+        > - selected route, * - FIB route
+
+K>* 0.0.0.0/0 via 192.168.121.1, eth0
+<span class="hljs-string">B>* 10.2.0.1/32 [20/0] via fe80::2ab7:adff:fe23:355e, eth1, 00:06:24
+B>* 10.2.0.2/32 [20/0] via fe80::2ab7:adff:fe72:e8e1, eth2, 00:06:23</span>
+
+C>* 10.3.0.1/32 is directly connected, lo
+C>* 30.30.30.30/32 is directly connected, lo
+C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Good, we are learning the loopback IP addresses of leaf01/2 which is what we expect.
+</p>
+
+<p>
+  As a final test, lets check that we are learning the loopback addresses from host01 on leaf01.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant@leaf01:~$ sudo net show route
+show ip route
+=============
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, P - PIM, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel,
+       > - selected route, * - FIB route
+
+K>* 0.0.0.0/0 via 192.168.121.1, eth0
+C>* 10.2.0.1/32 is directly connected, lo
+<span class="hljs-string">B>* 10.3.0.1/32 [20/0] via fe80::2ab7:adff:fe30:c4, swp1, 03:13:24
+B>* 30.30.30.30/32 [20/0] via fe80::2ab7:adff:fe30:c4, swp1, 03:13:24</span>
+
+C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  leaf01 is learning the loopback addresses advertised by host01. That looks like success to me !
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Routing on the host is a nice solution to those pesky layer 2 problems we get in the networking
+  world and with the rise of micro-service architectures it makes alot of sense as a data centre
+  design choice.
+</p>
+
+
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://frrouting.org/" target=_blank>https://frrouting.org/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host" target=_blank>https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/FRRouting/frr/releases" target=_blank>https://github.com/FRRouting/frr/releases</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://tools.ietf.org/html/rfc5549" target=_blank>https://tools.ietf.org/html/rfc5549</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#linux" class="text-xl">linux</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#frr" class="text-xl">frr</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#topology">
+            Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#switch-configuration">
+            Switch Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#frr-installation">
+            FRR Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#frr-configuration">
+            FRR Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

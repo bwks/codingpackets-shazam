@@ -1,0 +1,86 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to add the 
+  Font Awesome icons to your Lucky webapp.
+</p>
+
+{{ text::note_block(text='
+<p>
+   There is a free version and a paid version. In this post we will be 
+  utilizing the free version of Font Awesome.
+</p>
+')
+}}
+
+<h3 id="software">Software</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li>Lucky - 0.28.0</li>
+  <li>Font Awesome (Free) - 5.15.4</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Firstly add the {{ text::emphasize(text="fontawesome-free") }}
+
+  package via yarn.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn add @fortawesome/fontawesome-free'
+) }}
+
+<p>
+  Next, we import the Font Awesome package into our 
+  {{ text::emphasize(text="app.scss") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="css",
+  code='/* src/css/app.scss */
+@import "@fortawesome/fontawesome-free";'
+) }}
+
+<p>
+  Finally, we import the Font Awesome package into 
+  our {{ text::emphasize(text="application.js") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code='// src/js/app.js
+import "@fortawesome/fontawesome-free/js/all";'
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  To find icons search for them 
+  {{ link::e(path="https://fontawesome.com/icons?d=gallery", description="here") }}.
+  Once you have an icon, change the format to Lucky template 
+  style and you are good to go.
+</p>
+{{ text::code_block(
+  header="file",
+  language="crystal",
+  code='i class: "fas fa-bitcoin fa-2x text-darkmode"'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we added the amazing Font Awesome icons 
+  to our Lucky app.
+</p>
+
+{% endblock page_content %}

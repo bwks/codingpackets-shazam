@@ -1,0 +1,56 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Netcat is a utility for checking open ports. It has more flexibility than using the telnet command and can
+  be used with scripts more easily. This is not a comprehensive tutorial, only a quick reference source. Consult the
+  man pages and/or documentation for indepth explanation of commands.
+</p>
+<p>
+  I generally use {{ link::e(path="https://nmap.org/ncat/", description="NMAPs") }} implementation of netcat which is a rewrite of the original
+  {{ link::e(path="https://en.wikipedia.org/wiki/Netcat", description="netcat") }} utility which is no longer maintained.
+</p>
+
+<h3 id="tcp">TCP</h3>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`nc -v www.google.com  80
+
+# success
+Ncat: Version 6.40 ( http://nmap.org/ncat )
+Ncat: Connected to 216.58.200.100:80.`
+) }}
+
+
+<h3 id="udp">UDP</h3>
+<p>UDP tests will always appear successful. You need to run tcp dump and/or check firewall sessions to confirm UDP ports.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`nc -vu 8.8.8.8 53
+
+# success ... maybe ? Check firewall sessions if dont have access to end host for TCPDUMP
+Ncat: Version 6.40 ( http://nmap.org/ncat )
+Ncat: Connected to 8.8.8.8:53.`
+) }}
+
+
+<h3 id="listen-on-a-port">Listen On A Port</h3>
+<p>
+  It's possible to start a 'listener'. This is great for testing through firewalls.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# TCP
+sudo nc -l 10.1.1.10 80
+
+# UDP
+sudo nc -l 10.1.1.10 -u 53`
+) }}
+
+
+{% endblock page_content %}

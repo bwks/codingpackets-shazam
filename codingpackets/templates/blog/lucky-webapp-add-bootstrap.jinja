@@ -1,0 +1,171 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post, I will show you how to add 
+  Bootstrap styling to a Lucky webapp.
+</p>
+
+<h3 id="software-used">Software Used</h3>
+<p>
+  The following software versions are used in this 
+  post.
+</p>
+<ul>
+  <li>Lucky - 0.28.0</li>
+  <li>Bootstrap - 5.1.0</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  First up, use Yarn to install 
+  {{ text::emphasize(text="Bootstrap") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn add bootstrap
+
+# output
+   
+yarn add v1.22.11
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.3.2: The platform "linux" is incompatible with this module.
+info "fsevents@2.3.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning " > compression-webpack-plugin@7.1.2" has unmet peer dependency "webpack@^5.1.0".
+warning " > sass-loader@10.2.0" has unmet peer dependency "webpack@^4.36.0 || ^5.0.0".
+warning " > bootstrap@5.1.0" has unmet peer dependency "@popperjs/core@^2.9.3".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 1 new dependency.
+info Direct dependencies
+└─ bootstrap@5.1.0
+info All dependencies
+└─ bootstrap@5.1.0
+Done in 7.70s.'
+) }}
+
+<p>
+  Next, import Bootstrap near the top of the  
+  {{ text::emphasize(text="src/css/app.scss") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="scss",
+  code='// src/css/app.scss
+@import "bootstrap";'
+) }}
+
+<p>
+  That takes care of the CSS component. For some of the 
+  Bootstrap components to work correctly (dropdown, popovers,
+  etc..) Javascript plugins are required.
+</p>
+
+<p>
+  Install PopperJS with Yarn.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn add @popperjs/core
+
+# output
+   
+yarn add v1.22.11
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.3.2: The platform "linux" is incompatible with this module.
+info "fsevents@2.3.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning " > compression-webpack-plugin@7.1.2" has unmet peer dependency "webpack@^5.1.0".
+warning " > sass-loader@10.2.0" has unmet peer dependency "webpack@^4.36.0 || ^5.0.0".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 1 new dependency.
+info Direct dependencies
+└─ @popperjs/core@2.9.3
+info All dependencies
+└─ @popperjs/core@2.9.3
+Done in 3.72s.'
+) }}
+
+<p>
+  Now, import the Bootstrap JS component in the 
+  {{ text::emphasize(text="src/js/app.js") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code='// src/js/app.js
+import "bootstrap";'
+) }}
+
+<p>
+  Finally, restart the dev server.
+</p>
+
+<h3 id="usage">Usage</h3>
+<p>
+  The following snippet from 
+  {{ link::e(path="https://getbootstrap.com/docs/5.0/components/card/", description="here") }} 
+  can be used as is, except it needs to be converted to 
+  Lucky syntax.
+</p>
+
+{{ text::code_block(
+  header="html",
+  language="html",
+  code='&lt;div class="card" style="width: 18rem;"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h5 class="card-title"&gt;Special title treatment&lt;/h5&gt;
+    &lt;p class="card-text"&gt;With supporting text below as a natural lead-in to additional content.&lt;/p&gt;
+    &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;'
+) }}
+
+<p>
+  Lucky templates are written in Crystal and are therefore 
+  type safe. This is one of the reasons I was attracted to Lucky.
+  {{ link::e(path="https://luckyframework.org/html", description="This") }} tool 
+  can be used to convert HTML to a Lucky template.
+</p>
+<p>
+  {{ link::e(path="https://marketplace.visualstudio.com/items?itemName=stephendolan.lucky", description="This") }}
+  excellent VSCode plugin by Stephen Dolan, can also be 
+  used to translate HTML to Lucky syntax from within VSCode.
+</p>
+<p>
+  The resulting template is below.
+</p>
+{{ text::code_block(
+  header="crystal",
+  language="crystal",
+  code='div class: "card", style: "width: 18rem;" do
+  div class: "card-body" do
+    h5 "Special title treatment", class: "card-title"
+    para "With supporting text below as a natural lead-in to additional content.", class: "card-text"
+    a "Go somewhere", class: "btn btn-primary", href: "#"
+  end
+end'
+) }}
+<p>
+  Add the snippet to a page view and Bob's your uncle.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we added the Bootstrap framework to 
+  a Lucky webapp.
+</p>
+
+{% endblock page_content %}

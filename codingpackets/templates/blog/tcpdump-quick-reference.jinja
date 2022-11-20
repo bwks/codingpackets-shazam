@@ -1,0 +1,136 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="http://www.tcpdump.org/", description="TCPDump") }} is a tool for sniffing packets on a network. This is not a
+  comprehensive tutorial, only a quick reference source. Consult the man pages and/or documentation for
+  indepth explanation of commands.
+</p>
+
+<h3 id="capturing-traffic">Capturing Traffic</h3>
+
+<b>All Traffic for an interface</b><br>
+<p>
+  {{ text::emphasize(text="-i <i>&lt;interface-name&gt;</i>") }}
+ specifies an interface.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1`
+) }}
+
+
+<b>Source Address</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 src 172.16.20.220`
+) }}
+
+
+<b>Destination Address</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 dst 8.8.8.8`
+) }}
+
+
+
+<b>ARP</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 arp`
+) }}
+
+
+<b>ICMP</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 icmp and dst 9.9.9.9`
+) }}
+
+
+<b>DHCP</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 port 67 or port 68`
+) }}
+
+
+<b>DNS</b><br>
+<p>Capture TCP and UDP</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 port 53`
+) }}
+
+
+<p>Capture UDP only</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 udp port 53`
+) }}
+
+
+
+<b>SNMP</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 port 161 or port 162`
+) }}
+
+
+
+<h3 id="ethernet">Ethernet</h3>
+
+<b>Host address</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump ether host aa:bb:cc:11:22:33`
+) }}
+
+
+<h3 id="file-output">File Output</h3>
+
+<b>PCAP File</b><br>
+{{ text::emphasize(text="-w <i>&lt;path-to-file&gt;.pcap</i>") }}
+ specifies {{ text::emphasize(text="pcap") }}
+ file location.
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 -w /tmp/capture.pcap`
+) }}
+
+
+<h3 id="limit-capture">Limit Capture</h3>
+
+<b>Capture number of packets</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 icmp -c 4`
+) }}
+
+
+<b>Capture to size of file</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo tcpdump -i eth1 icmp -C 10 -w /tmp/capture.pcap`
+) }}
+
+
+{% endblock page_content %}

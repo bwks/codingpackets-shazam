@@ -1,0 +1,408 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="intro">Intro</h3>
+  <p>
+    A collection of useful tips and tricks for the linux shell that I have stumbled across
+    over the years. I'll keep updating this post as I come across something of value. I use
+    bash, so these apply to bash unless noted otherwise but my work in other shells.
+  </p>
+
+  <h3 id="cat">cat</h3>
+  <p>
+    The {{ text::code(text="cat") }}
+ command can be used with a HERE doc to redirect multi-line
+    content to a file.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cat << EOF > /some/filename
+Some content
+  indented content
+more content
+EOF`
+) }}
+
+  <i>{{ link::e(path="http://tldp.org/LDP/abs/html/here-docs.html", description="credit") }}</i>
+
+  <h3 id="echo">echo</h3>
+  <p>
+    The {{ text::code(text="echo") }}
+ command can be used to redirect content to a file.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "some content" > /some/filename`
+) }}
+
+
+  {{ text::warning_block(text='
+      Using the single $1
+ operator will overwrite the target file.
+  ') 
+  | replace(from="$1", to=text::code(text="&gt;"))
+  }}
+
+  <p>
+    Use the double {{ text::code(text="&gt;&gt;") }}
+ operator to {{ text::emphasize(text="append") }}
+
+    content to an existing file.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "some more content" >> /some/filename`
+) }}
+
+
+  <p>
+    If the file requires root permissions pipe {{ text::code(text="|") }}
+ the content to the
+    {{ text::code(text="tee") }}
+ command.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "some content" | sudo tee /some/file`
+) }}
+
+
+  {{ text::warning_block(text='
+      This will overwrite the target file.
+  ') }}
+
+  <p>
+    Use the {{ text::code(text="--append") }}
+ flag to append the content to the end of the target file.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "some other content" | sudo tee --append /some/file`
+) }}
+
+  <p>
+    <i>{{ link::e(path="https://stackoverflow.com/a/550808", description="Credit") }}</i>
+  </p>
+
+  <h3 id="grep-egrep">grep | egrep</h3>
+  <p>
+    Search a file and ignore lines that start with a {{ text::emphasize(text="#") }}
+,
+    {{ text::emphasize(text="space") }}
+ or {{ text::emphasize(text="tab") }}
+.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`egrep -v '(^#|^\s*$|^\s*\t*#)' /some/filename`
+) }}
+
+
+  <p>
+    <i>{{ link::e(path="https://www.linuxquestions.org/questions/linux-newbie-8/how-can-i-cat-or-grep-a-file-to-ignore-lines-starting-with-654683/#post5010337", description="Credit") }}
+    </i>
+  </p>
+
+  <p>
+    Get some context around a match with the <code class="code-green">grep/egrep</code>
+ command using the
+    {{ text::emphasize(text="-C &lt;num_of_context_lines&gt;") }}
+ flag.
+  </p>
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`egrep string-to-match -C 5 /some/filename`
+) }}
+
+
+
+  <h3 id="ping">ping</h3>
+  <p>
+    Ping that shows a timestamp for each echo and also lost pings.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="bash",
+  code=`ping -i 1 -W1 -D -O 9.9.9.9 | while read row ; do awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row"; done
+
+ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row"; done`
+) }}
+
+
+  <p>
+    I adapted the above into a bash function that can be placed in your
+    {{ text::emphasize(text="~/.bashrc") }}
+ file. Call the function with
+    {{ text::code(text="tping &lt;ip-address&gt;") }}
+
+  </p>
+  {{ text::code_block(
+  header="bash",
+  language="bash",
+  code=`function tping () {
+  ping -i 1 -W1 -D -O "$1" |
+    while read row ; do
+      awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row";
+    done
+}`
+) }}
+
+  <p>
+    You can also do something similar for IPv6. Call the function with
+    {{ text::code(text="tping6 &lt;ipv6-address&gt;") }}
+
+  </p>
+  {{ text::code_block(
+  header="bash",
+  language="bash",
+  code=`function tping6 () {
+  ping6 -i 1 -W1 -D -O "$1" |
+    while read row ; do
+      awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row";
+    done
+}`
+) }}
+
+
+  <p>
+    <i>{{ link::e(path="https://docs.cumulusnetworks.com/display/DOCS/Network+Troubleshooting", description="Credit") }}
+    </i>
+  </p>
+
+  <h3 id="functions">Functions</h3>
+  <p>
+    Create and change to a directory path.
+  </p>
+  {{ text::code_block(
+  header="bash",
+  language="bash",
+  code=`function mkcd() {
+  dir="$*";
+  mkdir -p "$dir" && cd "$dir";
+}`
+) }}
+
+
+  <p>
+    <i>{{ link::e(path="https://twitter.com/roman01la/status/1168790713687035904", description="Credit") }}
+    </i>
+  </p>
+
+  <h3 id="shell-expansion">Shell Expansion</h3>
+  <p>
+    Search your history file with the {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="r") }}
+ keyboard combination.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`(reverse-i-search):`
+) }}
+
+
+  <p>
+    Expand the last command of the previously run set of commands with the {{ text::kbd(text="ALT") }}
+ + {{ text::kbd(text=".") }}
+
+    keyboard combination.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tail -f /var/log/some/nested/log/file
+tail: cannot open ‘/var/log/some/nested/log/file’ for reading: Permission denied
+
+sudo tail -f &lt;alt . expands&gt;
+ <span class="hljs-string">/var/log/some/nested/log/file</span>`
+) }}
+
+
+
+  <p>
+    A {{ text::kbd(text="space") }}
+ at the start of a set of commands stops the line being written to your
+    {{ text::emphasize(text="~/.bash_history") }}
+. Good for keeping things like passwords
+    and API keys out of your {{ text::emphasize(text="~/.bash_history") }}
+ or when running
+    dangerous {{ text::emphasize(text="sudo") }}
+ commands.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# space at front omits command from history
+
+ sudo rm -rf /some/directory`
+) }}
+
+
+  <p>
+    {{ text::kbd(text="!") }}
+{{ text::emphasize(text="&lt;number_of_command&gt;") }}
+ to re-execute a
+    command from the output of the {{ text::code(text="history") }}
+ command.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`history
+
+# output
+
+2001  cat Pipfile
+2002  gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app
+2003  cat wsgi.py
+
+!2002 # re-execute command 2002`
+) }}
+
+
+
+  <p>
+    {{ text::kbd(text="!") }}
+{{ text::kbd(text="!") }}
+ repeats the last command.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`!! # last command was 'pwd'
+
+
+# output
+
+pwd
+/home/bradmin/`
+) }}
+
+
+  <p>
+    {{ text::kbd(text="!") }}
+{{ text::emphasize(text="&lt;command&gt;") }}
+ repeats the last occurrence
+    of {{ text::emphasize(text="&lt;command&gt;") }}
+.
+  </p>
+
+  {{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`!rails
+
+# output
+
+rails console
+Running via Spring preloader in process 11499
+Loading development environment (Rails 5.2.2.1)`
+) }}
+
+
+  <h3 id="tee">tee</h3>
+  <p>
+    The {{ text::code(text="tee") }}
+ command can be used to write content to a file. This is very
+    useful when combined with a HERE doc for files that require sudo.
+  </p>
+
+  {{ text::code_block(
+  header="file",
+  language="ini",
+  code=`sudo tee /etc/yum.repos.d/nginx.repo > /dev/null << "EOF"
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+
+[nginx-mainline]
+name=nginx mainline repo
+baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=https://nginx.org/keys/nginx_signing.key
+EOF`
+) }}
+
+
+  <h3 id="keyboard-shortcuts">Keyboard Shortcuts</h3>
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="e") }}
+ moves the cursor to the end of the line.
+  </p>
+
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="a") }}
+ moves the cursor to the beginning of the line.
+  </p>
+
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="u") }}
+ deletes from the cursor to the beginning of the line.
+  </p>
+
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="k") }}
+ deletes from the cursor to the end of the line.
+  </p>
+
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="w") }}
+ deletes characters behind the cursor up to the space character.
+  </p>
+
+  <p>
+    {{ text::kbd(text="ALT") }}
+ + {{ text::kbd(text="d") }}
+ deletes characters in front of the cursor up to the space character.
+  </p>
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="f") }}
+ Move forward one character.
+  </p>
+  <p>
+    {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="b") }}
+ Move back one character.
+  </p>
+  <p>
+    {{ text::kbd(text="ALT") }}
+ + {{ text::kbd(text="f") }}
+ Move forward one word.
+  </p>
+  <p>
+    {{ text::kbd(text="ALT") }}
+ + {{ text::kbd(text="b") }}
+ Move back one word.
+  </p>
+
+
+
+{% endblock page_content %}

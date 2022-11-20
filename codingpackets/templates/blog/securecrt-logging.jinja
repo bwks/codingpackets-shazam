@@ -1,0 +1,146 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Use of a terminal emulation programs such as 
+  SecureCRT to connect to network equipment is pretty 
+  common for networking professionals. One of the advantages 
+  of using a terminal emulation program is that they 
+  usually have some sort of logging capability. 
+</p>
+
+<p>
+  This will be a quick post to document my SecureCRT 
+  logging setup for future Brads benefit. Feel free to 
+  borrow and customise to your liking.
+</p>
+
+<h3 id="logging-setup">Logging Setup</h3>
+<p>
+  Navigate to the log file settings.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Options",
+    "Edit Default Session..",
+    "Log File",
+]) }}
+
+<h4>Log File Name</h4>
+<p>
+  Enter the log file location.
+</p>
+{{ text::code_block(
+  header="text",
+  language="text",
+  code="C:\logfiles\%Y-%M-%D–-%h-%m-%s--%S--%H.txt"
+) }}
+<p>
+  This generates logfiles named with the following structure
+  {{ text::emphasize(text="2021-04-29–-17-14-00--ubuntu2004--192.168.95.101.txt") }}
+
+  making them easily sortable and searchable.
+</p>
+
+<h4>Options</h4>
+<p>
+  Enable the following options:
+</p>
+<ul>
+  <li>Start log upon connect</li>
+  <li>Append to file</li>
+  <li>Start new log at midnight</li>
+</ul>
+
+
+<h4>Custom Log Data</h4>
+<p>
+  {{ text::emphasize(text="Upon connect") }}
+ -  
+  Places a banner at the top of the logfile.
+</p>
+{{ text::code_block(
+  header="text",
+  language="text",
+  code="##### START LOG %S %H %Y-%M-%D %h:%m:%s #####"
+) }}
+
+<p>
+  {{ text::emphasize(text="Upon disconnect") }}
+ -  
+  Places a banner at the end of the logfile.
+</p>
+{{ text::code_block(
+  header="text",
+  language="text",
+  code="##### STOP LOG %S %H %Y-%M-%D %h:%m:%s #####"
+) }}
+
+<p>
+  {{ text::emphasize(text="On each line") }}
+ -  
+  Prefixes each line with a timestamp followed by 
+  a hash rocket. 
+</p>
+{{ text::code_block(
+  header="text",
+  language="text",
+  code="%Y-%M-%D %h:%m:%s => "
+) }}
+
+{{ text::note_block(text='
+    There is a blank space (&nbsp;) after the hash rocket (=>).
+  </p>
+')
+}}
+
+<p>
+  Once this is completed, press 
+  {{ text::emphasize(text="OK") }}
+ 
+  and {{ text::emphasize(text="change all sessions") }}
+
+  at the prompt. 
+</p>
+
+<h4>Log File Example</h4>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code="# 2021-04-29–-17-14-00--ubuntu2004--192.168.95.101.txt
+2021:04:29.17:14:00 => ##### START LOG ubuntu2004 192.168.95.101 2021-04-29 17:14:00 #####
+2021-04-29 17:14:00 => Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-70-generic x86_64)
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 =>  * Documentation:  https://help.ubuntu.com
+2021-04-29 17:14:00 =>  * Management:     https://landscape.canonical.com
+2021-04-29 17:14:00 =>  * Support:        https://ubuntu.com/advantage
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 =>   System information as of Thu 29 Apr 2021 07:13:59 AM UTC
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 =>   System load:  0.04               Processes:              242
+2021-04-29 17:14:00 =>   Usage of /:   17.5% of 48.47GB   Users logged in:        1
+2021-04-29 17:14:00 =>   Memory usage: 20%                IPv4 address for ens33: 192.168.95.101
+2021-04-29 17:14:00 =>   Swap usage:   0%                 IPv4 address for ens34: 192.168.226.130
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 => 52 updates can be installed immediately.
+2021-04-29 17:14:00 => 0 of these updates are security updates.
+2021-04-29 17:14:00 => To see these additional updates run: apt list --upgradable
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 => 
+2021-04-29 17:14:00 => *** System restart required ***
+2021-04-29 17:14:00 => Last login: Thu Apr 29 07:12:01 2021 from 192.168.95.1
+2021-04-29 17:14:01 => 
+2021-04-29 17:14:01 => ubuntu2004 ❯ ~ 
+2021-04-29 17:14:02 => at 2021-04-29 17:14:00 ❯❯ 
+2021:04:29.17:14:10 => ##### STOP LOG ubuntu2004 192.168.95.101 2021-04-29 17:14:10 #####"
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Thats it, thats the post.
+</p>
+
+{% endblock page_content %}

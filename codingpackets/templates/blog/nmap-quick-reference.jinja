@@ -1,0 +1,217 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(
+      path="https://nmap.org/", 
+      description="NMAP"
+  ) }} 
+  is a tool for network discovery 
+  and auditing. This is not a comprehensive tutorial, only a quick reference source. 
+  Consult the man pages and/or documentation for an in-depth explanation of commands.
+</p>
+
+<h3 id="port-scan">Port Scan</h3>
+<h4>Top Ports</h4>
+<p>
+  Scan the top {{ text::emphasize(text="<i>N</i>") }}
+ number of ports
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nmap --top-ports 10 target.dummy"
+) }}
+
+<h4>TCP SYN Scan</h4>
+<p>
+  TCP SYN scans do not perform a full TCP 3-way handshake.
+  A {{ text::emphasize(text="RST") }}
+ is sent 
+  to the server when a {{ text::emphasize(text="SYN/ACK") }}
+  is received. The flow between the NMAP client and server looks like this:
+</p>
+
+{{ table::default(
+  header=["Client", "TCP Connection", "Server"],
+  rows=[
+      "NMAP | ---SYN--> | SERVER",
+      "NMAP | <--SYN/ACK--- | SERVER",
+      "NMAP | ---RST--> | SERVER",
+  ],
+) }}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo nmap -sS -p 22,113,139 target.dummy"
+) }}
+
+{{ text::note_block(text='
+    TCP SYN scans requires raw-packet privileges.
+') }}
+
+<p>
+  {{ link::e(
+      path="https://nmap.org/book/synscan.html", 
+      description="https://nmap.org/book/synscan.html"
+  ) }} 
+</p>
+
+
+<h4>TCP Connect Scan</h4>
+<p>
+  TCP connect scan utilises the underlying operating system to perform 
+  a full TCP 3-way handsake and sets up a connections between the client 
+  and the server. This scan is used when the user does not have raw packet 
+  privileges or is scanning IPv6 networks. The flow between the NMAP client 
+  and the server looks like this:
+</p>
+<div class="w-25 ps-5">
+  <table class="table table-borderless text-center">
+    <tr>
+      <td>NMAP</td><td>---SYN--></td><td>SERVER</td>
+    </tr>
+    <tr>
+      <td>NMAP</td><td><--SYN/ACK---</td><td>SERVER</td>
+    </tr>
+    <tr>
+      <td>NMAP</td><td>---ACK--></td><td>SERVER</td>
+    </tr>
+    <tr>
+      <td>NMAP</td><td><--DATA---</td><td>SERVER</td>
+    </tr>
+    <tr>
+      <td>NMAP</td><td>---RST--></td><td>SERVER</td>
+    </tr>
+  </table>
+</div>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nmap -sT -p 22,80,443 target.dummy"
+) }}
+
+<p>
+  {{ link::e(
+      path="https://nmap.org/book/scan-methods-connect-scan.html", 
+      description="https://nmap.org/book/scan-methods-connect-scan.html"
+  ) }} 
+</p>
+
+<h4>UDP Scan</h4>
+<p>
+  UDP scans send a UDP packet to the target port and depending on the 
+  response, NMAP will guess if the port is open based on the following table. 
+</p>
+
+  <table class="table border-dark table-sm table-bordered">
+    <thead class="text-center thead-darkmode text-th-darkmode">
+    <tr>
+      <th width="20%">NMAP State</th>
+      <th width="40%">Response Type</th>
+    </tr>
+    </thead>
+    <tr>
+      <td>open</td>
+      <td>Any UDP repsonse (this is unusual)</td>
+    </tr>
+    <tr>
+      <td>open | filtered</td>
+      <td>No response received</td>
+    </tr>
+    <tr>
+      <td>closed</td>
+      <td>ICMP port unreachable error (type 3, code 3)</td>
+    </tr>
+    <tr>
+      <td>filtered</td>
+      <td>Other ICMP unreachable errors (type 3, code 1, 2, 9, 10, or 13)</td>
+    </tr>
+  </table>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo nmap -sU -p 53 target.dummy"
+) }}
+
+{{ text::note_block(text='
+    UDP scans requires raw-packet privileges.
+') }}
+
+<p>
+  {{ link::e(
+      path="https://nmap.org/book/scan-methods-udp-scan.html", 
+      description="https://nmap.org/book/scan-methods-udp-scan.html"
+  ) }} 
+</p>
+
+
+<h4>Aggressive Scan</h4>
+<p>
+  An aggressive scan combines a number of scan types without having 
+  to remember a large number of flags. The scans include: 
+</p>
+<ul>  
+  <li>OS Detection</li>
+  <li>Version Scanning</li>
+  <li>Script Scanning</li>
+  <li>Traceroute</li>
+</ul>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nmap -A target.dummy"
+) }}
+
+{{ text::note_block(text='
+    Aggressive scans are intrusive and should not be used against a target 
+    without permission.
+') }}
+
+<h3 id="ping-sweep">Ping Sweep</h3>
+<h4>Subnet</h4>
+<p>
+  Ping sweep a subnet
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nmap -sn 10.1.1.0/24"
+) }}
+
+
+<p>
+  {{ link::e(
+      path="https://nmap.org/book/man-host-discovery.html", 
+      description="https://nmap.org/book/man-host-discovery.html"
+  ) }} 
+</p>
+
+
+<h3 id="nping">NPing</h3>
+<p>
+  NPing allows you to generate packets.
+</p>
+<h4>Gratuitous ARP</h4>
+<p>
+  Target a host with a GARP reply
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="sudo nping -c 1 --arp-sender-mac 08:00:27:ba:6c:7f \\
+  --arp-sender-ip 10.1.1.1 --arp-type ar \\
+  --arp-target-mac 08:00:27:74:99:3b 10.1.1.11 \\
+  --interface eth1 --dest-mac 08:00:27:74:99:3b"
+) }}
+
+{% endblock page_content %}
