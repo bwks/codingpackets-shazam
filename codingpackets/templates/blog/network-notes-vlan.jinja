@@ -1,0 +1,89 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Virtual Local Area Network (VLANs) are used to logically partition physical switch ports
+    into multiple smaller broadcast domains.
+  </p>
+
+  <h3 id="vlan">VLAN</h3>
+  <p>
+    A VLAN is a logically segmented group of physical switchports
+    that reduces the broadcast domain of the physical ports to the ports within the VLAN.
+    VLANs are defined in the {{ link::e(path="http://www.ieee802.org/1/pages/802.1Q.html", description="IEEE802.1Q") }}
+    standard. VLANs are identified via an ID which is a number between 1 and 4094.
+  </p>
+  <p>
+    Hosts within a VLAN cannot talk directly to hosts within a different VLAN.
+    Good design principles dictate that there should be one IPv4 and or IPv6 subnet per
+    VLAN. A layer 3 routing mechanism is required for hosts in different VLANS to communicate
+    with one another.
+  </p>
+  <h4><b>Traditional VLANS</b></h4>
+  {{ image::boxed(path="blog/network-notes-vlan/traditional-vlans.svg", width="400px") }}
+
+  <p>
+    VLAN isolation is local to a switch. In order to extend the VLAN isolation to more than
+    one switch a trunk must be configured between the switches. The industry standard method
+    to enable inter-switch VLAN communication is to "tag" ethernet frames with 802.1q tags.
+    Cisco invented a proprietary tagging protocol named inter-switch link (ISL) which is no
+    longer implemented in modern switches.
+  </p>
+
+  <h4><b>802.1Q Tag</b></h4>
+  {{ image::boxed(path="blog/network-notes-vlan/8021q-tag.svg", width="800px") }}
+
+  <p>
+    An 802.1Q tag gets "inserted" into an ethernet frame between the source address and
+    type/length fields. The tag is 4 bytes in length, once the tag is inserted the FCS must
+    be recomputed.
+  </p>
+  <h4><b>802.1Q Tag Fields</b></h4>
+
+  {{ table::default(
+  header=["Field", "Purpose"],
+  rows=[
+      "TPID | Contains the HEX value 0x8100 which signals the receiver the presence of an 802.1Q tag in the frame header.",
+      "User Priority | Defined in the 802.1p standard to align with CoS marking used in upper layers such as IP Precedence and MPLS EXP.",
+      "Canonical Format Indicator | Used to associate the VLAN ID field with either ethernet (0) or token ring (1). Should always be set to 0 for ethernet.",
+      "VLAN ID | A VLAN ID between 1 and 4094.",
+  ],
+) }}
+
+  <h3 id="private-vlan">Private VLAN</h3>
+  <p>
+    Defined in {{ link::e(path="https://tools.ietf.org/html/rfc5517", description="RFC5517") }} private VLANs allow
+    a switch to treat a port as a if it belongs to a VLAN while using a single subnet across
+    multiple private VLAN ports.
+  </p>
+  <p>
+    Private VLANs consist of single primary VLAN and one or more secondary VLANs. From
+    outside of the switch all ports look like they belong to the Primary VLAN. Secondary VLANs
+    fit into two categories; community and isolated VLANs and have different levels of isolation.
+  </p>
+
+  <h4><b>Private VLAN Summary</b></h4>
+
+  {{ table::default(
+  header=["Item", "Description"],
+  rows=[
+      "Primary VLAN | A primary VLAN contains one or more community VLANs and promiscuous ports. A primary VLAN can contain only ONE isolated VLAN.",
+      "Community VLAN | Ports in the same community VLAN can communicate directly and with promiscuous ports in the same primary VLAN.",
+      "Isolated VLAN | Can only communicate with promiscuous ports in the same primary VLAN.",
+      "Promiscuous Port | Can communicate with all promiscuous ports and secondary VLANs within the same primary VLAN.",
+  ],
+) }}
+
+  <h4><b>Private VLANs</b></h4>
+  {{ image::boxed(path="blog/network-notes-vlan/private-vlans.svg", width="700px") }}
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various VLAN PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/rrh1oi5sse5ugdv/AADl_pS9OpZRPMjJ61hAfTR0a?dl=0", description="here") }}.
+  </p>
+
+
+{% endblock page_content %}

@@ -1,0 +1,63 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    The original ethernet specification was owned by DEC, Intel and Xerox hence the standard
+    being named "Ethernet (DIX)". The ethernet specification has been through a number of
+    updates over the years beginning with the IEEE standard in the early 1980's and going
+    through many revisions. Ethernet standards are covered by the IEEE working group
+    {{ link::e(path="http://www.ieee802.org/3/", description="here") }}.
+  </p>
+
+  <h3 id="frame-format">Frame Format</h3>
+  <p>
+    There are three main ethernet framing formats.
+  </p>
+
+  <h4><b>Ethernet II (DIX) and Revised IEEE 802.3 (1997)</b></h4>
+  <p>
+    Known as Ethernet II, this is the most common Ethernet frame format in use today.
+    Standardized by the IEEE as the revised 802.3 (1997) standard.
+  </p>
+  {{ image::boxed(path="blog/ethernet/802-3-1997-frame-format.svg", width="800px") }}
+
+  <h4><b>Original IEEE 802.3</b></h4>
+  <p>
+    The original IEEE specification was flawed. It was discovered that the 1 Byte DSAP and
+    SSAP fields where too small to be of much use.
+  </p>
+  {{ image::boxed(path="blog/ethernet/802-3-original-frame-format.svg", width="800px") }}
+
+  <h4><b>IEEE 802.3 with SNAP Header</b></h4>
+  <p>
+    This frame format adds the SNAP header to overcome some of the limitations of the original
+    IEEE frame format.
+  </p>
+  {{ image::boxed(path="blog/ethernet/802-3-snap-frame-format.svg", width="800px") }}
+
+  <h4><b>Ethernet Header Fields</b></h4>
+
+  {{ table::default(
+  header=["Field", "Purpose"],
+  rows=[
+      "Preamble | Provides clocking synchronization for the transmitted signal.",
+      "Start of Frame Delimiter (SFD) | Same use as in the 8 byte preamble, it is simply moved into its own 1 byte field with the preamble being shortened to 7 bytes.",
+      "Destination MAC | Destination MAC address of the ethernet frame.",
+      "Source MAC | Source MAC address of the ethernet frame.",
+      "Type (DIX) | Inform the receiver of the upper layer protocol type that follows the ethernet header. Examples are 0x800 - IPv4 or 0x8100 - 802.1Q.",
+      "Length | The length in bytes of the data payload.",
+      "Control | Provides a mechanism for both connection-orientated and connectionless operations.",
+      "Organizationally Unique Identifier (SNAP) | Allows for the advertisement of the NICs device manufacturer OUI.",
+      "Type (SNAP) | Same function as the DIX type field. Overcomes the size limitation of the DSAP field.",
+  ],
+) }}
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    The ethernet frame format can be referenced in PCAPs found
+    {{ link::e(path="https://www.dropbox.com/sh/wxbqycu8cxfv5fl/AAChwMFWq2VDv7cmzCNrmmcOa?dl=0", description="here") }}.
+  </p>
+
+{% endblock page_content %}

@@ -1,0 +1,85 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Address resolution protocol (ARP) is a method for mapping IPv4 addresses to MAC addresses. There are a few different
+    flavours of ARP that have evolved over the years.
+  </p>
+
+  <h3 id="arp">ARP</h3>
+  <p>
+    Regular ARP maps an unknown MAC address to a known IPv4 address and is defined in
+    {{ link::e(path="https://tools.ietf.org/html/rfc826", description="RFC826") }}.
+  </p>
+
+  <b>ARP Operation</b>
+  {{ image::boxed(path="blog/arp/arp.svg", height="600px") }}
+
+  <h3 id="proxy-arp">Proxy ARP</h3>
+  <p>
+    Proxy ARP is when a device like a router that knows the MAC address of an IPv4 address in another
+    broadcast domain and responds for that host. Proxy ARP is defined in
+    {{ link::e(path="https://www.ietf.org/rfc/rfc1027.txt", description="RFC1027") }}.
+  </p>
+
+  <b>Proxy ARP Operation</b>
+  <p>
+    In the below example, the outside host {{ text::code(text="10.1.1.200") }}
+ is configured with a {{ text::code(text="/24") }}
+ so it believes
+    it is in the same broadcast domain as the inside host on {{ text::code(text="10.1.1.10") }}
+. The outside host will not perform
+    a route lookup and instead go straigt to an arp request. Since proxy arp is enabled on R1, the router will reply
+    with its own mac address for {{ text::code(text="10.1.1.10") }}
+.
+  </p>
+
+  {{ image::boxed(path="blog/arp/proxy-arp.svg", width="800px") }}
+
+  <h3 id="reverse-arp">Reverse ARP</h3>
+  <p>
+    Reverse ARP (RARP) does the opposite of ARP and maps an unknown IPv4 address to a known MAC address.
+    RARP is defined in {{ link::e(path="https://tools.ietf.org/html/rfc903", description="RFC903") }}.
+  </p>
+  <p>
+    RARP is replaced by DHCP in modern equipment but may still be around if working with ancient sun/solaris equipment.
+  </p>
+
+  <b>RARP Operation</b><br>
+  {{ image::boxed(path="blog/arp/rarp.svg", width="600px") }}
+
+  <h3 id="gratuitous-arp">Gratuitous ARP</h3>
+  <p>
+    Gratuitous ARP (GARP) is used to update hosts of a MAC address change. It is used in duplicate address detection,
+    first hop redundancy protocols and also man in the middle attacks to fake an IP to MAC address mapping.
+    Gratuitous ARP is described in the original ARP specification
+    {{ link::e(path="https://tools.ietf.org/html/rfc826", description="RFC826") }}.
+  </p>
+  <p>
+    There are two types of gratuitous ARP.
+  </p>
+  <ul>
+    <li>{{ text::code(text="GARP request") }}
+ Source and destination IP set to the sending host and destination mac is ff:ff:ff:ff:ff:ff.</li>
+    <li>{{ text::code(text="GARP reply") }}
+ An ARP reply where no request was made. May be a broadcast or unicast.</li>
+  </ul>
+
+  <b>GARP Request</b><br>
+  {{ image::boxed(path="blog/arp/garp-request.svg", width="600px") }}
+
+  <br>
+
+  <b>GARP Reply</b><br>
+  {{ image::boxed(path="blog/arp/garp-reply.svg", width="600px") }}
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various ARP PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/c0g70pxbi5l8ywo/AACs0QBF44DH66DSGHhTW1w1a?dl=0", description="here") }}.
+  </p>
+
+
+{% endblock page_content %}

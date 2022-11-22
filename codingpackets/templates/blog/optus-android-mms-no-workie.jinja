@@ -1,0 +1,44 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I migrated away from an iphone to an Android phone recently and 
+  MMS was not working. I was unable to send or receive MMS and it 
+  was pretty annoying as I was not getting funny memes from all 
+  of my non-existant friends. It looks like this is a pretty common 
+  issue going back years and years based on the forum threads that are 
+  around. How did I fix it. Read on to find out...
+</p>
+
+<h3 id="what-didnt-work">What Didn't Work</h3>
+<p>
+  There where a number of things that did not work for me, they 
+  may work for you though. This is what I tried that failed.
+</p>
+<ul>
+  <li>Turning of imessage on the iphone</li>
+  <li>Turning of facetime on the iphone</li>
+  <li>
+    {{ link::e(path="https://selfsolve.apple.com/deregister-imessage/", description="Deregistering") }} 
+    the iphone from imessage
+  </li>
+  <li>Adding another APN profile with the MMS settings</li>
+  <li>Resetting the network settings on the android</li>
+  <li>Multiple different messaging apps on the android</li>
+</ul>
+
+<h3 id="what-did-work">What Did Work</h3>
+<p>
+  At this point I was pretty sure it was an issue at the carriers end. 
+  I contacted my carrier (Optus) and they reset my MMS settings on 
+  their end. Low and behold. Success! I can now send and receive MMS.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In conclusion. If you have this issue don't waste hours on it like I 
+  did and ask your carrier fiddle with the MMS settings on their end.
+</p>
+{% endblock page_content %}

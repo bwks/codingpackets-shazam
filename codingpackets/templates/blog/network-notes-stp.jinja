@@ -1,0 +1,346 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+
+  <p>
+    Spanning tree protocols are used to prevent layer 2 loops in a switched network. There
+    are various forms of spanning tree that have been standardized by the IEEE.
+    The original standards; 802.1D - Legacy Spanning Tree (STP), 802.1w - Rapid Spanning Tree
+    (RSTP) and 802.1s - Multiple Spanning Tree (MSTP) have now evolved. The 802.1D standard
+    covers RSTP but does not include legacy STP as it is considered obsolete.
+    MSTP is incorporated into the 802.1Q standard. Additionally Cisco has its own proprietary
+    implementation of legacy STP (PVST+) and RSTP (Rapid PVST+) which add
+    support for a spanning tree instance per VLAN.
+  </p>
+
+  <h3 id="stp">Legacy Spanning Tree Protocol (STP)</h3>
+
+  <p>
+    Standardized in 1993 by the IEEE as {{ link::e(path="http://ieee802.org/1/pages/802.1D.html", description="802.1D") }}.
+    STP is used to create a loop free flooding domain by calculating the shortest path from
+    each bridge to a single root bridge.
+  </p>
+
+  {{ text::note_block(text="
+    <p>
+      A switch in spanning tree is referred to as a bridge.
+    </p>
+")
+  }}
+
+  <h4><b>Bridge Protocol Data Unit (BPDU)</b></h4>
+  <p>
+    STP messages are passed around a switching domain in the form of a BPDU. Legacy STP uses two
+    types of BPDUs; Configuration BPDUs and Topology Change Notification BPDUs. Configuration
+    BPDUs are used to build a topology, TCN BPDUs advertise changes in the topology.
+  </p>
+
+  {{ image::boxed(path="blog/stp/stp-bpdus.svg", width="500px") }}
+  <p>
+    Switch ports that participate in spanning tree transmit and receive BPDUs on each LAN segment.
+    Switches compare received BPDUs to their own BPDUs to determine which BPDU is
+    {{ text::emphasize(text="superior") }}
+. The superior BPDU is then stored for
+    future comparison with received BPDUs and also advertised out any designated ports.
+  </p>
+  <p>
+    The superior BPDU is determined by examining the following parameters (from top to bottom)
+    the lowest value wins. When a superior value is found, the comparison stops. If the values
+    are equal, the next parameter is examined.
+  </p>
+
+  <ul>
+    <li>Root Bridge ID</li>
+    <li>Root Path Cost</li>
+    <li>Sender Bridge ID</li>
+    <li>Sender Port ID</li>
+    <li>Receiver Port ID (local evaluation only)</li>
+  </ul>
+
+  {{ text::note_block(text="
+    <p>
+      In a stabilized STP domain the root bridges BPDU is forwarded by all other switches as
+      it will always be the superior BPDU.
+    </p>
+")
+  }}
+
+  <h4><b>Topology Changes</b></h4>
+  <p>
+    The responsibility of advertising topology changes falls on the root bridge. TCN BPDUs are
+    forwarded up the tree to the root bridge. The root then advertises the changes back into the
+    spanning tree domain.
+  </p>
+
+  <h4><b>Root Bridge</b></h4>
+  <p>
+    In legacy STP, there can be exactly one root bridge. Configuration BPDUs are used to build
+    a loop free topology toward the root bridge.
+  </p>
+
+  <p>
+    The root bridge is determined via an election. The switch with the
+    {{ text::emphasize(text="lowest bridge ID") }}
+ will become the root bridge. The
+    bridge ID is composed of a 2 Byte priority field (default 32768 + vlan-id) and a MAC address.
+  </p>
+
+  <h4><b>Legacy STP Bridge ID</b></h4>
+  {{ image::boxed(path="blog/stp/stp-bridge-id.svg", width="650px") }}
+
+  <p>
+    Once the Root bridge has been elected each non-root bridge will determine its root, designated
+    and blocking ports.
+  </p>
+
+  <h4><b>Port Roles and States</b></h4>
+  <p>
+    Ports connected to other switches in spanning tree end up as one of the following port roles
+    and forwarding states.
+  </p>
+
+{{ table::default(
+  header=["Port Type", "Description"],
+  rows=[
+      "Root Port | Forwarding towards the root",
+      "Designated Port | Forwarding away from the root",
+      "Alternate Port | Blocking to prevent spanning tree loops",
+  ],
+) }}
+
+  {{ image::boxed(path="blog/stp/stp-port-types-states.svg", width="650px") }}
+
+  <p>
+    Each non-root bridge can have only one root port, one designated port per segment
+    and zero or more blocking ports.
+  </p>
+
+  <h4><b>Port Roles Selection Process</b></h4>
+  <p>
+    For each LAN segment the switch with the superior BPDU is known as the designated switch.
+    The port with the superior BPDU is the designate port. The designated port originates or
+    forwards BPDUs.
+  </p>
+  <ul>
+    <li>
+      The root bridge sends BPDUs out of its designated ports. All ports on the root bridge
+      are designated.
+    </li>
+    <li>
+      On each non root bridge, the root port is the port that receives the superior BPDU.
+    </li>
+    <li>
+      Non root bridges add the port cost to the superior BPDU and forward it out all its
+      designated ports.
+    </li>
+    <li>
+      All other ports connecting to the segment which do not send or receive a superior
+      BPDU are placed in a blocking state.
+    </li>
+  </ul>
+
+  {{ text::note_block(text="
+    <p>
+      BPDUs are sent every 2 seconds by default and act as a hello/keepalive.
+    </p>
+")
+  }}
+
+  <h4><b>Port States</b></h4>
+  <p>
+    Non-disabled ports in legacy STP transition through a number of states staring with
+    blocking and eventually end up in either a forwarding state or back to a blocking state.
+  </p>
+
+  {{ table::default(
+  header=["State", "Timer", "Learns MACs"],
+  rows=[
+      "Disabled | N/A | No",
+      "Blocking | 20 | No",
+      "Listening | 15 | No",
+      "Learning | 15 | Yes",
+      "Forwarding | N/A | Yes",
+  ],
+) }}
+
+
+  <h4><b>Port Costs</b></h4>
+  <p>
+    Prior to the 802.1D-1998 standard the IEEE did not define spanning tree costs per port
+    type. Cisco did make up their own port costs which are not shown in the table below.
+  </p>
+
+    {{ table::default(
+  header=["Port Speed", "802.1D-1998 Cost", "802.1D-2004 Cost"],
+  rows=[
+      "10 Mbps | 100 | 2000000",
+      "100 Mbps | 19 | 200000",
+      "1 Gbps | 4 | 20000",
+      "10 Gbps | 2 | 2000",
+  ],
+) }}
+
+  <h3 id="rstp">Rapid Spanning Tree Protocol (RSTP)</h3>
+
+  <p>
+    RSTP was originally standardized by the IEEE in
+    {{ link::e(path="http://www.ieee802.org/1/pages/802.1w.html", description="802.1w") }}. In 2004 RSTP was incorporated
+    into the {{ link::e(path="http://www.ieee802.org/1/pages/802.1D-2003.html", description="802.1D") }} standard.
+    RSTP contains a number of enhancements over its predecessor with the main goal of improving
+    the speed of convergence. Correctly design RSTP domains can achieve sub second link failover
+    and convergence.
+  </p>
+
+  <h4><b>Port Roles</b></h4>
+  <p>
+    The was some adjustments to the ports states in RSTP outlined as follows.
+  </p>
+
+      {{ table::default(
+  header=["Port Type", "Description"],
+  rows=[
+    "Root Port | Forwarding towards the root, same roles as legacy STP.",
+    "Designated Port | Forwarding away from the root, same roles as legacy STP.",
+    "Alternate Port | Potential replacement for a bridges root port. If the root port is lost the alternate port will rapidly transition (sub-second) to the forwarding state.",
+    "Backup Port | Potential replacement for a bridges designated port. Usually only found with a connection to a hub or on a shared segment (non-p2p). If a designated port is lost the transition to a forwarding state does not occur rapidly but is based on timers.",
+  ],
+) }}
+
+  {{ text::note_block(text="
+    The default role when a RSTP port becomes active is $1.
+")
+  | replace(from="$1", to=text::emphasize(text="Designated"))
+  }}
+
+  <h4><b>Port States</b></h4>
+  <p>
+    The port states in RSTP where simplified into three states.
+  </p>
+
+  {{ table::default(
+    header=["State", "Learns MACs"],
+    rows=[
+      "Discarding | No",
+      "Learning | Yes",
+      "Forwarding | Yes",
+    ],
+) }}
+
+  <p>
+    The disabled, blocking and listening states from legacy STP where merged into a discarding
+    state. Additionally RSTP does not use timers to transition ports from discarding to forwarding,
+    it uses a system of proposals and acknowledgements.
+  </p>
+
+  <h4><b>Port Types</b></h4>
+  <p>
+    There are two port types in RSTP; Non-Edge and Edge.
+  </p>
+    {{ table::default(
+    header=["Type", "Characteristics"],
+    rows=[
+      "Non-Edge | Default port type. Connects to other switches.",
+      "Edge | Connects to end hosts. Sends BPDUs, but does expect to received them. Reverts to a Non-Edge type if BPDUs are received.",
+    ],
+    ) }}
+
+  <h4><b>Link Types</b></h4>
+  <p>
+    RSTP defines two classes of links.
+  </p>
+      {{ table::default(
+    header=["Type", "Characteristics"],
+    rows=[
+      "Point-to-Point | Link connected to exactly one RSTP other switch. Default link type for interfaces negotiated to full-duplex.",
+      "Shared | Link connected to two or more RSTP switches likely via a hub. Default link type for interfaces negotiated to half-duplex.",
+    ],
+    ) }}
+
+  <h4><b>RSTP BPDUs</b></h4>
+  <p>
+    Two field where change in the RSTP BPDU. The version field was updated to version 2 and
+    6 unused bits of the flags field are now used to signal; Proposal, Agreement, Port role
+    and Port state.
+  </p>
+
+  <p>
+    Each switch originates its own BPDUs based on the BPDU stored in the root port. Unlike
+    legacy STP If a switch receives an inferior BPDU from a segments designated switch, it
+    will accept the BPDU immediately as if the superior BPDU had expired. This facilitates
+    rapid convergence if a neighboring switch has a connectivity issue towards the root switch.
+  </p>
+
+  <h4><b>Proposal and Agreement</b></h4>
+  <p>
+    RSTP uses the proposal and agreement process to rapidly transition a point-to-point link
+    into operation without causing a temporary switching loop.
+  </p>
+  <p>
+    The proposal signals a ports willingness to transition to the designated forwarding state.
+    The agreement signals permission to transition. (that's poetry)
+  </p>
+
+  <h4><b>Topology Changes</b></h4>
+  <p>
+    There are no TCN BPDUs in RSTP. RSTP topology changes are advertised by setting the
+    Topology Change (TC) bit in the flag field of the BPDU. When a topology change occurs the
+    following takes place.
+  </p>
+
+  <ul>
+    <li>
+      BPDUs with the TC bit set are immediately flooded out all non-edge root and designated
+      ports except the port the topology change was received from.
+    </li>
+    <li>
+      All MAC addresses learned on the root and designated ports are flushed.
+    </li>
+    <li>
+      BPDUs are sent every <i>Hello</i> interval until the <i>tcWhile (Hello + 1 second)</i>
+      timer expires.
+    </li>
+  </ul>
+
+  <h3 id="mstp">Multiple Spanning Trees (MSTP)</h3>
+
+  <p>
+    MSTP was originally standardized by the IEEE in {{ link::e(path="http://www.ieee802.org/1/pages/802.1s.html", description="802.1s") }}
+    in 2005 MSTP became part of the {{ link::e(path="http://www.ieee802.org/1/pages/802.1Q.html", description="802.1Q") }}
+    standard.
+  </p>
+  <p>
+    MSTP is similar to Cisco's proprietary PVST+ implementation except that it does not create
+    a spanning tree instance per VLAN. MSTP groups multiple VLANs into a
+    instance with generally only a hand full of instances required per switching domain.
+  </p>
+  <p>
+    MSTP groups switches into one or more {{ text::emphasize(text="regions") }}
+. Switches
+    in an MST region have the same number of MST instances which contain the same VLANs. An
+    MST region looks like a single switch to other switches outside the region.
+  </p>
+
+  <p>
+    MSTP uses a single BPDU to carry information about all MST instances. The MST standard
+    permits up to 65 (0 + 64 user defined) active instances. Designated ports for at least
+    one instance send BPDUs.
+  </p>
+
+  <p>
+    MST instance 0 is the default MST instance known as the internal spanning tree (IST).
+    By default all VLANs map to instance 0. Instance 0 is used to communicate with switches
+    outside the MST region.
+  </p>
+
+  {{ image::boxed(path="blog/stp/mstp.svg", width="650px") }}
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various spanning tree PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/ltg5jhol3dehea0/AADE98wX5nKlum81T_7nL8Zna?dl=0", description="here") }}.
+  </p>
+
+
+{% endblock page_content %}

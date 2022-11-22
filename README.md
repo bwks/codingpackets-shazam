@@ -99,3 +99,28 @@ Code Blocks
 ) }}
 
 ```
+
+
+```
+<div class="code-block-caption-darkmode text-center">
+\s*<span class="code-block-title-darkmode">(.*?)</span>
+\s*
+\s*</div>
+\s*<div class="code-block-left-darkmode">
+\s*<pre><code class="(.*?) hljs">
+(.*?(.|[\n])*?)
+\s*</code>
+\s*</pre>
+\s*</div>
+```
+
+
+```
+  <h3>
+    (.*)
+  </h3>
+```
+
+```
+  <h3>$1</h3>
+```

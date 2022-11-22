@@ -1,7 +1,7 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/network-lab-base.jinja \
+codingpackets/templates/blog/books-i-read.jinja \
 "
 
 for FILENAME in $files; do
@@ -34,15 +34,15 @@ for FILENAME in $files; do
 
   sed -i -r -e 's/<span class="hljs-comment">(.*?)<\/span>/\1/g' $FILENAME
 
-
-
-  # /<div class="code-block-caption-darkmode text-center">[\r\n\s]+<span class="code-block-title-darkmode">(.*?)<\/span>[\r\n\s]+<\/div>[\r\n\s]+<div class="code-block-left-darkmode">[\r\n\s]+<pre><code class="text hljs">[\r\n\s]+([\S\s]+)<\/code>[\r\n\s]+<\/pre>[\r\n\s]+<\/div>/gm
-
   sed -i -r -e 's/<div class="code-block-caption-darkmode text-center">[$[[:blank:]]]+<span class="code-block-title-darkmode">(.*?)<\/span>[$[[:blank:]]]+<\/div>[$[[:blank:]]]+<div class="code-block-left-darkmode">[$[[:blank:]]]+<pre><code class="text hljs">[$[[:blank:]]]+([.[[:blank:]]]+)<\/code>[$[[:blank:]]]+<\/pre>[$[[:blank:]]]+<\/div>/{{ text::code_block(\r\nheader="\1",\r\nlanguage="text",\r\ncode="\2"\r\n) }}/g' $FILENAME
 
   # Internal Links
   sed -i -e 's/{{ links.rootPath.uri }}/\//g' $FILENAME
+  sed -i -e 's/\"{{ links.rootPath.description }}\"/root_path_description/g' $FILENAME
   sed -i -e 's/{{ links.blogPath.uri }}/\/blog/g' $FILENAME
+  sed -i -e 's/link::e(path="#references/link::i(path="#references/g' $FILENAME
+  sed -i -r -e 's/link::i\(path="#references", description="\[(.*?)\]"\)/link::i\(path="#references-\1", description="[\1]"\)/g' $FILENAME
+
   sed -i -r -e 's/<a href="\/blog\/(.*?)">(.*?)<\/a>/{{ link::i(path="\/blog\/\1", description="\2") }}/g' $FILENAME
 
   # Exteranal Links
@@ -57,6 +57,8 @@ for FILENAME in $files; do
 
   sed -i -r -e 's/<span class="emphasize-text-darkmode">(.*?)<\/span>/{{ text::emphasize(text="\1") }}/g' $FILENAME
   sed -i -r -e "s/<span class='emphasize-text-darkmode'>(.*?)<\/span>/{{ text::emphasize(text=\"\1\") }}/g" $FILENAME
+  sed -i -r -e 's/<span class=\\"emphasize-text-darkmode\\">(.*?)<\/span>/{{ text::emphasize(text=\"\1\") }}/g' $FILENAME
+  
 
   sed -i -r -e 's/<kbd class="kbd-darkmode">(.*?)<\/kbd>/{{ text::kbd(text="\1") }}/g' $FILENAME
 

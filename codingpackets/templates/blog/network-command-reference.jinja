@@ -1,0 +1,49 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    This page serves as a command reference and comparison of how to get information from
+    the CLI across multiple networking vendors.
+  </p>
+
+  <h3 id="arp">ARP</h3>
+
+{{ table::default(
+  header=["Show ARP Table", ""],
+  rows=[
+    "Cisco | show ip arp",
+    "Arista | show ip arp",
+    "Juniper | show arp",
+    "Cumulus | ip neighbor",
+    "Linux | ip neighbor",
+  ],
+) }}
+
+
+  <h3 id="mac">MAC</h3>
+  {{ table::default(
+  header=["Show MAC Table", ""],
+  rows=[
+    "Cisco | show mac address-table",
+    "Arista | show mac address-table",
+    "Juniper | show ether-switching table",
+    "Cumulus | net show bridge macs",
+    "Linux | brctl showmacs &lt;bridge-name&gt;",
+  ],
+) }}
+
+  <h3 id="vlan">VLAN</h3>
+    {{ table::default(
+  header=["Show VLAN Table", ""],
+  rows=[
+    "Cisco | show vlans",
+    "Arista | show vlans",
+    "Juniper | show vlans",
+    "Cumulus | net show bridge vlans",
+    "Linux | ??",
+  ],
+) }}
+
+{% endblock page_content %}

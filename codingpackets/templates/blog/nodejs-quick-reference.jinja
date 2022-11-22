@@ -1,0 +1,151 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="comment">Comment</h3>
+
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code="// Single line comment
+
+/*
+Multiple
+line
+comment
+*/"
+) }}
+
+<h3 id="variable">Variable</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='// Declaration
+var stuff;
+// Assignment
+stuff = "stuff";
+
+// Declaration and assignment
+var stuff = "stuff";'
+) }}
+
+<h3 id="string">String</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='"Single line string";'
+) }}
+
+
+<h3 id="integer">Integer</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='42;'
+) }}
+
+
+<h3 id="boolean">Boolean</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='true;
+// or
+false;'
+) }}
+
+
+<h3 id="array">Array</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='["stuff", "things"];'
+) }}
+
+
+
+<h3 id="object">Object</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='{stuff_key: "stuff_value", things_key: "things_value"};'
+) }}
+
+
+<h3 id="for-loop">For Loop</h3>
+
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='// Iterate list
+for (var i=0; i < things.length; i++) {
+    console.log(things[i]);
+}
+
+// Alternate syntax
+for (var i in things) {
+    console.log(things[i]);
+}
+
+// Iterate dictionary'
+) }}
+
+<h3 id="while-loop">While Loop</h3>
+
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='var i = 0;
+while (i < things.length) {
+    console.log(things[i]);
+    i++;
+}'
+) }}
+
+
+<h3 id="if-else-if-else">If, Else if, Else</h3>
+
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='if (1 > 42) {
+    console.log("One");
+} else if (42 < 1) {
+    console.log("The answer");
+} else {
+    console.log("Maths is fun");
+}'
+) }}
+
+<h3 id="function">Function</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='function stuff() {
+    stuff = ["stuff", "things"];
+    return stuff;
+}'
+) }}
+
+
+<h3 id="class">Class</h3>
+{{ text::code_block(
+  header="node",
+  language="javascript",
+  code='class Stuff {
+    constructor(stuff) {
+      this.stuff = stuff;
+    }
+    set stuff(stuff) {
+      this._stuff;
+    }
+    get stuff() {
+      return this._stuff;
+    }
+    showStuff() {
+      console.log(this.stuff)
+    }
+}'
+) }}
+
+{% endblock page_content %}

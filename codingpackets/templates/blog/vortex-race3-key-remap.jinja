@@ -1,0 +1,168 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchased the Vortex Race3 mechanical keyboard. I really
+  love this keyboard, it has Cherry MX brown switches with 4 layers of
+  arbitrary key programming. I like this board because its almost as
+  compact as a 60% keyboard but has almost the same number of keys as
+  a ten key less (TKL) board.
+</p>
+<p>
+  In this post I am documenting the process I went through to re-map
+  the keys in case I need to do it again, plus it might be helpful for
+  others.
+</p>
+
+<h3 id="firmware-update">Firmware update</h3>
+<p>
+  I wanted to swap the {{ text::kbd(text="Fn") }}
+ key with the {{ text::kbd(text="Caps Lock") }}
+
+  key and the instructions to do this where not working. I noticed that
+  the led indicator to re-program the keys was a purple colour instead
+  of white as shown in some of the youtube review/instruction videos.
+  This led me to a post that suggested the firmware needed to be updated
+  in order to re-program the {{ text::kbd(text="Fn") }}
+ key. Go over to
+  {{ link::e(path="http://www.vortexgear.tw/vortex3.asp", description="here") }}
+  to download and update the firmware.
+</p>
+
+{{ text::note_block(text='
+    A Windows PC is required to update the firmware.
+') }}
+
+<h3 id="re-mapping">Re-Mapping</h3>
+<h4>Switch Layers</h4>
+<p>
+  There are 4 layers of keys, but the first is the default layer and cannot
+  be re-programmed. Switch to a non-default layer with the {{ text::kbd(text="Fn") }}
+ +
+  {{ text::kbd(text="R-Shift") }}
+ keys. This will cycle through the layers and a led
+  under the space bar will indicate the current layer. (No light is default
+  layer)
+</p>
+
+<h4>Re-Map Keys</h4>
+<ul>
+  <li>Press the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="R-Ctrl") }}
+ keys. (Solid white led signals mapping mode active)</li>
+  <li>Press the target {{ text::kbd(text="key(s)") }}
+ to be re-mapped. (Flashing red led signals start of mapping)</li>
+  <li>Press the {{ text::kbd(text="key(s)") }}
+ sequence to map to the target key</li>
+  <li>Press the {{ text::kbd(text="Pn") }}
+ key. (Solid white led signals key(s) re-mapped)</li>
+  <li>Repeat for additional keys</li>
+  <li>To end the re-mapping, press the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="R-Ctrl") }}
+ keys</li>
+</ul>
+<h4>Example</h4>
+<p>
+  Map the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="i") }}
+ keys to the {{ text::kbd(text="up") }}
+ arrow key.
+</p>
+<ul>
+  <li>{{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="R-Ctrl") }}
+</li>
+  <li>{{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="i") }}
+</li>
+  <li>{{ text::kbd(text="up") }}
+ arrow</li>
+  <li>{{ text::kbd(text="Pn") }}
+</li>
+  <li>{{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="R-Ctrl") }}
+</li>
+</ul>
+
+<h4>Re-Map Function Key</h4>
+<ul>
+  <li>Press and hold the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="L-Alt") }}
+ keys for 3 seconds, then release</li>
+  <li>Press the key to act as the {{ text::kbd(text="Fn") }}
+ key</li>
+</ul>
+
+<h3 id="my-setup">My Setup</h3>
+<p>
+  I found the {{ text::kbd(text="Fn") }}
+ key to be in a bit of an awkward position so I
+  remapped it to the {{ text::kbd(text="Caps Lock") }}
+ key. I also mapped to
+  {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="i") }}
+ {{ text::kbd(text="j") }}
+ {{ text::kbd(text="k") }}
+ {{ text::kbd(text="l") }}
+ keys
+  to the arrow keys so I dont have to move my right hand to the bottom of the
+  keyboard to work the arrows.
+</p>
+
+<h4>Re-Map Process</h4>
+<ul>
+  <li>Map the {{ text::kbd(text="R-Alt") }}
+ key as the {{ text::kbd(text="Caps Lock") }}
+ key</li>
+  <li>Map the {{ text::kbd(text="Caps Lock") }}
+ key as the {{ text::kbd(text="Fn") }}
+ key</li>
+  <li>
+    Map the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="i") }}
+ {{ text::kbd(text="j") }}
+ {{ text::kbd(text="k") }}
+ {{ text::kbd(text="l") }}
+
+    keys to the {{ text::kbd(text="up") }}
+ {{ text::kbd(text="left") }}
+ {{ text::kbd(text="down") }}
+ {{ text::kbd(text="right") }}
+
+    arrow keys
+  </li>
+</ul>
+
+<h3 id="reset-mappings">Reset Mappings</h3>
+<p>
+  If you make a mistake you can reset the current layer or all layers.
+</p>
+<h4>Current Layer</h4>
+<ul>
+  <li>Press and host the {{ text::kbd(text="Fn") }}
+ + {{ text::kbd(text="r") }}
+ keys for 5 seconds, then release</li>
+  <li>The original {{ text::kbd(text="Fn") }}
+ key can also be used even if it has been re-mapped</li>
+</ul>
+<h4>All Layers</h4>
+<ul>
+  <li>Press and hold the {{ text::kbd(text="L-Alt") }}
+ + {{ text::kbd(text="R-Alt") }}
+ keys for 5 seconds, then release</li>
+</ul>
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Vortex Race3 is a great little board, after using a TKL for years, I tried
+  to go to a 60% but found I had to go into the {{ text::kbd(text="Fn") }}
+ layers for too many
+  keys and it gave me severe cramps in my left hand. The 75% Vortex Race3 has all
+  the keys I need without the need to overuse the {{ text::kbd(text="Fn") }}
+ layer. The ability
+  to re-map the keys to your desired layout make this keyboard the one for me and
+  I will be sticking with it for the foreseeable future.
+</p>
+{% endblock page_content %}

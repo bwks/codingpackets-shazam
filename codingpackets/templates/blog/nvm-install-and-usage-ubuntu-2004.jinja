@@ -1,0 +1,132 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Node version manager (NVM) allows you to run different version of Node on your system which is very helpful 
+  for testing and ensuring that the Node version you test on is the same as the Node 
+  version you run in production.
+</p>
+<p>
+  This is just a quick post on how to install and use (NVM) on Ubuntu 2004.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software versions are used in this post
+</p>
+<ul>
+  <li>Ubuntu - 2004</li>
+  <li>NVM - 0.35.3</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Install NVM
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash"
+) }}
+
+<p>
+  Update {{ text::emphasize(text="~/.zshrc") }}
+
+</p>
+{{ text::code_block(
+  header="~/.zshrc",
+  language="shell",
+  code='export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm'
+) }}
+
+{{ text::note_block(text='
+    Restart your shell.
+') }}
+
+<p>
+  Verify installation.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nvm --version
+
+# output
+0.35.3  "
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  Install the latest release of Node.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nvm install node
+
+# Output
+Downloading and installing node v14.6.0...
+Downloading https://nodejs.org/dist/v14.6.0/node-v14.6.0-linux-x64.tar.xz...
+################################################################################################################# 100.0%
+Computing checksum with sha256sum
+Checksums matched!
+Now using node v14.6.0 (npm v6.14.6)
+Creating default alias: default -> node (-> v14.6.0)"
+) }}
+
+<p>
+  Set latest release of Node as the Node version to use.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="nvm use node
+
+# output
+Now using node v14.6.0 (npm v6.14.6)"
+) }}
+
+<p>
+  Verify Node version in use.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="node --version
+
+# output
+v14.6.0"
+) }}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="which node
+
+# output
+/home/bradmin/.nvm/versions/node/v14.6.0/bin/node"
+) }}
+
+<p>
+  Verify NPM version in use.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="which npm
+
+# output
+/home/bradmin/.nvm/versions/node/v14.6.0/bin/npm"
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we installed NVM and used it to install and use the latest version of NodeJS.
+</p>
+{% endblock page_content %}

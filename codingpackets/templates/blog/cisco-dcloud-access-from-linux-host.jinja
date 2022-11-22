@@ -1,0 +1,156 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A project I am currently working on requires me to configure Cisco ACI. I have not previously
+  had the opportunity to work with ACI and I had no access to a lab environment to prove
+  out my changes before implementing them into production. A while ago a heard about a service
+  Cisco is offering called {{ link::e(path="https://dcloud.cisco.com/", description="dCloud") }} that allows you to
+  spin up resources free of charge for testing, training and demoing purposes. I had a poke
+  around and they have a couple of ACI labs that looked promising so I decided to give it
+  a whirl.
+</p>
+
+<p>
+  This post will cover using the OpenConnect VPN client to connect to a Cisco dCloud
+  lab environment. For reference the following software was used in this post.
+</p>
+<ul>
+  <li><b>Ubuntu</b> - 1804</li>
+  <li><b>OpenConnect</b> - v7.08-3</li>
+</ul>
+
+<h3 id="pre-flight check">Pre-flight Check</h3>
+<p>
+  At the time of writing, the only pre-requisite to use the dCloud labs is a CCO account,
+  you don't require a support contract.
+</p>
+
+<p>
+  The dCloud labs can be accessed over a HTML5 web browser, this works kind of OK but its
+  not ideal. There is also the option to access the LAB via the Cisco Anyconnect VPN client
+  but I did not want to install it just to access the dCloud labs. I am using Linux Ubuntu
+  and there is an alternative VPN client that I use which is compatible with multiple VPN
+  concentrators called {{ text::emphasize(text="OpenConnect") }}
+.
+</p>
+
+<h4><b>OpenConnect Installation</b></h4>
+<p>
+  Installation is pretty straight forward using the {{ text::code(text="apt") }}
+ package management
+  utility.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install -y network-manager-openconnect`
+) }}
+
+<p>
+  Once installed a VPN session can be initiated with the {{ text::code(text="openconnect") }}
+ command.
+</p>
+
+{{ text::note_block(text='
+    sudo/root privileges are required to activate a VPN connection.
+') }}
+
+<h3 id="lab-access">Lab Access</h3>
+
+<p>
+  Once you have scheduled a lab and the start time for the lab has begun you will be able to
+  get the VPN details for the lab. First select the session you would like to connect to.
+</p>
+
+{{ image::boxed(path="blog/cisco-dcloud-access-from-linux-host/sessions.png", width="900px") }}
+
+<p>
+  Then from the info link you can access the VPN details. Below you can see the VPN host is
+  {{ text::emphasize(text="dcloud-sng-anyconnect.cisco.com") }}
+ and the username | password
+  is {{ text::emphasize(text="v308user1") }}
+ | {{ text::emphasize(text="643d7b") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-dcloud-access-from-linux-host/session-info.png", width="900px") }}
+
+<p>
+  Once you have the VPN details from the dCloud lab info section use the host as the VPN
+  endpoint parameter for OpenConnect and enter the username | password when prompted.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo openconnect <span class="hljs-section">dcloud-sng-anyconnect.cisco.com</span>
+
+[sudo] password for bradmin:
+
+POST https://dcloud-sng-anyconnect.cisco.com/
+Connected to 173.39.116.9:443
+SSL negotiation with dcloud-sng-anyconnect.cisco.com
+Connected to HTTPS on dcloud-sng-anyconnect.cisco.com
+XML POST enabled
+Please enter your username and password.
+GROUP: [Anyconnect-to-dCloud]:Anyconnect-to-dCloud
+POST https://dcloud-sng-anyconnect.cisco.com/
+XML POST enabled
+<span class="hljs-section">Please enter your username and password.
+Username:v308user1
+Password:</span>
+
+POST https://dcloud-sng-anyconnect.cisco.com/
+Got CONNECT response: HTTP/1.1 200 OK
+CSTP connected. DPD 10, Keepalive 20
+Set up DTLS failed; using SSL instead
+Connected as 10.16.19.50, using SSL
+Connect Banner:
+| " You are now connected to the Cisco dCloud Singapore Platform " |`
+) }}
+
+
+<p>
+  Once you are connected routes for the lab network are installed in your routing table so
+  you can browse to any web endpoints, remote desktop to the Windows10 VM or ssh to the hosts
+  in the lab using the local tools installed on your machine.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip route show
+
+# Output
+
+default via 10.1.1.1 dev wlp2s0 proto dhcp metric 600
+&lt;snip&gt;
+...
+&lt;snip&gt;
+<span class="hljs-section">198.18.0.0/15 dev tun0 scope link
+198.18.133.1 dev tun0 scope link</span>`
+) }}
+
+
+{{ image::boxed(path="blog/cisco-dcloud-access-from-linux-host/remote-desktop.png", width="900px") }}
+
+<p>
+  This is great because you can use the tools you are familiar with and likely use in your
+  day to day travels. This is especially helpful if you are using or developing tools to
+  automate Cisco products and don't have physical and or virtual devices to test against.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Cisco dCloud looks like a pretty useful platform for testing/trailing Cisco products, it
+  could also be pretty helpful for testing automation tools if you don't have access to
+  dedicated resources. Using a VPN client like {{ text::emphasize(text="OpenConnect") }}
+
+  means you can access the dCloud labs using the tools you are familiar with. Kudos to Cisco
+  for offering this service and making it free of charge.
+</p>
+
+{% endblock page_content %}

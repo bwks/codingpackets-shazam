@@ -1,0 +1,97 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to install 
+  Node JS and the Yarn package manager on Ubuntu 
+  2004 server.
+</p>
+
+<h3 id="software-used">Software Used</h3>
+<ul>
+  <li>Ubuntu - 2004 server</li>
+  <li>Node JS - v16.7.0</li>
+  <li>Yarn - 22.11</li>
+</ul>
+
+<h3 id="install-node-js">Install Node JS</h3>
+<p>
+  I am installing Node from the 
+  {{ link::e(path="https://github.com/nodesource/distributions", description="node source's") }}
+  distribution.
+</p>
+<p>
+  Run the Node JS setup script from the Node Source 
+  repository.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -'
+) }}
+
+<p>
+  Install Node JS.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install -y nodejs'
+) }}
+
+<p>
+  Verify the version of Node that is installed.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='node --version
+
+# output
+ 
+v16.7.0'
+) }}
+
+<p>
+  Verify the version of NPM that is installed.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='npm --version
+
+# output
+ 
+7.20.3'
+) }}
+
+<h3 id="install-yarn">Install Yarn</h3>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo npm install --global yarn'
+) }}
+
+<p>
+  Confirm the version of Yarn that is installed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn --version
+
+# output
+ 
+1.22.11'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we installed Node JS and the 
+  Yarn package manager.
+</p>
+{% endblock page_content %}

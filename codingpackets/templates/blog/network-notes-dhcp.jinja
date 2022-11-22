@@ -1,0 +1,52 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    Dynamic host configuration protocol (DHCP) is used to automatically assign IP addresses to hosts in a network.
+    DHCP is defined in {{ link::e(path="https://www.ietf.org/rfc/rfc2131.txt", description="rfc2131") }}.
+  </p>
+
+  <h3 id="dhcp">DHCP</h3>
+  <p>
+    DHCP uses UDP as its transport protocol. Messages are passed on ports 67 (client to server) and 68 (server to client).
+  </p>
+  <p>
+    There are four types of DHCP messages:
+  <ul>
+    <li>DISCOVER</li>
+    <li>OFFER</li>
+    <li>REQUEST</li>
+    <li>ACKNOWLEDGE</li>
+  </ul>
+
+  <p>
+    The DHCP message types where named after a popular cartoon character who likes to explore named DORA.
+  </p>
+
+  <b>DHCP Operation</b>
+  {{ image::boxed(path="blog/dhcp/dhcp.svg", width="800px") }}
+
+  {{ text::note_block(text="
+  <p>
+    Not factual information, but makes it easy to remember
+  </p>
+")
+  }}
+
+  <h3 id="dhcp-relay">DHCP Relay</h3>
+  <p>
+    DHCP messages from the client to the server are broadcasts, if the DHCP server is located in another
+    network segment behind a Layer 3 gateway DHCP relay agent will be required.
+  </p>
+  {{ image::boxed(path="blog/dhcp/dhcp-helper.svg", width="800px") }}
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various DHCP PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/nr98w2oqeh1uaw6/AACgBLDiNM5_XfDhkPa6yye3a?dl=0", description="here") }}.
+  </p>
+
+
+{% endblock page_content %}

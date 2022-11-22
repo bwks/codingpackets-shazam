@@ -1,0 +1,246 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+  <h3 id="overview">Overview</h3>
+  <p>
+    EIGRP is an 'advanced' distance vector routing protocol and is the evolution of IGRP.
+    Originally EIGRP was a Cisco proprietary protocol but in 2013 Cisco announced its intention
+    to make EIGRP on open standard. At the time of writing there is an only informational RFC:
+    {{ link::e(path="https://tools.ietf.org/html/rfc7868", description="RFC7868") }}.
+  </p>
+
+  <h3 id="transport">Transport</h3>
+  <p>
+    EIGRP has been assigned protocol number 88 and implements its own reliable transport
+    protocol for delivery of unicast and multicast packets. It does not use TCP or UDP.
+  </p>
+
+  <h3 id="metric">Metric</h3>
+  <p>
+    There are 6 <i>K</i> coefficient values used in the EIGRP metric calculation. Bandwidth (<i>K1</i>),
+    load (<i>K2</i>), cumulative delay (<i>K3</i>), reliability (<i>K4</i>), MTU (<i>K5</i>)
+    and extended metrics (<i>K6</i>). There is also a hop count parameter but that is used to
+    prevent routing loops, not for best path selection.
+  </p>
+  <p>
+    <i>K1-5</i> + hop count are considered to be the EIGRP classic metrics. EIGRP was further enhanced
+    to support so called wide metrics. Wide metrics accommodate for interface speeds greater
+    than 10G. Additionally the <i>K6</i> coefficient was added and bandwidth is referred to as
+    throughput while delay is referred to as latency.
+  </p>
+
+  {{ table::default(
+  header=["Metric", "Value", "Description", "Default"],
+  rows=[
+      "Bandwidth <br> or <br> Throughput | <i>K1</i> | Transmission speed of an interface. | Auto assigned based in interface speed/type.",
+      "Load | <i>K2</i> | Dynamically estimated load of an interface. | Calculated based on the amount of traffic in/out of an interface vs its maximum capacity.",
+      "Delay <br> or <br> Latency | <i>K3</i> | Estimated serialization delay of an interface | Auto assigned based in interface type.",
+      "Reliability | <i>K4</i> | Dynamically estimated reliability of an interface. | Calculated based on the number of frames received vs the number of frames transmitted by a neighbor.",
+      "MTU | <i>K5</i> | Minimum MTU along a route to a destination. | Advertised by EIGRP but not used in best path selection.",
+      "Extended Metrics | <i>K6</i> | Placeholders for future extensions, not yet implemented. | Three defined: Jitter, Energy and Quiescent energy.",
+      "Hop Count | N/A | Number of hops to a destination. Used to prevent routing loops. Not used in best path selection. | 100",
+  ],
+) }}
+
+  <h3 id="best-path-selection">Best Path Selection</h3>
+  <p>
+    EIGRP uses the <i>K</i> values to calculate the best path to a destination. All routers
+    in an EIGRP autonomous system should use the same <i>K</i> values to compute the best path.
+    By default only the lowest bandwidth (<i>K1</i>) and cumulative delay (<i>K3</i>) to a
+    destination are used in the best path calculation.
+  </p>
+
+  <p>
+    Essentially the default metric is calculated as follows:
+  </p>
+  <p class="formula">
+    (256 x 10<sup>7</sup> / lowest_bandwidth) + (256 x sum_of_delays)
+  </p>
+
+  <p>
+    For reference the full calculation for both classic and wide metrics are below:
+  </p>
+
+  {{ image::boxed(path="blog/eigrp/classic-metric-composite-formula.png", width="700px") }}
+
+  <p><i>Classic Composite Metric Computation Formula <sup>{{ link::i(path="#references-1", description="[1]") }}</sup></i></p>
+
+  {{ image::boxed(path="blog/eigrp/wide-metric-composite-formula.png", width="700px") }}
+  <p><i>Wide Composite Metric Computation Formula <sup>{{ link::i(path="#references-2", description="[2]") }}</sup></i></p>
+
+  {{ text::important_block(text="
+    <p>
+      Cisco does not recommend turning on any of the non-default metrics and most of them exist
+      for backwards compatibility with IGRP. The recommended method to influence best path
+      selection is by altering the delay metric.
+    </p>
+")
+  }}
+
+  <h3 id="neighborship">Neighborship</h3>
+
+  <h4><b>Neighbor Establishment</b></h4>
+  <p>
+    For an EIGRP neighborship to be established the following must be true.
+  </p>
+  <ul>
+    <li>Matching autonomous system number</li>
+    <li>Matching <i>K</i> Values</li>
+    <li>Matching Multicast (dynamic) or Unicast (static) neighbor configuration</li>
+    <li>Matching Authentication Parameters</li>
+    <li>Neighbor primary interface IP address resides in a common subnet</li>
+  </ul>
+
+  <h4><b>Neighbor Packet Types</b></h4>
+  <p>
+    EIGRP has 7 types of neighbor packets.
+  </p>
+
+  {{ table::default(
+  header=["Type", "Opcode", "Description"],
+  rows=[
+      "Hello | 5 | Identify and verify neighbor compatibility while also acting as a keepalive mechanism. Hello packets are multicast to <span class='font-mono'>224.0.0.10</span> and <span class='font-mono'>FF02::A</span> or unicast if static neighbor is configured.",
+      "Acknowledgment | 5 | Unicast response to an; Update, Query, Reply, SIA-Query or SIA-Replay packet An acknowledgment is a Hello packet with no TLV's with the Acknowledgment field set to the sequence number of the packet it is acknowledging. An Acknowledgement can also piggy back onto the Acknowledgment field of ANY unicasted reliable packet by setting that packets sequence number in the Acknowledgement field.",
+      "Update | 1 | Contain routing information updates and also advise of the reachability of remote destinations. Can be either unicast or multicast, p2p links and statically configured neighbors use unicast updates.",
+      "Query | 3 | Unicast or multicast packets used to involve a neighbor in the search for the best route to a destination.",
+      "Reply | 4 | Unicast response to a reply packet with the senders current distance to the destination",
+      "SIA-Query | 10 | Unicast packet that is used to ask a neighbor if it is still working on a Query during a prolonged diffusing computation.",
+      "SIA-Reply | 11 | Unicast packet sent in reponse to a SIA-Query if the neighbor is still working on the original Query.",
+  ],
+) }}
+
+  <h3 id="reliable-transport-protocol">Reliable Transport Protocol</h3>
+  <p>
+    Reliable transport protocol (RTP) ensures that EIGRP packets are not only delivered, but
+    also delivered in the correct order. There is no separate RTP packet format, instead RTP
+    is build into the EIGRP messages using sequence numbers and forced acknowledgements.
+    The reliable EIGRP packets types (Update, Query, Reply, SIA-Update and SIA-Reply) must be
+    acknowledged, this ensures the delivery of EIGRP messages.
+  </p>
+
+  <h3 id="diffusing-update-algorithm">Diffusing Update Algorithm</h3>
+  <p>
+    Diffusing Update Algorithm (DUAL) is used as the convergence algorithm in EIGRP.
+    DUAL replaces the Bellman-Ford algorithm used in other distance vector protocols. DUAL
+    computes the shortest path using the concept of "diffusing computations" to ensure a loop
+    free topology during the shortest path computation.
+  </p>
+
+  <h4><b>Local Computation</b></h4>
+  <p>
+    During a topology change, if the shortest path provided by a neighbor is already a feasible
+    successor in the topology table the feasible successor is elevated to the successor route
+    without needing to query its neighbors. This is known as a local computation.
+  </p>
+
+  <h4><b>Diffusing Computation</b></h4>
+  <p>
+    During a topology change, if the shortest path provided by a neighbor is not a feasible
+    successor, the router will commence a diffusing computation by sending a Query packet to
+    its neighbors with the prefix and its computed distance to the destination.
+  </p>
+
+  <h4><b>DUAL Finite State Machine</b></h4>
+  <p>
+    The DUAL Finite state machine (FSM) is used to use handle multiple topology changes
+    during a single diffusing computation.
+  </p>
+
+
+  <p>
+    DUAL uses the following parameters in the diffusing computation.
+  </p>
+
+    {{ table::default(
+  header=["Parameter", "Description"],
+  rows=[
+    "Reported Distance | The distance to a destination from the perspective of a neighboring router.",
+    "Computed Distance | Total distance to a destination calculated as: The distance between a router and its neighbor plus the neighbors reported distance.",
+    "Feasible Distance | The last known computed distance to a destination when the route transitioned from active to passive.",
+    "Feasibility Condition | If a neighboring routers reported distance to a destination is smaller than the routers current feasible distance to the destination the path through that neighbor cannot cause a routing loop.",
+  ],
+) }}
+
+  <h3 id="topology-table">Topology Table</h3>
+  <p>
+    EIGRP stores all its routing information in the topology table. EIGRP will perform a
+    feasibility condition check on routes received by a neighbor to confirm that neighbor
+    can provide a loop free path to the destination. Routes that satisfy the feasibility
+    condition may be installed in the routing table.
+  </p>
+  <p>
+    Any loop free path to a destination will be installed in the topology table as one of
+    two types of routes.
+  </p>
+
+    {{ table::default(
+  header=["Route Type", "Description"],
+  rows=[
+    "Successor | This is the shortest loop free path to a destination and is installed in the routing table.",
+    "Feasible Successor | Alternate loop free path to a destination. Can be installed in the routing table if the Successor route fails.",
+  ],
+) }}
+
+  {{ image::boxed(path="blog/eigrp/feasibility-condition.svg", width="700px") }}
+
+  <h4><b>Route States</b></h4>
+  <p>
+    Routes in the topology table go through a number of states.
+  </p>
+
+    {{ table::default(
+  header=["State", "Description"],
+  rows=[
+    "Passive | Loop free path to the destination has been computed. This is the normal state.",
+    "Active | EIGRP is actively trying to compute the best path and querying its neighbors.",
+    "SIA | If a reply to a Query for a destination is not received within the holdown timer (180 sec or 360 sec with SIA-Reply) the route is considered Stuck-In-Active.",
+  ],
+) }}
+
+
+  <h3 id="packet-format">Packet Format</h3>
+
+  <h4>Basic EIGRP message format</h4>
+  {{ image::boxed(path="blog/eigrp/eigrp-packet-format.svg", width="700px") }}
+
+  <h3 id="routing-updates">Routing Updates</h3>
+
+  <p>
+    EIGRP exchanges a full routing table when a neighborship is initially established with only
+    partial updates exchanged after that. For a router to accept routing updates from a
+    neighbor the router-id must be different to its local router-id.
+  </p>
+
+  <h3 id="summarization">Summarization</h3>
+  <p>
+    EIGRP is a classless routing protocol and can summarize networks at any bit boundary.
+  </p>
+
+  <h3 id="loop-prevention">Loop Prevention</h3>
+
+    {{ table::default(
+  header=["Mechanism", "Description"],
+  rows=[
+      "Feasibility Condition | Neighbors reported distance to a destination is lower than the current feasible distance.",
+      "Split horizon with poison reverse <i><sup>$1</sup></i> | Routes learned from an interface are re-advertised out the same interface with an infinite metric.",
+      "Hop Count | Used to limit the maximum size of a EIGRP AS. The default is 100.",
+  ],
+) 
+  | replace(from="$1", to=link::i(path="#references-3", description="[3]"))
+}}
+
+  <h3 id="authentication">Authentication</h3>
+  <p>
+    EIGRP supports both MD5 and SHA-256 authentication. SHA-256 is only available in EIGRP named
+    mode.
+  </p>
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various EIGRP PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/4ayh4bj6i0zu23j/AAA9B3ABdq9a_ugwIgWaS9usa?dl=0", description="here") }}.
+  </p>
+
+
+{% endblock page_content %}

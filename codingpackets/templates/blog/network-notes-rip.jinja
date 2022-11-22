@@ -1,0 +1,92 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+  <h3 id="overview">Overview</h3>
+  <p>
+    Routing information protocol (RIP) is a interior distance vector routing protocol originally
+    defined in {{ link::e(path="https://tools.ietf.org/html/rfc1058", description="RFC1058") }}. RIP has had a number
+    of improvements over the years with version 2 being defined
+    {{ link::e(path="https://tools.ietf.org/html/rfc2453", description="RFC2453") }} and RIPng adding IPv6 support
+    in {{ link::e(path="https://tools.ietf.org/html/rfc2080", description="RFC2080") }}.
+  </p>
+
+  <h3 id="transport">Transport</h3>
+  <p>
+    RIPv1 and RIPv2 utilize UDP/520, RIPng uses UDP/521 to transport RIP messages.
+  </p>
+
+  <h3 id="metric">Metric</h3>
+  <p>
+    RIP uses the number of hops to a destination as its metric. RIP has a maximum hop count
+    of 15 with 16 considered to be infinite and unreachable.
+  </p>
+
+  <h3 id="neighborship">Neighborship</h3>
+  <p>
+    RIP does not form a neighborship with adjacent RIP routers. RIP processes routing updates
+    received via either broadcast or mulitcast depending on the RIP version in use.
+  </p>
+
+  <h3 id="routing-updates">Routing Updates</h3>
+
+      {{ table::default(
+  header=["", "RIP", "RIPv2", "RIPng"],
+  rows=[
+      "<b>Update Type</b> | Broadcast | Multicast | Multicast",
+      "<b>Update Interval</b> | 30 seconds | 30 seconds | 30 seconds",
+      "<b>Update Address</b> | <span class='font-mono'>255.255.255.255</span> | <span class='font-mono'>224.0.0.9</span> | <span class='font-mono'>FF02",
+      "<b>Update Contents</b> | Full update at each interval period.",
+      "<b>Triggered Update</b> | Immediate partial update when routing information changes. Only contains changed routes.",
+      "<b>Invalid After Timer</b> | If a route stops being received, it will be declared invalid after 180 seconds.",
+      "<b>Holddown Timer</b> | Once the $1 expires the route will be advertised as unreachable for 180 seconds.",
+      "<b>Flushed After Timer</b> | Starts at the same time as the $1. If no updates are received for the route in 240 seconds the route is flushed from the routing table.",
+  ],
+) 
+  | replace(from="$1", to=text::emphasize(text="invalid after timer"))
+}}
+
+
+  <h3 id="message-format">Message Format</h3>
+
+  <h4>RIPv1</h4>
+  {{ image::boxed(path="blog/rip/ripv1-message-format.svg", width="800px") }}
+
+  <h4>RIPv2</h4>
+  {{ image::boxed(path="blog/rip/ripv2-message-format.svg", width="800px") }}
+
+  <h4>RIPng</h4>
+  {{ image::boxed(path="blog/rip/ripng-message-format.svg", width="800px") }}
+
+  <h3 id="summarization">Summarization</h3>
+  <p>
+    RIPv1 is a classful routing protocol and summarization is not supported. RIPv2 and RIPng
+    added support for classless routing and subnets can be summarized at any arbitrary block.
+  </p>
+
+  <h3 id="loop-prevention">Loop Prevention</h3>
+
+      {{ table::default(
+  header=["Mechanism", "Description"],
+  rows=[
+    "Count to infinity | If a routes metric exceeds the infinity counter cease using that routes next hop.",
+    "Split horizon | Routes are not advertised out the same interface they where learned.",
+    "Split horizon with poison reverse | Routes learned from an interface are re-advertised out the same interface with an infinite metric.",
+    "Route Poisoning | When a route fails, set the routes metric to infinity in the next routing update.",
+  ],
+) 
+}}
+
+  <h3 id="authentication">Authentication</h3>
+  <p>
+    RIPv1 does not support authentication. RIPv2 support both plain-text and MD5
+    authentication. RIPng does not implement authentication and relies on the authentication
+    and encryption capabilities of the underlying IPv6 protocol for routing update integrity.
+  </p>
+
+  <h3 id="packet-captures">Packet Captures</h3>
+  <p>
+    Various RIP PCAPs can be found
+    {{ link::e(path="https://www.dropbox.com/sh/eyfl8q9d2f01s88/AAAyxWHO2cmg_9AJqbWDxhfwa?dl=0", description="here") }}.
+  </p>
+
+{% endblock page_content %}
