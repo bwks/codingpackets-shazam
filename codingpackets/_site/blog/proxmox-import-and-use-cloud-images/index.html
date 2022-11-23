@@ -129,7 +129,7 @@
   and use cloud based images in Proxmox. Cloud based 
   images are handy because they are configurable on 
   boot via 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
 . 
   I will use the image created in this post in a future 
   post on how to deploy VMs in Proxmox via Terraform.
@@ -147,7 +147,7 @@
 <p>
   Prior to uploading the cloud images to the Proxmox 
   host, I will be downloading them to an Ubuntu host 
-  to install the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qemu-guest-agent</i>
+  to install the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qemu-guest-agent</i>
 .
   The guest agent allows for introspection into the guest from 
   the host and better integrations to control the 
@@ -155,11 +155,11 @@
 </p>
 <p>
   The
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">libguestfs-tools</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libguestfs-tools</i>
  
   package allows you to install packages into an image 
   without booting it up. The
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">libguestfs-tools</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libguestfs-tools</i>
  
   package conflicts with Proxmox. For this reason, I 
   am using my Ubuntu host to complete this step.
@@ -183,7 +183,7 @@
 
 
 <p>
-  Now install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">libguestfs-tools</i>
+  Now install <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libguestfs-tools</i>
 .
 </p>
 
@@ -202,7 +202,7 @@
 
 
 <p>
-  Install the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qemu-guest-agent</i>
+  Install the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qemu-guest-agent</i>
  
   into the image.
 </p>
@@ -316,7 +316,7 @@ update VM 9001: -scsi0 local-lvm:vm-9001-disk-0 -scsihw virtio-scsi-pci</code></
 
 
 <p>
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  
   CDROM drive. This allows you to 
   assign configuration to the VM on boot.
@@ -363,7 +363,7 @@ update VM 9001: -boot c -bootdisk scsi0</code></pre>
 
 <p>
   Assign a serial console to the VM. This 
-  required by some <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  required by some <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  
   images.
 </p>
@@ -461,7 +461,7 @@ create full clone of drive ide2 (local-lvm:vm-9001-cloudinit)
 
 <p>
   Assign an SSH key to the VM that will be applied 
-  via <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  via <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  on boot.
 </p>
 
@@ -484,7 +484,7 @@ update VM 999: -sshkeys ssh-rsa...</code></pre>
 
 <p>
   For this test I will assign an IP address to the VM 
-  that will be applied via <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  that will be applied via <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  
   on boot.
 </p>
@@ -530,7 +530,7 @@ generating cloud-init ISO</code></pre>
 <p>
   Once the VM has booted, SSH to the VM with the 
   SSH key previously defined and the default 
-  username, <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ubuntu</i>
+  username, <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ubuntu</i>
  
   in the case of Ubuntu cloud images.
 </p>
@@ -598,7 +598,7 @@ ubuntu@ubuntu-test:~$</code></pre>
   In this post, I covered the process to import an 
   Ubuntu cloud image as a VM template, deploy a 
   VM from the template and configure the VM via 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
 .
 </p>
 

@@ -283,7 +283,7 @@ sudo net commit</code></pre>
 
 <h3 id="frr-installation">FRR Installation</h3>
 <p>
-  Alright, lets move onto the host machine. I had to do an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">apt update</i>
+  Alright, lets move onto the host machine. I had to do an <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">apt update</i>
  otherwise I
   would get an error when installing the required packages.
 </p>
@@ -352,7 +352,7 @@ sudo dpkg -i frr_3.0.2-1-ubuntu16.04.1_amd64.deb</code></pre>
 
 <h3 id="frr-configuration">FRR Configuration</h3>
 <p>
-  Add the uplink interfaces to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/network/interfaces</i>
+  Add the uplink interfaces to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces</i>
  config file.
 </p>
 
@@ -377,7 +377,7 @@ iface eth2 inet manual</code></pre>
 
 
 <p>
-  Enable the routing daemons in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/frr/daemons</i>
+  Enable the routing daemons in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/daemons</i>
  config file.
 </p>
 
@@ -401,7 +401,7 @@ bgpd=yes</code></pre>
 
 
 <p>
-  Create a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/frr/frr.conf</i>
+  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/frr.conf</i>
  for the BGP configurations
   with the the following contents.
 </p>
@@ -466,8 +466,8 @@ end</code></pre>
 
 
 <p>
-  Restart the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">networking</i>
- and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">frr</i>
+  Restart the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">networking</i>
+ and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">frr</i>
  services.
 </p>
 

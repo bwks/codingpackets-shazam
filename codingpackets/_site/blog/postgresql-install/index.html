@@ -235,10 +235,10 @@ postgres (PostgreSQL) 13.1</code></pre>
 <h3 id="service">Service</h3>
 <h4>Ubuntu</h4>
 <p>
-  On Ubuntu distributions the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">postgresql</i>
+  On Ubuntu distributions the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgresql</i>
  service 
   is started and enabled to run at start up automatically. Verify with the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">systemctl status</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">systemctl status</i>
  command.
 </p>
 
@@ -272,7 +272,7 @@ Nov 20 22:59:44 devbox systemd[1]: Finished PostgreSQL RDBMS.</code></pre>
 
 <h4>Centos</h4>
 <p>
-  On Centos distributions the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">postgresql-&lt;version&gt;</i>
+  On Centos distributions the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgresql-&lt;version&gt;</i>
  
   database needs to be initialized and the service 
   started and enabled. 
@@ -322,7 +322,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/postgresql-13.servic
 <!-- CODE BLOCK END -->
 
 <p>
-  Verify with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">systemctl status</i>
+  Verify with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">systemctl status</i>
  command.
 </p>
 
@@ -369,11 +369,11 @@ Nov 23 14:38:14 centos8.homelab.local systemd[1]: Started PostgreSQL 13 database
 <h4>IP/Port</h4>
 <p>
   The default IP address and port combination that Postgres listens on is 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">localhost:5432</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">localhost:5432</i>
  using the TCP protocol.
 </p>
 <p>
-  Verify that the host ip/port combination is open with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ss</i>
+  Verify that the host ip/port combination is open with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ss</i>
  
   command.
 </p>
@@ -404,13 +404,13 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 </p>
 <h4>Ubuntu</h4>
 <p>
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/postgresql/13/main/postgresql.conf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/postgresql/13/main/postgresql.conf</i>
 
 </p>
 
 <h4>Centos</h4>
 <p>
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/var/lib/pgsql/13/data/postgresql.conf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/lib/pgsql/13/data/postgresql.conf</i>
 
 </p> 
 
@@ -435,9 +435,9 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 
 <h3 id="database-creation">Database Creation</h3>
 <p>
-  Create a database named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">testing123_db</i>
+  Create a database named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">testing123_db</i>
 
-  using the template <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">template1</i>
+  using the template <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">template1</i>
 .
 </p>
 
@@ -457,7 +457,7 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 
 <h3 id="user-creation">User Creation</h3>
 <p>
-  Create a database user <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">user_name</i>
+  Create a database user <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">user_name</i>
 .
 </p>
 
@@ -477,9 +477,9 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 
 <p>
   Apply permission for the database 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">testing123_db</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">testing123_db</i>
  to user
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">user_name</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">user_name</i>
 .
 </p>
 

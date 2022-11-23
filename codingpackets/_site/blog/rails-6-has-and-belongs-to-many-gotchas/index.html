@@ -126,7 +126,7 @@
 <h3 id="intro">Intro</h3>
 <p>
   I recently came across a couple of caveates when working with 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">has_and_belongs_to_many</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">has_and_belongs_to_many</i>
  
   relationships with Rails. This post covers them and how to 
   solve or work around them.
@@ -158,14 +158,14 @@
 </p>
 <p>
   Lets say we want to create a 
-  relationship between the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tenants</i>
+  relationship between the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tenants</i>
  
-  and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags</i>
+  and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags</i>
  tables.
 </p>
 <p>
   If you use a generator to create a join table, for example: 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">rails generate migration TenantsTags</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">rails generate migration TenantsTags</i>
  you will 
   end up with a schema that looks something like the below.
 </p>
@@ -191,17 +191,17 @@ create_table "tenants_tags", id: :uuid, default: -> { "gen_random_uuid()" }, for
 <!-- CODE BLOCK END -->
 
 <p>
-  Notice how <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tenants</i>
+  Notice how <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tenants</i>
  comes 
-  before <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags</i>
+  before <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags</i>
  in the join 
   table name?
 </p>
 
 <p>
-  If you try to add any <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags</i>
+  If you try to add any <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags</i>
  
-  to a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tenant</i>
+  to a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tenant</i>
  you will get 
   an error similar to the below.
 </p>
@@ -224,9 +224,9 @@ LINE 8:  WHERE a.attrelid = '"tags_tenants"'::regclass</code></pre>
 <p>
   Why is that? The table absolutely exists in the schema definition. 
   Or does it? If you look closely at the error you will see that 
-  rails is looking for <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags_tenants</i>
+  rails is looking for <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags_tenants</i>
  
-  not <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tenants_tags</i>
+  not <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tenants_tags</i>
 .
 </p>
 <p>
@@ -252,7 +252,7 @@ LINE 8:  WHERE a.attrelid = '"tags_tenants"'::regclass</code></pre>
 <p>
   Essentially, you need to name the join table names in alphabetical order.
   Reverse the join table name around to 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags_tenants</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags_tenants</i>
  and it will work 
   as expected.
 </p>
@@ -260,14 +260,14 @@ LINE 8:  WHERE a.attrelid = '"tags_tenants"'::regclass</code></pre>
 <h3 id="model-naming">Model Naming</h3>
 <p>
   For this example I have a direct many to many relationship 
-  between the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vrfs</i>
+  between the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vrfs</i>
  
-  and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags</i>
+  and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags</i>
  tables.
 </p>
 <p>
   The next caveate I hit was related to Model naming.
-  I have a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vrf</i>
+  I have a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vrf</i>
  model 
   and to stop rails from naming it weird, I have some 
   inflection rules. 
@@ -296,16 +296,16 @@ end</code></pre>
 
 <p>
   This impacted rail's ability to find the 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vrf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vrf</i>
  table from the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tags</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tags</i>
  table.
 </p>
 <p>
   In the below error notice the Capitalized 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vrf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vrf</i>
  rather 
-  than the uppercase <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VRF</i>
+  than the uppercase <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">VRF</i>
 
 </p>
 
@@ -324,11 +324,11 @@ end</code></pre>
 
 <p>
   To work around this you need to explicitly tell 
-  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tag</i>
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tag</i>
  model 
-  the class name of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vrf</i>
+  the class name of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vrf</i>
  
-  model in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">has_and_belongs_to_many</i>
+  model in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">has_and_belongs_to_many</i>
  
   association.
 </p>
@@ -357,7 +357,7 @@ end</code></pre>
 <h3 id="outro">Outro</h3>
 <p>
   In this post I covered a couple of the caveats I encountered 
-  while working with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">has_and_belongs_to_many</i>
+  while working with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">has_and_belongs_to_many</i>
  
   association in Rails. This will help future Brad. If you are 
   reading this, it may help you too. 

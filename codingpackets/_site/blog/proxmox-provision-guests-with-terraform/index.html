@@ -168,7 +168,7 @@
 
 <p>
   When generating the token, the important part to note is the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--privsep=0</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--privsep=0</i>
  flag. Without this, token based auth will not work.
 </p>
 
@@ -280,7 +280,7 @@ export PM_API_TOKEN_SECRET="12345abc-a123-4567-b234-1233456789ab"</code></pre>
   Create the following files to configure and use Terraform.
 </p>
 <p>
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">provider.tf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">provider.tf</i>
  tells 
   Terraform about the providers being used.
 </p>
@@ -309,7 +309,7 @@ terraform {
 
 
 <p>
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars.tf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars.tf</i>
  
   is used to store variables used in other Terraform files. In 
   this file, we also define our VM parameters.
@@ -366,16 +366,16 @@ variable "virtual_machines" {
 
 
 <p>
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.tf</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">main.tf</i>
  
   is used to define the resources that will be provisioned. 
   The below file has a 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">for_each</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">for_each</i>
  loop that 
   loops through the 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">virtual_machines</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virtual_machines</i>
  variable 
-  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars.tf</i>
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars.tf</i>
  file to 
   create multiple resources.
 </p>

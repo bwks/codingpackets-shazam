@@ -140,9 +140,9 @@
 <h3 id="install">Install</h3>
 <p>
   The hosts in this lab get their management IP addresses via DHCP. An update
-  to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
+  to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
 
-  file is required to use the labs <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
+  file is required to use the labs <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">dnsmasq</i>
  service.
 </p>
 
@@ -171,7 +171,7 @@ PEERDNS=no</code></pre>
 
 
 <p>
-  Restart the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">network</i>
+  Restart the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">network</i>
  service.
 </p>
 
@@ -211,9 +211,9 @@ sudo yum install -y pygpgme yum-utils</code></pre>
 
 
 <p>
-  Add the Gitlab repo <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab_gitlab-ce.repo</i>
+  Add the Gitlab repo <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab_gitlab-ce.repo</i>
 
-  file to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/yum.repos.d/</i>
+  file to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/yum.repos.d/</i>
  directory.
 </p>
 
@@ -277,7 +277,7 @@ sudo yum update -y</code></pre>
 
 
 <p>
-  Install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab-ce</i>
+  Install <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab-ce</i>
 .
 </p>
 
@@ -299,7 +299,7 @@ sudo yum update -y</code></pre>
 <h3 id="configuration">Configuration</h3>
 
 <p>
-  Backup the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/gitlab/gitlab.rb</i>
+  Backup the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/gitlab/gitlab.rb</i>
  file.
 </p>
 
@@ -319,7 +319,7 @@ sudo yum update -y</code></pre>
 
 
 <p>
-  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/gitlab/gitlab.rb</i>
+  Create an <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/gitlab/gitlab.rb</i>
  file with the following
   contents.
 </p>
@@ -367,7 +367,7 @@ sudo openssl req -new -key gitlab.lab.local.key \
 <!-- CODE BLOCK END -->
 
 <p>
-  Update the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab.lab.local.key</i>
+  Update the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab.lab.local.key</i>
  permissions.
 </p>
 
@@ -389,11 +389,11 @@ sudo openssl req -new -key gitlab.lab.local.key \
 
 <p>
   Have CSR signed by the Root CA then add the signed
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab.lab.local.crt</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab.lab.local.crt</i>
  certificate
-  to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ssl/certs</i>
+  to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ssl/certs</i>
 
-  directory on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab</i>
+  directory on the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab</i>
  host.
 </p>
 
@@ -442,11 +442,11 @@ gitlab.lab.local.key</code></pre>
 
 
 <p>
-  Create a symlink to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab.lab.local.key</i>
+  Create a symlink to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab.lab.local.key</i>
  and
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gitlab.lab.local.crt</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gitlab.lab.local.crt</i>
  files to the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/gitlab/ssl</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/gitlab/ssl</i>
  directory.
 </p>
 
@@ -489,23 +489,23 @@ sudo ln -s /etc/ssl/certs/gitlab.lab.local.crt  /etc/gitlab/ssl/gitlab.lab.local
 
 <p>
   Once this is done you will need to set a password for the root user.
-  Browse to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">https://&lt;hostname-or-ip&gt;</i>
+  Browse to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;hostname-or-ip&gt;</i>
  and configure
   a password.
 </p>
 
 
 <p>
-  Next, login with the username <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
+  Next, login with the username <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</i>
 
-  and the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">password</i>
+  and the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">password</i>
  you just set and generate a security
   token to use for API access.
 </p>
 
 <p>
   To generate a token browse to:
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">User Icon (Top right) > Settings > Access Tokens</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">User Icon (Top right) > Settings > Access Tokens</i>
 
 </p>
 
@@ -520,9 +520,9 @@ sudo ln -s /etc/ssl/certs/gitlab.lab.local.crt  /etc/gitlab/ssl/gitlab.lab.local
 
 
 <p>
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant</i>
  user with the password
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrant123</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant123</i>
  using the API and the access token just
   generated.
 </p>

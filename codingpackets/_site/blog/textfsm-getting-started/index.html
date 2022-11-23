@@ -131,7 +131,7 @@
 </p>
 
 <p>
-  This post will show how to extract interesting data from the output of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show interface</i>
+  This post will show how to extract interesting data from the output of the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</i>
  command on a
   Cisco ASA using TextFSM. For reference the software versions used in this post are below.
 </p>
@@ -143,7 +143,7 @@
 
 <h3 id="installation">Installation</h3>
 <p>
-  Create a virtual environment and install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">textfsm</i>
+  Create a virtual environment and install <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">textfsm</i>
 .
 </p>
 
@@ -175,8 +175,8 @@ pip install textfsm</code></pre>
   using the library.
 </p>
 <p>
-  Use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">curl</i>
- to download the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cisco_asa_show_interface.template</i>
+  Use <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">curl</i>
+ to download the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</i>
  template.
 </p>
 
@@ -254,9 +254,9 @@ Start
 
 
 <p>
-  Lets fire up a python interpreter and create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interfaces</i>
+  Lets fire up a python interpreter and create an <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</i>
  variable with the output of the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show interface</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</i>
  command from a Cisco ASA.
 </p>
 
@@ -334,8 +334,8 @@ Interface Management0/0 "management", is up, line protocol is up
 
 
 <p>
-  Next up we will open the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cisco_asa_show_interface.template</i>
- file and run the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interfaces</i>
+  Next up we will open the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</i>
+ file and run the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</i>
 
   data through the parser.
 </p>
@@ -418,7 +418,7 @@ template.ParseText(interfaces)
 
 <p>
   As you can see above, the parser returns a list of lists where each list contains the values defined
-  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cisco_asa_show_interface.template</i>
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</i>
 .
 </p>
 

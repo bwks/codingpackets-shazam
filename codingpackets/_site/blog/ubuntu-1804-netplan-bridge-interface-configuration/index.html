@@ -127,13 +127,13 @@
 <p>
   Ubuntu 1804 server uses <a class="text-sky-600 no-underline hover:text-sky-800" href="https://netplan.io/" target=_blank>netplan</a>
   for network management. This post will cover how to create a bridge interface with
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">netplan</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">netplan</i>
  in order to have multiple virtual
   machines share the same physical interface.
 </p>
 
 <p>
-  Create the following <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/netplan/01-netcfg.yaml</i>
+  Create the following <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/netplan/01-netcfg.yaml</i>
 
   file in order to configure the bridge interface.
 </p>
@@ -182,9 +182,9 @@ EOF</code></pre>
 </ul>
 
 <p>
-  Rename the default <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  Rename the default <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  network
-  file. This will prevent <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  file. This will prevent <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  from
   attempting to configure the network on reboot.
 </p>
@@ -206,9 +206,9 @@ EOF</code></pre>
 
 <p>
   Finally disable network portion of the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-init</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-init</i>
  config by creating the the below
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</i>
 
   file.
 </p>

@@ -297,10 +297,12 @@ EOF`
 
 {{ text::important_block(text='
     When a configuration file is added or updated the
-    {{ text::code(text="st2ctl") }}
+    $1
  command must be used to
     load the configuration into memory so they take effect.
-') }}
+') 
+  | replace(from="$1", to=text::code(text="st2ctl"))
+}}
 
 <h3 id="testing">Testing</h3>
 <p>

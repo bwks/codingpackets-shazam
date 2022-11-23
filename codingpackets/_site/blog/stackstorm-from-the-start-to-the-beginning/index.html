@@ -168,13 +168,13 @@
 </p>
 <p>
   I did encounter an issue with the puppet install that was related to
-  the permissions of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sudoers.d/vagrant</i>
+  the permissions of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant</i>
 
   file, so more an issue with the way the vagrant box
   was built rather than an issue with the puppet installer.
   Thankfully I received the following very helpful error message so was able to
   find a solutions pretty quickly.
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sudoers.d/vagrant: bad permissions, should be mode 0440</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant: bad permissions, should be mode 0440</i>
 
 </p>
 <p>
@@ -212,12 +212,12 @@ fi
   In this post I will focus on the CLI.
 </p>
 <p>
-  The main CLI commands start with <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">st2</i>
- and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">st2ctl</i>
+  The main CLI commands start with <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2</i>
+ and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</i>
 .
-  Built in help for both commands can be viewed by using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-h</i>
+  Built in help for both commands can be viewed by using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-h</i>
  or
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--help</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--help</i>
  flags.
 </p>
 
@@ -451,9 +451,9 @@ Installation may take a while for packs with many items.
   specifies the connection and authentication parameters for each device.
 </p>
 <p>
-  Create a file named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">napalm.yaml</i>
+  Create a file named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">napalm.yaml</i>
  under the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/stackstorm/config/</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/stackstorm/config/</i>
  directory.
 </p>
 
@@ -531,7 +531,7 @@ EOF</code></pre>
     <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     When a configuration file is added or updated the
-    {{ text::code(text="st2ctl") }}
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</i>
  command must be used to
     load the configuration into memory so they take effect.
 </div>
@@ -610,12 +610,12 @@ EOF</code></pre>
 
 
 <p>
-  Now run the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">get_facts</i>
+  Now run the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">get_facts</i>
  action to get
   information about R1. The syntax for running an action is as follows.
 </p>
 <p>
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">sudo st2 run &lt;pack&gt;.&lt;action&gt; &lt;parameters&gt;</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo st2 run &lt;pack&gt;.&lt;action&gt; &lt;parameters&gt;</i>
 
 </p>
 

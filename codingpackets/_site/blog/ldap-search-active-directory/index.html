@@ -128,7 +128,7 @@
   I recently had to migrate authentication for a service from FIPA to Active Directory.
   It was a bit of fluffing around because the directory structure in FIPA did not exactly
   align with the directory structure in AD. In this post I will demonstrate how to use
-  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
  command to search an Active Directory LDAP tree.
 </p>
 
@@ -164,15 +164,15 @@ UserPrincipalName : some_user@example.com</code></pre>
 
 
 <p>
-  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">DistinguishedName</i>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">DistinguishedName</i>
  parameter or
-  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">UserPrincipalName</i>
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">UserPrincipalName</i>
  can be used
   as the bind account parameter to search LDAP.
 </p>
 
 <p>
-  We can now use this information to search AD/LDAP via the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  We can now use this information to search AD/LDAP via the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
 
   command from a linux host.
 </p>
@@ -198,7 +198,7 @@ UserPrincipalName : some_user@example.com</code></pre>
 <p>
   If you are unable to import the certificates and trust the server is legitimate
   you can ignore self signed certs by adding the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">LDAPTLS_REQCERT=never</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">LDAPTLS_REQCERT=never</i>
  parameter to the
   query.
 </p>
@@ -257,7 +257,7 @@ memberOf: CN=automation,OU=some,OU=group,DC=example,DC=com</code></pre>
 <h3 id="outro">Outro</h3>
 <p>
   That's it. Just a quick post with some examples on how to search an
-  Active Directory LDAP service using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  Active Directory LDAP service using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
  linux
   command line utility.
 </p>

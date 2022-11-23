@@ -127,10 +127,10 @@
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.saltstack.com/en/latest/topics/ssh/" target=_blank>Salt SSH</a>
  allows you to
   execute commands and apply state to minions without having to install a
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">salt-minion</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt-minion</i>
 .
   The only requirement is for the minion to have python installed
-  unless using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-r</i>
+  unless using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-r</i>
  option to execute raw commands.
 </p>
 
@@ -145,7 +145,7 @@
 
 <h3 id="installation">Installation</h3>
 <p>
-  Create and change into a working directory named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">salt-ssh</i>
+  Create and change into a working directory named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt-ssh</i>
 .
 </p>
 
@@ -168,11 +168,11 @@
 <p>
   I will use <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.pipenv.org/" target=_blank>pipenv</a>
  to manage a virtual environment
-  and the installation of <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">salt-ssh</i>
+  and the installation of <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt-ssh</i>
 . If you are not using
-  pipenv you can use <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">pip</i>
+  pipenv you can use <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pip</i>
  with a virtual environment to
-  install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">salt-ssh</i>
+  install <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt-ssh</i>
 .
 </p>
 
@@ -215,7 +215,7 @@
 <h3 id="directories">Directories</h3>
 <p>
   By default Salt expects its configuration files to be located in the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/salt</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/salt</i>
  directory.
   I am running Salt SSH as a non-root user so there are
   a number of directories that need to be created which are writable for my user.
@@ -252,10 +252,10 @@
 
 <h3 id="config">Config</h3>
 <p>
-  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">master</i>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">master</i>
  config file has the same declarations that
   you would define when using Salt in master mode.
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">master</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">master</i>
  config file with the following contents
   that points Salt SSH to the location of the previously created directories.
 </p>
@@ -285,10 +285,10 @@ pki_dir: "/home/bradmin/salt-ssh/salt/pki/master"</code></pre>
 
 <h3 id="roster">Roster</h3>
 <p>
-  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">roster</i>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">roster</i>
  file is used to define remote minions and
   their connection parameters. I am using Vagrant for this lab so I will reuse the Vagrant
-  user credentials. Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">roster</i>
+  user credentials. Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">roster</i>
  file with the
   following contents.
 </p>
@@ -316,10 +316,10 @@ minion:
 
 <h3 id="saltfile">Saltfile</h3>
 <p>
-  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Saltfile</i>
+  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Saltfile</i>
  allows you to set command line configuration
   option in a file instead of declaring them at runtime.
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Saltfile</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Saltfile</i>
  with the following contents.
 </p>
 
@@ -383,9 +383,9 @@ salt-ssh:
 <h3 id="testing">Testing</h3>
 <p>
   With the base configuration done, lest run a few tests. Salt SSH is controlled using the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">salt-ssh</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">salt-ssh</i>
  command. Aside from that you can use the same command line options
-  that are available with the regular <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">salt</i>
+  that are available with the regular <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">salt</i>
  command.
 </p>
 
@@ -416,7 +416,7 @@ minion:
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    The first time you execute <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">salt-ssh</i> it will create SSH keys. This makes the
+    The first time you execute <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">salt-ssh</i> it will create SSH keys. This makes the
     execution time take longer than normal but subsequent runs are much faster. You may also
     need to accept the minions SSH key fingerprint. For more details see
     <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.saltstack.com/en/getstarted/ssh/connect.html" target=_blank>here</a>.
@@ -495,8 +495,8 @@ minion:
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p>
   Most of the issues I ran into related to running Salt as a non-root users. You can run
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">salt-ssh</i>
- with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-l debug</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">salt-ssh</i>
+ with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-l debug</i>
  flag to get a more detailed look
   at the execution and errors if any.
 </p>
@@ -568,7 +568,7 @@ minion:
 <h3 id="outro">Outro</h3>
 <p>
   Salt SSH is a nice alternative for minions where it is not possible and/or convenient to
-  install a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">salt-minion</i>
+  install a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt-minion</i>
 . Common uses for running Salt SSH
   include managing IOT devices and bootstrapping minions with Salt to manage them in
   master mode.

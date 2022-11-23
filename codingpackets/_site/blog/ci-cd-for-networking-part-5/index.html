@@ -140,10 +140,10 @@
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    Centos 7 minimal ships with <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">python 2.7.5</i> which is
+    Centos 7 minimal ships with <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python 2.7.5</i> which is
     pretty old and results in pain when working with network automation libraries. On the AWX
-    host I have installed python <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">2.7.13</i> for use with Ansible.
-    You can follow my guide to install python <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">2.7.13</i> and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">3.6.2</i> <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal">here</a> I also have an ansible role <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/ansible-python" target=_blank>here</a>.
+    host I have installed python <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i> for use with Ansible.
+    You can follow my guide to install python <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">3.6.2</i> <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal">here</a> I also have an ansible role <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/ansible-python" target=_blank>here</a>.
   </div>
   </div>
 </div>
@@ -154,9 +154,9 @@
 <h3 id="install">Install</h3>
 <p>
   The hosts in this lab get their management IP addresses via DHCP. An update
-  to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
+  to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
 
-  file is required to use the labs <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
+  file is required to use the labs <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">dnsmasq</i>
  service.
 </p>
 
@@ -185,7 +185,7 @@ PEERDNS=no</code></pre>
 
 
 <p>
-  Restart the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">network</i>
+  Restart the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">network</i>
  service.
 </p>
 
@@ -226,9 +226,9 @@ sudo yum install -y git gettext nodejs npm gcc-c++ bzip2</code></pre>
 
 
 <p>
-  Install the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible</i>
+  Install the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible</i>
  and
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">docker</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">docker</i>
  python libraries via PIP to get the
   latest stable releases.
 </p>
@@ -370,14 +370,14 @@ sudo git clone https://github.com/ansible/awx.git</code></pre>
 
 <p>
   We will customize the AWX installation by making some changes to the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/ansible/awx/installer/inventory</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/ansible/awx/installer/inventory</i>
  file.
 </p>
 
 <p>
-  If you followed my guide on upgrading <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">python2/3</i>
+  If you followed my guide on upgrading <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python2/3</i>
  then
-  you will need to change the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible_python_interpreter</i>
+  you will need to change the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible_python_interpreter</i>
 
   variable.
 </p>
@@ -566,7 +566,7 @@ sudo openssl req -new -key awx.lab.local.key \
 
 
 <p>
-  Update the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">awx.lab.local.key</i>
+  Update the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">awx.lab.local.key</i>
  permissions.
 </p>
 
@@ -589,13 +589,13 @@ sudo openssl req -new -key awx.lab.local.key \
 
 <p>
   Have CSR signed by the Root CA then add the signed
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">awx.lab.local.crt</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">awx.lab.local.crt</i>
  certificate and the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">awx.lab.local.key</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">awx.lab.local.key</i>
  key
-  to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/awx-nginx-docker/</i>
+  to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/awx-nginx-docker/</i>
 
-  directory on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">awx</i>
+  directory on the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">awx</i>
  host.
 </p>
 
@@ -643,9 +643,9 @@ awx.lab.local.key</code></pre>
 
 
 <p>
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Dockerfile</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Dockerfile</i>
  file with the following contents
-  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/awx-nginx-docker/</i>
+  in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/awx-nginx-docker/</i>
  directory.
 </p>
 
@@ -672,7 +672,7 @@ COPY nginx.conf /etc/nginx/nginx.conf</code></pre>
 
 
 <p>
-  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">nginx.conf</i>
+  Create an <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">nginx.conf</i>
  file with the following contents.
 </p>
 
@@ -770,11 +770,11 @@ http {
   Once the Nignx Docker container is started login to AWX via the web GUI.
 </p>
 <p>
-  Browse to the AWX url <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">https://&lt;awx-hostname-or-ip&gt;</i>
+  Browse to the AWX url <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;awx-hostname-or-ip&gt;</i>
 
-  and login with the username <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+  and login with the username <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
  and the password is
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrant123</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant123</i>
 .
 </p>
 

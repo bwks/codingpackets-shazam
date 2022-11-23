@@ -172,7 +172,7 @@
   <p>
     <b>Requirements</b><br>
     Linux managed nodes require python 2.4 or later. If the python version is less than 2.5
-    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">python-simplejson</i> is required.
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python-simplejson</i> is required.
   </p>
   <p>
     <b>Control Node</b><br>
@@ -224,21 +224,21 @@ pip install ansible</code></pre>
   <h3 id="configuration">Configuration</h3>
   <p>
     Ansible configuration can be defined in multiple locations. The following search paths
-    will be checked for an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i> file from highest to lowest preference.
+    will be checked for an <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> file from highest to lowest preference.
   </p>
 
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$ANSIBLE_CONFIG</i> environment variable.</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">./ansible.cfg</i> current working directory.</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.ansible.cfg</i> users home directory.</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ansible/ansible.cfg</i> default location.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">$ANSIBLE_CONFIG</i> environment variable.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">./ansible.cfg</i> current working directory.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/.ansible.cfg</i> users home directory.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ansible/ansible.cfg</i> default location.</li>
   </ul>
 
   <p>
     When a playbook is run the first file found will be the configuration that is used, configuration
-    files will not be merged. The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i> file uses the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.ini</i> format.
-    Sections are defined with square brackets <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[defaults]</i>. Variables are defined like so
-    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory=/etc/ansible/hosts</i>.
+    files will not be merged. The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> file uses the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.ini</i> format.
+    Sections are defined with square brackets <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[defaults]</i>. Variables are defined like so
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory=/etc/ansible/hosts</i>.
   </p>
   <p>
     The <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/intro_configuration.html" target=_blank>ansible configuration</a>
@@ -253,13 +253,13 @@ pip install ansible</code></pre>
   </p>
   <p>
     <b>Static Inventory</b><br>
-    Static inventory files are similar to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.ini</i> file format. There are three types
+    Static inventory files are similar to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.ini</i> file format. There are three types
     of host definitions.
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">test.lab.local</i> singular host</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[sydney]</i> group of hosts</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[australia:children]</i> group of groups</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">test.lab.local</i> singular host</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[sydney]</i> group of hosts</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[australia:children]</i> group of groups</li>
   </ul>
 
   <p>
@@ -356,13 +356,13 @@ melbourne</code></pre>
   </p>
   <ul>
     <li><b>-i /path/to/inventory</b> argument at playbook runtime</li>
-    <li><b>inventory=/path/to/inventory</b> variable in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i> file</li>
+    <li><b>inventory=/path/to/inventory</b> variable in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> file</li>
   </ul>
-  The default inventory location is <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ansible/hosts</i>.
+  The default inventory location is <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ansible/hosts</i>.
 
   <p>
-    Multiple inventory files can be used if the parameter used with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-i</i> argument
-    or the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i> variable defined in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i> file is a
+    Multiple inventory files can be used if the parameter used with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-i</i> argument
+    or the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> variable defined in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> file is a
     directory.
   </p>
   <p>
@@ -396,10 +396,10 @@ melbourne</code></pre>
     Playbooks have four sections
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">hosts</i> host or host group in an inventory file</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars</i> variables that will be used in templates</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tasks</i> will to be executed against hosts</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">handlers</i> perform actions like restarting services</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">hosts</i> host or host group in an inventory file</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars</i> variables that will be used in templates</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tasks</i> will to be executed against hosts</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">handlers</i> perform actions like restarting services</li>
   </ul>
 
   <p>
@@ -461,15 +461,15 @@ melbourne</code></pre>
 
   <p>
     Modules are where the magic happens in ansible. Modules are invoked with tasks in playbooks
-    or with the <code>ansible</code> ad hoc command <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-m</i> argument.
+    or with the <code>ansible</code> ad hoc command <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-m</i> argument.
   </p>
   <p>
     There are three types of modules in ansible.
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Core</i> ship with anisble, maintained by core ansible team</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Extras</i> ship with ansible, maintained by community</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">3rd Party</i> anisble galaxy, maintained by community</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Core</i> ship with anisble, maintained by core ansible team</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Extras</i> ship with ansible, maintained by community</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">3rd Party</i> anisble galaxy, maintained by community</li>
   </ul>
   An example is the <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/yum_module.html" target=_blank>yum</a> module
   that can be used to perform yum related task such as <code>yum install</code>.
@@ -497,8 +497,8 @@ melbourne</code></pre>
 
 
   <p>
-    When utilizing the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible</i> ad hoc command the <span class="emphasize-text-darkmode">-m <i>module_name</i>
-            [-a <i>module_args</i>]</span> i used to specify a module. Note the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[-a <i>module_args</i>]</i>
+    When utilizing the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible</i> ad hoc command the <span class="emphasize-text-darkmode">-m <i>module_name</i>
+            [-a <i>module_args</i>]</span> i used to specify a module. Note the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">[-a <i>module_args</i>]</i>
     is an optional parameter.
   </p>
 
@@ -522,9 +522,9 @@ melbourne</code></pre>
     Variables in ansible have three scopes
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Global</i> set from the command line or defined in <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">anisble.cfg</i> file</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Play</i> set in plays <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars</i> and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">include_vars</i></li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Host</i> set via host groups or on hosts by the inventory, facts or registered tasks</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Global</i> set from the command line or defined in <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">anisble.cfg</i> file</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Play</i> set in plays <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">include_vars</i></li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Host</i> set via host groups or on hosts by the inventory, facts or registered tasks</li>
   </ul>
   Within each scope there are many places a variable can be defined.
 
@@ -538,22 +538,22 @@ melbourne</code></pre>
     From ansible 2.x the variable precedence is as follows from most to least preferred
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-e</i> extra vars argument with <code>ansible</code> ad-hoc command</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">task vars</i> task scope only</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">block vars</i> task block scope</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">role vars</i> and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">include_vars</i></li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">set_facts</i> module</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">registered vars</i> in a play</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars_files</i> in a play</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars_prompt</i> in a play</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars</i> in a play</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">facts</i> gathered about a host</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">host_vars</i> in a playbook</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">group_vars</i> in a playbook</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">host_vars</i> in an inventory</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">group_vars</i> in an inventory</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vars</i> in a static or dynamic inventory</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">defaults</i> file for a role</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-e</i> extra vars argument with <code>ansible</code> ad-hoc command</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">task vars</i> task scope only</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">block vars</i> task block scope</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">role vars</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">include_vars</i></li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">set_facts</i> module</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">registered vars</i> in a play</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars_files</i> in a play</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars_prompt</i> in a play</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars</i> in a play</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">facts</i> gathered about a host</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">host_vars</i> in a playbook</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars</i> in a playbook</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">host_vars</i> in an inventory</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars</i> in an inventory</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vars</i> in a static or dynamic inventory</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">defaults</i> file for a role</li>
   </ul>
 
   <p>More on <a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable">
@@ -562,9 +562,9 @@ melbourne</code></pre>
 
   <p>
     <b>Facts</b><br>
-    When a playbook is run against a host, there is an implicit module named the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">setup</i>
+    When a playbook is run against a host, there is an implicit module named the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">setup</i>
     module that gathers facts about a device. Fact gathering can be disabled by setting the
-    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gather_facts: false</i> argument.
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">gather_facts: false</i> argument.
   </p>
 
   <p>
@@ -604,15 +604,15 @@ long list of values
     Below are some examples of how to define a variable.
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{{ inventory_hostname }}</i> templates and playbooks</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible_hostname=host1.lab.sydney</i> inventory files</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">hostname: host1.lab.sydney</i> var_files and vars argument in playbook</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ inventory_hostname }}</i> templates and playbooks</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible_hostname=host1.lab.sydney</i> inventory files</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">hostname: host1.lab.sydney</i> var_files and vars argument in playbook</li>
   </ul>
 
   <p>
-    When a variable is defined in a playbook with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{{ ... }}</i>
+    When a variable is defined in a playbook with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ ... }}</i>
     syntax and it starts an argument, it must be enclosed in quotes. For example:
-    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">template: src='{{ base_path }}/motd.j2'</i>
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">template: src='{{ base_path }}/motd.j2'</i>
   </p>
 
   <p>
@@ -631,7 +631,7 @@ long list of values
   <p>
     Jinja2 templates are basically text files that have control structures and variables that
     get manipulated by the templating engine on rendering. By convention jinja2 files should
-    end with a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.j2</i> extension, but this is not required.
+    end with a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.j2</i> extension, but this is not required.
   </p>
 
   <p>
@@ -640,12 +640,12 @@ long list of values
   Jinja2 templates have the following delimiters which define functionality to be executed
   by the templating engine.
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% verbatim %}{% ... %}{% endverbatim %}</i> statements eg: for, if and include</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% verbatim %}{{ ... }}{% endverbatim %}</i> variables and expressions</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% verbatim %}{# ... #}{% endverbatim %}</i> comments</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% verbatim %}{# ... #}{% endverbatim %}</i> line statements (not used in ansible afaik)</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{% verbatim %}{% ... %}{% endverbatim %}</i> statements eg: for, if and include</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{% verbatim %}{{ ... }}{% endverbatim %}</i> variables and expressions</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{% verbatim %}{# ... #}{% endverbatim %}</i> comments</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{% verbatim %}{# ... #}{% endverbatim %}</i> line statements (not used in ansible afaik)</li>
   </ul>
-  Templates are used in ansible playbooks via the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">template</i> module
+  Templates are used in ansible playbooks via the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">template</i> module
 
   <p>
     <b>Example template</b>
@@ -759,7 +759,7 @@ long list of values
 
   <b>ansible-galaxy command line tool</b><br>
   <p>
-    The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible-galaxy <i>args</i></i> cli command can be used to search, list,
+    The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible-galaxy <i>args</i></i> cli command can be used to search, list,
     initialize, install and remove ansbile roles.
   </p>
 
@@ -797,11 +797,11 @@ Found 2 roles matching your search:
 
   <h3 id="ansible-vault">Ansible Vault</h3>
   <p>
-    Ansible provides a 'vault' to securely stores secrets. The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible-vault <i>args</i></i>
+    Ansible provides a 'vault' to securely stores secrets. The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible-vault <i>args</i></i>
     command is used to create, edit, encrypt and decrypt vault files. Ansible uses a python library to
     symetrically encrypt a file with AES 256 bit encryption using a password
-    as the key. The default editor for ansible vault is <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vi</i>, this can be changed by exporting
-    the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$EDITOR</i> environment variable. Ansible vault files use YAML syntax
+    as the key. The default editor for ansible vault is <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vi</i>, this can be changed by exporting
+    the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">$EDITOR</i> environment variable. Ansible vault files use YAML syntax
     for key:value pairs.
   </p>
 
@@ -823,8 +823,8 @@ Usage: ansible-vault [create|decrypt|edit|encrypt|rekey|view] [--help] [options]
 
 
   <p>
-    It is recommended to name the ansible vault file <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vault</i> and store it under the
-    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">group_vars/</i> directory. Vault variable names should be prefixed with<i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vault_</i>.
+    It is recommended to name the ansible vault file <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vault</i> and store it under the
+    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">group_vars/</i> directory. Vault variable names should be prefixed with<i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vault_</i>.
   </p>
 
   <b>Access ansible-vault</b><br>
@@ -832,9 +832,9 @@ Usage: ansible-vault [create|decrypt|edit|encrypt|rekey|view] [--help] [options]
     There are three methods to tell ansible to access the vault during playbook execution:
   </p>
   <ul>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">--ask-vault-pass</i> provide key at runtime.</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">--vault-password-file <i>/path/to/file</i></i> path to a file containing the key.</li>
-    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ANSIBLE_VAULT_PASSWORD_FILE</i> via an environment variable.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--ask-vault-pass</i> provide key at runtime.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--vault-password-file <i>/path/to/file</i></i> path to a file containing the key.</li>
+    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ANSIBLE_VAULT_PASSWORD_FILE</i> via an environment variable.</li>
   </ul>
 
   <p>

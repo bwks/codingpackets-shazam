@@ -128,7 +128,7 @@
             
 <h3 id="intro">Intro</h3>
 <p>
-  In this post I will install a Juniper vSRX for use with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
+  In this post I will install a Juniper vSRX for use with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
 
   provider. Prior to installing the vSRX there are some required steps to get the KVM host
   prepped which I will not cover. These steps are covered in the Juniper
@@ -164,9 +164,9 @@
 <h3 id="download">Download</h3>
 <p>
   Juniper does not provide a Vagrant Libvirt box, but they do provide a
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
  image. You will
-  need to download the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
+  need to download the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
  from the Juniper software
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vsrx#sw" target=_blank>download</a> section.
 </p>
@@ -189,7 +189,7 @@
 <h3 id="install">Install</h3>
 <p>
   Create and change into directory for vSRX files. I like to keep my custom vagrant boxes under
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</i>
 .
 </p>
 
@@ -212,7 +212,7 @@ cd ~/vagrant/boxes/juniper</code></pre>
 
 <p>
   Copy the qcow2 file downloaded earlier to the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/juniper</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper</i>
  directory.
 </p>
 
@@ -232,9 +232,9 @@ cd ~/vagrant/boxes/juniper</code></pre>
 
 
 <p>
-  The maintainers of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
+  The maintainers of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
  plugin have
-  a script that can be used to convert <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
+  a script that can be used to convert <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
  images to
   a vagrant box. Download the libvirt conversion script.
 </p>
@@ -255,7 +255,7 @@ cd ~/vagrant/boxes/juniper</code></pre>
 
 
 <p>
-  Create a bootstrap configuration file named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">juniper.conf</i>
+  Create a bootstrap configuration file named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">juniper.conf</i>
 
   with following contents that will be applied on boot to the vSRX.
 </p>
@@ -343,7 +343,7 @@ security {
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     I am creating this VM in packet-mode. This essentially makes the vSRX a router. To use the vSRX as
-    a firewall omit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">security > forwarding-options</i> stanza.
+    a firewall omit the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">security > forwarding-options</i> stanza.
 </div>
   </div>
 </div>
@@ -351,9 +351,9 @@ security {
 
 
 <p>
-  Place the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">juniper.conf</i>
+  Place the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">juniper.conf</i>
  file in a directory named
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">iso_dir</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iso_dir</i>
 .
 </p>
 
@@ -378,7 +378,7 @@ total 4
 
 
 <p>
-  Create an iso image named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">bootstrap.iso</i>
+  Create an iso image named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bootstrap.iso</i>
 .
 </p>
 
@@ -442,11 +442,11 @@ Max brk space used 0
 
 <p>
   A virtual console will be connected to the VM and you will be able to see the VM boot up.
-  Once the VM is booted login with the username <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
+  Once the VM is booted login with the username <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</i>
  and
-  password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Juniper</i>
+  password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</i>
  and check the IP address assigned to
-  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">fxp0.0</i>
+  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">fxp0.0</i>
  interface.
 </p>
 
@@ -479,7 +479,7 @@ fxp0.0                  up    up   inet     192.168.121.99/24</code></pre>
 
 <p>
   From another host terminal confirm that it is possible to SSH to the VM with the
-  Vagrant <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">insecure_private_key</i>
+  Vagrant <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
 .
 </p>
 
@@ -507,7 +507,7 @@ vagrant@vsrx></code></pre>
 
 <p>
   If you can successfully SSH to the vSRX with the Vagrant
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">insecure_private_key</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
 
   its time to package the VM into a Vagrant box. First shutdown the VM.
 </p>
@@ -540,13 +540,13 @@ System going down IMMEDIATELY</code></pre>
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
 </ul>
 
 <p>
-  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">metadata.json</i>
+  Create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
  file with the following contents.
 </p>
 
@@ -566,9 +566,9 @@ System going down IMMEDIATELY</code></pre>
 
 
 <p>
-  Use the previously downloaded <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create_box.sh</i>
+  Use the previously downloaded <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
  script to
-  make a Vagrant box from the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
+  make a Vagrant box from the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
  image.
 </p>
 
@@ -600,7 +600,7 @@ Total bytes written: 4768798720 (4.5GiB, 24MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsrx.json</i>
+  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsrx.json</i>
  so that the
   box is added with the correct version number.
 </p>
@@ -635,7 +635,7 @@ Total bytes written: 4768798720 (4.5GiB, 24MiB/s)
 
 
 <p>
-  Add the box to Vagrant using the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsrx.json</i>
+  Add the box to Vagrant using the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsrx.json</i>
  file.
 </p>
 
@@ -693,7 +693,7 @@ juniper/vsrx                  (libvirt, 12.1X47-D15.4)
 
 <h3 id="vagrantfile">Vagrantfile</h3>
 <p>
-  Use this <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrantfile</i>
+  Use this <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
  to test out the new vSRX Vagrant box.
 </p>
 
@@ -751,7 +751,7 @@ end</code></pre>
     <div class="px-4 pb-4 dark:text-zinc-900">
     You may get 100% CPU on the host machine, the only way I could get this down without
     drastically affecting the box performance was to reduce the CPU scheduler access to 33%
-    using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">virsh schedinfo</i>
+    using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">virsh schedinfo</i>
  command. I am using a new feature in Vagrant 2.1.0
     called <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.vagrantup.com/docs/triggers/index.html" target=_blank>triggers</a> to execute
     the required command automatically once the box has booted up.
@@ -763,7 +763,7 @@ end</code></pre>
 
 <h3 id="testing">Testing</h3>
 <p>
-  Lets <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+  Lets <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</i>
  and make sure we can connect to the vSRX.
 </p>
 
@@ -918,7 +918,7 @@ Domain vsrx has been undefined</code></pre>
 <p>
   The vSRX is a staple platform in the Juniper product line. If you made it this far you
   will have a modern Juniper vSRX Vagrant box configured for use with the
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
  provider. Now it's time to go out
   and build some Juniper labs.
 </p>

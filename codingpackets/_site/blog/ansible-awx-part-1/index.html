@@ -142,10 +142,10 @@
   <li>Ansible AWX - 1.0.0.577</li>
 </ul>
 <p>
-  Centos 7 minimal ships with <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">python 2.7.5</i> which is pretty old, I will be installing
-  python <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">2.7.13</i>
-  for use with ansible. I have a guide to install python <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">2.7.13</i> and
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">3.6.2</i>
+  Centos 7 minimal ships with <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python 2.7.5</i> which is pretty old, I will be installing
+  python <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i>
+  for use with ansible. I have a guide to install python <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">2.7.13</i> and
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">3.6.2</i>
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal">here</a>
    and an ansible role
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/bwks/ansible-python" target=_blank>here</a>.
@@ -199,7 +199,7 @@ yum install -y git gettext docker nodejs npm gcc-c++ bzip2</code></pre>
 
 <h3 id="install-required-pip-packages">Install required PIP packages</h3>
 <p>
-  Install the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible</i> and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">docker</i> python
+  Install the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible</i> and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">docker</i> python
   libraries via PIP to get the latest stable releases.
 </p>
 
@@ -281,9 +281,9 @@ firewall-cmd --reload</code></pre>
 
 
 <p>
-  To make the changes permanent set the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">SELINUX</i> variable under 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/selinux/config</i> to
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">permissive</i> and reboot.
+  To make the changes permanent set the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">SELINUX</i> variable under 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/selinux/config</i> to
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">permissive</i> and reboot.
 </p>
 
 
@@ -328,10 +328,10 @@ git clone https://github.com/ansible/awx.git</code></pre>
 
 <h3 id="edit-the-inventory-file">Edit the inventory file</h3>
 <p>
-  If you followed my guide on upgrading <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">python2/3</i> then you will need to
-  change the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible_python_interpreter</i> variable in the 
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/ansible/awx/installer/inventory</i> file
-  from <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/usr/bin/env python</i> to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/usr/local/bin/python2.7</i>
+  If you followed my guide on upgrading <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python2/3</i> then you will need to
+  change the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible_python_interpreter</i> variable in the 
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/ansible/awx/installer/inventory</i> file
+  from <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/usr/bin/env python</i> to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/usr/local/bin/python2.7</i>
 </p>
 
 
@@ -377,11 +377,11 @@ ansible-playbook -i inventory install.yml</code></pre>
 <h3 id="login-to-awx">Login to AWX</h3>
 <p>Once the playbook is complete you can login to AWX via the web GUI.</p>
 <p>
-  Browse to the AWX url <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">http://&lt;awx-hostname-or-ip&gt;</i> and login with the
+  Browse to the AWX url <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">http://&lt;awx-hostname-or-ip&gt;</i> and login with the
   username
-  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i> and the password is <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">password</i>.
+  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i> and the password is <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">password</i>.
   <i>
-    Note: The password can be set in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i> file with the <span
+    Note: The password can be set in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file with the <span
        class="emphasize-text-darkmode">default_admin_password</span>
     variable.
   </i>
