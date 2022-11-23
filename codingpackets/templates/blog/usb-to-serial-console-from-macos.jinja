@@ -1,0 +1,71 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently had to connect to some network equipment via the console port
+  using my trusty USB to serial adapter. This is just a quick post outlining
+  the process on MacOS.
+</p>
+
+<h3 id="dude-wheres-my-console">Dude! Where's My Console?</h3>
+<p>
+  Firstly plug in your USB-to-Serial and find its location under the
+  {{ text::emphasize(text="/dev/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ls -la /dev/ | grep -i usb
+
+# output
+crw-rw-rw-  1 root  wheel   18,   3 26 Jun 09:17 /dev/cu.usbserial-FTDCP0VI
+crw-rw-rw-  1 root  wheel   18,   2 26 Jun 09:17 /dev/tty.usbserial-FTDCP0VI'
+) }}
+
+<p>
+  We are looking for the {{ text::emphasize(text="tty") }}
+ device.
+  From the output above you can see that the device is located at
+  {{ text::emphasize(text="/dev/tty.usbserial-FTDCP0VI") }}
+
+</p>
+
+<h3 id="connecting-3-2-1">Connecting 3..2..1</h3>
+<p>
+  The {{ text::code(text="screen") }}
+ command can be used to connect to the USB to serial device.
+  The command structure is {{ text::code(text="screen &lt;device-path&gt; &lt;console-speed&gt;") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='screen /dev/tty.usbserial-FTDCP0VI 9600
+
+# Now connected to device
+router1>'
+) }}
+<p>
+  Voila! We are connected to our network device via the console port.
+</p>
+
+<h3 id="gtfo">GTFO</h3>
+<p>
+  To exit the screen session use the keyboard combination {{ text::kbd(text="CTRL") }}
+ + {{ text::kbd(text="a") }}
+ then {{ text::kbd(text="k") }}
+.
+  <br>
+  Press {{ text::kbd(text="y") }}
+ at the prompt.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='Really kill this window [y/n]'
+) }}
+
+{% endblock page_content %}

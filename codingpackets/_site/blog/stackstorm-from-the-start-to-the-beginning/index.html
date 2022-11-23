@@ -1,0 +1,1171 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">StackStorm From The Start To The Beginning</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 6th of January 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stackstorm.com/" target=_blank>StackStorm</a>
+ or as it is affectionately
+  known ST2 is marketed as an opensource IFTTT for ops. I like to think of
+  ST2 as glue for software allowing you to piece together simple tasks to
+  complex workflows to automate your infrastructure.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-from-the-start-to-the-beginning/lab-topology.svg" alt="blog/stackstorm-from-the-start-to-the-beginning/lab-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  For reference I am building this lab with Vagrant utilizing
+  the following code versions.
+</p>
+<ul>
+  <li>Centos - 7 minimal</li>
+  <li>StackStorm - 2.10.1</li>
+  <li>Juniper vMX - 18.2R1.9</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  StackStorm can be installed in many ways. The official
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/install/index.html" target=_blank>documentation</a>
+
+  is very good so I will not repeat the instructions here. Follow
+  the method that suits your situation.
+</p>
+<p>
+  I have personally tried the one-liner, docker, ansible and puppet
+  installers and they all work very well. If you are not familiar with
+  docker, ansible or puppet I recommend the one-line installer for labs.
+</p>
+<p>
+  I did encounter an issue with the puppet install that was related to
+  the permissions of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sudoers.d/vagrant</i>
+
+  file, so more an issue with the way the vagrant box
+  was built rather than an issue with the puppet installer.
+  Thankfully I received the following very helpful error message so was able to
+  find a solutions pretty quickly.
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sudoers.d/vagrant: bad permissions, should be mode 0440</i>
+
+</p>
+<p>
+  I then used the below bash script to correct the file permissions and
+  install ST2 with puppet.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">bash</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#! /bin/bash
+
+if [[ -f /etc/sudoers.d/vagrant ]]; then
+  chmod 0440 /etc/sudoers.d/vagrant;
+fi
+
+/opt/puppetlabs/bin/puppet module install stackstorm-st2
+/opt/puppetlabs/bin/puppet apply -e "include ::st2::profile::fullinstall"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="st2-management">ST2 Management</h3>
+<p>
+  Once ST2 is installed there is a web interface you can login to
+  that provides a history of tasks executed, add/remove packs, etc.
+  In this post I will focus on the CLI.
+</p>
+<p>
+  The main CLI commands start with <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">st2</i>
+ and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">st2ctl</i>
+.
+  Built in help for both commands can be viewed by using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">-h</i>
+ or
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">--help</i>
+ flags.
+</p>
+
+<h3 id="packs">Packs</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/packs.html" target=_blank>Packs</a>
+ are pre-built
+  bundles of actions, rules, sensors, triggers, aliases and workflows packaged up to
+  be shared and re-used by StackStorm. For this lab I will use the
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/StackStorm-Exchange/stackstorm-napalm" target=_blank>Napalm pack</a>
+. For
+  those that are not aware, <a class="text-sky-600 no-underline hover:text-sky-800" href="https://napalm.readthedocs.io/en/latest/" target=_blank>Napalm</a>
+
+  is a python library that provides a common API abstracting away the management
+  differences between network vendors APIs.
+</p>
+
+<p>
+  Lets search for the Napalm pack.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 pack search napalm
+
+# output
+
++-------------+-----------------------------------------+---------+-----------------------+
+| name        | description                             | version | author                |
++-------------+-----------------------------------------+---------+-----------------------+
+| napalm      | NAPALM network automation library       | 0.2.15  | mierdin, Rob Woodward |
+|             | integration pack                        |         |                       |
+| napalm_logs | Runs a napalm-logs client as a sensor   | 0.1.1   | John Anderson         |
+|             | and dispatches rendered logs as         |         |                       |
+|             | triggers.                               |         |                       |
++-------------+-----------------------------------------+---------+-----------------------+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Good we found it, now lets install the Napalm pack.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 pack install napalm
+
+# output
+
+For the "napalm" pack, the following content will be registered:
+
+rules     |  4
+sensors   |  1
+triggers  |  0
+actions   |  27
+aliases   |  1
+
+Installation may take a while for packs with many items.
+
+	[ succeeded ] download pack
+	[ succeeded ] make a prerun
+	[ succeeded ] install pack dependencies
+	[ succeeded ] register pack
+
++-------------+----------------------------------------------------+
+| Property    | Value                                              |
++-------------+----------------------------------------------------+
+| name        | napalm                                             |
+| description | NAPALM network automation library integration pack |
+| version     | 0.2.15                                             |
+| author      | mierdin, Rob Woodward                              |
++-------------+----------------------------------------------------+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Great the Naplam pack is installed but whats all this about rules,
+  sensors, triggers actions and aliases? Lets dig into that a little.
+</p>
+
+<h4><b>Actions</b></h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/actions.html" target=_blank>Actions</a>
+ are the
+  building blocks of code that perform automation tasks.
+  View the list of available actions with the following command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 action list</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4><b>Sensors</b></h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/sensors.html#sensors" target=_blank>Sensors</a>
+
+  can either poll an endpoint or listen for events then activate
+  triggers when a match is found.
+  View the list of available sensors with the following command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 sensor list</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>Triggers</b></h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/sensors.html#triggers" target=_blank>Triggers</a>
+
+  are used to map events to rules.
+  View the list of available triggers with the following command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 trigger list</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4><b>Rules</b></h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/rules.html" target=_blank>Rules</a>
+ define what
+  action is applied when a trigger is matched.
+  View the list of available rules with the following command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 rule list</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4><b>Aliases</b></h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/chatops/aliases.html" target=_blank>Aliases</a>
+
+  are a shortcut for actions used to add functionality to bots in chatops.
+  View the list of available aliases with the following command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 action-alias list</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4>Workflows</h4>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/workflows.html" target=_blank>Workflows</a>
+ are
+  groups of actions that are chained together and provide the IFTTT
+  functionality to StackStorm. Workflows are where the real power of
+  ST2 lies and I will cover them in a future post.
+</p>
+
+<h3 id="config">Config</h3>
+<p>
+  Before you can use the napalm pack you need to define a config file that
+  specifies the connection and authentication parameters for each device.
+</p>
+<p>
+  Create a file named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">napalm.yaml</i>
+ under the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/stackstorm/config/</i>
+ directory.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I am not using DNS in this lab so I am using the management
+    IP addresses for the hostname.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">yaml</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">sudo tee /opt/stackstorm/configs/napalm.yaml > /dev/null << "EOF"
+---
+html_table_class: napalm
+
+credentials:
+  junos:
+    username: "vagrant"
+    password: "Vagrant"
+
+devices:
+  - hostname: "192.168.121.253" # R1
+    driver: "junos"
+    credentials: "junos"
+  - hostname: "192.168.121.63" # R2
+    driver: "junos"
+    credentials: "junos"
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Reload StackStorm and register the configuration into memory.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2ctl reload --register-configs</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    When a configuration file is added or updated the
+    {{ text::code(text="st2ctl") }}
+ command must be used to
+    load the configuration into memory so they take effect.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Lets have a look the napalm actions and see what is available.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 action list -p napalm
+
+# output
+
++--------------------------------------+--------+------------------------------------------------------+
+| ref                                  | pack   | description                                          |
++--------------------------------------+--------+------------------------------------------------------+
+| napalm.bgp_prefix_exceeded_chain     | napalm | Action Chain to process a BGP neighbor prefix limit  |
+|                                      |        | exceeded event.                                      |
+| napalm.check_consistency             | napalm | Check that the device's configuration is consistent  |
+|                                      |        | with the 'golden' config in a Git repository         |
+| napalm.cli                           | napalm | Run CLI commands on a device using NAPALM.           |
+| napalm.configuration_change_workflow | napalm | Workflow to process a configuration change on a      |
+|                                      |        | device.                                              |
+| napalm.get_arp_table                 | napalm | Get the ARP table from a device using NAPALM.        |
+| napalm.get_bgp_config                | napalm | Get BGP configuration from a device using NAPALM.    |
+| napalm.get_bgp_neighbors             | napalm | Get the BGP neighbors from a device using NAPALM.    |
+| napalm.get_bgp_neighbors_detail      | napalm | Get a detailed BGP neighbor from a device using      |
+|                                      |        | NAPALM.                                              |
+| napalm.get_config                    | napalm | Get configuration from the device using NAPALM.      |
+| napalm.get_environment               | napalm | Get the environment sensor output from a device      |
+|                                      |        | using NAPALM.                                        |
+| napalm.get_facts                     | napalm | Get the various facts (Version, Serial Number,       |
+|                                      |        | Vendor, Model, etc.) from a device using NAPALM.     |
+| napalm.get_firewall_policies         | napalm | Get firewall policies from a device using NAPALM.    |
+| napalm.get_interfaces                | napalm | Get interfaces from a device using NAPALM.           |
+| napalm.get_lldp_neighbors            | napalm | Get the LLDP Neighbors from a device using NAPALM.   |
+| napalm.get_log                       | napalm | Get logs from devices using NAPALM.                  |
+| napalm.get_mac_address_table         | napalm | Get the MAC Address table from a device using        |
+|                                      |        | NAPALM.                                              |
+| napalm.get_network_instances         | napalm | Get details of network/routing instances/vrfs from a |
+|                                      |        | network device using NAPALM.                         |
+| napalm.get_ntp                       | napalm | Gets NTP information from a network device using     |
+|                                      |        | NAPALM.                                              |
+| napalm.get_optics                    | napalm | Fetches the power usage on the various transceivers  |
+|                                      |        | installed on the device (in dbm) using NAPALM.       |
+| napalm.get_probes_config             | napalm | Get RPM (JunOS) or IP SLA (IOS-XR) probe             |
+|                                      |        | configuration from a device using NAPALM.            |
+| napalm.get_probes_results            | napalm | Get RPM (JunOS) or IP SLA (IOS-XR) probe results     |
+|                                      |        | from a device using NAPALM.                          |
+| napalm.get_route_to                  | napalm | Shows an IP route on a network device using NAPALM.  |
+| napalm.get_snmp_information          | napalm | Get the SNMP information from a device using NAPALM. |
+| napalm.interface_down_workflow       | napalm | Workflow to process an interface down event on a     |
+|                                      |        | device.                                              |
+| napalm.loadconfig                    | napalm | Loads (merge) a configuration to a network device    |
+|                                      |        | using NAPALM.                                        |
+| napalm.ping                          | napalm | Run a ping from a network device using NAPALM.       |
+| napalm.traceroute                    | napalm | Run a traceroute from a network device using NAPALM. |
++--------------------------------------+--------+------------------------------------------------------+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now run the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">get_facts</i>
+ action to get
+  information about R1. The syntax for running an action is as follows.
+</p>
+<p>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">sudo st2 run &lt;pack&gt;.&lt;action&gt; &lt;parameters&gt;</i>
+
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 run napalm.get_facts hostname=192.168.121.253
+
+# output
+
+...................................................
+id: 5c31269e9dc6d6140855d946
+status: succeeded
+parameters:
+  hostname: 192.168.121.253
+result:
+  exit_code: 0
+  result:
+    raw:
+      fqdn: r1
+      hostname: r1
+      interface_list:
+      - ge-0/0/0
+      - lc-0/0/0
+      - pfe-0/0/0
+      - pfh-0/0/0
+      - ge-0/0/1
+      - ge-0/0/2
+      - ge-0/0/3
+      - ge-0/0/4
+      - ge-0/0/5
+      - ge-0/0/6
+      - ge-0/0/7
+      - ge-0/0/8
+      - ge-0/0/9
+      - .local.
+      - cbp0
+      - demux0
+      - dsc
+      - em1
+      - esi
+      - fti0
+      - fti1
+      - fti2
+      - fti3
+      - fti4
+      - fti5
+      - fti6
+      - fti7
+      - fxp0
+      - gre
+      - ipip
+      - irb
+      - jsrv
+      - lo0
+      - lsi
+      - mtun
+      - pimd
+      - pime
+      - pip0
+      - pp0
+      - rbeb
+      - tap
+      - vtep
+      model: VMX
+      os_version: 18.2R1.9
+      serial_number: VM5B92396683
+      uptime: 204344
+      vendor: Juniper
+  stderr: ''
+  stdout: ''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Good we received the facts about R1, now lets apply some configuration
+  to R1 and R2. First create a directory for the device configurations.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir /opt/stackstorm/packs/napalm/device-configs</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Next create the configuration for R1 and R2
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo tee /opt/stackstorm/packs/napalm/device-configs/r1.cfg > /dev/null << "EOF"
+set system host-name r1
+set protocols lldp interface all
+set protocols lldp neighbour-port-info-display port-description
+set interfaces ge-0/0/0.0 family inet address 10.0.0.0/31
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo tee /opt/stackstorm/packs/napalm/device-configs/r2.cfg > /dev/null << "EOF"
+set system host-name r2
+set protocols lldp interface all
+set protocols lldp neighbour-port-info-display port-description
+set interfaces ge-0/0/0.0 family inet address 10.0.0.1/31
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now apply the configuration to R1.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The absolute path to the configuration file must be supplied.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 run napalm.loadconfig hostname=192.168.121.253 config_file=/opt/stackstorm/packs/napalm/device-configs/r1.cfg
+
+# output
+
+.....................................
+id: 5c312dba9dc6d6140855d94c
+status: succeeded
+parameters:
+  config_file: /opt/stackstorm/packs/napalm/device-configs/r1.cfg
+  hostname: 192.168.121.253
+result:
+  exit_code: 0
+  result: load (merge) successful on 192.168.121.253
+  stderr: ''
+  stdout: ''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Great that worked, now do the same for R2.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 run napalm.loadconfig hostname=192.168.121.63 config_file=/opt/stackstorm/packs/napalm/device-configs/r2.cfg
+
+# output
+
+...
+id: 5c312ece9dc6d6140855d952
+status: succeeded
+parameters:
+  config_file: /opt/stackstorm/packs/napalm/device-configs/r2.cfg
+  hostname: 192.168.121.63
+result:
+  exit_code: 0
+  result: load (merge) successful on 192.168.121.63
+  stderr: ''
+  stdout: ''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  With the configuration applied to both devices as a final test lets have a
+  look at the LLDP neighbors of R1.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 run napalm.get_lldp_neighbors hostname=192.168.121.253
+
+# output
+
+..............
+id: 5c312f189dc6d6140855d955
+status: succeeded
+parameters:
+  hostname: 192.168.121.253
+result:
+  exit_code: 0
+  result:
+    raw:
+      ge-0/0/0:
+      - hostname: r2
+        port: ge-0/0/0
+  stderr: ''
+  stdout: ''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  R1 sees R2 as its LLDP neighbour on interface ge-0/0/0 so it looks
+  like its all working as expected.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  StackStorm (ST2) is a powerful opensource automation tool with an active
+  community and corporate backing from Extreme networks. There are
+  a great number of quality packs available ready to consume with very little
+  effort required from the administrators to get started. ST2 has many
+  features, in future posts I will be covering chatops and workflows.
+</p>
+
+<h4>Remember: This is not the end, it's merely the beginning!</h4>
+<p>
+  The <i>"from the start to the beginning"</i> series aims to take you from nothing to getting you up and running.
+  This is not meant to be a comprehensive guide, but should be enough to get you started on the journey.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/index.html" target=_blank>https://docs.stackstorm.com/index.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/StackStorm-Exchange/stackstorm-napalm" target=_blank>https://github.com/StackStorm-Exchange/stackstorm-napalm</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://exchange.stackstorm.org/" target=_blank>https://exchange.stackstorm.org/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#stackstorm" class="text-xl">stackstorm</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-environment">
+            Lab Environment
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#installation">
+            Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#st2-management">
+            ST2 Management
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#packs">
+            Packs
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#config">
+            Config
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

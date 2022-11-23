@@ -1,7 +1,9 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/viptela-control-plane-setup.jinja \
+codingpackets/templates/blog/terraform-azure-provider-setup.jinja \
+codingpackets/templates/blog/terraform-google-cloud-platform-setup.jinja \
+codingpackets/templates/blog/terraform-install-ubuntu-1804.jinja \
 "
 
 for FILENAME in $files; do

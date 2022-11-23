@@ -1,0 +1,1302 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Terraform Google Cloud Platform Setup</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 24th of March 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to setup Terraform to 
+  connect to your Google Cloud Platform (GCP) tenancy to 
+  manage your GCP infrastructure as code.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+
+<ul>
+  <li>Terraform - 1.1.7</li>
+  <li>Ubuntu - 2004</li>
+  <li>gcloud - 378.0.0</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<h4>Google Account</h4>
+<p>
+  You will need a Google account to work with GCP. If you don't already 
+  have one. Go and create one now.
+</p>
+
+<h4>gcloud</h4>
+<p>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gcloud</i>
+ is a CLI tool that is used to 
+  manage GCP resources. 
+  If you don't already have it installed, see the 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/sdk/docs/install" target=_blank>docs</a>
+   for the latest instructions.
+</p>
+<p>
+  Confirm gcloud is installed and accessible.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud -v
+
+# Output
+Google Cloud SDK 378.0.0
+alpha 2022.03.18
+beta 2022.03.18
+bq 2.0.74
+bundled-python3-unix 3.8.11
+core 2022.03.18
+gsutil 5.8</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h4>Terraform</h4>
+<p>
+  This post assumes that you already have Terraform installed. 
+  If you don't already have it installed, see the 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.terraform.io/downloads" target=_blank>docs</a>
+   for the latest instructions.
+</p>
+<p>
+  Confirm Terraform is installed and accessible.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform -v    
+
+# Output
+Terraform v1.1.7
+on linux_amd64</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="setup-gcp">Setup GCP</h3>
+<h4>Create Project</h4>
+<p>
+  First things first, we will need to create a GCP project. In the 
+  web console, naviagte to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>IAM and admin</li>
+    <li>Create a project</li>
+  </ul>
+</div>
+<p>
+  Enter the project name <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">test-project</i>
+ and press 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create</i>
+.
+</p>
+
+<h4>Create a Service Account</h4>
+<p>
+  I don't have a web browser on my dev machine where I am running Terraform so I will 
+  be using a service account to authenticate to GCP. To create a service account navigate to:
+</p>
+
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>IAM and admin</li>
+    <li>Service accounts</li>
+    <li>Create service account +</li>
+  </ul>
+</div>
+
+<p>
+  Enter the name <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">terraform</i>
+ and press 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">CREATE AND CONTINUE</i>
+.
+
+<p>
+  In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Role</i>
+ drop down select 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Editor</i>
+ and click 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">CONTINUE</i>
+.
+</p>
+
+<p>
+  Finally, click <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">DONE</i>
+.
+</p>
+</p>
+
+<h4>Create Authentication Keys</h4>
+<p>
+  Under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Actions</i>
+ field, press the three dots 
+  ( <i class="fas fa-ellipsis-v"></i> ) and press <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Manage Keys</i>
+.
+</p>
+
+<p>
+  Press <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ADD KEY</i>
+ and then 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Create new key</i>
+.
+</p>
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">JSON</i>
+ as the format and 
+  then press <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">CREATE</i>
+
+</p>
+
+<h4>Store Keys</h4>
+<p>
+  Download the keys to a secure location for use on your machine. 
+  I am using <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.gcp</i>
+ and 
+  naming the file <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">terraform.json</i>
+. 
+  Once there, be sure the adjust the permissions so they are RW
+  only by you.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod 0600 ~/.gcp/terraform.json</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Activate Service Account</h4>
+<p>
+  Finally, activate the service account by running the following command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud auth activate-service-account &lt;service-account-email&gt; --key-file=/path/to/.gcp/terraform.json
+
+# Output
+Activated service account credentials for: [&lt;service-account-email&gt;]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  The service account email can be found in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">service accounts</i>
+ list on 
+  the web console or in the keyfile under the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">client_email</i>
+ field.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h4>Enable API Services</h4>
+<p>
+  To allow access to a GCP service via the API we need to enable 
+  the service for API access. 
+</p>
+<p>
+  For this post we will need to enable the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">compute.googleapis.com</i>
+ service.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud services enable compute.googleapis.com --project test-project-&lt;id&gt;
+
+# Output
+Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+<p>
+  Be aware this can take a minute or two to complete.
+</p>
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+<p>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">project id</i> can be found 
+  in the keyfile under the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">project_id</i> field.
+</p>
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  OK phew, that's it for the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">gcloud</i>
+ setup. 
+  Let's move onto the Terraform section.
+</p>
+
+<h3 id="terraform">Terraform</h3>
+<h4>Link Credentials</h4>
+<p>
+  To allow Terraform to use the servie account credentials 
+  we need to set an environment variable in our shell config. I 
+  am using <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ZSH</i>
+ so my environment 
+  variables live in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
+ file. Adjust 
+  accordingly for your environment.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">~/.zshrc</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">export GOOGLE_APPLICATION_CREDENTIALS="/path/to/.gcp/terraform.json"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Again, make sure this file is RW only by yourself.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod 0600 ~/.zshrc</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now, source the file to load the variable into your shell environment.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">source ~/.zshrc</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Terraform Project</h4>
+<p>
+  Let's create a terraform project. I am creating mine 
+  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/code/terraform/gcp-test/</i>
+ 
+  directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/code/terraform/gcp-test/ && cd ~/code/terraform/gcp-test/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now, create a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.tf</i>
+ 
+  with the following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">main.tf</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-terraform hljs px-5 dark:opacity-80 rounded-b">provider "google" {
+  project = "test-project-&lt;id&gt;"
+  region  = "australia-southeast1"
+  zone    = "australia-southeast1-a"
+}
+
+resource "google_compute_instance" "vm_instance" {
+  name         = "terraform-instance"
+  machine_type = "f1-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  network_interface {
+    # A default network is created for all GCP projects
+    network = google_compute_network.vpc_network.self_link
+    access_config {
+    }
+  }
+}
+
+resource "google_compute_network" "vpc_network" {
+  name                    = "terraform-network"
+  auto_create_subnetworks = "true"
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  This code specifies the GCP <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">project</i>
+, 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">region</i>
+ details and a
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">compute instance (VM)</i>
+. I am using 
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">australia-southeast1</i>
+ region. 
+  Adjust according to your needs.
+</p>
+<p>
+  Region information can be found
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/compute/docs/regions-zones" target=_blank>here</a>
+</p>
+
+
+<p>
+  Next, initialize the Terraform project with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform init</i>
+ 
+  command. This will setup the project and install any required plugins.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform init
+
+# Output
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/google...
+- Installing hashicorp/google v4.15.0...
+
+
+- Installed hashicorp/google v4.15.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="plan">Plan</h3>
+<p>
+  Almost there, lets test our deployment with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform plan</i>
+ 
+  command. This will perform a dry-run and verify all the resources that need 
+  to be created.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform plan
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "f1-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform-instance"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = (known after apply)
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-9"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config {
+          + enable_confidential_compute = (known after apply)
+        }
+
+      + network_interface {
+          + ipv6_access_type   = (known after apply)
+          + name               = (known after apply)
+          + network            = "default"
+          + network_ip         = (known after apply)
+          + stack_type         = (known after apply)
+          + subnetwork         = (known after apply)
+          + subnetwork_project = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity {
+          + type = (known after apply)
+
+          + specific_reservation {
+              + key    = (known after apply)
+              + values = (known after apply)
+            }
+        }
+
+      + scheduling {
+          + automatic_restart   = (known after apply)
+          + min_node_cpus       = (known after apply)
+          + on_host_maintenance = (known after apply)
+          + preemptible         = (known after apply)
+
+          + node_affinities {
+              + key      = (known after apply)
+              + operator = (known after apply)
+              + values   = (known after apply)
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didnt use the -out option to save this plan, so Terraform cant guarantee to take exactly these actions if
+you run "terraform apply" now.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="deploy">Deploy</h3>
+<p>
+  It's looking good, now lets deploy our Terraform plan 
+  with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform apply -auto-approve</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform apply -auto-approve
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "f1-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform-instance"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = (known after apply)
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-9"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config {
+          + enable_confidential_compute = (known after apply)
+        }
+
+      + network_interface {
+          + ipv6_access_type   = (known after apply)
+          + name               = (known after apply)
+          + network            = "default"
+          + network_ip         = (known after apply)
+          + stack_type         = (known after apply)
+          + subnetwork         = (known after apply)
+          + subnetwork_project = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity {
+          + type = (known after apply)
+
+          + specific_reservation {
+              + key    = (known after apply)
+              + values = (known after apply)
+            }
+        }
+
+      + scheduling {
+          + automatic_restart   = (known after apply)
+          + min_node_cpus       = (known after apply)
+          + on_host_maintenance = (known after apply)
+          + preemptible         = (known after apply)
+
+          + node_affinities {
+              + key      = (known after apply)
+              + operator = (known after apply)
+              + values   = (known after apply)
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+google_compute_instance.vm_instance: Creating...
+google_compute_instance.vm_instance: Still creating... [10s elapsed]
+google_compute_instance.vm_instance: Creation complete after 18s [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  It's looking like it's deployed,  let's verify. 
+</p>
+<p>
+  List the deployed instances with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">gcloud compute instances list</i>
+ command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud compute instances list --project test-project-&lt;id&gt
+
+# Output
+NAME                ZONE                    MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+terraform-instance  australia-southeast1-a  f1-micro                   10.152.0.2   X.X.X.X  RUNNING</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  !!! WE GOT ONE !!!
+</p>
+
+<h3 id="destroy">Destroy</h3>
+<p>
+  Let's clean up so we don't have to pay any unnessecary bills. 
+</p>
+<p>
+  Kill the infrastructure with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform destroy</i>
+ command and 
+  type <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">yes</i>
+ at the prompt.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform destroy
+
+# Output
+google_compute_instance.vm_instance: Refreshing state... [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be destroyed
+  - resource "google_compute_instance" "vm_instance" {
+      - can_ip_forward       = false -> null
+      - cpu_platform         = "Intel Broadwell" -> null
+      - current_status       = "RUNNING" -> null
+      - deletion_protection  = false -> null
+      - enable_display       = false -> null
+      - guest_accelerator    = [] -> null
+      - id                   = "projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance" -> null
+      - instance_id          = "6552850478757173275" -> null
+      - label_fingerprint    = "42WmSpB8rSM=" -> null
+      - labels               = {} -> null
+      - machine_type         = "f1-micro" -> null
+      - metadata             = {} -> null
+      - metadata_fingerprint = "43DNKhxlZco=" -> null
+      - name                 = "terraform-instance" -> null
+      - project              = "test-project-345109" -> null
+      - resource_policies    = [] -> null
+      - self_link            = "https://www.googleapis.com/compute/v1/projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance" -> null
+      - tags                 = [] -> null
+      - tags_fingerprint     = "42WmSpB8rSM=" -> null
+      - zone                 = "australia-southeast1-a" -> null
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "persistent-disk-0" -> null
+          - mode        = "READ_WRITE" -> null
+          - source      = "https://www.googleapis.com/compute/v1/projects/test-project-345109/zones/australia-southeast1-a/disks/terraform-instance" -> null
+
+          - initialize_params {
+              - image  = "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20220317" -> null
+              - labels = {} -> null
+              - size   = 10 -> null
+              - type   = "pd-standard" -> null
+            }
+        }
+
+      - network_interface {
+          - name               = "nic0" -> null
+          - network            = "https://www.googleapis.com/compute/v1/projects/test-project-345109/global/networks/default" -> null
+          - network_ip         = "10.152.0.2" -> null
+          - queue_count        = 0 -> null
+          - stack_type         = "IPV4_ONLY" -> null
+          - subnetwork         = "https://www.googleapis.com/compute/v1/projects/test-project-345109/regions/australia-southeast1/subnetworks/default" -> null
+          - subnetwork_project = "test-project-345109" -> null
+
+          - access_config {
+              - nat_ip       = "34.116.64.143" -> null
+              - network_tier = "PREMIUM" -> null
+            }
+        }
+
+      - scheduling {
+          - automatic_restart   = true -> null
+          - min_node_cpus       = 0 -> null
+          - on_host_maintenance = "MIGRATE" -> null
+          - preemptible         = false -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only yes will be accepted to confirm.
+
+  Enter a value: yes
+
+google_compute_instance.vm_instance: Destroying... [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+google_compute_instance.vm_instance: Still destroying... [id=projects/test-project-345109/zones/aust...theast1-a/instances/terraform-instance, 10s elapsed]
+google_compute_instance.vm_instance: Still destroying... [id=projects/test-project-345109/zones/aust...theast1-a/instances/terraform-instance, 20s elapsed]
+google_compute_instance.vm_instance: Destruction complete after 22s
+
+Destroy complete! Resources: 1 destroyed.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  And one last check to confirm the instance is gone.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud compute instances list --project test-project-&lt;id&gt
+
+# Output
+Listed 0 items.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  I believe this means we are devops now.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you made it this far, thanks for following along.
+</p>
+<p>
+  In this post, we setup our GCP environment with a service account that is used 
+  by Terraform to create resources via the GCP API.
+</p>
+<p>
+  Smoke me a kipper, i'll be back for breakfast!
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform" target=_blank>https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started" target=_blank>https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/sdk/docs/authorizing" target=_blank>https://cloud.google.com/sdk/docs/authorizing</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cloud.google.com/sdk/gcloud/reference/services/enable" target=_blank>https://cloud.google.com/sdk/gcloud/reference/services/enable</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#terraform" class="text-xl">terraform</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#gcp" class="text-xl">gcp</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
+            Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-flight-check">
+            Pre-Flight Check
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#setup-gcp">
+            Setup GCP
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#terraform">
+            Terraform
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#plan">
+            Plan
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#deploy">
+            Deploy
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#destroy">
+            Destroy
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

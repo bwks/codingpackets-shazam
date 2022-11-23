@@ -1,0 +1,303 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://stackstorm.com/", description="StackStorm") }}
+ is IFTTT for ops.
+  Its original claim to fame was popularizing chat driven workflows
+  for ops know as ChatOps. In this post I will cover integrating ST2
+  with Slack to enable ChatOps.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/lab-topology.svg", width="600px") }}
+
+<p>
+  The ST2 instance connects out to Slack which is a SAAS application.
+  This means ST2 must have access to the internet (at least to Slack)
+  for the setup to function.
+</p>
+<p>
+  For reference I am using Vagrant to build this lab and utilizing
+  the following code versions.
+</p>
+<ul>
+  <li>StackStorm - 2.10.1</li>
+  <li>Juniper vMX - 18.2R1.9</li>
+</ul>
+<p>
+  This post assumes that ST2 is already installed with the ChatOps service
+  enabled. This should already be done if you used one of the installer
+  methods eg: Docker, Puppet, etc.. The Napalm pack should be installed
+  and configured and you also have a Slack workspace
+  configured with permissions to add an app integration.
+</p>
+
+<h3 id="slack-configuration">Slack Configuration</h3>
+<p>
+  First up lets tackle the Slack piece. Navigate to
+  {{ link::e(path="https://api.slack.com/apps", description="https://api.slack.com/apps") }}
+
+  and click on {{ text::emphasize(text="Create New App") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot1.png", width="600px") }}
+
+<p>
+  Enter the app name and select the workspace the click on
+  {{ text::emphasize(text="Create App") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot2.png", width="600px") }}
+
+<p>
+  Click on the {{ text::emphasize(text="Bots") }}
+ option.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot3.png", width="600px") }}
+
+<p>
+  Click on {{ text::emphasize(text="Add a Bot User") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot4.png", width="600px") }}
+
+<p>
+  Enter the display name and default username of the bot and
+  click on {{ text::emphasize(text="Add Bot User") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot5.png", width="600px") }}
+
+<p>
+  On the left menu select
+  {{ text::emphasize(text="OAuth & Permissions") }}
+ then click on
+  {{ text::emphasize(text="Install App to Workspace") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot6.png", width="600px") }}
+
+<p>
+  Confirm the details are correct and click on
+  {{ text::emphasize(text="Authorize") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot7.png", width="600px") }}
+
+<p>
+  Take note of the {{ text::emphasize(text="Bot User OAuth Access Token") }}
+
+  as it will need to be defined in the
+  {{ text::emphasize(text="st2chatops.env") }}
+ configuration file.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot8.png", width="600px") }}
+
+<p>
+  Now head over to the Slack chat and invite the bot to a channel by
+  referring to it by {{ text::emphasize(text="@username") }}
+.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot9.png", width="600px") }}
+
+<h3 id="stackstorm-configuration">StackStorm Configuration</h3>
+<p>
+  ChatOps configurations live under the
+  {{ text::emphasize(text="/opt/stackstorm/chatops") }}
+
+  directory.
+</p>
+<p>
+  Edit the {{ text::emphasize(text="st2chatops.env") }}
+ file
+  adding/editing the following parameters.
+</p>
+
+{{ text::code_block(
+  header="bash",
+  language="bash",
+  code=`export HUBOT_NAME="bottlo"
+export HUBOT_ALIAS='$bottlo'
+
+export ST2_AUTH_USERNAME="${ST2_AUTH_USERNAME:-st2admin}"
+export ST2_AUTH_PASSWORD="${ST2_AUTH_PASSWORD:-Ch@ngeMe}"
+
+export HUBOT_ADAPTER=slack
+export HUBOT_SLACK_TOKEN="xoxb-BOT-TOKEN-FROM-SLACK-FROM-PREVIOUS-STEP"`
+) }}
+
+
+
+{{ text::note_block(text='
+    For simplicity I am using the default credentials for ST2
+    that are configured out of the box from install. In production
+    you would use PAM/LDAP or one of the other authentication
+    backends and use an authentication token instead of a
+    user password to authenticate to the ST2 API.
+') }}
+
+<p>
+  Now restart the ChatOps service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="bash",
+  code=`sudo systemctl restart st2chatops`
+) }}
+
+
+<h3 id="bot-interaction">Bot Interaction</h3>
+<p>
+  First lets call out to the bot and ensure it is connected
+  to Slack correctly. Initially you may have to
+  {{ text::emphasize(text="@botname") }}
+ to register it
+  in the channel. Once it is connected you can call it via
+  the alias you configured on the
+  {{ text::emphasize(text="st2chatops.env") }}
+ file.
+  In this case {{ text::emphasize(text="$bottlo") }}
+
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot10.png", width="600px") }}
+
+<p>
+  {{ text::emphasize(text="$botname help") }}
+ will give
+  you a list of ChatOps aliases that are available to have the
+  bot do some work.
+</p>
+
+<p>
+  In the below example I used the bot to install the napalm pack.
+</p>
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot11.png", width="600px") }}
+
+<h3 id="add-chatops-commands">Add ChatOps Commands</h3>
+{{ link::e(path="https://docs.stackstorm.com/chatops/aliases.html", description="Aliases") }}
+
+allow you to add commands to your bot. ST2 has a couple of aliases
+out of the box but in order to really make the bot useful you have to
+customize it to your needs.
+
+<p>
+  Aliases belong to packs. Packs live in the the
+  {{ text::emphasize(text="/opt/stackstorm/packs/") }}
+ directory.
+  Create a directory for a pack to define your custom aliases.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /opt/stackstorm/packs/bottlops/{actions,rules,sensors,aliases}`
+) }}
+
+
+<p>
+  Lets add a command that allows us to view the LLDP neighbors
+  of a network device. Create a file named
+  {{ text::emphasize(text="lldp.yaml") }}
+ under the
+  {{ text::emphasize(text="/opt/stackstorm/packs/bottlops/aliases/") }}
+
+  directory.
+</p>
+
+{{ text::code_block(
+  header="yaml",
+  language="yaml",
+  code=`sudo tee /opt/stackstorm/packs/bottlops/aliases/lldp.yaml > /dev/null << "EOF"
+---
+name: "napalm_lldp"
+action_ref: "napalm.get_lldp_neighbors"
+description: "Get devices lldp neighbors"
+formats:
+  - "get lldp neighbors {{hostname}}"
+EOF`
+) }}
+
+
+<p>
+  Now register the new commands and restart the ChatOps service.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo st2ctl reload --register-aliases
+sudo systemctl restart st2chatops`
+) }}
+
+
+<p>
+  Confirm the new command is registered.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo st2 action-alias list
+
+# output
+
++---------------------------+------------+-----------------------------------------+---------+
+| ref                       | pack       | description                             | enabled |
++---------------------------+------------+-----------------------------------------+---------+
+| bottlops.napalm_lldp      | bottlops   | Get devices lldp neighbors              | True    |
+| napalm.check_consistency  | napalm     | Check consistency of the devices       | True    |
+|                           |            | configuration                           |         |
+| packs.pack_get            | packs      | Get information about installed         | True    |
+|                           |            | StackStorm pack.                        |         |
+| packs.pack_install        | packs      | Install/upgrade StackStorm packs.       | True    |
+| packs.pack_search         | packs      | Search for packs in StackStorm Exchange | True    |
+|                           |            | and other directories.                  |         |
+| packs.pack_show           | packs      | Show information about the pack from    | True    |
+|                           |            | StackStorm Exchange.                    |         |
+| st2.st2_actions_list      | st2        | List available StackStorm actions.      | True    |
+| st2.st2_executions_get    | st2        | Retrieve details for a single           | True    |
+|                           |            | execution.                              |         |
+| st2.st2_executions_list   | st2        | List available StackStorm executions.   | True    |
+| st2.st2_executions_re_run | st2        | Re-run an action execution.             | True    |
+| st2.st2_inquiry_respond   | st2        | Respond to an Inquiry                   | True    |
+| st2.st2_rules_list        | st2        | List available StackStorm rules.        | True    |
+| st2.st2_sensors_list      | st2        | List available StackStorm sensors.      | True    |
++---------------------------+------------+-----------------------------------------+---------+`
+) }}
+
+
+<p>
+  Great the command is there, now go back to slack and test it out.
+</p>
+
+
+{{ image::boxed(path="blog/stackstorm-chatops-integration/add-bot12.png", width="700px") }}
+
+<p>
+  Success! ST2 is connected to Slack and our custom command is understood
+  and actioned by the bot.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  ChatOps is a pretty neat way to interact with you infrastructure.
+  ST2 makes integration and configuration of ChatOps with a chat
+  service such as Slack relatively painless. Teaching the bot new
+  commands is also pretty straight forward once you get your head
+  around all the pieces.
+</p>
+{% endblock page_content %}

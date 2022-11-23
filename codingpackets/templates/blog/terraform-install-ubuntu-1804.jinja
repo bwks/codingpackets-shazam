@@ -1,0 +1,87 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://www.terraform.io/", description="Terraform") }}
+ is an infrastructure as code tool from the
+  wonderful people at Hashicorp. Terraform makes it really enjoyable to manage infrastructure
+  on platforms such as AWS, Azure, VMware vSphere and OpenStack among many
+  {{ link::e(path="https://www.terraform.io/docs/providers/index.html", description="others") }}
+. This short post
+  will run through installing Terraform on Ubuntu 1804.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Terraform is distributed as a standalone binary which can be downloaded for the target
+  system {{ link::e(path="https://www.terraform.io/downloads.html", description="here") }}
+. The latest release at
+  the time of writing is {{ text::emphasize(text="0.11.10") }}
+.
+</p>
+
+<p>
+  Download and unzip Terraform.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd ~/Downloads/
+wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
+unzip terraform_0.11.10_linux_amd64.zip`
+) }}
+
+
+<p>
+  Create a directory for the Terraform binary. I like to keep standalone applications in the
+  {{ text::emphasize(text="/opt") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir /opt/terraform
+sudo mv terraform /opt/terraform/`
+) }}
+
+
+<p>
+  Symlink the Terraform binary to a location that is in your
+  {{ text::emphasize(text="$PATH") }}
+. I will use the
+  {{ text::emphasize(text="/usr/local/bin/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ln -s /opt/terraform/terraform /usr/local/bin/`
+) }}
+
+
+<p>
+  Now you will have access to the {{ text::code(text="terraform") }}
+ cli command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`terraform --version
+
+# output
+
+Terraform v0.11.10`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Terraform is a great application for managing your infrastructure as code. Now you know
+  how to install it, checkout the {{ link::e(path="https://www.terraform.io/docs/index.html", description="docs") }}
+
+  for usage examples and go out and build something awesome.
+</p>
+
+{% endblock page_content %}

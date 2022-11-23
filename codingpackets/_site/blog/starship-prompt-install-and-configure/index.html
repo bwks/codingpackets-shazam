@@ -1,0 +1,632 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Starship Prompt Install and Configure</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 30th of March 2022
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 18th of May 2020
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Over the years I have customised my shell prompt to make it "cool" and "informative".
+  Previously I have used <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/powerline/powerline" target=_blank>powerline</a>
+
+  and <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/romkatv/powerlevel10k" target=_blank>powerlevel10k</a>
+. Both were
+  pretty nice, with powerlevel10k being the much faster of the two.
+</p>
+<p>
+  I recently came across the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://starship.rs/" target=_blank>Starship</a>
+ project which
+  looks pretty rad. Starship prompt is "The minimal, blazing-fast, and infinitely customizable
+  prompt for any shell!"
+</p>
+<p>
+  This post will cover getting Starship prompt installed and configured for MAC-OSX Catalina and
+  iTerm2 for the zsh shell.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  First you need to install some powerline patched fonts.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+
+# Output
+Copying fonts...
+Powerline fonts installed to /Users/bradmin/Library/Fonts"
+
+# Clean up
+cd ..
+rm -rf fonts</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Install Starship with Homebrew.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">brew install starship</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Initialise Starship by adding the following to your <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
+
+  and restarting your shell.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># ~/.zshrc
+eval "$(starship init zsh)"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Configure iTerm2 to use a Powerline Font.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Preferences</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Profiles</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Font</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Select Font of Choice</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  Starship uses <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">TOML</i>
+ for its configuration data.
+  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">starship.toml</i>
+ configuration file.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/.config && touch ~/.config/starship.toml</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The prompt is configured via "modules". The
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://starship.rs/config/" target=_blank>docs</a>
+ outline the options for each module
+  quite well. A sample configuration file can be found below.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-toml hljs px-5 dark:opacity-80 rounded-b"># Replace the "❯" symbol in the prompt with "❯❯"
+[character]
+format = "[❯❯](bold green) "
+success_symbol = "[❯❯](bold green) "
+error_symbol = "[❯❯](bold red) "
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+# Disable the AWS module.
+[aws]
+disabled = true
+
+# Disable the GCP module.
+[gcloud]
+disabled = true
+
+# Set the time format
+[time]
+disabled = false
+time_format = "%Y-%m-%d %H:%M:%S"
+utc_time_offset = "+10"
+
+# Directory setttings
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+truncation_length = 4
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[username]
+disabled = true
+
+[hostname]
+ssh_only = false
+format =  "[$hostname](bold red) [❯](bold green) "
+
+# Workaround for slow prompt with git status
+[git_status]
+disabled = true</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The result is a really nice looking, responsive and informative prompt.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">devbox ❯ ~
+at 2021-11-07 06:29:18 ❯❯</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>
+  I found having the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">git_status</i>
+ module was
+  causing the prompt to respond really slowly. I disabled this module and the
+  response time went back to normal. There is an open issue for this and hopefully
+  it will be resolved in a future release.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Starship prompt looks like it does what it says on the tin. It's fast,
+  easily customisable and looks great.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://starship.rs/" target=_blank>https://starship.rs/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://starship.rs/config/" target=_blank>https://starship.rs/config/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/powerline/fonts" target=_blank>https://github.com/powerline/fonts</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.rs/chrono/0.4.7/chrono/format/strftime/index.html" target=_blank>https://docs.rs/chrono/0.4.7/chrono/format/strftime/index.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/starship/starship/issues/597" target=_blank>https://github.com/starship/starship/issues/597</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/starship/starship/issues/301" target=_blank>https://github.com/starship/starship/issues/301</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/starship/starship/pull/921" target=_blank>https://github.com/starship/starship/pull/921</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/starship/starship/pull/589#issuecomment-546665640" target=_blank>https://github.com/starship/starship/pull/589#issuecomment-546665640</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#shell" class="text-xl">shell</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#installation">
+            Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#troubleshooting">
+            Troubleshooting
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

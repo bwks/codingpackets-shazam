@@ -1,0 +1,223 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Microsoft {{ link::e(path="https://azure.microsoft.com/en-us/", description="Azure") }}
+ is one of the worlds leading
+  cloud providers. While it is possible to point and click your way though the web interface
+  to manage your Azure environment that is not how I want to live my life. This post will
+  cover how to prepare your local development machine to enable
+  {{ link::e(path="https://www.terraform.io/", description="Terraform") }}
+ to connect to
+  your Azure environment and manage it as code.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>azure-cli</b> - 2.0.49</li>
+  <li><b>Terraform</b> - 0.11.10</li>
+  <li><b>Python</b> - 3.6.6</li>
+</ul>
+
+  <p>
+    This post assumes you have a working Terraform installation. See
+    {{ link::i(path="/blog/terraform-install-ubuntu-1804", description="here") }}
+ for
+    instructions on getting Terraform installed.
+  </p>
+
+
+
+<h3 id="azure-cli">Azure CLI</h3>
+<p>
+  The {{ text::emphasize(text="azure-cli") }}
+ utility is required in order for Terraform
+  to connect to and manage an Azure environment. While it is possible to install the
+  {{ text::emphasize(text="azure-cli") }}
+ using your
+  <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">
+    systems package manager
+  </a>
+ the {{ text::emphasize(text="azure-cli") }}
+ utility
+  is a written in Python so it can also be installed with
+  {{ text::emphasize(text="pip") }}
+. I prefer the pip installation method so I will go
+  ahead and do that.
+</p>
+
+<p>
+  First create and activate a Python virtual environment.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/code/python/azure-cli && cd ~/code/python/azure-cli
+python3 -m venv .venv
+source .venv/bin/activate`
+) }}
+
+
+<p>
+  Now use the {{ text::emphasize(text="pip") }}
+ utility to install the
+  {{ text::emphasize(text="azure-cli") }}
+ package.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`pip install azure-cli`
+) }}
+
+
+<p>
+  Once the {{ text::emphasize(text="azure-cli") }}
+ is installed you will have access
+  to the {{ text::code(text="az") }}
+ command which is used to control your Azure environment from the
+  cli.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`az --version
+
+# output
+
+azure-cli (2.0.49)`
+) }}
+
+
+<h3 id="terraform-integration">Terraform Integration</h3>
+<p>
+  Before we can start using Terraform to manage our Azure environment we need to authenticate
+  to Azure. There are two ways to do this.
+</p>
+<ul>
+  <li><b>Service Principal</b> - Recommended for CI/CD environments.</li>
+  <li><b>User Account</b> - Recommended when running Terraform locally.</li>
+</ul>
+<p>
+  Since I am developing on my laptop I will use the
+  {{ text::emphasize(text="user account") }}
+ method.
+</p>
+
+<p>
+  To login to Azure use the {{ text::code(text="az login") }}
+ command. This will open up a web browser
+  where you will need to enter your user credentials.
+</p>
+
+{{ image::boxed(path="blog/terraform-azure-provider-setup/azure-login.png", width="600px") }}
+
+<p>
+  Once logged in the {{ text::emphasize(text="azure-cli") }}
+ will output the details
+  pertaining to the account you are connected to.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`az login
+<span class="hljs-section">
+Note, we have launched a browser for you to login. For old experience with device code, use "az login --use-device-code"
+You have logged in. Now let us find all the subscriptions to which you have access...
+</span>
+
+[
+  {
+    "cloudName": "AzureCloud",
+    "id": "laf82kj4-laf82kj4-laf82kj4-laf82kj4-laf82kj4",
+    "isDefault": true,
+    "name": "Pay-As-You-Go",
+    "state": "Enabled",
+    "tenantId": "laf82kj4-laf82kj4-laf82kj4-laf82kj4-laf82kj4",
+    "user": {
+      "name": "username@email",
+      "type": "user"
+    }
+  }
+]`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  With the python virtual environment still activated, create and change into a test directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/code/terraform/azure-test && cd ~/code/terraform/azure-test`
+) }}
+
+
+<p>
+  Terraform looks for files ending with the {{ text::emphasize(text=".tf") }}
+ extension.
+  Create an {{ text::emphasize(text="azure.tf") }}
+ file, the contents of this
+  file let Terraform know that the Azure Resource Manager provider is required.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cat << EOF > azure.tf
+provider "azurerm" { }
+EOF`
+) }}
+
+
+
+<p>
+  Initialize the Terraform environment with the {{ text::code(text="terraform init") }}
+ command. This will
+  setup the Terraform environment and download any required plugins. In our case the
+  {{ text::emphasize(text="azurerm") }}
+ plugin will be installed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`terraform init
+
+# output
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "azurerm" (1.17.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.azurerm: version = "~> 1.17"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Annnndddd ..... That's it. Terraform is now able to manage your Azure environment. Look out
+  for future posts where I will show you how to build some Azure infrastructure using Terraform.
+</p>
+
+{% endblock page_content %}

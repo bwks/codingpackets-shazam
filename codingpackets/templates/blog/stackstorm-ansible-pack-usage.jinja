@@ -1,0 +1,418 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  StackStorm has the ability to run Ansible playbooks. In this
+  post I will install and configure the Ansible pack and create
+  a workflow to test out the functionality.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  I have StackStorm installed on a Centos7 host. The following
+  software versions will be utilised as part of this lab.
+</p>
+<ul>
+  <li><b>StackStorm</b> - 2.10.4</li>
+  <li><b>Ansible Pack</b> - 0.5.7</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  There are a couple of dependencies to install so lets
+  go ahead and make sure they are installed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install gcc krb5-devel`
+) }}
+
+
+<h3 id="installation">Installation</h3>
+<p>
+  In order to interact with ST2 on the CLI you will need to
+  first authenticate to receive and API token. The token will
+  then need to be provided with every request.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo st2 auth st2admin -p SuperSecretPassword
+
+# output
+
++----------+----------------------------------+
+| Property | Value                            |
++----------+----------------------------------+
+| user     | st2admin                         |
+| token    | AUTHENTICATION-TOKEN             |
+| expiry   | 2019-04-29T04:41:47.655393Z      |
++----------+----------------------------------+`
+) }}
+
+
+<p>
+  Install the Ansible pack with the {{ text::code(text="st2 pack install") }}
+
+  command. Use the {{ text::code(text="-t") }}
+ flag to specify the token.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`st2 pack install ansible -t AUTHENTICATION-TOKEN
+
+# output
+
+For the "ansible" pack, the following content will be registered:
+
+rules     |  0
+sensors   |  0
+triggers  |  0
+actions   |  8
+aliases   |  0
+
+Installation may take a while for packs with many items.
+
+	[ succeeded ] download pack
+	[ succeeded ] make a prerun
+	[ succeeded ] install pack dependencies
+	[ succeeded ] register pack
+
++-------------+--------------------------------------------------+
+| Property    | Value                                            |
++-------------+--------------------------------------------------+
+| name        | ansible                                          |
+| description | st2 content pack containing ansible integrations |
+| version     | 0.5.7                                            |
+| author      | StackStorm, Inc.                                 |
++-------------+--------------------------------------------------+`
+) }}
+
+<p>
+  Great, the pack installed successfully. It looks like this pack
+  includes 8 actions. Lets have a look and see what they are.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`st2 action list -t AUTHENTICATION-TOKEN | grep ansible
+
+# output
+
+| ansible.command                 | ansible     | Run ad-hoc ansible command (module)                |
+| ansible.command_local           | ansible     | Run ad-hoc ansible command (module) on local       |
+| ansible.galaxy.install          | ansible     | Download & Install role from ansible galaxy        |
+| ansible.galaxy.list             | ansible     | Display a list of installed roles from ansible     |
+| ansible.galaxy.remove           | ansible     | Remove an installed from ansible galaxy role       |
+| ansible.playbook                | ansible     | Run ansible playbook                               |
+| ansible.vault.decrypt           | ansible     | Decrypt ansible data files                         |
+| ansible.vault.encrypt           | ansible     | Encrypt ansible data files                         |`
+) }}
+
+
+
+<h3 id="test-run">Test Run</h3>
+<p>
+  Lets perform a quick test run against the
+  {{ text::emphasize(text="localhost") }}
+ to ensure
+  it's working as expected.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`st2 run ansible.command hosts=localhost args="hostname -A" -t AUTHENTICATION-TOKEN
+
+# output
+
+....
+id: 5cc5329d52364c0905697b08
+status: succeeded
+parameters:
+  args: hostname -A
+  cwd: /opt/stackstorm/packs/ansible
+  hosts: localhost
+result:
+  failed: false
+  return_code: 0
+  stderr: " [WARNING]: Unable to parse /etc/ansible/hosts as an inventory source
+ [WARNING]: No inventory was parsed, only implicit localhost is available
+ [WARNING]: provided hosts list is empty, only localhost is available. Note
+that the implicit localhost does not match 'all'"
+ <span class="hljs-string"> stdout: 'localhost | CHANGED | rc=0 >>
+    st2.lab.local '
+  succeeded: true</span>`
+) }}
+
+<p>
+  Success! Now lest try execute a workflow on a remote host.
+  Before we do, Ansible will run as the root user so we need
+  to copy the root users ssh keys over to the target node in
+  order to connect without a password.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ssh-copy-id ansible-node01
+
+# output
+
+/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+The authenticity of host 'ansible-node01 (192.168.255.110)' can't be established.
+ECDSA key fingerprint is SHA256:+NdxuymH0r6hbqlykR9rlOQNmFSeajjzwT69BspFyKQ.
+ECDSA key fingerprint is MD5:3b:06:63:e5:82:48:63:18:89:df:67:ed:ac:f9:bb:9c.
+Are you sure you want to continue connecting (yes/no)? yes
+/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@ansible-node01's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ansible-node01'"
+and check to make sure that only the key(s) you wanted were added.`
+) }}
+
+
+<h3 id="workflow">Workflow</h3>
+<p>
+  Lets create a workflow to test out some of the features of
+  the Ansible pack. We will create a workflow that installs
+  the {{ text::emphasize(text="cowsay") }}
+ package and
+  executes a{{ text::emphasize(text="cowsay") }}
+ command.
+</p>
+<p>
+  Create a pack directory and change into it.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /opt/stackstorm/packs/cp_ansible/actions/workflows/
+cd /opt/stackstorm/packs/cp_ansible/`
+) }}
+
+
+<p>
+  ST2 will look for any playbooks and inventory in the path relative
+  to the pack that is executing the actions.
+</p>
+<p>
+  Create a playbook called
+  {{ text::emphasize(text="playbook.yaml") }}
+ in the
+  {{ text::emphasize(text="cp_ansible") }}
+ directory.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`---
+# /opt/stackstorm/packs/cp_ansible/playbook.yaml
+- name: "Cowsay Playbook"
+  hosts: all
+  tasks:
+    - yum:
+        name: "cowsay"
+        state: latest`
+) }}
+
+
+
+<p>
+  Create an inventory file called
+  {{ text::emphasize(text="inventory") }}
+ in the
+  {{ text::emphasize(text="cp_ansible") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /opt/stackstorm/packs/cp_ansible/inventory
+[nodes]
+ansible-node01.lab.local`
+) }}
+
+
+<p>
+  Create a metadata file called
+  {{ text::emphasize(text="pack.yaml") }}
+ in the
+  {{ text::emphasize(text="cp_ansible") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`---
+# /opt/stackstorm/packs/cp_ansible/pack.yaml
+ref: "cp_ansible"
+name: "cp_ansible"
+description: "codingpackets ansible pack"
+keywords:
+  - "ansible"
+version: "0.1.0"
+author: "Brad Searle"
+email: "bradsearle@lab.local"`
+) }}
+
+
+<p>
+  Create an action file called
+  {{ text::emphasize(text="cowsay.yaml") }}
+ in
+  the {{ text::emphasize(text="actions/") }}
+.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`---
+# /opt/stackstorm/packs/cp_ansible/actions/cowsay.yaml
+description: "Cowsay action for ansible pack"
+enabled: True
+entry_point: "workflows/cowsay.yaml"
+name: "cowsay"
+pack: "cp_ansible"
+runner_type: "mistral-v2"`
+) }}
+
+
+<p>
+  The workflow contains two tasks. The first task installs the
+  {{ text::emphasize(text="cowsay") }}
+ package. The second
+  tasks runs the {{ text::code(text="cowsay") }}
+ command. The first task also
+  has an {{ text::emphasize(text="on-success") }}
+ parameter
+  which forces the second task to wait until the first task completes
+  successfully before executing.
+</p>
+<p>
+  Create a workflow file called
+  {{ text::emphasize(text="cowsay.yaml") }}
+
+  in the {{ text::emphasize(text="actions/workflows/") }}
+
+  directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`---
+# /opt/stackstorm/packs/cp_ansible/actions/workflows/cowsay.yaml
+version: "2.0"
+cp_ansible.cowsay:
+  description: "A sample workflow that demonstrates Ansible playbook execution."
+  type: direct
+  tasks:
+    task1:
+      action: ansible.playbook
+      input:
+        playbook: "playbook.yaml"
+        inventory_file: "inventory"
+      on-success:
+        - task2
+    task2:
+      action: ansible.command
+      input:
+        args: "cowsay 'Ansible cow says: MOOOOOO!'"
+        inventory_file: "inventory"
+        hosts: "all"`
+) }}
+
+
+<p>
+  Install the action with the {{ text::code(text="st2 action create") }}
+
+  command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`st2 action create actions/cowsay.yaml -t AUTHENTICATION-TOKEN
+
+# output
+
++---------------+--------------------------------+
+| Property      | Value                          |
++---------------+--------------------------------+
+| id            | 5cc57eb452364c0905697b71       |
+| name          | cowsay                         |
+| pack          | cp_ansible                     |
+| description   | Cowsay action for ansible pack |
+| enabled       | True                           |
+| entry_point   | workflows/cowsay.yaml          |
+| metadata_file |                                |
+| notify        |                                |
+| output_schema |                                |
+| parameters    |                                |
+| ref           | cp_ansible.cowsay              |
+| runner_type   | mistral-v2                     |
+| tags          |                                |
+| uid           | action:cp_ansible:cowsay       |
++---------------+--------------------------------+`
+) }}
+
+
+
+<p>
+  Run the test playbook with the {{ text::code(text="st2 run") }}
+
+  command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`st2 run cp_ansible.cowsay -t AUTHENTICATION-TOKEN
+
+# output
+
+.....
+id: 5cc57f1752364c0905697b7a
+action.ref: cp_ansible.cowsay
+parameters: None
+status: succeeded
+result_task: task2
+result:
+  failed: false
+  return_code: 0
+  stderr: ''
+  stdout: 'ansible-node01.lab.local | CHANGED | rc=0 >>
+ ____________________________
+< Ansible cow says: MOOOOOO! >
+ ----------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||'
+  succeeded: true
+start_timestamp: Sun, 28 Apr 2019 10:23:19 UTC
+end_timestamp: Sun, 28 Apr 2019 10:23:28 UTC
++--------------------------+------------------------+-------+------------------+----------------------------+
+| id                       | status                 | task  | action           | start_timestamp            |
++--------------------------+------------------------+-------+------------------+----------------------------+
+| 5cc57f1752364c0905697b7d | succeeded (7s elapsed) | task1 | ansible.playbook | Sun, 28 Apr 2019 10:23:19  |
+|                          |                        |       |                  | UTC                        |
+| 5cc57f1e52364c0905697b7f | succeeded (1s elapsed) | task2 | ansible.command  | Sun, 28 Apr 2019 10:23:26  |
+|                          |                        |       |                  | UTC                        |
++--------------------------+------------------------+-------+------------------+----------------------------+`
+) }}
+
+<p>
+  Boom Shakalaka! The workflow ran successfully!
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  StackStorm is a very flexible and versatile automation tool. In this post
+  we installed the Ansible pack and tested its usage by creating a workflow
+  to execute Ansible actions.
+</p>
+{% endblock page_content %}

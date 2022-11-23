@@ -1,0 +1,742 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to setup Terraform to 
+  connect to your Google Cloud Platform (GCP) tenancy to 
+  manage your GCP infrastructure as code.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+
+<ul>
+  <li>Terraform - 1.1.7</li>
+  <li>Ubuntu - 2004</li>
+  <li>gcloud - 378.0.0</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<h4>Google Account</h4>
+<p>
+  You will need a Google account to work with GCP. If you don't already 
+  have one. Go and create one now.
+</p>
+
+<h4>gcloud</h4>
+<p>
+  {{ text::emphasize(text="gcloud") }}
+ is a CLI tool that is used to 
+  manage GCP resources. 
+  If you don't already have it installed, see the 
+  {{ link::e(
+      path="https://cloud.google.com/sdk/docs/install", 
+        description="docs"
+    ) }}
+   for the latest instructions.
+</p>
+<p>
+  Confirm gcloud is installed and accessible.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='gcloud -v
+
+# Output
+Google Cloud SDK 378.0.0
+alpha 2022.03.18
+beta 2022.03.18
+bq 2.0.74
+bundled-python3-unix 3.8.11
+core 2022.03.18
+gsutil 5.8'
+) }}
+
+
+
+<h4>Terraform</h4>
+<p>
+  This post assumes that you already have Terraform installed. 
+  If you don't already have it installed, see the 
+  {{ link::e(
+      path="https://www.terraform.io/downloads", 
+        description="docs"
+    ) }}
+   for the latest instructions.
+</p>
+<p>
+  Confirm Terraform is installed and accessible.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='terraform -v    
+
+# Output
+Terraform v1.1.7
+on linux_amd64'
+) }}
+
+
+<h3 id="setup-gcp">Setup GCP</h3>
+<h4>Create Project</h4>
+<p>
+  First things first, we will need to create a GCP project. In the 
+  web console, naviagte to:
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>IAM and admin</li>
+    <li>Create a project</li>
+  </ul>
+</div>
+<p>
+  Enter the project name {{ text::emphasize(text="test-project") }}
+ and press 
+  {{ text::emphasize(text="create") }}
+.
+</p>
+
+<h4>Create a Service Account</h4>
+<p>
+  I don't have a web browser on my dev machine where I am running Terraform so I will 
+  be using a service account to authenticate to GCP. To create a service account navigate to:
+</p>
+
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>IAM and admin</li>
+    <li>Service accounts</li>
+    <li>Create service account +</li>
+  </ul>
+</div>
+
+<p>
+  Enter the name {{ text::emphasize(text="terraform") }}
+ and press 
+  {{ text::emphasize(text="CREATE AND CONTINUE") }}
+.
+
+<p>
+  In the {{ text::emphasize(text="Role") }}
+ drop down select 
+  {{ text::emphasize(text="Editor") }}
+ and click 
+  {{ text::emphasize(text="CONTINUE") }}
+.
+</p>
+
+<p>
+  Finally, click {{ text::emphasize(text="DONE") }}
+.
+</p>
+</p>
+
+<h4>Create Authentication Keys</h4>
+<p>
+  Under the {{ text::emphasize(text="Actions") }}
+ field, press the three dots 
+  ( <i class="fas fa-ellipsis-v"></i> ) and press {{ text::emphasize(text="Manage Keys") }}
+.
+</p>
+
+<p>
+  Press {{ text::emphasize(text="ADD KEY") }}
+ and then 
+  {{ text::emphasize(text="Create new key") }}
+.
+</p>
+<p>
+  Select {{ text::emphasize(text="JSON") }}
+ as the format and 
+  then press {{ text::emphasize(text="CREATE") }}
+
+</p>
+
+<h4>Store Keys</h4>
+<p>
+  Download the keys to a secure location for use on your machine. 
+  I am using {{ text::emphasize(text="~/.gcp") }}
+ and 
+  naming the file {{ text::emphasize(text="terraform.json") }}
+. 
+  Once there, be sure the adjust the permissions so they are RW
+  only by you.
+</p>
+
+{{ text::code_block(
+header="cmd",
+language="text",
+code='chmod 0600 ~/.gcp/terraform.json'
+) }}
+
+<h4>Activate Service Account</h4>
+<p>
+  Finally, activate the service account by running the following command.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='gcloud auth activate-service-account &lt;service-account-email&gt; --key-file=/path/to/.gcp/terraform.json
+
+# Output
+Activated service account credentials for: [&lt;service-account-email&gt;]'
+) }}
+
+{{ text::note_block(text='
+  The service account email can be found in the 
+  $1
+ list on 
+  the web console or in the keyfile under the 
+  $2
+ field.
+') 
+  | replace(from="$1", to=text::emphasize(text="service accounts"))
+  | replace(from="$2", to=text::emphasize(text="client_email"))
+}}
+
+<h4>Enable API Services</h4>
+<p>
+  To allow access to a GCP service via the API we need to enable 
+  the service for API access. 
+</p>
+<p>
+  For this post we will need to enable the 
+  {{ text::emphasize(text="compute.googleapis.com") }}
+ service.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='gcloud services enable compute.googleapis.com --project test-project-&lt;id&gt;
+
+# Output
+Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.'
+) }}
+
+{{ text::note_block(text='
+<p>
+  Be aware this can take a minute or two to complete.
+</p>
+') }}
+
+{{ text::note_block(text='
+<p>
+  The $1 can be found 
+  in the keyfile under the 
+  $2 field.
+</p>
+')
+  | replace(from="$1", to=text::emphasize(text="project id"))
+  | replace(from="$2", to=text::emphasize(text="project_id"))
+ }}
+
+<p>
+  OK phew, that's it for the {{ text::emphasize(text="gcloud") }}
+ setup. 
+  Let's move onto the Terraform section.
+</p>
+
+<h3 id="terraform">Terraform</h3>
+<h4>Link Credentials</h4>
+<p>
+  To allow Terraform to use the servie account credentials 
+  we need to set an environment variable in our shell config. I 
+  am using {{ text::emphasize(text="ZSH") }}
+ so my environment 
+  variables live in the {{ text::emphasize(text="~/.zshrc") }}
+ file. Adjust 
+  accordingly for your environment.
+</p>
+
+{{ text::code_block(
+header="~/.zshrc",
+language="text",
+code='export GOOGLE_APPLICATION_CREDENTIALS="/path/to/.gcp/terraform.json"'
+) }}
+
+<p>
+  Again, make sure this file is RW only by yourself.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='chmod 0600 ~/.zshrc'
+) }}
+
+<p>
+  Now, source the file to load the variable into your shell environment.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='source ~/.zshrc'
+) }}
+
+<h4>Terraform Project</h4>
+<p>
+  Let's create a terraform project. I am creating mine 
+  in the {{ text::emphasize(text="~/code/terraform/gcp-test/") }}
+ 
+  directory.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='mkdir -p ~/code/terraform/gcp-test/ && cd ~/code/terraform/gcp-test/'
+) }}
+
+<p>
+  Now, create a file called {{ text::emphasize(text="main.tf") }}
+ 
+  with the following contents.
+</p>
+{{ text::code_block(
+header="main.tf",
+language="terraform",
+code='provider "google" {
+  project = "test-project-&lt;id&gt;"
+  region  = "australia-southeast1"
+  zone    = "australia-southeast1-a"
+}
+
+resource "google_compute_instance" "vm_instance" {
+  name         = "terraform-instance"
+  machine_type = "f1-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  network_interface {
+    # A default network is created for all GCP projects
+    network = google_compute_network.vpc_network.self_link
+    access_config {
+    }
+  }
+}
+
+resource "google_compute_network" "vpc_network" {
+  name                    = "terraform-network"
+  auto_create_subnetworks = "true"
+}'
+) }}
+<p>
+  This code specifies the GCP {{ text::emphasize(text="project") }}
+, 
+  {{ text::emphasize(text="region") }}
+ details and a
+  {{ text::emphasize(text="compute instance (VM)") }}
+. I am using 
+  the {{ text::emphasize(text="australia-southeast1") }}
+ region. 
+  Adjust according to your needs.
+</p>
+<p>
+  Region information can be found
+    {{ link::e(
+      path="https://cloud.google.com/compute/docs/regions-zones", 
+        description="here"
+    ) }}
+</p>
+
+
+<p>
+  Next, initialize the Terraform project with the {{ text::code(text="terraform init") }}
+ 
+  command. This will setup the project and install any required plugins.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='terraform init
+
+# Output
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/google...
+- Installing hashicorp/google v4.15.0...
+
+
+- Installed hashicorp/google v4.15.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.'
+) }}
+
+
+<h3 id="plan">Plan</h3>
+<p>
+  Almost there, lets test our deployment with the {{ text::code(text="terraform plan") }}
+ 
+  command. This will perform a dry-run and verify all the resources that need 
+  to be created.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='terraform plan
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "f1-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform-instance"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = (known after apply)
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-9"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config {
+          + enable_confidential_compute = (known after apply)
+        }
+
+      + network_interface {
+          + ipv6_access_type   = (known after apply)
+          + name               = (known after apply)
+          + network            = "default"
+          + network_ip         = (known after apply)
+          + stack_type         = (known after apply)
+          + subnetwork         = (known after apply)
+          + subnetwork_project = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity {
+          + type = (known after apply)
+
+          + specific_reservation {
+              + key    = (known after apply)
+              + values = (known after apply)
+            }
+        }
+
+      + scheduling {
+          + automatic_restart   = (known after apply)
+          + min_node_cpus       = (known after apply)
+          + on_host_maintenance = (known after apply)
+          + preemptible         = (known after apply)
+
+          + node_affinities {
+              + key      = (known after apply)
+              + operator = (known after apply)
+              + values   = (known after apply)
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didnt use the -out option to save this plan, so Terraform cant guarantee to take exactly these actions if
+you run "terraform apply" now.'
+) }}
+
+<h3 id="deploy">Deploy</h3>
+<p>
+  It's looking good, now lets deploy our Terraform plan 
+  with the {{ text::code(text="terraform apply -auto-approve") }}
+ command.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='terraform apply -auto-approve
+
+# Output
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "f1-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform-instance"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = (known after apply)
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-9"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config {
+          + enable_confidential_compute = (known after apply)
+        }
+
+      + network_interface {
+          + ipv6_access_type   = (known after apply)
+          + name               = (known after apply)
+          + network            = "default"
+          + network_ip         = (known after apply)
+          + stack_type         = (known after apply)
+          + subnetwork         = (known after apply)
+          + subnetwork_project = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity {
+          + type = (known after apply)
+
+          + specific_reservation {
+              + key    = (known after apply)
+              + values = (known after apply)
+            }
+        }
+
+      + scheduling {
+          + automatic_restart   = (known after apply)
+          + min_node_cpus       = (known after apply)
+          + on_host_maintenance = (known after apply)
+          + preemptible         = (known after apply)
+
+          + node_affinities {
+              + key      = (known after apply)
+              + operator = (known after apply)
+              + values   = (known after apply)
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+google_compute_instance.vm_instance: Creating...
+google_compute_instance.vm_instance: Still creating... [10s elapsed]
+google_compute_instance.vm_instance: Creation complete after 18s [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.'
+) }}
+
+<p>
+  It's looking like it's deployed,  let's verify. 
+</p>
+<p>
+  List the deployed instances with the {{ text::code(text="gcloud compute instances list") }}
+ command.
+</p>
+
+{{ text::code_block(
+header="cmd",
+language="text",
+code='gcloud compute instances list --project test-project-&lt;id&gt
+
+# Output
+NAME                ZONE                    MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+terraform-instance  australia-southeast1-a  f1-micro                   10.152.0.2   X.X.X.X  RUNNING'
+) }}
+
+<p>
+  !!! WE GOT ONE !!!
+</p>
+
+<h3 id="destroy">Destroy</h3>
+<p>
+  Let's clean up so we don't have to pay any unnessecary bills. 
+</p>
+<p>
+  Kill the infrastructure with the {{ text::code(text="terraform destroy") }}
+ command and 
+  type {{ text::emphasize(text="yes") }}
+ at the prompt.
+</p>
+
+{{ text::code_block(
+header="cmd",
+language="text",
+code='terraform destroy
+
+# Output
+google_compute_instance.vm_instance: Refreshing state... [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # google_compute_instance.vm_instance will be destroyed
+  - resource "google_compute_instance" "vm_instance" {
+      - can_ip_forward       = false -> null
+      - cpu_platform         = "Intel Broadwell" -> null
+      - current_status       = "RUNNING" -> null
+      - deletion_protection  = false -> null
+      - enable_display       = false -> null
+      - guest_accelerator    = [] -> null
+      - id                   = "projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance" -> null
+      - instance_id          = "6552850478757173275" -> null
+      - label_fingerprint    = "42WmSpB8rSM=" -> null
+      - labels               = {} -> null
+      - machine_type         = "f1-micro" -> null
+      - metadata             = {} -> null
+      - metadata_fingerprint = "43DNKhxlZco=" -> null
+      - name                 = "terraform-instance" -> null
+      - project              = "test-project-345109" -> null
+      - resource_policies    = [] -> null
+      - self_link            = "https://www.googleapis.com/compute/v1/projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance" -> null
+      - tags                 = [] -> null
+      - tags_fingerprint     = "42WmSpB8rSM=" -> null
+      - zone                 = "australia-southeast1-a" -> null
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "persistent-disk-0" -> null
+          - mode        = "READ_WRITE" -> null
+          - source      = "https://www.googleapis.com/compute/v1/projects/test-project-345109/zones/australia-southeast1-a/disks/terraform-instance" -> null
+
+          - initialize_params {
+              - image  = "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20220317" -> null
+              - labels = {} -> null
+              - size   = 10 -> null
+              - type   = "pd-standard" -> null
+            }
+        }
+
+      - network_interface {
+          - name               = "nic0" -> null
+          - network            = "https://www.googleapis.com/compute/v1/projects/test-project-345109/global/networks/default" -> null
+          - network_ip         = "10.152.0.2" -> null
+          - queue_count        = 0 -> null
+          - stack_type         = "IPV4_ONLY" -> null
+          - subnetwork         = "https://www.googleapis.com/compute/v1/projects/test-project-345109/regions/australia-southeast1/subnetworks/default" -> null
+          - subnetwork_project = "test-project-345109" -> null
+
+          - access_config {
+              - nat_ip       = "34.116.64.143" -> null
+              - network_tier = "PREMIUM" -> null
+            }
+        }
+
+      - scheduling {
+          - automatic_restart   = true -> null
+          - min_node_cpus       = 0 -> null
+          - on_host_maintenance = "MIGRATE" -> null
+          - preemptible         = false -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only yes will be accepted to confirm.
+
+  Enter a value: yes
+
+google_compute_instance.vm_instance: Destroying... [id=projects/test-project-345109/zones/australia-southeast1-a/instances/terraform-instance]
+google_compute_instance.vm_instance: Still destroying... [id=projects/test-project-345109/zones/aust...theast1-a/instances/terraform-instance, 10s elapsed]
+google_compute_instance.vm_instance: Still destroying... [id=projects/test-project-345109/zones/aust...theast1-a/instances/terraform-instance, 20s elapsed]
+google_compute_instance.vm_instance: Destruction complete after 22s
+
+Destroy complete! Resources: 1 destroyed.'
+) }}
+
+<p>
+  And one last check to confirm the instance is gone.
+</p>
+{{ text::code_block(
+header="cmd",
+language="text",
+code='gcloud compute instances list --project test-project-&lt;id&gt
+
+# Output
+Listed 0 items.'
+) }}
+
+<p>
+  I believe this means we are devops now.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you made it this far, thanks for following along.
+</p>
+<p>
+  In this post, we setup our GCP environment with a service account that is used 
+  by Terraform to create resources via the GCP API.
+</p>
+<p>
+  Smoke me a kipper, i'll be back for breakfast!
+</p>
+
+{% endblock page_content %}

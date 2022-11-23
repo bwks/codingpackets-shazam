@@ -1,0 +1,850 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">StackStorm ChatOps Integration</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 7th of January 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stackstorm.com/" target=_blank>StackStorm</a>
+ is IFTTT for ops.
+  Its original claim to fame was popularizing chat driven workflows
+  for ops know as ChatOps. In this post I will cover integrating ST2
+  with Slack to enable ChatOps.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/lab-topology.svg" alt="blog/stackstorm-chatops-integration/lab-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  The ST2 instance connects out to Slack which is a SAAS application.
+  This means ST2 must have access to the internet (at least to Slack)
+  for the setup to function.
+</p>
+<p>
+  For reference I am using Vagrant to build this lab and utilizing
+  the following code versions.
+</p>
+<ul>
+  <li>StackStorm - 2.10.1</li>
+  <li>Juniper vMX - 18.2R1.9</li>
+</ul>
+<p>
+  This post assumes that ST2 is already installed with the ChatOps service
+  enabled. This should already be done if you used one of the installer
+  methods eg: Docker, Puppet, etc.. The Napalm pack should be installed
+  and configured and you also have a Slack workspace
+  configured with permissions to add an app integration.
+</p>
+
+<h3 id="slack-configuration">Slack Configuration</h3>
+<p>
+  First up lets tackle the Slack piece. Navigate to
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://api.slack.com/apps" target=_blank>https://api.slack.com/apps</a>
+
+  and click on <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Create New App</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot1.png" alt="blog/stackstorm-chatops-integration/add-bot1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the app name and select the workspace the click on
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Create App</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot2.png" alt="blog/stackstorm-chatops-integration/add-bot2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Click on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Bots</i>
+ option.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot3.png" alt="blog/stackstorm-chatops-integration/add-bot3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Click on <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Add a Bot User</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot4.png" alt="blog/stackstorm-chatops-integration/add-bot4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the display name and default username of the bot and
+  click on <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Add Bot User</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot5.png" alt="blog/stackstorm-chatops-integration/add-bot5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  On the left menu select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">OAuth & Permissions</i>
+ then click on
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Install App to Workspace</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot6.png" alt="blog/stackstorm-chatops-integration/add-bot6.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Confirm the details are correct and click on
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Authorize</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot7.png" alt="blog/stackstorm-chatops-integration/add-bot7.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Take note of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Bot User OAuth Access Token</i>
+
+  as it will need to be defined in the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">st2chatops.env</i>
+ configuration file.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot8.png" alt="blog/stackstorm-chatops-integration/add-bot8.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Now head over to the Slack chat and invite the bot to a channel by
+  referring to it by <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">@username</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot9.png" alt="blog/stackstorm-chatops-integration/add-bot9.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="stackstorm-configuration">StackStorm Configuration</h3>
+<p>
+  ChatOps configurations live under the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/stackstorm/chatops</i>
+
+  directory.
+</p>
+<p>
+  Edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">st2chatops.env</i>
+ file
+  adding/editing the following parameters.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">bash</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">export HUBOT_NAME="bottlo"
+export HUBOT_ALIAS='$bottlo'
+
+export ST2_AUTH_USERNAME="${ST2_AUTH_USERNAME:-st2admin}"
+export ST2_AUTH_PASSWORD="${ST2_AUTH_PASSWORD:-Ch@ngeMe}"
+
+export HUBOT_ADAPTER=slack
+export HUBOT_SLACK_TOKEN="xoxb-BOT-TOKEN-FROM-SLACK-FROM-PREVIOUS-STEP"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    For simplicity I am using the default credentials for ST2
+    that are configured out of the box from install. In production
+    you would use PAM/LDAP or one of the other authentication
+    backends and use an authentication token instead of a
+    user password to authenticate to the ST2 API.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Now restart the ChatOps service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart st2chatops</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="bot-interaction">Bot Interaction</h3>
+<p>
+  First lets call out to the bot and ensure it is connected
+  to Slack correctly. Initially you may have to
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">@botname</i>
+ to register it
+  in the channel. Once it is connected you can call it via
+  the alias you configured on the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">st2chatops.env</i>
+ file.
+  In this case <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$bottlo</i>
+
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot10.png" alt="blog/stackstorm-chatops-integration/add-bot10.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$botname help</i>
+ will give
+  you a list of ChatOps aliases that are available to have the
+  bot do some work.
+</p>
+
+<p>
+  In the below example I used the bot to install the napalm pack.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot11.png" alt="blog/stackstorm-chatops-integration/add-bot11.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="add-chatops-commands">Add ChatOps Commands</h3>
+<a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/chatops/aliases.html" target=_blank>Aliases</a>
+
+allow you to add commands to your bot. ST2 has a couple of aliases
+out of the box but in order to really make the bot useful you have to
+customize it to your needs.
+
+<p>
+  Aliases belong to packs. Packs live in the the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/stackstorm/packs/</i>
+ directory.
+  Create a directory for a pack to define your custom aliases.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir -p /opt/stackstorm/packs/bottlops/{actions,rules,sensors,aliases}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Lets add a command that allows us to view the LLDP neighbors
+  of a network device. Create a file named
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">lldp.yaml</i>
+ under the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/stackstorm/packs/bottlops/aliases/</i>
+
+  directory.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">yaml</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">sudo tee /opt/stackstorm/packs/bottlops/aliases/lldp.yaml > /dev/null << "EOF"
+---
+name: "napalm_lldp"
+action_ref: "napalm.get_lldp_neighbors"
+description: "Get devices lldp neighbors"
+formats:
+  - "get lldp neighbors {{hostname}}"
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now register the new commands and restart the ChatOps service.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2ctl reload --register-aliases
+sudo systemctl restart st2chatops</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm the new command is registered.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo st2 action-alias list
+
+# output
+
++---------------------------+------------+-----------------------------------------+---------+
+| ref                       | pack       | description                             | enabled |
++---------------------------+------------+-----------------------------------------+---------+
+| bottlops.napalm_lldp      | bottlops   | Get devices lldp neighbors              | True    |
+| napalm.check_consistency  | napalm     | Check consistency of the devices       | True    |
+|                           |            | configuration                           |         |
+| packs.pack_get            | packs      | Get information about installed         | True    |
+|                           |            | StackStorm pack.                        |         |
+| packs.pack_install        | packs      | Install/upgrade StackStorm packs.       | True    |
+| packs.pack_search         | packs      | Search for packs in StackStorm Exchange | True    |
+|                           |            | and other directories.                  |         |
+| packs.pack_show           | packs      | Show information about the pack from    | True    |
+|                           |            | StackStorm Exchange.                    |         |
+| st2.st2_actions_list      | st2        | List available StackStorm actions.      | True    |
+| st2.st2_executions_get    | st2        | Retrieve details for a single           | True    |
+|                           |            | execution.                              |         |
+| st2.st2_executions_list   | st2        | List available StackStorm executions.   | True    |
+| st2.st2_executions_re_run | st2        | Re-run an action execution.             | True    |
+| st2.st2_inquiry_respond   | st2        | Respond to an Inquiry                   | True    |
+| st2.st2_rules_list        | st2        | List available StackStorm rules.        | True    |
+| st2.st2_sensors_list      | st2        | List available StackStorm sensors.      | True    |
++---------------------------+------------+-----------------------------------------+---------+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Great the command is there, now go back to slack and test it out.
+</p>
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/stackstorm-chatops-integration/add-bot12.png" alt="blog/stackstorm-chatops-integration/add-bot12.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Success! ST2 is connected to Slack and our custom command is understood
+  and actioned by the bot.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  ChatOps is a pretty neat way to interact with you infrastructure.
+  ST2 makes integration and configuration of ChatOps with a chat
+  service such as Slack relatively painless. Teaching the bot new
+  commands is also pretty straight forward once you get your head
+  around all the pieces.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.stackstorm.com/chatops/index.html" target=_blank>https://docs.stackstorm.com/chatops/index.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.analyticsvidhya.com/blog/2018/03/how-to-build-an-intelligent-chatbot-for-slack-using-dialogflow-api/" target=_blank>https://www.analyticsvidhya.com/blog/2018/03/how-to-build-an-intelligent-chatbot-for-slack-using-dialogflow-api/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#stackstorm" class="text-xl">stackstorm</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#chatops" class="text-xl">chatops</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-environment">
+            Lab Environment
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#slack-configuration">
+            Slack Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#stackstorm-configuration">
+            StackStorm Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#bot-interaction">
+            Bot Interaction
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#add-chatops-commands">
+            Add ChatOps Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

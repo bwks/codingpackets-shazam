@@ -1,0 +1,679 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Terraform Azure Provider Setup</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 1st of November 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Microsoft <a class="text-sky-600 no-underline hover:text-sky-800" href="https://azure.microsoft.com/en-us/" target=_blank>Azure</a>
+ is one of the worlds leading
+  cloud providers. While it is possible to point and click your way though the web interface
+  to manage your Azure environment that is not how I want to live my life. This post will
+  cover how to prepare your local development machine to enable
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.terraform.io/" target=_blank>Terraform</a>
+ to connect to
+  your Azure environment and manage it as code.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>azure-cli</b> - 2.0.49</li>
+  <li><b>Terraform</b> - 0.11.10</li>
+  <li><b>Python</b> - 3.6.6</li>
+</ul>
+
+  <p>
+    This post assumes you have a working Terraform installation. See
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/terraform-install-ubuntu-1804">here</a>
+ for
+    instructions on getting Terraform installed.
+  </p>
+
+
+
+<h3 id="azure-cli">Azure CLI</h3>
+<p>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ utility is required in order for Terraform
+  to connect to and manage an Azure environment. While it is possible to install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ using your
+  <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">
+    systems package manager
+  </a>
+ the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ utility
+  is a written in Python so it can also be installed with
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">pip</i>
+. I prefer the pip installation method so I will go
+  ahead and do that.
+</p>
+
+<p>
+  First create and activate a Python virtual environment.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/code/python/azure-cli && cd ~/code/python/azure-cli
+python3 -m venv .venv
+source .venv/bin/activate</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now use the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">pip</i>
+ utility to install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ package.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pip install azure-cli</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Once the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ is installed you will have access
+  to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">az</i>
+ command which is used to control your Azure environment from the
+  cli.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">az --version
+
+# output
+
+azure-cli (2.0.49)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="terraform-integration">Terraform Integration</h3>
+<p>
+  Before we can start using Terraform to manage our Azure environment we need to authenticate
+  to Azure. There are two ways to do this.
+</p>
+<ul>
+  <li><b>Service Principal</b> - Recommended for CI/CD environments.</li>
+  <li><b>User Account</b> - Recommended when running Terraform locally.</li>
+</ul>
+<p>
+  Since I am developing on my laptop I will use the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">user account</i>
+ method.
+</p>
+
+<p>
+  To login to Azure use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">az login</i>
+ command. This will open up a web browser
+  where you will need to enter your user credentials.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/terraform-azure-provider-setup/azure-login.png" alt="blog/terraform-azure-provider-setup/azure-login.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Once logged in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure-cli</i>
+ will output the details
+  pertaining to the account you are connected to.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">az login
+<span class="hljs-section">
+Note, we have launched a browser for you to login. For old experience with device code, use "az login --use-device-code"
+You have logged in. Now let us find all the subscriptions to which you have access...
+</span>
+
+[
+  {
+    "cloudName": "AzureCloud",
+    "id": "laf82kj4-laf82kj4-laf82kj4-laf82kj4-laf82kj4",
+    "isDefault": true,
+    "name": "Pay-As-You-Go",
+    "state": "Enabled",
+    "tenantId": "laf82kj4-laf82kj4-laf82kj4-laf82kj4-laf82kj4",
+    "user": {
+      "name": "username@email",
+      "type": "user"
+    }
+  }
+]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  With the python virtual environment still activated, create and change into a test directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/code/terraform/azure-test && cd ~/code/terraform/azure-test</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Terraform looks for files ending with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.tf</i>
+ extension.
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azure.tf</i>
+ file, the contents of this
+  file let Terraform know that the Azure Resource Manager provider is required.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cat << EOF > azure.tf
+provider "azurerm" { }
+EOF</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Initialize the Terraform environment with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform init</i>
+ command. This will
+  setup the Terraform environment and download any required plugins. In our case the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">azurerm</i>
+ plugin will be installed.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform init
+
+# output
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "azurerm" (1.17.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.azurerm: version = "~> 1.17"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Annnndddd ..... That's it. Terraform is now able to manage your Azure environment. Look out
+  for future posts where I will show you how to build some Azure infrastructure using Terraform.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.terraform.io/docs/providers/azurerm/" target=_blank>https://www.terraform.io/docs/providers/azurerm/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html" target=_blank>https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/terraform-install-configure" target=_blank>https://docs.microsoft.com/en-us/azure/virtual-machines/linux/terraform-install-configure</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest" target=_blank>https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/Azure/azure-cli" target=_blank>https://github.com/Azure/azure-cli</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://pypi.org/project/azure-cli/" target=_blank>https://pypi.org/project/azure-cli/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#terraform" class="text-xl">terraform</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#azure" class="text-xl">azure</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#devops" class="text-xl">devops</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#azure-cli">
+            Azure CLI
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#terraform-integration">
+            Terraform Integration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

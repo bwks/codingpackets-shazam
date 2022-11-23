@@ -1,0 +1,168 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Over the years I have customised my shell prompt to make it "cool" and "informative".
+  Previously I have used {{ link::e(path="https://github.com/powerline/powerline", description="powerline") }}
+
+  and {{ link::e(path="https://github.com/romkatv/powerlevel10k", description="powerlevel10k") }}
+. Both were
+  pretty nice, with powerlevel10k being the much faster of the two.
+</p>
+<p>
+  I recently came across the {{ link::e(path="https://starship.rs/", description="Starship") }}
+ project which
+  looks pretty rad. Starship prompt is "The minimal, blazing-fast, and infinitely customizable
+  prompt for any shell!"
+</p>
+<p>
+  This post will cover getting Starship prompt installed and configured for MAC-OSX Catalina and
+  iTerm2 for the zsh shell.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  First you need to install some powerline patched fonts.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+
+# Output
+Copying fonts...
+Powerline fonts installed to /Users/bradmin/Library/Fonts"
+
+# Clean up
+cd ..
+rm -rf fonts'
+) }}
+
+<p>
+  Install Starship with Homebrew.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='brew install starship'
+) }}
+
+<p>
+  Initialise Starship by adding the following to your {{ text::emphasize(text="~/.zshrc") }}
+
+  and restarting your shell.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code='# ~/.zshrc
+eval "$(starship init zsh)"'
+) }}
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Configure iTerm2 to use a Powerline Font.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Preferences",
+"Profiles",
+"Font",
+"Select Font of Choice",
+]) }}
+
+<p>
+  Starship uses {{ text::emphasize(text="TOML") }}
+ for its configuration data.
+  Create a {{ text::emphasize(text="starship.toml") }}
+ configuration file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir -p ~/.config && touch ~/.config/starship.toml'
+) }}
+
+<p>
+  The prompt is configured via "modules". The
+  {{ link::e(path="https://starship.rs/config/", description="docs") }}
+ outline the options for each module
+  quite well. A sample configuration file can be found below.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="toml",
+  code='# Replace the "❯" symbol in the prompt with "❯❯"
+[character]
+format = "[❯❯](bold green) "
+success_symbol = "[❯❯](bold green) "
+error_symbol = "[❯❯](bold red) "
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+# Disable the AWS module.
+[aws]
+disabled = true
+
+# Disable the GCP module.
+[gcloud]
+disabled = true
+
+# Set the time format
+[time]
+disabled = false
+time_format = "%Y-%m-%d %H:%M:%S"
+utc_time_offset = "+10"
+
+# Directory setttings
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+truncation_length = 4
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[username]
+disabled = true
+
+[hostname]
+ssh_only = false
+format =  "[$hostname](bold red) [❯](bold green) "
+
+# Workaround for slow prompt with git status
+[git_status]
+disabled = true'
+) }}
+
+<p>
+  The result is a really nice looking, responsive and informative prompt.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='devbox ❯ ~
+at 2021-11-07 06:29:18 ❯❯'
+) }}
+
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>
+  I found having the {{ text::emphasize(text="git_status") }}
+ module was
+  causing the prompt to respond really slowly. I disabled this module and the
+  response time went back to normal. There is an open issue for this and hopefully
+  it will be resolved in a future release.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Starship prompt looks like it does what it says on the tin. It's fast,
+  easily customisable and looks great.
+</p>
+{% endblock page_content %}

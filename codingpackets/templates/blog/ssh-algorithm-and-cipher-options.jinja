@@ -1,0 +1,54 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Have you ever tried to SSH to a network device and 
+  received the dreaded 
+  {{ text::code(text="Unable to negotiate with &lt;user&gt; port 22: no matching key exchange method found. Their offer: &lt;key-algorithm&gt;") }}.
+  In this post ill cover how to work around this issue.
+</p> 
+
+<h3 id="key-algorithms">Key Algorithms</h3>
+<p>
+  Specify the Key Algorithms with the 
+  {{ text::code(text="-o KexAlgorithms=") }}
+ flag 
+  followed by a comma seperated list of algorithms.
+</p>
+{{ text::code_block(
+  header="flag",
+  language="text",
+  code='-o KexAlgorithms=diffie-hellman-group14-sha1,diffie-hellman-group1-sha1'
+) }}
+
+<h3 id="ciphers">Ciphers</h3>
+<p>
+  Specify the ciphers with the 
+  {{ text::code(text="-c") }}
+ flag 
+  followed by a comma seperated list of ciphers.
+  The ciphers should be listed in the prefered order.
+</p>
+{{ text::code_block(
+  header="flag",
+  language="text",
+  code='-c aes128-cbc,aes192-cbc,3des-cbc'
+) }}
+
+<p>
+  Putting it all together.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ssh -o KexAlgorithms=diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 -c aes128-cbc,aes192-cbc,3des-cbc &lt;user&gt;@&lt;host&gt;'
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I covered how to configure SSH key algorithms 
+  and ciphers from the CLI. Future Brad, your welcome.
+</p>
+{% endblock page_content %}
