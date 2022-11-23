@@ -1,0 +1,578 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+  <h3 id="overview">Overview</h3>
+  <p>
+    {{ link::e(path="https://saltstack.com/salt-open-source/", description="Salt") }}
+ is open source software for infrastructure automation.
+    Salt was initially an agent based system but the team have since implemented an ssh based connector for
+    devices that do not support or have the ability to install an agent. This agent/agentless feature give
+    you the ability to manage servers as well as network devices which makes it a great tool for network automation.
+  </p>
+  <p>
+    There is also an enterprise based system know as {{ link::e(path="https://saltstack.com/", description="SaltStack") }}
+ that offers
+    enterprise features like a GUI, RBAC and 24/7 support.
+  </p>
+
+  <h3 id="architecture">Architecture</h3>
+
+  {{ image::boxed(path="blog/salt-overview/salt-architecture.svg", height="400px") }}
+
+  <ul>
+    <li><b>Salt Master</b> - Controls minions</li>
+    <li><b>Salt Minion</b> - Executes code from the master via an agent</li>
+    <li><b>Salt Proxy Monion</b> - Executes code on hosts that cannot install an agent</li>
+    <li><b>Message Bus</b> - Messages between Salt master and minions are sent along the message bus</li>
+  </ul>
+
+  <h3 id="topologies">Topologies</h3>
+  <p>
+    There are a number of logical topologies that can be created with a Salt infrastructure.
+  </p>
+  <ul>
+    <li><b>Master / Minion</b> - One or more masters control minions.</li>
+    <li><b>Master of Masters</b> - Heirachical topology where higher level masters control subordinate masters.</li>
+    <li><b>Masterless</b> - Configuration management for a single minion without the use of a master.</li>
+    <li><b>Salt SSH</b> - Salt is run over SSH without a minion daemon.</li>
+  </ul>
+
+  <p>
+    A detailed run down of the logical topologies can be found in the
+    {{ link::e(path="https://docs.saltstack.com/en/latest/topics/topology/", description="documentation") }}
+.
+  </p>
+
+  <h3 id="install">Install</h3>
+  <p>
+    The recommended method to install Salt is via the Salt maintained repositories. To install
+    Salt in this manner requires a couple of steps.
+  </p>
+  <ul>
+    <li>Add Salt GPG key</li>
+    <li>Add Salt repositroy</li>
+    <li>Update YUM/APT cache</li>
+    <li>Install required daemons</li>
+  </ul>
+
+  <h4><b>Centos 7</b></h4>
+  <p>
+    As the root user or user with sudo privileges.
+  </p>
+
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='# RHEL/Centos</span>
+
+sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm
+sudo yum clean expire-cache'
+  ) }}
+
+
+  <h4><b>Ubuntu 1604</b></h4>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='# Debian
+
+wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest xenial main
+sudo apt-get update'
+  ) }}
+
+  <p>
+    Install {{ text::emphasize(text="salt-daemons") }}
+ as required.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code='# RHEL/Centos
+
+# Masters optionally have a salt-minion daemon
+
+yum install -y salt-master
+
+# Minions
+
+yum install -y salt-minion'
+  ) }}
+
+  {{ text::note_block(text='
+      Replace $1 for $2 on Debian based systems
+  ') 
+  | replace(from="$1", to=text::emphasize(text="yum"))
+  | replace(from="$2", to=text::emphasize(text="apt"))
+  }}
+
+  <p>
+    See the official {{ link::e(path="https://repo.saltstack.com/", description="documentation") }}
+ for info on how to install salt on
+    other platforms.
+  </p>
+
+  <h3 id="configuration">Configuration</h3>
+  <p>
+    Salt's configuration files are defined in YAML and located in the
+    {{ text::emphasize(text="/etc/salt/") }}
+ directory.
+    Each daemon has its own configuration file. For example {{ text::emphasize(text="/etc/salt/master") }}
+
+    is the {{ text::emphasize(text="salt-master") }}
+ daemons configuration file.
+  </p>
+  <h4><b>Example Configuration Files</b></h4>
+  <p>Master</p>
+
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='# /etc/salt/master
+
+
+# File configs
+
+file_roots:
+  base:
+    - /srv/salt/
+    - /srv/salt/pillar
+    - /srv/salt/states
+    - /srv/salt/reactors
+    - /srv/salt/templates
+    - /srv/salt/files
+
+# Pillar configs
+
+pillar_roots:
+  base:
+    - /srv/salt/pillar'
+  ) }}
+
+
+  <p>Minion</p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='# /etc/salt/minion
+
+
+# Master IP or DNS name
+
+master: master01
+
+# ID of minion
+
+id: minion01'
+  ) }}
+
+  <p>
+    A complete list of {{ link::e(path="https://docs.saltstack.com/en/latest/ref/configuration/examples.html", description="configuration") }}
+
+    options can be found in the documentation.
+  </p>
+
+  <h4><b>Firewall Ports</b></h4>
+  <p>
+    The Salt master and minions communicate over an AES encrypted ZeroMQ connection on TCP ports 4505 and 4506.
+    These ports only need to be opened on the Salt master. Suggested methods for openning the firewall ports can be
+    found in the
+    {{ link::e(path="https://docs.saltstack.com/en/latest/topics/tutorials/firewall.html", description="official documentation") }}
+.
+  </p>
+
+  <h3 id="salt-keys">Salt Keys</h3>
+  <p>
+    Salt uses RSA keys to authenticate the master and the minions. By default minions are not automatically
+    allowed to communicate with the master. When a minion tries to connect to the master it will send its
+    RSA public key, the master must accept the minions key to permit the minion access. There are a number
+    of 'states' that minion keys can exist in on the master, they are outlined as follows.
+  </p>
+  <h4><b>Key States</b></h4>
+  <ul>
+    <li><b>Unaccepted</b> - Key not yet accepted by the master.</li>
+    <li><b>Accepted</b> - Key accepted allowing communication between the master and minion.</li>
+    <li><b>Rejected</b> - Key has been rejected manually by the master.</li>
+    <li><b>Denied</b> - Key automatically rejected by master, due to duplicate minion id or generated by minion.</li>
+  </ul>
+
+  <p>
+    The {{ text::code(text="salt-key") }}
+ command is used on the master to manage the keys of the minions. More on the
+    {{ text::code(text="salt-key") }}
+ command can be found in the
+    {{ link::e(path="https://docs.saltstack.com/en/latest/ref/cli/salt-key.html", description="docs") }}
+.
+  </p>
+
+  <h3 id="inventory">Inventory</h3>
+  <p>
+    The inventory in Salt is defined by the accepted minion keys. Groups of minions can be targeted in the states
+    {{ text::emphasize(text="top.sls") }}
+ file. There are many option for targeting minions, the below
+    uses a wildcard {{ text::emphasize(text="*") }}
+.
+  </p>
+
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code="# /srv/salt/states/top.sls
+base:
+  '*':
+    - vim # states to be applied
+    - motd
+  'master*':
+    - curl
+  'minion*':
+    - python
+  'proxy-minion*':
+    - python
+    - napalm"
+  ) }}
+
+  <h3 id="modules">Modules</h3>
+  <p>
+    Modules are the engine room of Salt and how state is applied to minions. Salt has a HUUUUGGGEEEE
+    list of {{ link::e(path="https://docs.saltstack.com/en/latest/ref/index.html", description="modules") }}
+ that
+    likely do most of what you will ever need.
+  </p>
+  <h4>Example Salt Modules</h4>
+  <ul>
+    <li><b>Pillar</b> - Working with pillar data from external sources such has Heira.</li>
+    <li><b>Proxy</b> - For use with proxy minions such Napalm to control network devices.</li>
+    <li><b>State</b> - Use to apply state to minions such as installing system packages.</li>
+  </ul>
+
+  <p>
+    Module documentation can also be read from the command line with the {{ text::code(text="sys.doc") }}
+ command.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="sudo salt '*' sys.doc network"
+  ) }}
+
+  <p>
+    It is also possible to write custom Salt modules. If you need something additional to what Salt provides
+    out of the box the process is documented
+    {{ link::e(path="https://docs.saltstack.com/en/latest/ref/modules/", description="here") }}
+.
+  </p>
+
+  <h3 id="states">States</h3>
+  <p>
+    States define how a minion should be configured. The state system is made up of multiple layers,
+    the layers from highest to lowest are as follows.
+  </p>
+  <ul>
+    <li>Orchestrate</li>
+    <li>High State</li>
+    <li>SLS</li>
+    <li>High Data</li>
+    <li>Low State</li>
+    <li>Low Chunk</li>
+    <li>Function Call</li>
+  </ul>
+
+  <p>
+    More details on the state layers can be found <a href="https://docs.saltstack.com/en/latest/ref/states/layers.html">
+      here</a>
+.
+  </p>
+
+  <p>
+    The main states to be aware of are the {{ text::emphasize(text="high") }}
+ and
+    {{ text::emphasize(text="low") }}
+ states.
+  </p>
+  <h4><b>High State</b></h4>
+  <p>
+    The high state defines the complete configuration state that should be applied to a minion.
+    The high state is defined in the {{ text::emphasize(text="top.sls") }}
+
+    file and is applied with the {{ text::code(text="salt '&lt;target&gt;' state.apply") }}
+ command.
+  </p>
+
+  <h4><b>Low State</b></h4>
+  <p>
+    The low state is a list of function calls that will be executed.
+  </p>
+
+  <h4><b>State Tree</b></h4>
+  <p>
+    The state tree is a collection of {{ text::emphasize(text=".sls") }}
+
+    files and directories under the {{ text::emphasize(text="states") }}
+ directory.
+    The {{ text::emphasize(text="states") }}
+ directory is specified under the
+    {{ text::emphasize(text="file_roots") }}
+ configuration parameter in the
+    {{ text::emphasize(text="master") }}
+ configuration file. This is usually set to
+    {{ text::emphasize(text="/srv/salt/states") }}
+.
+  </p>
+
+  {{ text::code_block(
+    header="output",
+    language="text",
+    code='# /srv/salt/states
+
+states/
+├── development-tools.sls
+├── epel-release.sls
+├── motd
+│   ├── init.sls
+│   └── motd.j2
+├── napalm
+│   ├── init.sls
+│   └── map.jinja
+├── python
+│   ├── init.sls
+│   ├── map.jinja
+│   ├── pip.sls
+│   └── python.sls
+├── top.sls
+└── vim
+    ├── init.sls
+    └── map.jinja'
+  ) }}
+
+  <h4><b>SLS Files</b></h4>
+  <p>
+    <b>S</b>a<b>L</b>t <b>S</b>tate roughly translates to {{ text::emphasize(text=".sls") }}
+ hence
+    the {{ text::emphasize(text=".sls") }}
+ extension.
+    Salt state files, by default are defined in YAML and describe the 'state'
+    to apply to a minion. State files are passed through YAML and Jinja renderers by default, but it
+    is possible to use different renderers to build the {{ text::emphasize(text=".sls") }}
+ files.
+  </p>
+
+  <p>
+    The following sets the {{ text::emphasize(text="states") }}
+ directory for the
+    {{ text::emphasize(text="base") }}
+ environment.
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='# /etc/salt/master
+
+file_roots:
+  base:<span class="hljs-string">
+    - /srv/salt/states</span>
+'
+  ) }}
+
+  <p>
+    More on Salt states can be found in the <a
+       href="https://docs.saltstack.com/en/latest/ref/states/">documentation.</a>
+
+  </p>
+
+  <h4><b>Map Files</b></h4>
+  <p>
+    Map files are dictionaries that can be used to define variables across different systems. The below
+    map file sets the {{ text::emphasize(text="vim") }}
+ package name based on the
+    {{ text::emphasize(text="os_family") }}
+ grain.
+  </p>
+  <p>
+    Map files are generally name {{ text::emphasize(text="map.jinja") }}
+
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="python",
+    code="{% set vim = salt.grains.filter_by({
+    'Debian': {
+        'pkg': 'vim',
+    },
+    'RedHat': {
+        'pkg': 'vim-enhanced',
+    },
+}) %}"
+  ) }}
+
+  <h3 id="grains">Grains</h3>
+  <p>
+    Grains are facts about a device that are collected by Salt. Grains can be used to target minions and as
+    variables in configuration templates.
+  </p>
+  <p>
+    Display a list the available grains with the {{ text::code(text="grains.ls") }}
+ command.
+  </p>
+
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="sudo salt '&lt;target&gt;' grains.ls"
+  ) }}
+
+  <p>
+    Grain data can be displayed with the {{ text::code(text="grains.items") }}
+ command.
+  </p>
+
+  {{ text::code_block(
+    header="cmd",
+    language="text",
+    code="sudo salt '&lt;target&gt;' grains.items"
+  ) }}
+
+
+  <p>
+    Custom grains can be set on the minions in the following locations
+  </p>
+  <ul>
+    <li>{{ text::emphasize(text="/etc/salt/minion") }}
+ - Config file under the grains section</li>
+    <li>{{ text::emphasize(text="/etc/salt/grains") }}
+ - Grains file on the minion</li>
+  </ul>
+  <p>
+    The documentation on grains can be found
+    {{ link::e(path="https://docs.saltstack.com/en/latest/topics/grains/index.html", description="here") }}
+.
+  </p>
+
+  <h3 id="pillar">Pillar</h3>
+  <p>
+    Pillar is minion specific data that can be anything and is defined by the administrator.
+    Like states, pillar uses a {{ text::emphasize(text="top.sls") }}
+ file to match minions to pillar
+    data. Also like states, pillar data is stored in {{ text::emphasize(text=".sls") }}
+ files
+    using YAML syntax.
+  </p>
+  <p>
+    The source pillar folder is defined in the {{ text::emphasize(text="/etc/salt/master") }}
+ config under the
+    {{ text::emphasize(text="pillar_roots") }}
+ section.
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code='# /etc/salt/master
+
+pillar_roots:
+  base:
+    - /srv/salt/pillar'
+  ) }}
+
+  <p>
+    Pillar data can be accessed in states by calling the {{ text::emphasize(text="pillar") }}
+ dictionary
+    with the {{ text::emphasize(text="variable") }}
+ name.
+  </p>
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code="vim installed:
+  pkg.installed:
+    - name: {{ pillar['data_centre'] }}"
+  ) }}
+
+  <p>
+    See the {{ link::e(path="https://docs.saltstack.com/en/latest/topics/pillar/", description="docs") }}
+ for more on Salt pillar.
+  </p>
+
+  <h3 id="templates">Templates</h3>
+  <p>
+    Templates allow for the reuse of configuration in a DRY fashion. Salt has the ability to use many different
+    templating languages including {{ link::e(path="https://jinja.readthedocs.io/en/stable/", description="Jinja2") }}
+ and
+    {{ link::e(path="http://www.makotemplates.org/", description="Mako") }}
+.
+  </p>
+  <p>
+    The default templating engine in Salt is Jinja2. With Salt, templating is not isolated to configuration files,
+    infact the {{ text::emphasize(text=".sls") }}
+ files are a combination of YAML and Jinja2. Below is an
+    example of using Jinja2 in an {{ text::emphasize(text=".sls") }}
+ file.
+  </p>
+
+
+  {{ text::code_block(
+    header="file",
+    language="yaml",
+    code="# states/python/python.sls
+{% from 'python/map.jinja' import required_packages with context %}
+{% from 'python/map.jinja' import python_versions with context %}
+
+python-install-required-packages:
+  pkg:
+    - installed
+    - pkgs:
+        {{ required_packages.pkgs }}
+
+{% for python in python_versions %}
+Python-{{ python.release }}.tgz:
+  file.managed:
+    - name: /tmp/Python-{{ python.release }}.tgz
+    - source: salt://files/Python-{{ python.release }}.tgz
+    - source_hash: {{ python.hash }}
+
+extract-python-{{ python.release }}:
+  archive.extracted:
+    - name: /tmp
+    - source: /tmp/Python-{{ python.release }}.tgz
+
+python-build-{{ python.release }}:
+  cmd.run:
+    - cwd: /tmp/Python-{{ python.release }}
+    - user: root
+    - name: |
+        ./configure --prefix=/usr/local
+        make
+        make altinstall
+    - unless: stat /usr/local/bin/python{{ python.version }}
+
+/usr/bin/python{{ python.release }}:
+  file.symlink:
+    - target: /usr/local/bin/python{{ python.version }}
+{% endfor %}"
+  ) }}
+
+  {{ text::note_block(text="
+    Jinja is not a programming language, so use is sparingly and keeps it simple.
+") }}
+
+  <h3 id="formula">Formula</h3>
+  <p>
+    Salt formulas are pre-written Salt states that do a thing. For example
+    there is a Salt formula to install <a href="https://github.com/saltstack-formulas/napalm-install-formula">
+      Napalm</a>
+ the network automation library. Salt has a github
+    organization for formulas which can be found {{ link::e(path="https://github.com/saltstack-formulas", description="here") }}
+.
+  </p>
+
+{% endblock page_content %}

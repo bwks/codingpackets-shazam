@@ -1,0 +1,753 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Viptela SDWAN Overview</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 29th of June 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="http://viptela.com/" target=_blank>Viptela</a>
+ is an SDWAN company that was recently purchased
+  by Cisco. In this post I will go over the components that make up the Viptela secure extensible
+  network (SEN) solution. By the end of this post you will have a good idea of the pieces
+  that make up the Viptela puzzle.
+</p>
+
+<h3 id="network-components">Network Components</h3>
+<h4><b>Underlay Network</b></h4>
+<p>
+  The underlay network is made up of your traditional transport networks such MPLS, broadband
+  and 4G internet. The Viptela solution hitches a ride on top of the underlay network.
+</p>
+
+<h4><b>Overlay Network</b></h4>
+<p>
+  The overlay network is a virtual IP fabric built on top of the underlay transport using
+  IPsec tunnels. The fabric can be either full mesh, partial mesh or hub and spoke topologies.
+</p>
+
+<h4><b>VPNs</b></h4>
+<p>
+  Viptela has references to two types of VPN's which can be a little confusing unless you
+  know the distinction between the two.
+</p>
+<ul>
+  <li><b>Transport side VPNs</b> use IPSEC to encrypt the WAN underlay transport.</li>
+  <li><b>Service side VPNs</b> are LAN side VPNs which are similar to an MPLS L3VPN.</li>
+</ul>
+
+<h4><b>Segmentation</b></h4>
+<p>
+  Viptela uses a concept similar to MPLS L3VPNs to build network wide LAN segmentation. These
+  segments are called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">service side vpns</i>
+ which are separate
+  VRF domains. Service side VPNs allow an administrator to define polices that logically
+  splits groups of users and or applications into separate routing domains.
+</p>
+
+<h3 id="management-components">Management Components</h3>
+<h4><b>Organization Name</b></h4>
+<p>
+  When you become a Viptela customer they assign your company a unique
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">organization name</i>
+. The vEdges you purchase are assigned
+  to your organization for the purpose of support, certificate lifecycle and zero touch
+  provisioning.
+</p>
+
+<h4><b>Certificates</b></h4>
+<p>
+  Mutual authentication is performed using PKI certificates. The beauty of the Viptela
+  solution is that the certificate life-cycle is managed for you so the administrative burden
+  of managing a certificate infrastructure is shouldered by Viptela. Of course if organizational
+  policy demands the certificates are managed in house, this is also possible.
+</p>
+
+<h4><b>System IP</b></h4>
+<p>
+  Each Viptela device is assigned a unique system IP. The system IP is similar to a router-id
+  under a routing process. It is used to identify the device but does not need to be injected
+  into any routing protocol.
+</p>
+
+<h4><b>Configuration Management</b></h4>
+<p>
+  The Viptela solution has a robust configuration management engine allowing you to define
+  configuration templates for your devices ensuring a consistent configuration is applied
+  across the entire fleet. It is also possible to configure the devices via a CLI if you
+  get nostalgic.
+</p>
+
+<h4><b>ZTP</b></h4>
+<p>
+  Zero touch provisioning is one of the killer features of the Viptela solution.
+  Not only does it support ZTP the ZTP solution actually works reliably (More on this later).
+</p>
+
+<h3 id="z-plane-z-plane">Z Plane, Z Plane</h3>
+<p>
+  The Viptela solution maintains complete separation of the control plane and the data plane.
+  Both planes utilize tunneling protocols to ensure secure information exchange.
+</p>
+
+<h4><b>Control Plane</b></h4>
+<p>
+  The Viptela control plane utilizes either UDP/DTLS or TCP/TLS protocols to encrypt control
+  plane traffic. Viptela invented the proprietary overlay management protocol (OMP) to exchange
+  messages and also act as the control plane for IPSEC.
+</p>
+
+<h4><b>Data Plane</b></h4>
+<p>
+  Data payloads are exchanged between vEdges over an encrypted IPSEC transport. IPSEC tunnels
+  are built using public key authentication relieving the need to painfully manage pre-shared
+  keys. IPSEC tunnels are only built between vEdge devices.
+</p>
+
+<h4><b>Management Plane</b></h4>
+<p>
+  The Viptela devices can be managed centrally, via the CLI or a combination of both. Each
+  Viptela device has a default management VPN (similar to a service side VPN) which enables
+  out of band connectivity and cannot be removed.
+</p>
+
+<h3 id="controllers">Controllers</h3>
+<p>
+  The controller stack is made up of three types of devices that can either be hosted by
+  Viptela in the cloud or on the customers premises.
+</p>
+
+<h4>
+  <img src="/img/network-icons/viptela-vmanage.svg" alt="viptela-vmanage.svg" height="45px"> <b>vManage NMS</b>
+</h4>
+<p>
+  The vManage NMS is the central point of device management and monitoring for the Viptela solution.
+  Everything from device configuration templates to routing policy is defined on the vManage.
+  The vManage can also acts as an intermediate certificate authority providing certificate
+  signing services for cloud vEdge devices. The vManage maintains a permanent control plane
+  connection to all Viptela devices in the overlay network for monitoring and configuration
+  purposes. The vManage also has a full featured API allowing configuration and monitoring
+  through a programmable interface.
+</p>
+
+<h4>
+  <img src="/img/network-icons/viptela-vbond.svg" alt="viptela-vbond.svg" height="45px"> <b>vBond Orchestrator</b>
+</h4>
+<p>
+  The vBond orchestrator is the connectivity coordinator for the Viptela solution. The vBond
+  typically sits in an internet facing security zone and has 3 main functions.
+</p>
+<ul>
+  <li>Validate and authenticate devices that join the overlay network.</li>
+  <li>Act as a NAT traversal facilitator between vSmarts and vEdges behind NAT devices.</li>
+  <li>Load balances vEdge devices across multiple vSmarts in environments with multiple vSmarts.</li>
+</ul>
+
+<h4>
+  <img src="/img/network-icons/viptela-vsmart.svg" alt="viptela-vsmart.svg" height="45px"> <b>vSmart Controller</b>
+</h4>
+<p>
+  The vSmart controller is the central point of policy control in the overlay network and has
+  the following main functions.
+</p>
+<ul>
+  <li>Maintains a permanent control plane connection to vEdge devices in order to pass routing information.</li>
+  <li>Uses OMP to advertise routing information to vEdge devices in a similar manner to BGP route reflectors.</li>
+  <li>Acts as an IPSEC key reflector passing encryption key information between vEdges.</li>
+  <li>Enforces routing policy to control routing advertisements and enforce network wide segmentation.</li>
+</ul>
+
+<h3 id="vedges">vEdges</h3>
+
+<h4>
+  <img src="/img/network-icons/viptela-vedge.svg" alt="viptela-vedge.svg" height="45px"> <b>vEdge Routers</b>
+</h4>
+<p>
+  vEdge routers are either physical or virtual devices that are responsible for sending data
+  plane traffic across the network. vEdges create IPSEC VPN tunnels between each other which
+  form the virtual IP fabric. Hardware vEdges have a "trusted board chip" that contain the
+  routers public and private keys as well as a signed certificate. This allows them to connect
+  to the overlay network securely via ZTP or by applying a minimal configuration.
+</p>
+
+
+<h3 id="how-does-it-all-come-together">How Does It All Come Together</h3>
+<p>
+  Now that we understand the components in the Viptela solution, lets have a look at how it
+  might look in a example scenario.
+</p>
+
+<h4><b>Underlay Network</b></h4>
+<p>
+  Consider the below network, the environment consists of a primary and secondary data center,
+  a cloud provider, a campus network and <i>N</i> number of remote offices.
+  These locations are connected via multiple WAN transport technologies such as MPLS,
+  broadband, 4G and private interconnects to a could provider.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-sdwan-overview/viptela-underlay.svg" alt="blog/viptela-sdwan-overview/viptela-underlay.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>Control Plane</b></h4>
+<p>
+  The controler stack can either be hosted by Viptela in the cloud or in an on premises data
+  centre. Control plane connections are formed between the vManage, vSmart, vBond and the
+  vEdges devices. By default a permanent control plane connection will be established to the
+  vManage and vSmart over each transport side link.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-sdwan-overview/viptela-control-plane.svg" alt="blog/viptela-sdwan-overview/viptela-control-plane.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>Data Plane</b></h4>
+<p>
+  Data plane connections are only formed between the vEdges. You can see from the diagram that
+  the data plane is not established with the vManage, vBond or vSmart controllers further
+  illustrating the point around complete separation of the control and data planes. By default,
+  vEdges will attempt to form an IPSEC tunnel with every other vEdge across every link on
+  each device. This kind of full mesh results in ALOT of overhead just managing and maintaining
+  IPSEC. It is recommended to use policy to limit the topology to hub and spoke, partial mesh
+  or something in between that makes sense to the business requirements.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-sdwan-overview/viptela-data-plane.svg" alt="blog/viptela-sdwan-overview/viptela-data-plane.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>All Together Now</b></h4>
+<p>
+  When you put it all together you can see why Viptela calls it a virtual IP fabric.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-sdwan-overview/viptela-combined-plane.svg" alt="blog/viptela-sdwan-overview/viptela-combined-plane.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="how-does-ztp-work">How Does ZTP Work</h3>
+<p>
+  Zero touch provisioning (ZTP) is one of the best features of the Viptela solution so I want
+  to spend a bit of time going over it. I am not really a fan of the term ZTP because in
+  reality it's more like low touch provisioning (LTP). Nevertheless the Viptela solution
+  actually delivers on the promise of making deployments simple and secure by default with
+  very little overhead required by the administrator.
+</p>
+
+<p>
+  To use the ZTP service, there are a number of things that need to be completed. At a high
+  level they are as follows.
+</p>
+
+<ul>
+  <li>The controller stack (vManage, vBond and vSmart) need to be configured.</li>
+  <li>The vBond requires a publicly resolvable DNS record.</li>
+  <li>Raise a case with Viptela asking them to point the ZTP service to your organizations vBond.</li>
+  <li>
+    vEdges need to be placed in an authorized state in the vManage and have a configuration
+    template assigned.
+  </li>
+  <li>vEdges require a WAN IP and DNS servers to be assigned via DHCP and access to the internet.</li>
+</ul>
+
+<p>
+  Physical vEdges come pre-configured with a few settings that help facilitate the ZTP process.
+  The vEdge has a WAN port configured as a DHCP client and tunnel configuration enabled. They
+  are pre-configured to use <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ztp.viptela.com</i>
+ as their
+  vBond. As part of the procurement process the vEdges chassis ID and serial number are assigned
+  to a customers organization. The below diagram illustrates the ZTP process.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-sdwan-overview/viptela-ztp.svg" alt="blog/viptela-sdwan-overview/viptela-ztp.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<ul class="list-decimal">
+  <li>WAN IP address and DNS servers are assigned via DHCP.</li>
+  <li>
+    vEdge contacts <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ztp.viptela.com</i>
+ with its chassis ID and
+    serial number.
+  </li>
+  <li>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ztp.viptela.com</i>
+ advises the vEdge of its organizations
+    vBond public DNS name.
+  </li>
+  <li>
+    vEdge contacts its organizations vBond with its chassis ID and serial number.
+  </li>
+  <li>
+    vBond advised the vEdge of its organizations vManage IP address.
+  </li>
+  <li>
+    vEdge contacts the vManage with its chassis ID and serial number.
+  </li>
+  <li>
+    vManage advises the vEdge of its configuration, at this point the vEdge tears down its
+    control plane connections and reconnects starting at step 4 this time using the system IP
+    that was applied via the configuration from the vManage.
+  </li>
+  <li>
+    vEdge joins the overlay network and can participate in data plane exchange with other
+    vEdge devices.
+  </li>
+</ul class="list-decimal">
+
+<p>
+  There are a number of moving parts, but once setup correctly if the WAN link is plugged
+  into the correct port on the vEdge then the deployment process is simple and works very
+  well. In my experience only a very small number of vEdge deployments require an administrator
+  to intervene.
+</p>
+
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  After using the Viptela product for around a year and a half it's easy to see why Cisco
+  purchased them. Viptela has redefined how you configure and manage your WAN making it
+  simple and secure by default. You should now have a better idea of what components make up
+  the Viptela SDWAN solution.
+</p>
+
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://viptela.com/" target=_blank>http://viptela.com/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/viptela.html" target=_blank>https://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/viptela.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.viptela.com/Product_Documentation/Software_Features/Release_17.2/05Security/01Security_Overview/Control_Plane_Security_Overview" target=_blank>https://docs.viptela.com/Product_Documentation/Software_Features/Release_17.2/05Security/01Security_Overview/Control_Plane_Security_Overview</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.viptela.com/Product_Documentation/Getting_Started/Viptela_Overlay_Network_Bringup/07Deploy_the_vEdge_Routers/08Prepare_vEdge_Routers_for_ZTP" target=_blank>https://docs.viptela.com/Product_Documentation/Getting_Started/Viptela_Overlay_Network_Bringup/07Deploy_the_vEdge_Routers/08Prepare_vEdge_Routers_for_ZTP</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#sdwan" class="text-xl">sdwan</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#viptela" class="text-xl">viptela</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#network-components">
+            Network Components
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#management-components">
+            Management Components
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#z-plane-z-plane">
+            Z Plane, Z Plane
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#controllers">
+            Controllers
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vedges">
+            vEdges
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#how-does-it-all-come-together">
+            How Does It All Come Together
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#how-does-ztp-work">
+            How Does ZTP Work
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

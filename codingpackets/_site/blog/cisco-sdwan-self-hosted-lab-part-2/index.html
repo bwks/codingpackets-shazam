@@ -1,0 +1,2633 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Cisco SDWAN Self Hosted Lab Part 2</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 3rd of June 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is the second post in a two part series on building a self hosted Cisco
+  SDWAN lab using an enterprise CA for certificates. You can find the first part
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/cisco-sdwan-self-hosted-lab-part-1">here</a>
+.
+</p>
+<p>
+  In this part I will install the controller stack:
+</p>
+  <ul>
+    <li>vManage</li>
+    <li>vBond</li>
+    <li>vSmart</li>
+  </ul>
+
+<p>
+  Along with the WAN edges:
+</p>
+<ul>
+  <li>vEdge</li>
+  <li>cEdge</li>
+</ul>
+<p>
+  I am hosting this lab on an Ubuntu server running the KVM hypervisor.
+  I will also use the vManage as the enterprise root CA server.
+</p>
+
+<h3 id="pre-requisites">Pre Requisites</h3>
+<p>
+  This post assumes that you have the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">KVM</i>
+
+  hypervisor already installed along with the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">libvirt</i>
+ management application. Additionally
+  you will need the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">virt-install</i>
+ and
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cloud-localds</i>
+ CLI tools.
+</p>
+<p>
+  It is also assumed that you have downloaded the virtual disk images from
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://software.cisco.com" target=_blank>https://software.cisco.com</a>
+ and
+  the serial file from the
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://software.cisco.com/software/csws/ws/platform/home#pnp-devices" target=_blank>PnP Portal</a>
+ generated in part one.
+</p>
+
+<h3 id="lab-diagram">Lab Diagram</h3>
+<p>
+  The following diagram depicts the topology for the lab.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/cisco-sdwan-lab.svg" alt="blog/cisco-sdwan-self-hosted-lab-part-2/cisco-sdwan-lab.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="vmanage">vManage</h3>
+<p>
+  Over on the build server, create a working directory and copy the VM image
+  files to the directory. I will be working from the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/sdwan-testlab</i>
+ directory which contains
+  the following files.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tree sdwan-testlab
+
+# output
+
+sdwan-testlab
+├── csr1000v-ucmk9.16.11.1a-serial.qcow2
+├── sdwan-testlab.viptela
+├── viptela-bond-19.1.0-genericx86-64.qcow2
+├── viptela-edge-19.1.0-genericx86-64.qcow2
+├── viptela-smart-19.1.0-genericx86-64.qcow2
+└── viptela-vmanage-19.1.0-genericx86-64.qcow2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vBond</i> and the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vEdge</i> share the same image.
+    I copied the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vEdge</i> image twice
+    renaming it for the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vBond</i>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  The vManage requires a second disk for the database. Create a thin
+  provisioned disk.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img create -f qcow2 vmanage-disk2.qcow2 100G
+
+# output
+
+Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536 lazy_refcounts=off refcount_bits=16</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Start the vManage installation
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vmanage \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 8192 \
+    --disk path=viptela-vmanage-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=vmanage-disk2.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This will start the VM and attach to a virtual console. Once you see the message
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">System Ready</i>
+ login with the username/password
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+. You will then need to follow the prompts
+  to initialize the database.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Sun Jun  2 03:33:42 UTC 2019: System Ready
+
+
+viptela 19.1.0
+
+vmanage login: admin
+Password:
+Welcome to Viptela CLI
+admin connected from 127.0.0.1 using console on vmanage
+Available storage devices:
+hdb	100GB
+1) hdb
+Select storage device to use: 1
+Would you like to format hdb? (y/n): y</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once this is done the VM will reboot. Login again and apply the bootstrap configuration.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+system
+ system-ip 1.1.1.1
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 172.16.255.1/24
+  tunnel-interface
+  !
+  no shutdown
+ !
+vpn 512
+  interface eth0
+  ip dhcp-client
+  no shutdown
+!
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  While here, generate the Root CA certificate. First login to the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ which is a Unix
+  like shell. Login with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vshell</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# vshell
+vmanage:~$</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Generate a Root CA key.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl genrsa -out ROOTCA.key 2048
+
+# output
+
+Generating RSA private key, 2048 bit long modulus
+..............
+..
+e is 65537 (0x10001)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Next generate the Root CA certificate. I will generate a certificate
+  with 5 years of validity.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 2000 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=sdwan-testlab/CN=vmanage.lab" \
+    -out ROOTCA.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This will create a Root CA cert named
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+
+  the file contents so you can copy and paste them in an
+  upcoming step.
+</p>
+
+<p>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">exit</i>
+ back to the cli shell and find the IP address of the
+  vpn512 interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# show int | tab
+
+# output
+
+                                          IF      IF      IF                                                                TCP
+                AF                        ADMIN   OPER    TRACKER  ENCAP                                     SPEED          MSS                 RX       TX
+VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT TYPE  MTU  HWADDR             MBPS   DUPLEX  ADJUST  UPTIME      PACKETS  PACKETS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0    eth1       ipv4  172.16.255.1/24     Up      Up      -        null   transport  -    52:54:00:fe:62:b7  -      -       -       0:00:14:33  701      185
+0    system     ipv4  1.1.1.1/32          Up      Up      -        null   loopback   -    -                  -      -       -       0:00:18:20  0        0
+512  eth0       ipv4  192.168.122.129/24  Up      Up      -        null   mgmt       -    52:54:00:ea:c0:fc  -      -       -       0:00:00:07  862      155</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once you have the IP address browse to the URL
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">https://&lt;ip-address&gt;</i>
+ and login with the
+  username/password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  The dashboard looks like this.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Once logged in navigate to the settings page.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Administration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+<p>
+  Enter the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Organization Name</i>
+ and click Save.
+  This field must match what you used when creating the vBond profile.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vBond</i>
+ IP Address and click Save.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-4.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Change the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Controller Certificate Authorization</i>
+
+  to use Enterprise Root Certificate. Paste in the contents of the generated
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ file from the previous step and
+  click Import & Save.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-5.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Keep the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">WAN Edge Cloud Certificate Authorization</i>
+
+  method as Automated (vManage - signed Certificate). This way the vManage will automatically
+  signed the cloud edge certs when they connect to the vManage.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-6.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-6.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Next we need to create a CSR for the vManage. Navigate to the certificates section.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">...</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Generate CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-7.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-7.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  A window will popup with the CSR text. This can be ignored for the vManage.
+</p>
+<p>
+  Back in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ there will be a file
+  called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage_csr</i>
+. Sign this file with
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+ and
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vmanage_csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vmanage.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vmanage-951c1251-07b2-4a4e-984c-4e1dea25a4f1-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This creates a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.crt</i>
+
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ the file in order to copy and paste it into the
+  web interface in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the certificate by
+  pasting the contents of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.crt</i>
+ file
+  and click Install.
+</p>
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-8.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-8.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  You should see a success message similar to the below.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-9.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-9.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<p>
+  For convenience sake, I recommend SSHing to the vManage from another
+  terminal in order to sign the cert of the other devices.
+</p>
+
+<h3 id="vbond">vBond</h3>
+<p>
+  Start the install of the vBond VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vbond \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-bond-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once you see the message <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">System Ready</i>
+
+  login with the username/password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+
+  and apply the following bootstrap config.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+system
+ host-name vbond
+ system-ip 1.1.1.2
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2 local vbond-only
+!
+vpn 0
+ interface ge0/0
+  no tunnel-interface
+  ip address 172.16.255.2/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Navigate to the devices page to add the vBond to the vManage.
+</p>
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  Enter the vBond details add click Add.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Navigate to the certificates page to get the vBond CSR text.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">...</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">View CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Copy the CSR text and go to the vManage <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+
+  to generate the certificate.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-4.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vim</i>
+ to create a file called
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.csr</i>
+ with the contents of
+  the vBond CSR from the previous step. Then sign the CSR with the Root
+  CA certificate.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vbond.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vbond.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vbond-3da48c78-a077-4f5e-aabe-d4f77746f12a-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This will create a certificate file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.crt</i>
+.
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ the contents of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.crt</i>
+
+  file in order to copy and past the contents to the vManage in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the vBond certificate by
+  pasting in the contents of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.crt</i>
+ file
+  and click Install.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-5.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  If it was successful you will see a success message similar to the below.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-6.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-6.png">
+</div>
+<!-- IMAGE END -->
+
+<p>
+  Finally activate the control plane <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tunnel</i>
+
+  on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ge0/0</i>
+ interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+vpn 0
+ interface ge0/0
+  tunnel-interface
+   encapsulation ipsec
+  !
+  no shutdown
+ !
+!
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm that control connections are active between the vBond and vManage.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show orchestrator connections
+
+# output
+                                                  PEER                      PEER
+         PEER     PEER     PEER             SITE        DOMAIN      PEER             PRIVATE  PEER             PUBLIC                                   ORGANIZATION
+INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP       PORT     PUBLIC IP        PORT    REMOTE COLOR     STATE           NAME                    UPTIME
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0        vmanage  dtls     1.1.1.1          1000        0           172.16.255.1     12346    172.16.255.1     12346   default          up              sdwan-testlab           0:02:19:17
+0        vmanage  dtls     1.1.1.1          1000        0           172.16.255.1     12446    172.16.255.1     12446   default          up              sdwan-testlab           0:02:19:17</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<h3 id="vsmart">vSmart</h3>
+<p>
+  Start the install of the vSmart VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vsmart \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-smart-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once you see the message <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">System Ready</i>
+
+  login with the username/password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+
+  and apply the following bootstrap config.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+system
+ system-ip 1.1.1.3
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 172.16.255.3/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Navigate to the devices page to add the vSmart to the vManage.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vSmart</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the vSmart details and click Add.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Navigate to the certificates page to get the vSmart CSR text.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vSmart</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">...</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">View CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Copy the CSR text and go to the vManage <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+
+  to generate the certificate.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-4.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vim</i>
+ to create a file called
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.csr</i>
+ with the contents of
+  the vSmart CSR from the previous step. Then sign the CSR with the Root
+  CA certificate.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vsmart.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vsmart.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vsmart-5ade0771-9aa7-4bef-a46b-8ad27b723251-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This will create a certificate file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.crt</i>
+.
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ the contents of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.crt</i>
+
+  file in order to copy and past the contents to the vManage in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the vSmart certificate by
+  pasting in the contents of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.crt</i>
+ file
+  and click Install.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-5.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  If it was successful you will see a success message similar to the below.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-6.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-6.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Finally activate the control plane <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tunnel</i>
+
+  on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eth1</i>
+ interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+vpn 0
+ interface eth1
+  tunnel-interface
+  !
+  no shutdown
+ !
+!
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm that control connections are active between the vSmart, vBond and vManage.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show orchestrator connections
+
+# output
+                                                  PEER                      PEER
+     PEER
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR     STATE UPTIME
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         up     0:00:01:22
+0     vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12346 172.16.255.1                            12346 default         up     0:00:01:13
+1     vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         up     0:00:01:22</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit the console use one of these key combinations (Assuming English keyboard).
+</p>
+<ul>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+  <li><i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> + <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">5</i></li>
+  <li>Press and hold <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">CTRL</i> and <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">SHIFT</i> while pressing <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">6</i> then <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">]</i></li>
+</ul>
+
+<p>
+  Now with the controllers out of the way, let move onto the WAN edge devices.
+</p>
+
+<h3 id="wan-edge-list">WAN Edge List</h3>
+<p>
+  Do you remember in part one when I said to keep the serial file safe for a later time?
+  Now is that time! In order for WAN edges to join the fabric, you need to upload the
+  serial file generated in part one of this series.
+</p>
+<p>
+  Navigate to the devices page and upload the serial file from the location you
+  save it to previously. Keep the box ticked to validate the list and send to
+  controllers.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Upload WAN Edge List</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  A success message looks similar to the below.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="vedge">vEdge</h3>
+<p>
+  To add a virtual edge you need to generate a bootstrap file. Navigate to the devices page.
+</p>
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">WAN Edge List</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">A vEdge Cloud</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">...</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Generate Bootstrap Configuration</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  For KVM select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Cloud-Init</i>
+. (VMWare uses Encoded String). Then
+  click OK.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  You can either download the file and SCP it across to the host server, or copy and paste the
+  contents via a terminal to the server. Use the method you are most comfortable with.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  On the host server, create and ISO image from the cloud-init file that can be mounted to
+  the vEdge on boot. I named the file <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vedge.cfg</i>
+ and
+  copied it to the working directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cloud-localds config.iso vedge.cfg</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Boot the vEdge with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">config.iso</i>
+ disk attached.
+  This will ensure that the image boots with the correct chassis number.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name vedge \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-edge-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=config.iso,device=cdrom \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once you see the message <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">System Ready</i>
+
+  login with the username/password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+
+  and apply the following bootstrap config.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
+system
+ system-ip 3.1.1.1
+ site-id 1
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ interface ge0/0
+  tunnel-interface
+   encapsulation ipsec
+  ip address 172.16.255.11/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm that the chassis number is the same as the one from the cloud-init config.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show certificate serial
+
+# output
+
+Certificate not yet installed ... giving up.
+Chassis number: 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX serial number:</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Install the Root CA cert by SCPing it from the vManage via the VPN 512 interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request root-cert-chain install vpn 512 scp://admin@192.168.122.129:/home/admin/ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@192.168.122.129:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '192.168.122.129' (ECDSA) to the list of known hosts.
+viptela 19.1.0
+
+admin@192.168.122.129s password:
+ROOTCA.pem                                    100% 1277     2.0MB/s   00:00
+Updating the root certificate chain..
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now activate the vEdge using the chassis number and the one time password from the
+  cloud-init file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request vedge-cloud activate chassis-number 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX token a38892fd6310f07c5XXXXXXXXXXXX</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  It will take a minute or two, but confirm that the control connections are active
+  to the vManage, vBond and vSmart.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show control connections
+
+# output
+
+                                                                                       PEER                                          PEER                                          CONTROLLER
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                           GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     PROXY STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      172.16.255.3                            12446 172.16.255.3                            12446 default         No    up     0:00:00:39  0
+vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         -     up     0:00:00:39  0
+vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12446 172.16.255.1                            12446 default         No    up     0:00:00:39  0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+
+
+
+
+<h3 id="cedge">cEdge</h3>
+<p>
+  Navigate to the devices page to generate the bootstrap config for the cEdge.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">WAN Edge List</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">A cEdge Cloud</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">...</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Generate Bootstrap Configuration</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  For KVM select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Cloud-Init</i>
+. (VMWare uses Encoded String). Then
+  click OK.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  You can either download the file and SCP it across to the host server, or copy and paste the
+  contents via a terminal to the server. Use the method you are most comfortable with.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Unlike the vEdge it does not look like you can mount a cloud-init ISO to set the
+  initial boot parameters. The cloud-init config file will need to be named
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ciscosdwan.cfg</i>
+ and copied via SCP to the cEdge
+  after it boots up.
+</p>
+
+<p>
+  Boot up the cEdge VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
+    --name=cedge \
+    --os-type=linux \
+    --os-variant=rhel4 \
+    --arch=x86_64 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --ram=4096 \
+    --disk path=csr1000v-ucmk9.16.11.1a-serial.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once you see the VM is booted up
+  login with the username/password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+.
+</p>
+
+<p>
+  Find the IP address of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">GigabitEthernet1</i>
+ so
+  you can SCP the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ciscosdwan.cfg</i>
+ file to the device.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show ip int brie
+
+# output
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       192.168.122.66  YES DHCP   up                    up
+GigabitEthernet2       unassigned      YES unset  up                    up
+Loopback65528          192.168.1.1     YES other  up                    up</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  From the host SCP the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ciscosdwan.cfg</i>
+ file to
+  the cEdge.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">scp ciscosdwan.cfg admin@192.168.122.66:ciscosdwan.cfg
+
+# output
+
+Password:
+ciscosdwan.cfg                                                                                    100%   25KB 598.1KB/s   00:00</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Reset the SDWAN software in order for the chassis serial number from the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ciscosdwan.cfg</i>
+ file to be
+  applied to the device.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan software reset</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Once the router is back online, login and confirm that the chassis number
+  is the same as the one from the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ciscosdwan.cfg</i>
+
+  config.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show sdwan certificate serial
+
+# output
+
+Certificate not yet installed ... giving up.
+Chassis number: CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX serial number:</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Apply the bootstrap configuration.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config-transaction
+!
+system
+ system-ip             3.1.2.1
+ site-id               2
+ admin-tech-on-failure
+ organization-name     sdwan-testlab
+ vbond 172.16.255.2
+!
+hostname cedge
+interface GigabitEthernet2
+ no shutdown
+ ip address 172.16.255.12 255.255.255.0
+exit
+interface Tunnel0
+ no shutdown
+ ip unnumbered GigabitEthernet2
+ tunnel source GigabitEthernet2
+ tunnel mode sdwan
+exit
+sdwan
+ interface GigabitEthernet2
+  tunnel-interface
+   encapsulation ipsec
+   color default
+  exit
+ exit
+ !
+!
+commit
+end
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Install the Root CA cert by SCPing it from the vManage via the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">GigabitEthernet1</i>
+ interface.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">copy scp://admin@192.168.122.129 bootflash:
+
+# output
+
+Address or name of remote host [192.168.122.129]?
+Source username [admin]?
+Source filename [home/admin/ROOTCA.pem]? /home/admin/ROOTCA.pem
+Destination filename [ROOTCA.pem]?
+viptela 19.1.0
+
+
+Password:
+ Sending file modes: C0644 1277 ROOTCA.pem
+!
+1277 bytes copied in 1.790 secs (713 bytes/sec)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Now install the Root CA certificate.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan root-cert-chain install bootflash:ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 0
+Copying ... /bootflash/ROOTCA.pem via VPN 0
+Updating the root certificate chain..
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The vEdge should be activated automatically, but if it is not you can do it manually
+  using the the chassis number and the one time password from the
+  cloud-init file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan vedge_cloud activate chassis-number CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX token 14fe4d0f135f116cXXXXXXXXXXXX</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  It will take a minute or two, but confirm that the control connections are active
+  to the vManage, vBond and vSmart.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show sdwan control connections
+
+# output
+
+                                                                                       PEER                                          PEER                                    CONTROLLER
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                     GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     PROXY STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      172.16.255.3                            12446 172.16.255.3                            12446 default               up     0:00:02:47  0
+vbond   dtls -               0          0      172.16.255.2                            12346 172.16.255.2                            12346 default               up     0:00:02:51  0
+vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12446 172.16.255.1                            12446 default               up     0:00:02:51  0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  And that's it. A functioning Cisco SDWAN lab with both vEdges and cEdges. Here is a couple of images
+  of the finished product.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/final-dashboard.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/final-dashboard.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-2/final-network.png" alt="blog/cisco-sdwan-self-hosted-lab-part-2/final-network.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  This was a pretty loooooonnnnngggg post. If you got this far, thanks for hanging in there.
+  In this series of posts, we configured a Cisco SDWAN lab using an Enterprise CA with the
+  vManage, vBond and vSmart controllers and both the cEdge and vEdge devices. If Cisco dCloud
+  labs don't meet your needs, then building your own lab might. Until next time!
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://sdwan-docs.cisco.com/Product_Documentation/Getting_Started/Hardware_and_Software_Installation/Software_Installation_and_Upgrade_for_Cisco_IOS_XE_Routers" target=_blank>https://sdwan-docs.cisco.com/Product_Documentation/Getting_Started/Hardware_and_Software_Installation/Software_Installation_and_Upgrade_for_Cisco_IOS_XE_Routers</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stafwag.github.io/blog/blog/2019/03/03/howto-use-centos-cloud-images-with-cloud-init/" target=_blank>https://stafwag.github.io/blog/blog/2019/03/03/howto-use-centos-cloud-images-with-cloud-init/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://manpages.debian.org/testing/cloud-image-utils/cloud-localds.1.en.html" target=_blank>https://manpages.debian.org/testing/cloud-image-utils/cloud-localds.1.en.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#sdwan" class="text-xl">sdwan</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#kvm" class="text-xl">kvm</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#libvirt" class="text-xl">libvirt</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-requisites">
+            Pre Requisites
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-diagram">
+            Lab Diagram
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vmanage">
+            vManage
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vbond">
+            vBond
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vsmart">
+            vSmart
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#wan-edge-list">
+            WAN Edge List
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vedge">
+            vEdge
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#cedge">
+            cEdge
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,72 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Variables in Rust are defined with the 
+  {{ text::emphasize(text="let") }}
+ keyword and 
+  values are assigned with the {{ text::emphasize(text="=") }}
+ 
+  operator. Constants have a similar syntax except 
+  they are defined with the 
+  {{ text::emphasize(text="const") }}
+ keyword.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Create a variable and initialize it with a value.
+let stuff = "stuff";
+let the_answer = 42;
+
+// Explicitly define the type of a variable.
+let stuff: &str = "stuff";
+let the_answer: i32 = 42;
+
+// Decalre an un-initialized variable without a value.
+// The type must be annotated in this case.
+let stuff: &str;
+let the_answer: i32;
+
+// Assign a value to un-initialized variable.
+stuff = "stuff";
+
+// Create a mutable variable with the `mut` keyword.
+let mut the_answer = 42;
+
+// Change a mutable variables value.
+the_answer = 69;
+
+// Re-declare a variable;
+let blah = "blah";
+let blah = 69;
+
+// Create a constant, the type must be annotated and value assigned.
+const THINGS: &str = "things";'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Variables are defined in {{ text::emphasize(text="snake_case") }}
+ by convention.</li>
+  <li>Constants are defined in {{ text::emphasize(text="SCREAMING_SNAKE_CASE") }}
+ by convention.</li>
+  <li>Variable types are inferred by the compiler and do not have to be specifically defined in all cases.</li>
+  <li>When an un-initialized variable is declared, it must be assigned a value before it can be accessed.</li>
+  <li>Variables are immutable by default and their value cannot be changed.</li>
+  <li>A variables value cannot be reassigned unless it is marked as being mutable with the {{ text::emphasize(text="mut") }}
+ keyword.</li>  
+  <li>A variable is valid during the lifetime of the current block (local scope) which is defined by curly {{ text::emphasize(text="{}") }}
+ brackets.</li>
+  <li>A variables name is unique within the current block and variable shadowing is possible because of this.</li>
+  <li>A variable can be re-declared with the same name during the lifetime of a program.</li>
+  <li>Constants must be defined with their type annotated.</li>
+  <li>A constants value must be an expression that can be determined at compile time.</li>
+  <li>Constants have a lifetime of the current module scope.</li>
+  <li>Constants are accessible in the current module scope.</li>
+</ul>
+
+{% endblock page_content %}

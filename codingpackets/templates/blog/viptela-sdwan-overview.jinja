@@ -1,0 +1,304 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="http://viptela.com/", description="Viptela") }}
+ is an SDWAN company that was recently purchased
+  by Cisco. In this post I will go over the components that make up the Viptela secure extensible
+  network (SEN) solution. By the end of this post you will have a good idea of the pieces
+  that make up the Viptela puzzle.
+</p>
+
+<h3 id="network-components">Network Components</h3>
+<h4><b>Underlay Network</b></h4>
+<p>
+  The underlay network is made up of your traditional transport networks such MPLS, broadband
+  and 4G internet. The Viptela solution hitches a ride on top of the underlay network.
+</p>
+
+<h4><b>Overlay Network</b></h4>
+<p>
+  The overlay network is a virtual IP fabric built on top of the underlay transport using
+  IPsec tunnels. The fabric can be either full mesh, partial mesh or hub and spoke topologies.
+</p>
+
+<h4><b>VPNs</b></h4>
+<p>
+  Viptela has references to two types of VPN's which can be a little confusing unless you
+  know the distinction between the two.
+</p>
+<ul>
+  <li><b>Transport side VPNs</b> use IPSEC to encrypt the WAN underlay transport.</li>
+  <li><b>Service side VPNs</b> are LAN side VPNs which are similar to an MPLS L3VPN.</li>
+</ul>
+
+<h4><b>Segmentation</b></h4>
+<p>
+  Viptela uses a concept similar to MPLS L3VPNs to build network wide LAN segmentation. These
+  segments are called {{ text::emphasize(text="service side vpns") }}
+ which are separate
+  VRF domains. Service side VPNs allow an administrator to define polices that logically
+  splits groups of users and or applications into separate routing domains.
+</p>
+
+<h3 id="management-components">Management Components</h3>
+<h4><b>Organization Name</b></h4>
+<p>
+  When you become a Viptela customer they assign your company a unique
+  {{ text::emphasize(text="organization name") }}
+. The vEdges you purchase are assigned
+  to your organization for the purpose of support, certificate lifecycle and zero touch
+  provisioning.
+</p>
+
+<h4><b>Certificates</b></h4>
+<p>
+  Mutual authentication is performed using PKI certificates. The beauty of the Viptela
+  solution is that the certificate life-cycle is managed for you so the administrative burden
+  of managing a certificate infrastructure is shouldered by Viptela. Of course if organizational
+  policy demands the certificates are managed in house, this is also possible.
+</p>
+
+<h4><b>System IP</b></h4>
+<p>
+  Each Viptela device is assigned a unique system IP. The system IP is similar to a router-id
+  under a routing process. It is used to identify the device but does not need to be injected
+  into any routing protocol.
+</p>
+
+<h4><b>Configuration Management</b></h4>
+<p>
+  The Viptela solution has a robust configuration management engine allowing you to define
+  configuration templates for your devices ensuring a consistent configuration is applied
+  across the entire fleet. It is also possible to configure the devices via a CLI if you
+  get nostalgic.
+</p>
+
+<h4><b>ZTP</b></h4>
+<p>
+  Zero touch provisioning is one of the killer features of the Viptela solution.
+  Not only does it support ZTP the ZTP solution actually works reliably (More on this later).
+</p>
+
+<h3 id="z-plane-z-plane">Z Plane, Z Plane</h3>
+<p>
+  The Viptela solution maintains complete separation of the control plane and the data plane.
+  Both planes utilize tunneling protocols to ensure secure information exchange.
+</p>
+
+<h4><b>Control Plane</b></h4>
+<p>
+  The Viptela control plane utilizes either UDP/DTLS or TCP/TLS protocols to encrypt control
+  plane traffic. Viptela invented the proprietary overlay management protocol (OMP) to exchange
+  messages and also act as the control plane for IPSEC.
+</p>
+
+<h4><b>Data Plane</b></h4>
+<p>
+  Data payloads are exchanged between vEdges over an encrypted IPSEC transport. IPSEC tunnels
+  are built using public key authentication relieving the need to painfully manage pre-shared
+  keys. IPSEC tunnels are only built between vEdge devices.
+</p>
+
+<h4><b>Management Plane</b></h4>
+<p>
+  The Viptela devices can be managed centrally, via the CLI or a combination of both. Each
+  Viptela device has a default management VPN (similar to a service side VPN) which enables
+  out of band connectivity and cannot be removed.
+</p>
+
+<h3 id="controllers">Controllers</h3>
+<p>
+  The controller stack is made up of three types of devices that can either be hosted by
+  Viptela in the cloud or on the customers premises.
+</p>
+
+<h4>
+  <img src="/img/network-icons/viptela-vmanage.svg" alt="viptela-vmanage.svg" height="45px"> <b>vManage NMS</b>
+</h4>
+<p>
+  The vManage NMS is the central point of device management and monitoring for the Viptela solution.
+  Everything from device configuration templates to routing policy is defined on the vManage.
+  The vManage can also acts as an intermediate certificate authority providing certificate
+  signing services for cloud vEdge devices. The vManage maintains a permanent control plane
+  connection to all Viptela devices in the overlay network for monitoring and configuration
+  purposes. The vManage also has a full featured API allowing configuration and monitoring
+  through a programmable interface.
+</p>
+
+<h4>
+  <img src="/img/network-icons/viptela-vbond.svg" alt="viptela-vbond.svg" height="45px"> <b>vBond Orchestrator</b>
+</h4>
+<p>
+  The vBond orchestrator is the connectivity coordinator for the Viptela solution. The vBond
+  typically sits in an internet facing security zone and has 3 main functions.
+</p>
+<ul>
+  <li>Validate and authenticate devices that join the overlay network.</li>
+  <li>Act as a NAT traversal facilitator between vSmarts and vEdges behind NAT devices.</li>
+  <li>Load balances vEdge devices across multiple vSmarts in environments with multiple vSmarts.</li>
+</ul>
+
+<h4>
+  <img src="/img/network-icons/viptela-vsmart.svg" alt="viptela-vsmart.svg" height="45px"> <b>vSmart Controller</b>
+</h4>
+<p>
+  The vSmart controller is the central point of policy control in the overlay network and has
+  the following main functions.
+</p>
+<ul>
+  <li>Maintains a permanent control plane connection to vEdge devices in order to pass routing information.</li>
+  <li>Uses OMP to advertise routing information to vEdge devices in a similar manner to BGP route reflectors.</li>
+  <li>Acts as an IPSEC key reflector passing encryption key information between vEdges.</li>
+  <li>Enforces routing policy to control routing advertisements and enforce network wide segmentation.</li>
+</ul>
+
+<h3 id="vedges">vEdges</h3>
+
+<h4>
+  <img src="/img/network-icons/viptela-vedge.svg" alt="viptela-vedge.svg" height="45px"> <b>vEdge Routers</b>
+</h4>
+<p>
+  vEdge routers are either physical or virtual devices that are responsible for sending data
+  plane traffic across the network. vEdges create IPSEC VPN tunnels between each other which
+  form the virtual IP fabric. Hardware vEdges have a "trusted board chip" that contain the
+  routers public and private keys as well as a signed certificate. This allows them to connect
+  to the overlay network securely via ZTP or by applying a minimal configuration.
+</p>
+
+
+<h3 id="how-does-it-all-come-together">How Does It All Come Together</h3>
+<p>
+  Now that we understand the components in the Viptela solution, lets have a look at how it
+  might look in a example scenario.
+</p>
+
+<h4><b>Underlay Network</b></h4>
+<p>
+  Consider the below network, the environment consists of a primary and secondary data center,
+  a cloud provider, a campus network and <i>N</i> number of remote offices.
+  These locations are connected via multiple WAN transport technologies such as MPLS,
+  broadband, 4G and private interconnects to a could provider.
+</p>
+
+{{ image::boxed(path="blog/viptela-sdwan-overview/viptela-underlay.svg", width="900px") }}
+
+<h4><b>Control Plane</b></h4>
+<p>
+  The controler stack can either be hosted by Viptela in the cloud or in an on premises data
+  centre. Control plane connections are formed between the vManage, vSmart, vBond and the
+  vEdges devices. By default a permanent control plane connection will be established to the
+  vManage and vSmart over each transport side link.
+</p>
+
+{{ image::boxed(path="blog/viptela-sdwan-overview/viptela-control-plane.svg", width="900px") }}
+
+<h4><b>Data Plane</b></h4>
+<p>
+  Data plane connections are only formed between the vEdges. You can see from the diagram that
+  the data plane is not established with the vManage, vBond or vSmart controllers further
+  illustrating the point around complete separation of the control and data planes. By default,
+  vEdges will attempt to form an IPSEC tunnel with every other vEdge across every link on
+  each device. This kind of full mesh results in ALOT of overhead just managing and maintaining
+  IPSEC. It is recommended to use policy to limit the topology to hub and spoke, partial mesh
+  or something in between that makes sense to the business requirements.
+</p>
+
+{{ image::boxed(path="blog/viptela-sdwan-overview/viptela-data-plane.svg", width="900px") }}
+
+<h4><b>All Together Now</b></h4>
+<p>
+  When you put it all together you can see why Viptela calls it a virtual IP fabric.
+</p>
+
+{{ image::boxed(path="blog/viptela-sdwan-overview/viptela-combined-plane.svg", width="900px") }}
+
+<h3 id="how-does-ztp-work">How Does ZTP Work</h3>
+<p>
+  Zero touch provisioning (ZTP) is one of the best features of the Viptela solution so I want
+  to spend a bit of time going over it. I am not really a fan of the term ZTP because in
+  reality it's more like low touch provisioning (LTP). Nevertheless the Viptela solution
+  actually delivers on the promise of making deployments simple and secure by default with
+  very little overhead required by the administrator.
+</p>
+
+<p>
+  To use the ZTP service, there are a number of things that need to be completed. At a high
+  level they are as follows.
+</p>
+
+<ul>
+  <li>The controller stack (vManage, vBond and vSmart) need to be configured.</li>
+  <li>The vBond requires a publicly resolvable DNS record.</li>
+  <li>Raise a case with Viptela asking them to point the ZTP service to your organizations vBond.</li>
+  <li>
+    vEdges need to be placed in an authorized state in the vManage and have a configuration
+    template assigned.
+  </li>
+  <li>vEdges require a WAN IP and DNS servers to be assigned via DHCP and access to the internet.</li>
+</ul>
+
+<p>
+  Physical vEdges come pre-configured with a few settings that help facilitate the ZTP process.
+  The vEdge has a WAN port configured as a DHCP client and tunnel configuration enabled. They
+  are pre-configured to use {{ text::emphasize(text="ztp.viptela.com") }}
+ as their
+  vBond. As part of the procurement process the vEdges chassis ID and serial number are assigned
+  to a customers organization. The below diagram illustrates the ZTP process.
+</p>
+
+{{ image::boxed(path="blog/viptela-sdwan-overview/viptela-ztp.svg", width="900px") }}
+
+<ul class="list-decimal">
+  <li>WAN IP address and DNS servers are assigned via DHCP.</li>
+  <li>
+    vEdge contacts {{ text::emphasize(text="ztp.viptela.com") }}
+ with its chassis ID and
+    serial number.
+  </li>
+  <li>
+    {{ text::emphasize(text="ztp.viptela.com") }}
+ advises the vEdge of its organizations
+    vBond public DNS name.
+  </li>
+  <li>
+    vEdge contacts its organizations vBond with its chassis ID and serial number.
+  </li>
+  <li>
+    vBond advised the vEdge of its organizations vManage IP address.
+  </li>
+  <li>
+    vEdge contacts the vManage with its chassis ID and serial number.
+  </li>
+  <li>
+    vManage advises the vEdge of its configuration, at this point the vEdge tears down its
+    control plane connections and reconnects starting at step 4 this time using the system IP
+    that was applied via the configuration from the vManage.
+  </li>
+  <li>
+    vEdge joins the overlay network and can participate in data plane exchange with other
+    vEdge devices.
+  </li>
+</ul class="list-decimal">
+
+<p>
+  There are a number of moving parts, but once setup correctly if the WAN link is plugged
+  into the correct port on the vEdge then the deployment process is simple and works very
+  well. In my experience only a very small number of vEdge deployments require an administrator
+  to intervene.
+</p>
+
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  After using the Viptela product for around a year and a half it's easy to see why Cisco
+  purchased them. Viptela has redefined how you configure and manage your WAN making it
+  simple and secure by default. You should now have a better idea of what components make up
+  the Viptela SDWAN solution.
+</p>
+
+
+{% endblock page_content %}

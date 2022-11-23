@@ -1,0 +1,66 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  The {{ text::emphasize(text="if") }}
+ conditional 
+  block in Rust behaves similarly to other languages. 
+  In Rust, {{ text::emphasize(text="if") }}
+ blocks 
+  act as an expression and the resulting branch can be assigned 
+  to a variable.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Example if block.
+if "stuff" == "things"  {
+    println!("equal") // Considered a tail-expression so semi-colon not required.
+} else if 42 < 69 {
+    println!("the answer")
+} else {
+    println!("lol")
+} // terminating semi-colon optional when not returning an expression.'
+) }}
+
+<p>
+  The resulting expression of an 
+  {{ text::emphasize(text="if") }}
+
+  branch can be assigned 
+  to a variable with the {{ text::emphasize(text="let") }}
+
+  keyword.
+</p>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Assign resulting expression to `the_answer` variable.
+let the_answer = if 42 > 69 {
+    "the answer" // Considered a tail-expression so semi-colon not required.
+} else {
+    "lol"
+}; // terminating semi-colon is required when returning an expression.'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>The {{ text::emphasize(text="condition") }}
+ MUST evaluate to a {{ text::emphasize(text="boolean") }}
+</li>
+  <li>Semi-colons at the end of the branches are not required as they are considered tail-expressions.</li>
+  <li>When an {{ text::emphasize(text="if") }}
+ block returns a value:
+    <ul>
+      <li>A terminating semi-colon on the {{ text::emphasize(text="if") }}
+ block is required.</li>
+      <li>All branches must return the same type.</li>
+    </ul>
+  </li>
+</ul>
+
+{% endblock page_content %}

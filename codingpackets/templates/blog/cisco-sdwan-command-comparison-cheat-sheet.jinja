@@ -1,0 +1,368 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Our Cisco SDWAN account rep provided our team with a
+  command cheat sheet that compares commands from the Viptela vEdge platform to the Cisco
+  cEdge platform. This could be useful for others and with permission I am re-producing it
+  here almost verbatim. I only cleaned it up, added a couple of commands and re-organized
+  it a bit for this web format.
+</p>
+
+<h3 id="show-commands">Show Commands</h3>
+
+{{ table::default(
+  header=["Interface", ""],
+  rows=[
+    "show int $1 tab | show ip interface brief",
+    "show interface detail statistics interface &lt;interface&gt; | show platform hardware qfp active  interface if-name &lt;interface&gt; statistics",
+  ],
+) 
+  | replace(from="$1", to="|")
+}}
+
+
+{{ table::default(
+  header=["Tunnel", ""],
+  rows=[
+"show tunnel gre-keepalives | show sdwan tunnel gre-keepalives",
+"show tunnel statistics | show sdwan tunnel statistics",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["IPSEC", ""],
+  rows=[
+"show ipsec inbound-connections | show sdwan ipsec inbound-connections",
+"show ipsec local-sa | show sdwan ipsec local-sa",
+"show ipsec outbound-connections | show sdwan ipsec outbound-connections",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["BFD", ""],
+  rows=[
+"show bfd history | show sdwan bfd history",
+"show bfd sessions | show sdwan bfd sessions",
+"show bfd summary | show sdwan bfd summary",
+"show bfd tloc-summary-list | show sdwan bfd tloc-summary-list",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Certificate", ""],
+  rows=[
+  "show certificate installed | show sdwan certificate installed",
+  "show certificate root-ca-cert | show sdwan certificate root-ca-cert",
+  "show certificate serial | show sdwan certificate serial",
+  "show certificate signing-request | show sdwan certificate signing-request",
+  "show certificate validity | show sdwan certificate validity",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Control", ""],
+  rows=[
+  "show control connections | show sdwan control connections",
+  "show control connections-history | show sdwan control connection-history",
+  "show control connections-info | show sdwan control connection-info",
+  "show control local-properties | show sdwan control local-properties",
+  "show control statistics | show sdwan control statistics",
+  "show control summary | show sdwan control summary",
+  "show control valid-vsmarts | show sdwan control valid-vsmarts",
+  "show control valid-vmanage-id | Show sdwan control valid-vmanage-id",
+  "show control affinity config | show sdwan control affinity config",
+  "show control affinity status | show sdwan control affinity status",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["OMP", ""],
+  rows=[
+"show omp cloudexpress | show sdwan omp cloudexpress",
+"show omp multicast-auto-discover | show sdwan omp multicast-auto-discover",
+"show omp multicast-routes | show sdwan omp multicast-routes",
+"show omp peers | show sdwan omp peers",
+"show omp routes | show sdwan omp routes",
+"show omp services | show sdwan omp services",
+"show omp summary | show sdwan omp summary",
+"show omp tloc-paths | show sdwan omp tloc-paths",
+"show omp tlocs | show sdwan omp tlocs",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Policy", ""],
+  rows=[
+"show policy access-list-associations | show sdwan policy access-list-associations",
+"show policy access-list-counters | show sdwan policy access-list-counters",
+"show policy access-list-names | show sdwan policy access-list-names",
+"show policy access-list-policers | ",
+"show policy app-route-policy-filter | show sdwan policy app-route-policy-filter",
+"show policy data-policy-filter | show sdwan policy data-policy-filter",
+"show policy from-vsmart | show sdwan policy from-vsmart",
+  ],
+) 
+}}
+
+
+{{ table::default(
+  header=["Config", ""],
+  rows=[
+"show running-config | show sdwan running-config",
+  ],
+) 
+}}
+
+
+{{ table::default(
+  header=["Config", ""],
+  rows=[
+"show app cflowd collector | show sdwan app-fwd cflowd collector",
+"show app cflowd flow-count | show sdwan app-fwd cflowd flow-count",
+"show app cflowd flows | show sdwan app-fwd cflowd flows",
+"show app cflowd statistics | show sdwan app-fwd cflowd statistics",
+"show app cflowd template | show sdwan app-fwd cflowd template",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["DPI", ""],
+  rows=[
+  "show app dpi flows | show sdwan app-fwd dpi flows",
+  "show app dpi summary | show sdwan app-fwd dpi summary",
+  "show app dpi applications | N/A",
+  "show app dpi supported-applications | N/A",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["App-route", ""],
+  rows=[
+"show app-route sla-class | show sdwan app-route sla-class",
+"show app-route stats | show sdwan app-route stats",
+  ],
+) 
+}}
+
+
+{{ table::default(
+  header=["Version", ""],
+  rows=[
+"show version | show sdwan version",
+"show software | show sdwan software",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["System", ""],
+  rows=[
+  "show reboot history | show sdwan reboot history",
+  "show system buffer-pool-status | N/A",
+  "show system status | show system statistics",
+  "show system statistics | show platform hardware qfp active statistics drop",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Notification", ""],
+  rows=[
+  "show notification stream viptela | show sdwan notification stream viptela",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Security", ""],
+  rows=[
+  "show security-info | show sdwan security-info",
+  ],
+) 
+}}
+
+
+{{ table::default(
+  header=["ZBFW", ""],
+  rows=[
+"N/A | show sdwan zbfw drop-statistics",
+"N/A | show sdwan zbfw zonepair-statistics",
+"N/A | show sdwan zonebfwdp sessions",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["NAT", ""],
+  rows=[
+"N/A | show sdwan nat-fwd ip-nat-translation",
+"N/A | show sdwan nat-fwd ip-nat-translation-verbose",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Crash", ""],
+  rows=[
+"show crash | show sdwan crash",
+  ],
+) 
+}}
+
+
+<h3 id="clear-commands">Clear Commands</h3>
+
+{{ table::default(
+  header=["App", ""],
+  rows=[
+  "clear app cflowd flow-all | clear sdwan app-fwd cflowd flow-all",
+  "clear app dpi all | clear sdwan app-fwd dpi flow-all",
+  "clear app log flow-all | N/A",
+  "clear app tcp-opt expired-flows | N/A",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Control", ""],
+  rows=[
+  "clear control connections | clear sdwan control connections",
+  "clear control connections-history | clear sdwan control connection-history",
+  "N/A | clear sdwan control port-index",
+  "clear control reverse-proxy-connections | N/A",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Notification", ""],
+  rows=[
+  "clear installed-certificates | clear sdwan installed-certificates",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Control", ""],
+  rows=[
+  "clear notification stream viptela | clear sdwan notification stream viptela",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["OMP", ""],
+  rows=[
+"clear omp all | clear sdwan omp all",
+"clear omp peer | clear sdwan omp peer",
+"clear omp routes | clear sdwan omp routes",
+"clear omp tlocs | clear sdwan omp tlocs",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Policy", ""],
+  rows=[
+"clear policy access-list | clear sdwan policy access-list",
+"clear policy app-route-policy | clear sdwan policy app-route-policy",
+"clear policy data-policy | clear sdwan policy data-policy",
+"clear policy zbfw filter-statistics | N/A",
+"clear policy zbfw global-statistics | N/A",
+"clear policy zbfw sessions | N/A",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Tunnel", ""],
+  rows=[
+"clear tunnel gre-keepalive | clear sdwan tunnel gre-keepalive",
+"clear tunnel statistics | clear sdwan tunnel statistics",
+  ],
+) 
+}}
+
+
+{{ table::default(
+  header=["DNS", ""],
+  rows=[
+"clear dns cache | clear sdwan dns cache",
+"N/A | clear sdwan dns app-fwd cflowd flow-all",
+"N/A | clear sdwan dns app-fwd cflowd statistics",
+"N/A | clear sdwan dns app-fwd dpi flow-all",
+"N/A | clear sdwan dns app-fwd dpi summary",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["DNS", ""],
+  rows=[
+"clear dns cache | clear sdwan dns cache",
+"N/A | clear sdwan dns app-fwd cflowd flow-all",
+"N/A | clear sdwan dns app-fwd cflowd statistics",
+"N/A | clear sdwan dns app-fwd dpi flow-all",
+"N/A | clear sdwan dns app-fwd dpi summary",
+  ],
+) 
+}}
+
+<h3 id="request-commands">Request Commands</h3>
+
+{{ table::default(
+  header=["General", ""],
+  rows=[
+"request admin-tech | request platform software sdwan admin-tech",
+"request certificate install &lt;path&gt; | request platform software sdwan certificate install &lt;path&gt;",
+"request controller delete &lt;org-name/serial-num&gt; | request platform software sdwan controller delete &lt;org-name/serial-num&gt;",
+"request controller reset-version-number | request platform software sdwan controller reset-version-number",
+"request csr upload &lt;path&gt; | request platform software sdwan csr upload &lt;path&gt;",
+"request port-hop color &lt;color&gt; | request platform software sdwan port_hop color &lt;color&gt;",
+"request root-cert-chain install &lt;path&gt; | request platform software sdwan root-cert-chain install &lt;path&gt;",
+"request security ipsec-rekey | request platform software sdwan security ipsec-rekey",
+  ],
+) 
+}}
+
+{{ table::default(
+  header=["Software", ""],
+  rows=[
+"request software install &lt;path&gt; | request platform software sdwan software install &lt;path&gt;",
+"request software activate &lt;build&gt; | request platform software sdwan software activate &lt;build&gt;",
+"request software remove &lt;build&gt; | request platform software sdwan software remove &lt;build&gt;",
+"request software reset | request platform software sdwan software reset",
+"request software secure-boot &lt;list/set/status&gt; | request platform software sdwan software secure-boot &lt;list/set/status&gt;",
+"request software set-default &lt;build&gt; | request platform software sdwan software set-default &lt;build&gt;",
+"request software upgrade-confirm | request platform software sdwan software upgrade-confirm",
+"request software verify-image &lt;image&gt; | request platform software sdwan software verify-image &lt;path&gt;",
+"N/A | request platform software sdwan vedge_cloud activate chassis-number &lt;chassis-num&gt; token &lt;token-id&gt;",
+  ],
+) 
+}}
+
+
+<h3 id="debug-commands">Debug Commands</h3>
+
+{{ table::default(
+  header=["General", ""],
+  rows=[
+"debug confd &lt;developer-log/snmp&gt; | debug platform software sdwan confd &lt;developer-log/snmp&gt;",
+"debug config-mgr &lt;events/pppoe/ra&gt; level &lt;high/low&gt; | debug platform software sdwan config-mgr &lt;events/pppoe/ra&gt; level &lt;high/low&gt;",
+"debug fpm &lt;command&gt; | debug platform software sdwan fpm &lt;command&gt;",
+"debug ftm &lt;command&gt; | debug platform software sdwan ftm &lt;command&gt;",
+  ],
+) 
+}}
+
+{% endblock page_content %}

@@ -1,0 +1,341 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://docs.saltstack.com/en/latest/topics/ssh/", description="Salt SSH") }}
+ allows you to
+  execute commands and apply state to minions without having to install a
+  {{ text::emphasize(text="salt-minion") }}
+.
+  The only requirement is for the minion to have python installed
+  unless using the {{ text::code(text="-r") }}
+ option to execute raw commands.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>salt-ssh</b> - 2018.3.1 (Oxygen)</li>
+  <li><b>Ubuntu (host)</b> - 16.04</li>
+  <li><b>Debian (guest)</b> - 9.4</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Create and change into a working directory named {{ text::emphasize(text="salt-ssh") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir /home/bradmin/salt-ssh && cd /home/bradmin/salt-ssh`
+) }}
+
+
+<p>
+  I will use {{ link::e(path="https://docs.pipenv.org/", description="pipenv") }}
+ to manage a virtual environment
+  and the installation of {{ text::emphasize(text="salt-ssh") }}
+. If you are not using
+  pipenv you can use {{ text::emphasize(text="pip") }}
+ with a virtual environment to
+  install {{ text::emphasize(text="salt-ssh") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`pipenv install salt-ssh`
+) }}
+
+
+<p>
+  Activate the virtual environment.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`pipenv shell`
+) }}
+
+
+<h3 id="directories">Directories</h3>
+<p>
+  By default Salt expects its configuration files to be located in the
+  {{ text::emphasize(text="/etc/salt") }}
+ directory.
+  I am running Salt SSH as a non-root user so there are
+  a number of directories that need to be created which are writable for my user.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p {config,salt/{files,templates,states,pillar,formulas,pki/master,logs}}
+
+# Directory Structure
+
+/home/bradmin/salt-ssh
+├── config
+└── salt
+    ├── files
+    ├── formulas
+    ├── logs
+    ├── pillar
+    ├── pki
+    │   └── master
+    ├── states
+    └── templates`
+) }}
+
+
+<h3 id="config">Config</h3>
+<p>
+  The {{ text::emphasize(text="master") }}
+ config file has the same declarations that
+  you would define when using Salt in master mode.
+  Create a {{ text::emphasize(text="master") }}
+ config file with the following contents
+  that points Salt SSH to the location of the previously created directories.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# salt-ssh/config/master
+
+file_roots:
+  base:
+    - "/home/bradmin/salt-ssh/salt"
+
+cachedir: "/home/bradmin/salt-ssh/salt/cache"
+
+pki_dir: "/home/bradmin/salt-ssh/salt/pki/master"`
+) }}
+
+
+<h3 id="roster">Roster</h3>
+<p>
+  The {{ text::emphasize(text="roster") }}
+ file is used to define remote minions and
+  their connection parameters. I am using Vagrant for this lab so I will reuse the Vagrant
+  user credentials. Create a {{ text::emphasize(text="roster") }}
+ file with the
+  following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# salt-ssh/config/roster
+
+minion:
+  host: "192.168.121.117"
+  user: "vagrant"
+  priv: "~/.vagrant.d/insecure_private_key"`
+) }}
+
+
+
+<h3 id="saltfile">Saltfile</h3>
+<p>
+  The {{ text::emphasize(text="Saltfile") }}
+ allows you to set command line configuration
+  option in a file instead of declaring them at runtime.
+  Create a {{ text::emphasize(text="Saltfile") }}
+ with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# salt-ssh/Saltfile
+
+salt-ssh:
+  config_dir: "/home/bradmin/salt-ssh/salt/config"
+  roster_file: "/home/bradmin/salt-ssh/salt/config/roster"
+  ssh_log_file: "/home/bradmin/salt-ssh/salt/logs/salt-ssh-log.txt"
+  log_file: "/home/bradmin/salt-ssh/salt/logs/salt-log.txt"`
+) }}
+
+
+<p>
+  For reference the final directory structure should look like the following.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Directory Structure
+
+/home/bradmin/salt-ssh
+├── config
+│   ├── master
+│   └── roster
+├── salt
+│   ├── cache
+│   ├── files
+│   ├── formulas
+│   ├── logs
+│   ├── pillar
+│   ├── pki
+│   │   └── master
+│   ├── state
+│   └── templates
+└── Saltfile`
+) }}
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  With the base configuration done, lest run a few tests. Salt SSH is controlled using the
+  {{ text::code(text="salt-ssh") }}
+ command. Aside from that you can use the same command line options
+  that are available with the regular {{ text::code(text="salt") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`salt-ssh '*' test.ping
+
+# output
+
+minion:
+    True`
+) }}
+
+
+
+{{ text::note_block(text='
+    The first time you execute $1 it will create SSH keys. This makes the
+    execution time take longer than normal but subsequent runs are much faster. You may also
+    need to accept the minions SSH key fingerprint. For more details see
+    $2.
+') 
+  | replace(from="$1", to=text::code(text="salt-ssh"))
+  | replace(from="$2", to=link::e(path="https://docs.saltstack.com/en/getstarted/ssh/connect.html", description="here"))
+}}
+
+
+<p>
+  If you successfully connected lets try install a package.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`salt-ssh '*' pkg.install cowsay --sudo
+
+# output
+
+minion:
+    ----------
+    cowsay:
+        ----------
+        new:
+            3.03+dfsg2-3
+        old:
+    cowsay-off:
+        ----------
+        new:
+            3.03+dfsg2-3
+        old:`
+) }}
+
+
+<p>
+  Alright as a final test, lets execute a command on the minion.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`salt-ssh '*' cmd.run 'cowsay im a salty moo cow'
+
+# output
+
+minion:
+     ____________________
+    < im a salty moo cow >
+     --------------------
+            \   ^__^
+             \  (oo)\_______
+                (__)\       )\/\
+                    ||----w |
+                    ||     ||`
+) }}
+
+
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>
+  Most of the issues I ran into related to running Salt as a non-root users. You can run
+  {{ text::code(text="salt-ssh") }}
+ with the {{ text::code(text="-l debug") }}
+ flag to get a more detailed look
+  at the execution and errors if any.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`salt-ssh '*' cmd.run 'df -h' -l debug
+
+# output
+
+[INFO    ] Loading Saltfile from '/home/bradmin/salt-ssh/Saltfile'
+[DEBUG   ] Reading configuration from /home/bradmin/salt-ssh/Saltfile
+[DEBUG   ] Reading configuration from /home/bradmin/salt-ssh/config/master
+[DEBUG   ] Configuration file path: /home/bradmin/salt-ssh/config/master
+[WARNING ] Insecure logging configuration detected! Sensitive data may be logged.
+[DEBUG   ] LazyLoaded flat.targets
+[DEBUG   ] LazyLoaded jinja.render
+[DEBUG   ] LazyLoaded yaml.render
+[DEBUG   ] compile template: ./config/roster
+[DEBUG   ] Jinja search path: ['/home/bradmin/salt-ssh/salt/cache/files/base']
+[DEBUG   ] LazyLoaded roots.envs
+[DEBUG   ] Could not LazyLoad roots.init: 'roots.init' is not available.
+[DEBUG   ] Updating roots fileserver cache
+[PROFILE ] Time (in seconds) to render './config/roster' using 'jinja' renderer: 0.04327249526977539
+[DEBUG   ] Rendered data from file: ./config/roster:
+minion:
+  host: "192.168.121.117"
+  user: "vagrant"
+  priv: "~/.vagrant.d/insecure_private_key"
+
+[DEBUG   ] Results of YAML rendering:
+OrderedDict([('test', OrderedDict([('host', '192.168.121.117'), ('user', 'vagrant'), ('priv', '~/.vagrant.d/insecure_private_key')]))])
+[PROFILE ] Time (in seconds) to render './config/roster' using 'yaml' renderer: 0.0015110969543457031
+[DEBUG   ] Matched minions: {'test': {'host': '192.168.121.117', 'user': 'vagrant', 'priv': '~/.vagrant.d/insecure_private_key'}}
+[DEBUG   ] LazyLoaded roots.envs
+[DEBUG   ] Could not LazyLoad roots.init: 'roots.init' is not available.
+[DEBUG   ] Updating roots fileserver cache
+[DEBUG   ] LazyLoaded local_cache.prep_jid
+[DEBUG   ] Adding minions for job 20180616115608058884: ['minion']
+[DEBUG   ] Could not LazyLoad cmd.run: 'cmd.run' is not available.
+[DEBUG   ] Performing shimmed, blocking command as follows:
+cmd.run df -h
+[DEBUG   ] Executed SHIM command. Command logged to TRACE
+[DEBUG   ] Child Forked! PID: 27215  STDOUT_FD: 10  STDERR_FD: 12
+[DEBUG   ] VT: Salt-SSH SHIM Terminal Command executed. Logged to TRACE
+[DEBUG   ] RETCODE 192.168.121.117: 0
+[DEBUG   ] LazyLoaded nested.output
+minion:
+    Filesystem      Size  Used Avail Use% Mounted on
+    udev            2.0G     0  2.0G   0% /dev
+    tmpfs           396M  5.4M  391M   2% /run
+    /dev/vda1       9.2G  1.4G  7.3G  17% /
+    tmpfs           2.0G     0  2.0G   0% /dev/shm
+    tmpfs           5.0M     0  5.0M   0% /run/lock
+    tmpfs           2.0G     0  2.0G   0% /sys/fs/cgroup
+    tmpfs           396M     0  396M   0% /run/user/1000`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Salt SSH is a nice alternative for minions where it is not possible and/or convenient to
+  install a {{ text::emphasize(text="salt-minion") }}
+. Common uses for running Salt SSH
+  include managing IOT devices and bootstrapping minions with Salt to manage them in
+  master mode.
+</p>
+{% endblock page_content %}

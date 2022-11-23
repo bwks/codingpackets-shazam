@@ -1,0 +1,164 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="integers">Integers</h3>
+<p>
+  Integers represent whole numbers. Rust has both 
+  {{ text::emphasize(text="unsigned") }}
+ integers and 
+  {{ text::emphasize(text="signed") }}
+ integers.
+  {{ text::emphasize(text="unsigned") }}
+ integers
+  cannot be negative, and have a higher positive range 
+  than {{ text::emphasize(text="signed") }}
+ integers,
+  that can be negative, but have a lower postive range.
+</p>
+
+<p>
+  The following table lists the integer literal types 
+  in Rust.
+</p>
+
+{{ table::default(
+  header=["Length", "Unsigned", "Signed"],
+  rows=[
+    "8-bits | u8 | i8",
+    "16-bits | u16 | i16",
+    "32-bits | u32 | i32",
+    "64-bits | u64 | i64",
+    "128-bits | u128 | i128",
+    "CPU Architecture | usize | isize",
+  ],
+) }}
+
+<p>
+  The following table lists the formats that are 
+  supported for an integer literal definition.
+</p>
+
+{{ table::default(
+  header=["Literal", "Example"],
+  rows=[
+    "Decimal | 42",
+    "Hex | <b>0x</b>2a",
+    "Octal | <b>0o</b>52",
+    "Binary | <b>0b</b>101010",
+    "Byte (u8 only) | <b>b</b>'Z'",
+  ],
+) }}
+
+<h4>Integer code examples</h4>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// i32 by default
+let the_answser = 42;
+
+// Annotate the type of integer
+let dinner_for_two: i8 = 69;
+
+// Integer suffixing is also supported for type annotation
+let its_friday = 420u16; // => 420
+
+// Underscores can help to improve readbility
+let you_da_winnah = 1_16_32_5_12_19_40_i64; // => 116325121940'
+) }}
+
+<h4>Integer Considerations</h4>
+<ul>
+  <li>
+    {{ text::emphasize(text="i32") }}
+ is the default 
+    type if an integer does not include a type annotation.
+  </li>
+  <li>
+    The term {{ text::emphasize(text="u8") }}
+ and 
+    {{ text::emphasize(text="byte") }}
+ are used interchangeably in the 
+    Rust community. 
+  </li>
+    <li>
+    Underscores {{ text::emphasize(text="(_)") }}
+ can be used to  
+    improve the readability of an integer literal, they are ignored by the compiler.
+    EG: {{ text::emphasize(text="1_000_000") }}
+ 
+  </li>
+</ul>
+
+
+<h3 id="floats">Floats</h3>
+<p>
+  Floating points represent a number with a fractional 
+  component expressed in {{ text::emphasize(text="IEEE-754") }}
+
+  format. Rust has two floating point types: 
+  {{ text::emphasize(text="f32") }}
+ and 
+  {{ text::emphasize(text="f64") }}
+.
+</p>
+
+<p>
+  The following table list the floating point literal
+  types and their bits of precision.
+</p>
+
+{{ table::default(
+  header=["Precision", "Type"],
+  rows=[
+    "32-bits | f32",
+    "64-bits | f64",
+  ],
+) }}
+
+
+<h4>Float code examples</h4>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// f64 by default
+let highly_sexual = 420.69;
+
+// Annotate the type of float
+let dinner_for_two: f32 = 69.69;
+
+// Float suffixing is also supported for type annotation
+let its_friday = 420.69f32; // => 420.69
+
+// Underscores can help to improve readbility
+let you_da_winnah = 420_69.1337_f64; // => 42069.1337'
+) }}
+
+<h4>Float Considerations</h4>
+<ul>
+  <li>
+    {{ text::emphasize(text="f64") }}
+ is the default 
+    type if a float does not include a type annotation.
+  </li>
+  <li>
+    A float requires a digit before the decimal place 
+    {{ text::emphasize(text="(.)") }}
+ in a 
+    float definition. 
+  </li>
+    <li>
+    Underscores {{ text::emphasize(text="(_)") }}
+ can be used to  
+    improve the readability of a float literal, they are ignored by the compiler.
+    EG: {{ text::emphasize(text="420_69.1337") }}
+ 
+  </li>
+  <li>
+    {{ text::emphasize(text="f64") }}
+ can be slow on a 32-bit 
+    architecture.
+  </li>
+</ul>
+
+{% endblock page_content %}

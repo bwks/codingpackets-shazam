@@ -1,0 +1,304 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  One of the posts I get contacted about the most is
+  {{ link::i(path="/blog/viptela-control-plane-setup", description="this one") }}
+
+  on how the setup a self hosted Viptela control plane.
+  Since Cisco acquired Viptela the process has changed
+  and is now (IMO) a bit simpler.
+</p>
+<p>
+  With the release of SDWAN software
+  version {{ text::emphasize(text="19.1.0") }}
+ it is now
+  possible to use virtual cEdges (CSR1Kv running SDWAN
+  software) in your fabric. This is great because it allows you
+  to test out features only available on the cEdge as well
+  as get your cEdge templates ready without the need for a physical
+  device (mostly).
+</p>
+
+<p>
+  This post turned out to be pretty long, so I have split it up into
+  two part series. In the first part (this one) I will show you how to create
+  a virtual account, add virtual Edge devices to the account and obtain a
+  serial file. In the
+
+  {{ link::i(path="/blog/cisco-sdwan-self-hosted-lab-part-2", description="second") }}
+
+
+  part I will show you how the install the
+  control plane along with a vEdge and cEdge utilizing an enterprise
+  certificate authority.
+</p>
+
+<h4>Is this for me?</h4>
+<p>
+  If you want to build a Cisco SDWAN lab with arbitrary topologies
+  and/or at a time and place of your choosing then this series could
+  be for you. If you are just looking to get your feet wet with
+  Cisco SDWAN then check out the dCloud labs.
+</p>
+
+<h3 id="pre-requisites">Pre Requisites</h3>
+<p>
+  You will need permissions to create a virtual account in the Cisco
+  software portal. You will additionally need access to create
+  controller profiles and add software devices to a virtual account.
+</p>
+<p>
+  The following software will be used in this series of posts.
+</p>
+<ul>
+  <li><b>vManage</b> - 19.1.0</li>
+  <li><b>vBond</b> - 19.1.0</li>
+  <li><b>vSmart</b> - 19.1.0</li>
+  <li><b>vEdge</b> - 19.1.0</li>
+  <li><b>cEdge</b> - 16.11.1a</li>
+  <li><b>Ubuntu (KVM host)</b> - 1804</li>
+  <li><b>libvirt</b> - 4.0.0</li>
+</ul>
+<p>
+  You can download the required images from the Cisco software
+  {{ link::e(path="https://software.cisco.com", description="portal") }}.
+  You will need a valid service contract to download and use these images. I
+  am building this lab on a KVM host, download the images for whatever type
+  of hypervisor (VMWare, Hyper-V, etc..) you are using.
+</p>
+
+{{ text::note_block(text=`
+    At the time of writing Cisco has not made any limited or lab licensing
+    available. Reach out to your Cisco partner and/or account rep to arrange access
+    for you.
+  </p>
+  <p>
+    <b><i>No, I cannot distribute the images. Please dont ask!</i></b>
+</p>`
+) }}
+
+<p>
+  Alright, with all that out of the way, let get down to business.
+</p>
+
+<h3 id="add-virtual-account">Add Virtual Account</h3>
+<p>
+  A virtual account is a logical container for groups of devices.
+</p>
+<p>
+  Navigate to {{ link::e(path="https://software.cisco.com", description="https://software.cisco.com") }}
+
+  and select {{ text::emphasize(text="Manage Smart Account") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-1.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Virtual Accounts") }}
+.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-2.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="New Virtual Account") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-3.png", width="900px") }}
+
+<p>
+  Enter the details of the virtual account and select
+  {{ text::emphasize(text="Save") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-4.png", width="900px") }}
+
+<h3 id="add-controller-profile">Add Controller Profile</h3>
+<p>
+  You need to add a vBond controller profile in order to create virtual edges.
+</p>
+<p>
+  Navigate back to the main page and select
+  {{ text::emphasize(text="Plug and Play Connect") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-5.png", width="900px") }}
+
+<p>
+  Select the {{ text::emphasize(text="Default") }}
+ dropdown
+  then select the {{ text::emphasize(text="virtual account") }}
+
+  you created in the previous step.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-6.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Controller Profiles") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-7.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Add Profile") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-8.png", width="900px") }}
+
+<p>
+  Change the controller type to {{ text::emphasize(text="VBOND") }}
+
+  then select {{ text::emphasize(text="Next") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-9.png", width="900px") }}
+
+<p>
+  Enter the vBond details and select {{ text::emphasize(text="Next") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-11.png", width="900px") }}
+
+{{ text::note_block(text='
+    The $1 will need to be unique, the IP address can be anything.
+') 
+  | replace(from="$1", to=text::emphasize(text="Organization Name"))
+}}
+
+<p>
+  Select {{ text::emphasize(text="Submit") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-12.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Done") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-13.png", width="900px") }}
+
+<p>
+  You should see your newly created controller profile in the list.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-14.png", width="900px") }}
+
+<h3 id="add-virtual-edges">Add Virtual Edges</h3>
+<p>
+  Now create some vEdge and cEdge devices so we can generate a serial file.
+</p>
+<p>
+  Navigate to {{ text::emphasize(text="Devices") }}
+ and select
+  {{ text::emphasize(text="+ Add Software Devices") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-15.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="+ Add Software Device") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-16.png", width="900px") }}
+
+<p>
+  Enter the PID {{ text::emphasize(text="VEDGE-CLOUD-DNA") }}
+ for
+  vEdges, specify the desired quantity and select
+  {{ text::emphasize(text="Save") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-17.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Next") }}
+.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-18.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Submit") }}
+.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-19.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="Done") }}
+.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-20.png", width="900px") }}
+
+<p>
+  Rinse and repeat the process for cEdges but this time use:
+  {{ text::emphasize(text="CSR1KV") }}
+ as the PID.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-21.png", width="900px") }}
+
+{{ text::note_block(text='
+    At the time of writing a total of 25 virtual devices can be added to
+    a virtual account.
+') }}
+
+<p>
+  Once added devices will be in a
+  {{ text::emphasize(text="Pending for publish") }}
+ state.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-22.png", width="900px") }}
+
+<p>
+  After a few minutes they will transition to the
+  {{ text::emphasize(text="Provisioned") }}
+ state.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-23.png", width="900px") }}
+
+<h3 id="serial-file">Serial File</h3>
+<p>
+  This is it, the moment you have been waiting for, the all important serial file.
+  The serial file is required to add edge devices to the fabric.
+</p>
+
+<p>
+  Navigate to {{ text::emphasize(text="Controller Profiles") }}
+ and select
+  {{ text::emphasize(text="Provisioning File") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-24.png", width="900px") }}
+
+<p>
+  Select {{ text::emphasize(text="18.3 and Newer") }}
+ from the dropdown
+  and then select {{ text::emphasize(text="Download") }}
+. Save the
+  file to a safe location to import into the vManage at a future time.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-25.png", width="900px") }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  We created a Virtual account, controller profile added software vEdge and cEdge
+  devices and have our all important serial file in hand. Lets move onto
+  {{ link::i(path="/blog/cisco-sdwan-self-hosted-lab-part-2", description="part 2") }}
+
+  and finalize the lab setup.
+</p>
+{% endblock page_content %}

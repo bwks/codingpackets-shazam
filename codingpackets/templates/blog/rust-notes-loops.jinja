@@ -1,0 +1,101 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="for-loop">For Loop</h3>
+<p>
+  A {{ text::emphasize(text="for") }}
+ expression 
+  extracts values from an 
+  {{ text::emphasize(text="iterator") }}
+ until the 
+  iterator is empty. {{ text::emphasize(text="for") }}
+ 
+  loops in Rust use a similar syntax to Python with the 
+  {{ text::emphasize(text="in") }}
+ keyword.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code=`// Example for loop.
+for i in vec!["stuff", "things"] {
+    print!("{} ", i);
+} // => stuff things
+
+// Mark a loop level with a tag: {'outer} to use as a break reference point.
+'outer: for i in vec!["stuff", "things", "blah"] {
+    for j in vec!["bleh", "blah", "blow"] {
+        if i == j {
+            println!("i: {} j: {}", i, j);
+            break 'outer; // Breaks out of the loop at the {'outer} tag.
+        }
+    }
+} // => i: blah j: blah`
+) }}
+
+
+<h4>For Loop Considerations</h4>
+<ul>
+  <li>For loops can iterate over anything that implements the {{ text::emphasize(text="IntoIterator") }}
+ trait.</li>
+  <li>Tags can be used to break out of a nested for loop at different reference points.</li>
+  <li>Tags are prefixed with a single {{ text::emphasize(text="(')") }}
+ quote.</li>
+</ul>
+
+<h3 id="while-loop">While Loop</h3>
+<p>
+  A {{ text::emphasize(text="while") }}
+ expression
+  executes the loop body as long as some conditional 
+  expression evaluates to true.
+</p>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Example while loop.
+let mut tick = 3;
+
+while tick >= 0 { // conditional expression => `tick >= 0`
+    if tick == 0 {
+        print!("BOOM!");
+    } else {
+        print!("{} ", tick);
+    }
+    tick -= 1;
+} // => 3 2 1 BOOM!'
+) }}
+
+<h4>While Loop Considerations</h4>
+<ul>
+  <li>A {{ text::emphasize(text="while") }}
+ loop cannot break with a value and always evaluates to {{ text::emphasize(text="()") }}
+.</li>
+</ul>
+
+<h3 id="loop">Loop</h3>
+<p>
+  A {{ text::emphasize(text="loop") }}
+ expression 
+  executes an unconditional infinite loop.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Example unconditional loop.
+loop {
+    println!("💵 make it rain 💵");
+} // => All the moneys'
+) }}
+
+<h4>Loop Considerations</h4>
+<ul>
+  <li>A {{ text::emphasize(text="break") }}
+ statement is required to exit out of a {{ text::emphasize(text="loop") }}
+ expression.</li>
+</ul>
+
+{% endblock page_content %}

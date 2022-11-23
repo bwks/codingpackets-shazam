@@ -1,0 +1,2844 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Cisco SDWAN Command Comparison Cheat Sheet</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 12th of June 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Our Cisco SDWAN account rep provided our team with a
+  command cheat sheet that compares commands from the Viptela vEdge platform to the Cisco
+  cEdge platform. This could be useful for others and with permission I am re-producing it
+  here almost verbatim. I only cleaned it up, added a couple of commands and re-organized
+  it a bit for this web format.
+</p>
+
+<h3 id="show-commands">Show Commands</h3>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Interface</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show int | tab </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show ip interface brief</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show interface detail statistics interface &lt;interface&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show platform hardware qfp active  interface if-name &lt;interface&gt; statistics</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Tunnel</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show tunnel gre-keepalives </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan tunnel gre-keepalives</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show tunnel statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan tunnel statistics</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">IPSEC</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show ipsec inbound-connections </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan ipsec inbound-connections</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show ipsec local-sa </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan ipsec local-sa</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show ipsec outbound-connections </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan ipsec outbound-connections</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">BFD</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show bfd history </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan bfd history</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show bfd sessions </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan bfd sessions</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show bfd summary </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan bfd summary</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show bfd tloc-summary-list </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan bfd tloc-summary-list</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Certificate</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show certificate installed </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan certificate installed</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show certificate root-ca-cert </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan certificate root-ca-cert</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show certificate serial </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan certificate serial</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show certificate signing-request </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan certificate signing-request</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show certificate validity </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan certificate validity</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Control</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control connections </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control connections</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control connections-history </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control connection-history</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control connections-info </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control connection-info</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control local-properties </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control local-properties</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control summary </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control summary</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control valid-vsmarts </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control valid-vsmarts</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control valid-vmanage-id </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Show sdwan control valid-vmanage-id</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control affinity config </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control affinity config</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show control affinity status </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan control affinity status</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">OMP</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp cloudexpress </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp cloudexpress</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp multicast-auto-discover </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp multicast-auto-discover</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp multicast-routes </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp multicast-routes</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp peers </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp peers</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp routes </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp routes</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp services </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp services</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp summary </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp summary</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp tloc-paths </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp tloc-paths</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show omp tlocs </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan omp tlocs</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Policy</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy access-list-associations </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy access-list-associations</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy access-list-counters </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy access-list-counters</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy access-list-names </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy access-list-names</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy access-list-policers </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> </td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy app-route-policy-filter </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy app-route-policy-filter</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy data-policy-filter </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy data-policy-filter</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show policy from-vsmart </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan policy from-vsmart</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Config</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show running-config </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan running-config</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Config</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app cflowd collector </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd cflowd collector</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app cflowd flow-count </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd cflowd flow-count</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app cflowd flows </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd cflowd flows</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app cflowd statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd cflowd statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app cflowd template </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd cflowd template</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">DPI</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app dpi flows </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd dpi flows</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app dpi summary </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-fwd dpi summary</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app dpi applications </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app dpi supported-applications </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">App-route</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app-route sla-class </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-route sla-class</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show app-route stats </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan app-route stats</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Version</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show version </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan version</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show software </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan software</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">System</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show reboot history </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan reboot history</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show system buffer-pool-status </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show system status </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show system statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show system statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show platform hardware qfp active statistics drop</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Notification</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show notification stream viptela </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan notification stream viptela</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Security</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show security-info </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan security-info</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">ZBFW</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan zbfw drop-statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan zbfw zonepair-statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan zonebfwdp sessions</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">NAT</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan nat-fwd ip-nat-translation</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan nat-fwd ip-nat-translation-verbose</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Crash</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">show crash </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> show sdwan crash</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<h3 id="clear-commands">Clear Commands</h3>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">App</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear app cflowd flow-all </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan app-fwd cflowd flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear app dpi all </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan app-fwd dpi flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear app log flow-all </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear app tcp-opt expired-flows </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Control</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear control connections </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan control connections</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear control connections-history </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan control connection-history</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan control port-index</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear control reverse-proxy-connections </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Notification</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear installed-certificates </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan installed-certificates</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Control</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear notification stream viptela </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan notification stream viptela</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">OMP</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear omp all </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan omp all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear omp peer </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan omp peer</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear omp routes </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan omp routes</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear omp tlocs </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan omp tlocs</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Policy</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy access-list </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan policy access-list</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy app-route-policy </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan policy app-route-policy</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy data-policy </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan policy data-policy</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy zbfw filter-statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy zbfw global-statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear policy zbfw sessions </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> N/A</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Tunnel</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear tunnel gre-keepalive </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan tunnel gre-keepalive</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear tunnel statistics </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan tunnel statistics</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">DNS</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear dns cache </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns cache</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd cflowd flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd cflowd statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd dpi flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd dpi summary</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">DNS</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">clear dns cache </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns cache</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd cflowd flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd cflowd statistics</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd dpi flow-all</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> clear sdwan dns app-fwd dpi summary</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h3 id="request-commands">Request Commands</h3>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">General</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request admin-tech </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan admin-tech</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request certificate install &lt;path&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan certificate install &lt;path&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request controller delete &lt;org-name/serial-num&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan controller delete &lt;org-name/serial-num&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request controller reset-version-number </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan controller reset-version-number</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request csr upload &lt;path&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan csr upload &lt;path&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request port-hop color &lt;color&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan port_hop color &lt;color&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request root-cert-chain install &lt;path&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan root-cert-chain install &lt;path&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request security ipsec-rekey </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan security ipsec-rekey</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Software</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software install &lt;path&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software install &lt;path&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software activate &lt;build&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software activate &lt;build&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software remove &lt;build&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software remove &lt;build&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software reset </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software reset</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software secure-boot &lt;list/set/status&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software secure-boot &lt;list/set/status&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software set-default &lt;build&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software set-default &lt;build&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software upgrade-confirm </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software upgrade-confirm</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">request software verify-image &lt;image&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan software verify-image &lt;path&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">N/A </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> request platform software sdwan vedge_cloud activate chassis-number &lt;chassis-num&gt; token &lt;token-id&gt;</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<h3 id="debug-commands">Debug Commands</h3>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">General</th>
+        
+          <th class="pt-1 pb-2 px-2"></th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">debug confd &lt;developer-log/snmp&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> debug platform software sdwan confd &lt;developer-log/snmp&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">debug config-mgr &lt;events/pppoe/ra&gt; level &lt;high/low&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> debug platform software sdwan config-mgr &lt;events/pppoe/ra&gt; level &lt;high/low&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">debug fpm &lt;command&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> debug platform software sdwan fpm &lt;command&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">debug ftm &lt;command&gt; </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> debug platform software sdwan ftm &lt;command&gt;</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#sdwan" class="text-xl">sdwan</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#viptela" class="text-xl">viptela</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#show-commands">
+            Show Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#clear-commands">
+            Clear Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#request-commands">
+            Request Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#debug-commands">
+            Debug Commands
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

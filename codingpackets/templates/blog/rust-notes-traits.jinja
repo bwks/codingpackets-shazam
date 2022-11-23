@@ -1,0 +1,126 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="trait") }}
+ in 
+  Rust is similar to an 
+  {{ text::emphasize(text="interface") }}
+ 
+  in other languages. 
+  {{ text::emphasize(text="Traits") }}
+ define the 
+  {{ text::emphasize(text="required behaviour") }}
+
+  a type {{ text::emphasize(text="MUST implement") }}
+ 
+  to {{ text::emphasize(text="satisfy") }}
+ the 
+  {{ text::emphasize(text="trait (interface)") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Define a `Greeter` trait.
+trait Greeter {
+    // To satisfy the `Greeter` trait, types must 
+    // implement a `hello` method that returns a `String` type.
+    fn hello(&self) -> String; // `&self` is the caller type.
+}
+
+// Structs that implement the `Greeter` trait.
+struct Person {
+    name: String,
+    greeting: String,
+}
+struct Dog {}
+
+// Implement the `Greeter` trait for the `Person` struct.
+impl Greeter for Person {
+    // Method signature matches `Greeter::hello`
+    fn hello(&self) -> String {
+        // Unique implementation details
+        format!("{}! my name is {} :)", self.greeting, self.name)
+    }
+}
+
+// Implement the `Greeter` trait for the `Dog` struct.
+impl Greeter for Dog {
+    // Method signature matches `Greeter::hello`
+    fn hello(&self) -> String {
+        // Unique implementation details
+        "Bark! Bark! Bark! Woof?".to_string()
+    }
+}
+
+// Create concrete instances of the `Person` and `Dog` types.
+let bobby_diggle = Person{
+    name: String::from("Bobby Diggle"),
+    greeting: String::from("你好"),
+};
+let brian = Dog{};
+
+// Call the `hello` method on each type.
+println!("{}", bobby_diggle.hello()); // => 你好! my name is Bobby Diggle :)
+println!("{}", brian.hello()); // => Bark! Bark! Bark! Woof?'
+) }}
+
+<h3 id="generic-functions">Generic Functions</h3>
+<p>
+  Defining {{ text::emphasize(text="traits") }}
+ allows 
+  you to have {{ text::emphasize(text="generic") }}
+ 
+  functions that accept 
+  {{ text::emphasize(text="ANY") }}
+ type that satisfies 
+  the traits 
+  {{ text::emphasize(text="interface") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Generic function `say_hello` that accepts any concrete type `(T)`
+// that implements the `Greeter` trait.  
+fn say_hello&lt;T: Greeter&gt;(item: T) { // `item` is the passed in type.
+    println!("{}", item.hello());
+}
+
+say_hello(bobby_diggle); // => 你好! my name is Bobby Diggle :)
+say_hello(brian); // => Bark! Bark! Bark! Woof?'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>
+    In order to satisfy a traits interface, a type must implement all of the {{ text::emphasize(text="traits") }}
+, 
+    {{ text::emphasize(text="associated functions") }}
+ and {{ text::emphasize(text="methods") }}
+.
+  </li>
+  <li>The implementing types {{ text::emphasize(text="associated functions") }}
+ and {{ text::emphasize(text="methods") }}
+ signatures must match the traits signatures.</li>
+  <li>Traits can be implemented by the following types: 
+    <ul>
+      <li>{{ text::emphasize(text="struct") }}
+</li>
+      <li>{{ text::emphasize(text="enum") }}
+</li>
+      <li>{{ text::emphasize(text="closure") }}
+</li>
+      <li>{{ text::emphasize(text="function") }}
+</li>
+    </ul>
+  </li>
+</ul>
+
+{% endblock page_content %}

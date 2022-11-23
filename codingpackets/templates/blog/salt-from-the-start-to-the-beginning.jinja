@@ -1,0 +1,869 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  As described by their website; <i>{{ link::e(path="https://saltstack.com/", description="Salt") }}
+ is
+  "Event-driven automation for a software-defined world"</i>. You gotta love marketing :)
+  Salt is a large project with many features including; configuration management, an event
+  based reactor, cloud management and network automation.
+</p>
+<p>
+  Salt can do ALOT but it does have a relatively steep learning curve. In saying that, Salt does
+  have extensive documentation, although in my experience you have to know how to use Salt
+  a little bit before the documentation starts to make sense.
+</p>
+<p>
+  This post aims to help get you started on your Salt journey and hopefully once you are done
+  you will continue down the Salt mine, it's pretty fun down here !
+</p>
+
+<h3 id="architecture">Architecture</h3>
+<p>
+  Salt has many components, these are the main ones:
+</p>
+<ul>
+  <li><b>Salt Master</b> - Controls minions</li>
+  <li><b>Salt Minion</b> - Executes code from the master via an agent</li>
+  <li><b>Salt Proxy Monion</b> - Executes code on hosts that cannot install an agent</li>
+  <li><b>Message Bus</b> - Messages between Salt master and minions are sent along the message bus</li>
+</ul>
+
+{{ image::boxed(path="blog/salt-from-the-start-to-the-beginning/salt-architecture.svg", width="700px") }}
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  In this post I will configure a Centos host as a Salt master and a Cumulus host as a
+  Salt minion.
+</p>
+
+{{ image::boxed(path="blog/salt-from-the-start-to-the-beginning/lab-topology.svg", width="500px") }}
+
+<p>
+  For reference the code version used in this lab are as follows:
+</p>
+<ul>
+  <li>Centos - 7 minimal</li>
+  <li>Cumulus - 3.4.3</li>
+  <li>Salt - 17.7.2</li>
+</ul>
+
+{{ text::note_block(text='
+    I have built this lab with Vagrant boxes so the Firewall and SELinux are already
+    disabled in the Centos image.
+') }}
+
+
+<h3 id="installation">Installation</h3>
+<p>
+  The process of installing Salt and its dependencies differs from system to system, for the
+  most accurate information refer to the specific instructions per
+  {{ link::e(path="https://docs.saltstack.com/en/latest/topics/installation/#platform-specific-installation-instructions", description="platform")}}.
+</p>
+<h4><b>Centos 7</b></h4>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm`
+) }}
+
+
+<p>
+  Update the YUM cache.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum clean expire-cache`
+) }}
+
+
+<p>
+  Install the Salt master and minion.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y salt-master salt-minion`
+) }}
+
+
+{{ text::note_block(text='
+    The $1
+ daemon is also installed
+    on the Salt Master so that we can manage it via salt.
+') 
+  | replace(from="$1", to=text::emphasize(text="salt-minion"))
+}}
+
+<h4><b>Cumulus</b></h4>
+<p>
+  The Cumulus linux 3.X train is based on the Debian Jessie
+  release, therefore the bellow instructions are based on Debian Jessie.
+</p>
+<p>
+  Use {{ text::emphasize(text="vi") }}
+ or {{ text::emphasize(text="nano") }}
+
+  to add the required repositories to the end of the
+  {{ text::emphasize(text="/etc/apt/sources.list") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# /etc/apt/sources.list
+
+deb http://ftp.us.debian.org/debian/ jessie main contrib non-free
+deb http://repo.saltstack.com/apt/debian/8/amd64/latest jessie main`
+) }}
+
+
+<p>
+  Install the GPG key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`wget https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub
+sudo apt-key add SALTSTACK-GPG-KEY.pub`
+) }}
+
+
+<p>
+  Update the APT cache.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt-get update`
+) }}
+
+
+<p>
+  Install the Salt minion.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt-get install -y salt-minion`
+) }}
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Salt daemon configuration files use a {{ link::e(path="http://yaml.org/start.html", description="YAML") }}
+ syntax.
+  If you are not familiar with YAML there is a good overview
+  {{ link::e(path="https://docs.saltstack.com/en/latest/topics/yaml/", description="here") }}
+
+</p>
+<h4><b>Master</b></h4>
+<p>
+  Update the configuration files on the Centos host which is the Salt Master.
+  The {{ text::emphasize(text="/etc/salt/master") }}
+ file specifies
+  the configuration for the {{ text::emphasize(text="salt-master") }}
+ daemon.
+</p>
+
+<p>
+  Tell the Salt master where the files related to {{ text::emphasize(text="state") }}
+
+  are located by setting the {{ text::emphasize(text="file_roots") }}
+
+  parameter in the {{ text::emphasize(text="/etc/salt/master") }}
+ config file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`file_roots:
+  base:
+    - /srv/salt/
+    - /srv/salt/states
+    - /srv/salt/templates
+    - /srv/salt/files`
+) }}
+
+
+<p>
+  Pillar data is static variables that relate to a minions and are defined by the Salt administrator.
+  Tell the Salt master where pillar data is located by setting the {{ text::emphasize(text="pillar_roots") }}
+
+  parameter in the {{ text::emphasize(text="/etc/salt/master") }}
+ config file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`pillar_roots:
+  base:
+    - /srv/salt/pillar`
+) }}
+
+
+<p>
+  Create the directories that where just defined above in the
+  {{ text::emphasize(text="/etc/salt/master") }}
+ config file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /srv/salt/{states,templates,files,pillar}`
+) }}
+
+
+<p>
+  The {{ text::emphasize(text="/etc/salt/minion") }}
+ file specifies
+  the configuration for the {{ text::emphasize(text="salt-minion") }}
+ daemon.
+</p>
+
+<p>
+  Set the {{ text::emphasize(text="master") }}
+ configuration parameter in the
+  {{ text::emphasize(text="/etc/salt/minion") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`master: 192.168.121.201`
+) }}
+
+
+<p>
+  Set the {{ text::emphasize(text="id") }}
+ configuration parameter in the
+  {{ text::emphasize(text="/etc/salt/minion") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`id: 192.168.121.201`
+) }}
+
+
+<p>
+  Restart both the {{ text::emphasize(text="salt-master") }}
+ and
+  {{ text::emphasize(text="salt-minion") }}
+ daemons.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart salt-master
+sudo systemctl restart salt-minion`
+) }}
+
+
+<p>
+  Enable both the {{ text::emphasize(text="salt-master") }}
+ and
+  {{ text::emphasize(text="salt-minion") }}
+ daemons to start on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl enable salt-master
+sudo systemctl enable salt-minion`
+) }}
+
+
+<p>
+  Use {{ text::code(text="systemctl status") }}
+ command to confirm both services are
+  {{ text::emphasize(text="running") }}
+ and {{ text::emphasize(text="enabled") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`systemctl status salt-master
+systemctl status salt-minion`
+) }}
+
+
+
+{{ text::note_block(text='
+    Since I am not running DNS in this lab I am using IP addresses, if DNS is active
+    in the environment you can use host names in lieu of IP addresses.
+') }}
+
+<h4><b>Minion</b></h4>
+<p>
+  The Cumulus host only needs to have its
+  {{ text::emphasize(text="/etc/salt/minion") }}
+ file updated.
+</p>
+<p>
+  Set the {{ text::emphasize(text="master") }}
+ configuration parameter in the
+  {{ text::emphasize(text="/etc/salt/minion") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`master: 192.168.121.201`
+) }}
+
+
+<p>
+  Set the {{ text::emphasize(text="id") }}
+ configuration parameter in the
+  {{ text::emphasize(text="/etc/salt/minion") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`id: 192.168.121.202`
+) }}
+
+
+<p>
+  Restart the {{ text::emphasize(text="salt-minion") }}
+ daemon.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart salt-minion`
+) }}
+
+
+<p>
+  Enable the {{ text::emphasize(text="salt-minion") }}
+ daemon to start on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl enable salt-minion`
+) }}
+
+
+<p>
+  Confirm the {{ text::emphasize(text="salt-minion") }}
+ service is
+  {{ text::emphasize(text="running") }}
+ and {{ text::emphasize(text="enabled") }}
+
+  with the {{ text::code(text="systemctl status") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`systemctl status salt-minion`
+) }}
+
+
+
+
+<h3 id="salt-key">Salt Key</h3>
+<p>
+  Salt uses public key encryption to authenticate hosts. Before a minion can join the message
+  bus its key must be accepted by the Salt Master.
+</p>
+
+<p>
+  Use the {{ text::code(text="salt-key -L") }}
+ command to view the status of all the minion keys.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt-key -L
+
+# output
+
+Accepted Keys:
+Denied Keys:
+<span class="hljs-section">Unaccepted Keys:
+192.168.121.201
+192.168.121.202</span>
+
+Rejected Keys:`
+) }}
+
+<p>
+  As you can see there are two {{ text::emphasize(text="unaccepted") }}
+ keys, these
+  belong to both our Centos and Cumulus hosts.
+</p>
+
+<p>
+  Use the {{ text::code(text="salt-key -A") }}
+ command to accept all the minion keys.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt-key -A --yes
+
+# output
+
+The following keys are going to be accepted:
+Unaccepted Keys:
+192.168.121.201
+192.168.121.202
+<span class="hljs-string">Key for minion 192.168.121.201 accepted.
+Key for minion 192.168.121.202 accepted.</span>`
+) }}
+
+
+<h4><b>Test Connectivity</b></h4>
+<p>
+  Use the {{ text::code(text="salt '*' test.ping") }}
+ command to confirm the Salt master can connect
+  to all the Salt minions. If the master can connect to the minions a
+  {{ text::emphasize(text="True") }}
+ status will be returned.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '*' test.ping
+
+# output
+
+192.168.121.202:
+<span class="hljs-string">    True</span>
+
+192.168.121.201:
+<span class="hljs-string">    True</span>`
+) }}
+
+
+<H3 id="salt-command">Salt Command</H3>
+<p>
+  Performing actions against minions with Salt from the CLI is done with the
+  {{ link::e(path="https://docs.saltstack.com/en/latest/ref/cli/salt.html", description="salt") }}
+
+  command. The {{ text::code(text="salt") }}
+ command has the following structure.
+</p>
+<p>
+  {{ text::code(text="salt [options] '&lt;target&gt;' &lt;function&gt; [arguments]") }}
+
+</p>
+<ul>
+  <li><b>options</b> - Examples are {{ text::emphasize(text="version") }}
+ and {{ text::emphasize(text="timeout") }}
+ values.</li>
+  <li><b>target</b> - Used to select minions to execute functions against. {{ text::code(text="'*'") }}
+ targets all minions.</li>
+  <li><b>function</b> - Action to execute on the minion. EG: {{ text::code(text="pkg.installed") }}
+ is used to install packages.</li>
+  <li><b>arguments</b> - Some functions also take arguments. EG: {{ text::code(text="pkg.installed vim") }}
+</li>
+</ul>
+
+{{ text::note_block(text='
+    The management IP addresses (10.200.0.0/24) were the only thing configured manually
+') }}
+
+{{ text::note_block(text='
+    Both the $1 and $2 parameters are optional.
+') 
+    | replace(from="$1", to=text::emphasize(text="option"))
+    | replace(from="$2", to=text::emphasize(text="arguments"))
+}}
+
+<h3 id="grains">Grains</h3>
+<p>
+  {{ link::e(path="https://docs.saltstack.com/en/latest/topics/grains/index.html", description="Grain") }}
+
+  data is collected from the minions by {{ text::emphasize(text="salt") }}
+ automatically
+  and can be used to target hosts and also as variables in device configuration templates.
+</p>
+
+<p>
+  Use the {{ text::code(text="grains.items") }}
+ function to see all the
+  {{ text::emphasize(text="grains") }}
+ that have been collected from a device.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '192.168.121.202' grains.items
+
+# output
+
+192.168.121.202:
+    ----------
+    SSDs:
+    biosreleasedate:
+        04/01/2014
+    biosversion:
+        Ubuntu-1.8.2-1ubuntu1
+.
+. &lt;snip&gt;
+.`
+) }}
+
+
+<p>
+  Use the {{ text::code(text="grains.item &lt;grain-name&gt;") }}
+ function to see a specific
+  {{ text::emphasize(text="grain") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '192.168.121.202' grains.item os_family
+
+# output
+
+192.168.121.202:
+    ----------
+    os_family:
+        Cumulus`
+) }}
+
+
+
+<h3 id="pillar">Pillar</h3>
+<p>
+  {{ link::e(path="https://docs.saltstack.com/en/latest/topics/pillar/", description="Pillar") }}
+ data is static variables that relate to minions
+  and is defined by the Salt administrator. The location of the
+  {{ text::emphasize(text="pillar") }}
+ data is defined in the
+  {{ text::emphasize(text="/etc/salt/master") }}
+ config file under the
+  {{ text::emphasize(text="pillar_roots") }}
+ section.
+</p>
+<p>
+  Lets configure some pillar data that defines the
+  minions data centre location to apply to minion configuration.
+  Create two files: {{ text::emphasize(text="master.sls") }}
+ and
+  {{ text::emphasize(text="minion.sls") }}
+ under the
+  {{ text::emphasize(text="/srv/salt/pillar/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# /srv/salt/pillar/master.sls
+
+data_centre: syd`
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# /srv/salt/pillar/minion.sls
+
+data_centre: nyc`
+) }}
+
+
+{{ text::note_block(text='
+    The management IP addresses (10.200.0.0/24) were the only thing configured manually
+') }}
+
+{{ text::note_block(text="
+    By default $1
+ files are a combination of YAML
+    and Jinja2 data. This means they use the YAML syntax but it's also possible to use
+    $2
+    template structures to build out dynamic parts of the config file. I will not cover that
+    as part of this blog but its something to be aware of.
+") 
+  | replace(from="$1", to=text::emphasize(text=".sls"))
+  | replace(from="$2", to=link::e(path="https://docs.saltstack.com/en/latest/ref/renderers/all/salt.renderers.jinja.html", description="Jinja2"))
+}}
+
+<p>
+  The last piece of the {{ text::emphasize(text="pillar") }}
+ puzzle is to configure a
+  {{ text::emphasize(text="top.sls") }}
+ file that ties the pillar data to the minion.
+  Create a file called {{ text::emphasize(text="top.sls") }}
+ under the
+  {{ text::emphasize(text="/srv/salt/pillar/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# /srv/salt/pillar/top.sls
+
+base: # environment
+
+  '192.168.121.201': # target
+
+    - master # master.sls without the .sls extension
+
+  '192.168.121.202':
+    - minion`
+) }}
+
+
+<p>
+  Use the {{ text::code(text="pillar.items") }}
+ function to see the {{ text::emphasize(text="pillar") }}
+
+  data avaiable to a minion.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '*' pillar.items
+
+# output
+
+192.168.121.202:
+    ----------
+    data_center:
+        nyc
+192.168.121.201:
+    ----------
+    data_center:
+        syd`
+) }}
+
+
+
+{{ text::note_block(text='
+    The management IP addresses (10.200.0.0/24) were the only thing configured manually
+') }}
+
+
+{{ text::note_block(text='
+    If no data was returned the $1
+ data may need to be refreshed. This can be done using the $2 function.
+') 
+  | replace(from="$1", to=text::emphasize(text="pillar"))
+  | replace(from="$2", to=text::code(text="saltutil.refresh_pillar"))
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '*' saltutil.refresh_pillar
+
+# output
+
+192.168.121.202:
+    True
+192.168.121.201:
+    True`
+) }}
+
+
+<h3 id="states">States</h3>
+<p>
+  Salt {{ link::e(path="https://docs.saltstack.com/en/latest/ref/states/all/", description="states") }}
+
+  define the configuration to apply to a minion.
+  Lets create a {{ text::emphasize(text="motd") }}
+ state that configures the message
+  of the day banner using variables from both the {{ text::emphasize(text="pillar") }}
+
+  and {{ text::emphasize(text="grain") }}
+ data.
+</p>
+
+<p>
+  The location of the {{ text::emphasize(text="state") }}
+ data is defined in the
+  {{ text::emphasize(text="/etc/salt/master") }}
+ config file under the
+  {{ text::emphasize(text="file_roots") }}
+ section.
+</p>
+<p>
+  Create a file called {{ text::emphasize(text="motd.sls") }}
+ under the
+  {{ text::emphasize(text="/srv/salt/states/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# /srv/salt/states/motd.sls
+
+/etc/motd:
+  file.managed:
+    - source: salt://templates/motd.j2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 0644`
+) }}
+
+
+<p>
+  Next we need to create a configuration template that will be applied to the minions.
+  The location of configuration {{ text::emphasize(text="templates") }}
+ is defined
+  in the {{ text::emphasize(text="/etc/salt/master") }}
+ config file under the
+  {{ text::emphasize(text="file_roots") }}
+ section.
+</p>
+<p>
+  Salt uses Jinja2 as its default templating engine but it does support many others.
+  Create a file called {{ text::emphasize(text="motd.j2") }}
+ under the
+  {{ text::emphasize(text="/srv/salt/templates/") }}
+ directory.
+</p>
+
+
+{{ text::code_block(
+  header="file",
+  language="django",
+  code="# /srv/salt/templates/motd.j2
+
+############### Salt Managed ###############
+hostname: {{ grains['fqdn'] }}
+os: {{ grains['os'] }}
+os_family: {{ grains['os_family'] }}
+{%- if pillar['data_center'] is defined %}
+data center: {{ pillar['data_center'] }}
+{%- endif %}
+############# End Salt Managed #############"
+) }}
+
+<p>
+  {{ text::emphasize(text="Grain") }}
+ and {{ text::emphasize(text="pillar") }}
+ data
+  is available as a {{ text::emphasize(text="dictionary") }}
+ so it can be accessed from
+  within Jinja2 templates using the standard dictionary access methods.
+</p>
+
+<p>
+  Finally, create a {{ text::emphasize(text="top.sls") }}
+ file under the
+  {{ text::emphasize(text="/srv/salt/states/") }}
+ directory that defines the states
+  to be applied to minions.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# /srv/salt/states/top.sls
+
+base: # environment
+
+  '*': # target all mininos
+
+    - motd # motd.sls without the .sls extension`
+) }}
+
+
+<p>
+  Now apply the {{ text::emphasize(text="motd") }}
+ state to the minions with the
+  {{ text::code(text="state.apply") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo salt '*' state.apply
+
+# output
+
+192.168.121.201:
+----------
+          ID: /etc/motd
+    Function: file.managed
+      Result: True
+     Comment: File /etc/motd updated
+     Started: 09:40:09.158947
+    Duration: 44.262 ms
+     Changes:
+              ----------
+              diff:
+                  ---
+                  +++
+                  @@ -0,0 +1,6 @@
+                  +############### Salt Managed ###############
+                  +hostname: master
+                  +os: CentOS
+                  +os_family: RedHat
+                  +data center: syd
+                  +############# End Salt Managed #############
+
+Summary for 192.168.121.201
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  44.262 ms
+.
+. &lt;snip&gt;
+.`
+) }}
+
+
+<p>
+  As you can see below the {{ text::emphasize(text="/etc/motd") }}
+ was updated on both
+  the master and the minion with the variables from the template replaced with the
+  {{ text::emphasize(text="grain") }}
+ and {{ text::emphasize(text="pillar") }}
+
+  data.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# [vagrant@master ~]$ cat /etc/motd
+
+############### Salt Managed ###############
+hostname: master
+os: CentOS
+os_family: RedHat
+data center: syd
+############# End Salt Managed #############`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vagrant@minion:~$ cat /etc/motd
+
+############### Salt Managed ###############
+hostname: minion
+os: Cumulus
+os_family: Cumulus
+data center: nyc
+############# End Salt Managed #############`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Salt is a very useful tool not just for configuration management but for automation and orchestration.
+  Salt is <i>FAST</i>, secure and once you get you head around it, a pleasure to work with.
+</p>
+
+{% include "_includes/from-the-start-to-the-beginning.jinja" %}
+{% endblock page_content %}

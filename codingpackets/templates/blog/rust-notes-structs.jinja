@@ -1,0 +1,122 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="struct") }}
+ in 
+  Rust is used to encapsulate data. 
+  {{ text::emphasize(text="structs") }}
+ can 
+  have {{ text::emphasize(text="fields") }}
+,
+  {{ text::emphasize(text="associated functions") }}
+ and 
+  {{ text::emphasize(text="methods") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Example struct definition.
+struct StuffAndThings {
+    stuff: String, // struct field
+    things: u8,
+}
+
+// Instantiate an immutable struct.
+let sat = StuffAndThings {
+    stuff: String::from("stuff"),
+    things: 8,
+};
+
+// Access the structs fields.
+println!("{}", sat.stuff); // => stuff
+println!("{}", sat.things); // => 8
+
+// Instatiate a mutable struct.
+let mut sat1 = StuffAndThings::new();
+
+// Set the fields on a mutable struct.
+sat1.stuff = String::from("blah");
+sat1.things = 42;
+
+// Access the structs fields.
+println!("{}", sat1.stuff); // => blah
+println!("{}", sat1.things); // => 42'
+) }}
+
+<h3 id="associated-function">Associated Function</h3>
+<p>
+  Associated functions are tied to an instance of a 
+  struct and are usually used as constructors during 
+  instantiation.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Implement a `new` associated funtion that is 
+// used to instatiate `StuffAndThings` with default values.
+impl StuffAndThings {
+    // `Self` is syntastic sugar in-place of the struct 
+    // name: `StuffAndThings`
+    fn new() -> Self { 
+        Self {
+            stuff: String::from("no stuff"),
+            things: 0,
+        }
+    }
+}
+
+// Instantiate a struct with default values.
+let sat = StuffAndThings::new();
+
+// Access a structs fields.
+println!("{}", sat.stuff); // => no stuff
+println!("{}", sat.things); // => 0'
+) }}
+
+<h3 id="methods">Methods</h3>
+<p>
+  Methods add behaviour to a struct.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Implement a `show` method on the `StuffAndThings` struct.
+impl StuffAndThings {
+    // `&self` is syntastic sugar for `self: &Self`
+    // `StuffAndThings` is the (&self) caller object.
+    fn show(&self) -> String {
+        format!("stuff: {} | things: {}", self.stuff, self.things)
+    }
+}
+
+// Instantiate a struct with default values.
+let sat = StuffAndThings::new();
+
+// Call the method.
+println!("{}", sat.show()); // => stuff: no stuff | things: 0'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>When instantiating a {{ text::emphasize(text="struct") }}
+, all fields must be defined.</li>
+  <li>The {{ text::emphasize(text="new") }}
+ associated function is a Rust convention to construct a {{ text::emphasize(text="struct") }}
+ with default values.</li>
+  <li>In an associtated function, using {{ text::emphasize(text="Self") }}
+ in-place of the {{ text::emphasize(text="struct") }}
+ name is syntastic sugar.</li>
+  <li>{{ text::emphasize(text="Methods") }}
+ take {{ text::emphasize(text="&self") }}
+ as their first parameter, where {{ text::emphasize(text="&self") }}
+ is the calling object.</li>
+</ul>
+
+{% endblock page_content %}

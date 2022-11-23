@@ -1,0 +1,61 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  An {{ text::emphasize(text="enum") }}
+ is 
+  a type which can be 
+  {{ text::emphasize(text="ONE") }}
+ of a 
+  {{ text::emphasize(text="FEW") }}
+ different  
+  {{ text::emphasize(text="variants") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Define an enum.
+#[derive(Debug)] // So we can print the contents
+enum StuffAndThings {
+    // Define the data variants.
+    // Variants can be of a number of kinds of data.
+
+    // No data.
+    Blah,
+
+    // Single type of data.
+    Bleh(u8),
+
+    // Tuple of data.
+    Stuff(String, bool),
+
+    // Anonymous struct of data.
+    Things{a: String, b: bool},
+}
+
+// Create an instance of the enum variants with the double colon.
+let blah = StuffAndThings::Blah;
+let bleh = StuffAndThings::Bleh(42);
+let stuff = StuffAndThings::Stuff(String::from("Stuff"), true);
+let things = StuffAndThings::Things{a: String::from("things"), b: true};
+
+// Show the contents.
+println!("{:?}", blah); // => Blah
+println!("{:?}", bleh); // => Bleh(42)
+println!("{:?}", stuff); // => Stuff("Stuff", true)
+println!("{:?}", things); // => Things { a: "things", b: true }'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>{{ text::emphasize(text="CamelCase") }}
+ is the convention used for {{ text::emphasize(text="Enum") }}
+ definition.</li>
+</ul>
+
+{% endblock page_content %}

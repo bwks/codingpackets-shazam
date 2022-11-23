@@ -1,0 +1,44 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="HashMap") }}
+ is 
+  a generic collection of 
+  {{ text::emphasize(text="key/value") }}
+ pairs. 
+  All of the keys must have the same type, and all of 
+  the values must have the same type.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// MashMap needs to be imported into the current scope.
+use std::collections::HashMap;
+
+// Create an empty mutable hash map.
+// The type of the keys/values must be annotated.
+let mut stuff_and_things: HashMap&lt;u8, &str&gt; = HashMap::new();
+
+// Add items to the hash map.
+stuff_and_things.insert(1, "stuff");
+stuff_and_things.insert(2, "things");
+
+// Access the values of a hash map with square brackets and the key.
+println!("{}", stuff_and_things[&1]); // => stuff
+println!("{}", stuff_and_things[&2]); // => things
+
+// Accessing a key that does not exist will result in a panic.
+println!("{}", stuff_and_things[&3]); // => PANIC!'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>A hash maps data is stored on the heap.</li>
+  <li>A hash maps size is not known at compile time, they can grow or shrink at run time.</li>
+</ul>
+
+{% endblock page_content %}

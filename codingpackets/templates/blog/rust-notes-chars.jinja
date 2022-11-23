@@ -1,0 +1,38 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="char") }}
+ in 
+  Rust represents a single unicode scalar value.
+  A {{ text::emphasize(text="char") }}
+ is 
+  defined as a single character within single quotes 
+  eg: {{ text::emphasize(text="('a')") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code="// Assign `东` to the `st` variable
+let st = '东';
+
+// Annotate the `char` type
+let uff: char = '西';;"
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>A {{ text::emphasize(text="char") }}
+ is not the same as a single {{ text::emphasize(text="str") }}
+ character.</li>
+  <li>Strings DO NOT use {{ text::emphasize(text="chars") }}
+ internally.</li>
+  <li>A {{ text::emphasize(text="char") }}
+ is always 4-bytes in length.</li>
+</ul>
+
+{% endblock page_content %}

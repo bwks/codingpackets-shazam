@@ -1,0 +1,43 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  An {{ text::emphasize(text="array") }} is 
+  a sequence of values, of the same type.
+  A array is defined with square brackets 
+  {{ text::emphasize(text="[]") }}.
+</p>
+
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Create an array with 2 elements.
+let stuff_and_things = ["stuff", "things"];
+
+// Annotate the types of the arrays values and specify the array size.
+let stuff_and_things: [&str; 2] = ["stuff", "things"];
+
+// Array elements are accessed with square `[]` brackets 
+// and their `index` number.
+println!("{}", stuff_and_things[0]); // => stuff
+println!("{}", stuff_and_things[1]); // => things
+
+// All the elements of an array can be destructured into a pattern.
+let [a, b] = stuff_and_things;'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Arrays live on the stack by default and have a fixed size.</li>
+  <li>{{ text::emphasize(text="Traits") }}
+ are only implemented on an {{ text::emphasize(text="array") }}
+ with a size of {{ text::emphasize(text="32") }}
+ or less.</li>
+  <li>Arrays with a size greater than {{ text::emphasize(text="32") }}
+ lose most of their functionality.</li>
+</ul>
+
+{% endblock page_content %}

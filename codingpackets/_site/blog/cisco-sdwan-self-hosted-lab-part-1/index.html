@@ -1,0 +1,901 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Cisco SDWAN Self Hosted Lab Part 1</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 2nd of June 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  One of the posts I get contacted about the most is
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/viptela-control-plane-setup">this one</a>
+
+  on how the setup a self hosted Viptela control plane.
+  Since Cisco acquired Viptela the process has changed
+  and is now (IMO) a bit simpler.
+</p>
+<p>
+  With the release of SDWAN software
+  version <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">19.1.0</i>
+ it is now
+  possible to use virtual cEdges (CSR1Kv running SDWAN
+  software) in your fabric. This is great because it allows you
+  to test out features only available on the cEdge as well
+  as get your cEdge templates ready without the need for a physical
+  device (mostly).
+</p>
+
+<p>
+  This post turned out to be pretty long, so I have split it up into
+  two part series. In the first part (this one) I will show you how to create
+  a virtual account, add virtual Edge devices to the account and obtain a
+  serial file. In the
+
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/cisco-sdwan-self-hosted-lab-part-2">second</a>
+
+
+  part I will show you how the install the
+  control plane along with a vEdge and cEdge utilizing an enterprise
+  certificate authority.
+</p>
+
+<h4>Is this for me?</h4>
+<p>
+  If you want to build a Cisco SDWAN lab with arbitrary topologies
+  and/or at a time and place of your choosing then this series could
+  be for you. If you are just looking to get your feet wet with
+  Cisco SDWAN then check out the dCloud labs.
+</p>
+
+<h3 id="pre-requisites">Pre Requisites</h3>
+<p>
+  You will need permissions to create a virtual account in the Cisco
+  software portal. You will additionally need access to create
+  controller profiles and add software devices to a virtual account.
+</p>
+<p>
+  The following software will be used in this series of posts.
+</p>
+<ul>
+  <li><b>vManage</b> - 19.1.0</li>
+  <li><b>vBond</b> - 19.1.0</li>
+  <li><b>vSmart</b> - 19.1.0</li>
+  <li><b>vEdge</b> - 19.1.0</li>
+  <li><b>cEdge</b> - 16.11.1a</li>
+  <li><b>Ubuntu (KVM host)</b> - 1804</li>
+  <li><b>libvirt</b> - 4.0.0</li>
+</ul>
+<p>
+  You can download the required images from the Cisco software
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://software.cisco.com" target=_blank>portal</a>.
+  You will need a valid service contract to download and use these images. I
+  am building this lab on a KVM host, download the images for whatever type
+  of hypervisor (VMWare, Hyper-V, etc..) you are using.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    At the time of writing Cisco has not made any limited or lab licensing
+    available. Reach out to your Cisco partner and/or account rep to arrange access
+    for you.
+  </p>
+  <p>
+    <b><i>No, I cannot distribute the images. Please dont ask!</i></b>
+</p></div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Alright, with all that out of the way, let get down to business.
+</p>
+
+<h3 id="add-virtual-account">Add Virtual Account</h3>
+<p>
+  A virtual account is a logical container for groups of devices.
+</p>
+<p>
+  Navigate to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://software.cisco.com" target=_blank>https://software.cisco.com</a>
+
+  and select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Manage Smart Account</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-1.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Virtual Accounts</i>
+.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-2.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">New Virtual Account</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-3.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the details of the virtual account and select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Save</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-4.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="add-controller-profile">Add Controller Profile</h3>
+<p>
+  You need to add a vBond controller profile in order to create virtual edges.
+</p>
+<p>
+  Navigate back to the main page and select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Plug and Play Connect</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-5.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Default</i>
+ dropdown
+  then select the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">virtual account</i>
+
+  you created in the previous step.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-6.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-6.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Controller Profiles</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-7.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-7.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Add Profile</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-8.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-8.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Change the controller type to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VBOND</i>
+
+  then select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Next</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-9.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-9.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the vBond details and select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Next</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-11.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-11.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Organization Name</i> will need to be unique, the IP address can be anything.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Submit</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-12.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-12.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Done</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-13.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-13.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  You should see your newly created controller profile in the list.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-14.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-14.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="add-virtual-edges">Add Virtual Edges</h3>
+<p>
+  Now create some vEdge and cEdge devices so we can generate a serial file.
+</p>
+<p>
+  Navigate to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Devices</i>
+ and select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">+ Add Software Devices</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-15.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-15.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">+ Add Software Device</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-16.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-16.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the PID <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VEDGE-CLOUD-DNA</i>
+ for
+  vEdges, specify the desired quantity and select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Save</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-17.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-17.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Next</i>
+.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-18.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-18.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Submit</i>
+.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-19.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-19.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Done</i>
+.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-20.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-20.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Rinse and repeat the process for cEdges but this time use:
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">CSR1KV</i>
+ as the PID.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-21.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-21.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    At the time of writing a total of 25 virtual devices can be added to
+    a virtual account.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Once added devices will be in a
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Pending for publish</i>
+ state.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-22.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-22.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  After a few minutes they will transition to the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Provisioned</i>
+ state.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-23.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-23.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="serial-file">Serial File</h3>
+<p>
+  This is it, the moment you have been waiting for, the all important serial file.
+  The serial file is required to add edge devices to the fabric.
+</p>
+
+<p>
+  Navigate to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Controller Profiles</i>
+ and select
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Provisioning File</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-24.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-24.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">18.3 and Newer</i>
+ from the dropdown
+  and then select <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Download</i>
+. Save the
+  file to a safe location to import into the vManage at a future time.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-25.png" alt="blog/cisco-sdwan-self-hosted-lab-part-1/virtual-account-25.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  We created a Virtual account, controller profile added software vEdge and cEdge
+  devices and have our all important serial file in hand. Lets move onto
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/cisco-sdwan-self-hosted-lab-part-2">part 2</a>
+
+  and finalize the lab setup.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ciscolive.com/c/dam/r/ciscolive/emea/docs/2019/pdf/TECSEC-2355.pdf" target=_blank>https://www.ciscolive.com/c/dam/r/ciscolive/emea/docs/2019/pdf/TECSEC-2355.pdf</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#sdwan" class="text-xl">sdwan</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-requisites">
+            Pre Requisites
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#add-virtual-account">
+            Add Virtual Account
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#add-controller-profile">
+            Add Controller Profile
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#add-virtual-edges">
+            Add Virtual Edges
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#serial-file">
+            Serial File
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

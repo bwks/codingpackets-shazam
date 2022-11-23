@@ -1,0 +1,171 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Good Morro Crusty ones 😘. In todays episode of learning Rust, 
+  I will show you how to load a 
+  {{ text::emphasize(text="TOML") }}
+ file 
+  in {{ text::emphasize(text="Rust") }}
+ and additionally 
+  handle any possible errors.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Rust - 1.57.0</li>
+  <li>toml - 0.5.2</li>
+  <li>serde - 1.0.136</li>
+  <li>serde_derive - 1.0.136</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  I will be using the {{ link::e(path="https://docs.rs/toml/0.5.8/toml/", description="toml") }}
+  
+  and {{ link::e(path="https://serde.rs/", description="serde") }}
+ libraries for 
+  this task. The {{ text::emphasize(text="TOML") }}
+ library is 
+  used to manage .... you guessed it {{ text::emphasize(text="TOML") }}
+ 
+  files. While the {{ text::emphasize(text="serde") }}
+ libraries are 
+  used to {{ text::emphasize(text="serialize") }}
+ and 
+  {{ text::emphasize(text="deserialze") }}
+ data between structs and 
+  differet data formats. EG: JSON, TOML, YAML, etc...
+</p>
+<p>
+  We will need to add the {{ text::emphasize(text="TOML") }}
+ and 
+  {{ text::emphasize(text="serde") }}
+ crates to 
+  the {{ text::emphasize(text="Cargo.toml") }}
+ file under the 
+  {{ text::emphasize(text="dependencies") }}
+ section.
+</p>
+
+{{ text::code_block(
+  header="Cargo.toml",
+  language="ini",
+  code='[dependencies]
+toml = "0.5.2"
+serde = "1.0.136"
+serde_derive = "1.0.136"'
+) }}
+
+<h3 id="toml-file">TOML File</h3>
+<p>
+  Now, create a {{ text::emphasize(text="TOML") }}
+ file named
+  {{ text::emphasize(text="test.toml") }}
+ which we will be loaded 
+  into a struct. 
+</p>
+
+{{ text::code_block(
+  header="test.toml",
+  language="ini",
+  code='[config]
+ip = "42.69.42.0"
+port = 42'
+) }}
+
+<h3 id="lets-get-rusty">Lets Get Rusty</h3>
+<p>
+  Add the following contents to the 
+  {{ text::emphasize(text="main.rs") }}
+ file. 
+  Follow along with the files comments for details of 
+  what is happening in the code. 
+</p>
+
+
+{{ text::code_block(
+  header="main.rs",
+  language="rust",
+  code='// Import the required dependencies.
+use serde_derive::Deserialize;
+use std::fs;
+use std::process::exit;
+use toml;
+
+// Top level struct to hold the TOML data.
+#[derive(Deserialize)]
+struct Data {
+    config: Config,
+}
+
+// Config struct holds to data from the `[config]` section.
+#[derive(Deserialize)]
+struct Config {
+    ip: String,
+    port: u16,
+}
+
+fn main() {
+    // Variable that holds the filename as a `&str`.
+    let filename = "test.toml";
+
+    // Read the contents of the file using a `match` block 
+    // to return the `data: Ok(c)` as a `String` 
+    // or handle any `errors: Err(_)`.
+    let contents = match fs::read_to_string(filename) {
+        // If successful return the files text as `contents`.
+        // `c` is a local variable.
+        Ok(c) => c,
+        // Handle the `error` case.
+        Err(_) => {
+            // Write `msg` to `stderr`.
+            eprintln!("Could not read file `{}`", filename);
+            // Exit the program with exit code `1`.
+            exit(1);
+        }
+    };
+
+    // Use a `match` block to return the 
+    // file `contents` as a `Data struct: Ok(d)`
+    // or handle any `errors: Err(_)`.
+    let data: Data = match toml::from_str(&contents) {
+        // If successful, return data as `Data` struct.
+        // `d` is a local variable.
+        Ok(d) => d,
+        // Handle the `error` case.
+        Err(_) => {
+            // Write `msg` to `stderr`.
+            eprintln!("Unable to load data from `{}`", filename);
+            // Exit the program with exit code `1`.
+            exit(1);
+        }
+    };
+
+    // Print out the values to `stdout`.
+    println!("{}", data.config.ip); // => 42.69.42.0
+    println!("{}", data.config.port); // => 42
+}'
+) }}
+
+<p>
+  Learning Rust has been quite enjoyable for me so far and I 
+  look forward to writing more code in Rust.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to load a 
+  {{ text::emphasize(text="TOML") }}
+ file 
+  in {{ text::emphasize(text="Rust") }}
+ and handle 
+  any errors that may arise. 
+</p>
+
+{% endblock page_content %}

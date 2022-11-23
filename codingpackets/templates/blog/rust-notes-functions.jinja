@@ -1,0 +1,65 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Rust is a functional language, it may or may not 
+  be shocking to discover that functions are a big 
+  part of the language. 
+</p>
+<p>
+  A function is defined with the 
+  {{ text::emphasize(text="fn") }}
+ keyword. 
+  {{ text::emphasize(text="fn") }}
+ is pronounced: 
+  fun 🥳
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Function with no parameters or return value
+fn stuff() {
+    println!("stuff"); // => stuff
+}
+
+// Function with parameters that returns an i32
+fn add(i: i32, j: i32) -> i32 {
+    // return i + j; // supported, but not preferred.
+    i + j // bare tail expression is perferred.
+}
+
+// The `main` function is the programs entry point.
+fn main() {
+    stuff(); // call a function.
+    println!("{}", add(1, 2)); // => 3
+}'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Functions are defined in {{ text::emphasize(text="snake_case") }}
+ by convention.</li>
+  <li>Type annotations are required for any parameters.</li>
+  <li>If the function returns something, the return type must be specified.</li>
+  <li>A functions name, its parameters and return type make up a functions {{ text::emphasize(text="signature") }}
+.</li>
+  <li>The {{ text::emphasize(text="main") }}
+ function is the entrypoint to the program.</li>
+  <li>The last statement in a function is automatically returned, this is known as a {{ text::emphasize(text="tail expression") }}
+.</li>
+  <li>The {{ text::emphasize(text="return") }}
+ keyword is not required unless exiting before the {{ text::emphasize(text="tail expression") }}
+.</li>
+  <li>The bare {{ text::emphasize(text="tail expression") }}
+ format is the preferred Rust convention.</li>
+  <li>The terminating semicolon {{ text::emphasize(text=";") }}
+ is not required for a returned value.</li>
+  <li>Functions do not support default parameter assignment.</li>
+  <li>Functions do not support named parameters, all parameters are positional.</li>
+  <li>Functions must be called with all the parameters in the correct order.</li>
+</ul>
+
+{% endblock page_content %}

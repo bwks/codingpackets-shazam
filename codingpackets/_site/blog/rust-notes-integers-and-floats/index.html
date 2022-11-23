@@ -1,0 +1,785 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Rust Notes: Integers and Floats</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 5th of February 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="integers">Integers</h3>
+<p>
+  Integers represent whole numbers. Rust has both 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">unsigned</i>
+ integers and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">signed</i>
+ integers.
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">unsigned</i>
+ integers
+  cannot be negative, and have a higher positive range 
+  than <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">signed</i>
+ integers,
+  that can be negative, but have a lower postive range.
+</p>
+
+<p>
+  The following table lists the integer literal types 
+  in Rust.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Length</th>
+        
+          <th class="pt-1 pb-2 px-2">Unsigned</th>
+        
+          <th class="pt-1 pb-2 px-2">Signed</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">8-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> u8 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> i8</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">16-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> u16 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> i16</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">32-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> u32 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> i32</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">64-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> u64 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> i64</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">128-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> u128 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> i128</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">CPU Architecture </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> usize </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> isize</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  The following table lists the formats that are 
+  supported for an integer literal definition.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Literal</th>
+        
+          <th class="pt-1 pb-2 px-2">Example</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Decimal </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 42</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Hex </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <b>0x</b>2a</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Octal </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <b>0o</b>52</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Binary </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <b>0b</b>101010</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Byte (u8 only) </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <b>b</b>'Z'</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h4>Integer code examples</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">rust</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-rust hljs px-5 dark:opacity-80 rounded-b">// i32 by default
+let the_answser = 42;
+
+// Annotate the type of integer
+let dinner_for_two: i8 = 69;
+
+// Integer suffixing is also supported for type annotation
+let its_friday = 420u16; // => 420
+
+// Underscores can help to improve readbility
+let you_da_winnah = 1_16_32_5_12_19_40_i64; // => 116325121940</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Integer Considerations</h4>
+<ul>
+  <li>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">i32</i>
+ is the default 
+    type if an integer does not include a type annotation.
+  </li>
+  <li>
+    The term <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">u8</i>
+ and 
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">byte</i>
+ are used interchangeably in the 
+    Rust community. 
+  </li>
+    <li>
+    Underscores <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">(_)</i>
+ can be used to  
+    improve the readability of an integer literal, they are ignored by the compiler.
+    EG: <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">1_000_000</i>
+ 
+  </li>
+</ul>
+
+
+<h3 id="floats">Floats</h3>
+<p>
+  Floating points represent a number with a fractional 
+  component expressed in <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">IEEE-754</i>
+
+  format. Rust has two floating point types: 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">f32</i>
+ and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">f64</i>
+.
+</p>
+
+<p>
+  The following table list the floating point literal
+  types and their bits of precision.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Precision</th>
+        
+          <th class="pt-1 pb-2 px-2">Type</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">32-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> f32</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">64-bits </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> f64</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<h4>Float code examples</h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">rust</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-rust hljs px-5 dark:opacity-80 rounded-b">// f64 by default
+let highly_sexual = 420.69;
+
+// Annotate the type of float
+let dinner_for_two: f32 = 69.69;
+
+// Float suffixing is also supported for type annotation
+let its_friday = 420.69f32; // => 420.69
+
+// Underscores can help to improve readbility
+let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Float Considerations</h4>
+<ul>
+  <li>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">f64</i>
+ is the default 
+    type if a float does not include a type annotation.
+  </li>
+  <li>
+    A float requires a digit before the decimal place 
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">(.)</i>
+ in a 
+    float definition. 
+  </li>
+    <li>
+    Underscores <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">(_)</i>
+ can be used to  
+    improve the readability of a float literal, they are ignored by the compiler.
+    EG: <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">420_69.1337</i>
+ 
+  </li>
+  <li>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">f64</i>
+ can be slow on a 32-bit 
+    architecture.
+  </li>
+</ul>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.manning.com/books/rust-in-action" target=_blank>https://www.manning.com/books/rust-in-action</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.udemy.com/course/ultimate-rust-crash-course/" target=_blank>https://www.udemy.com/course/ultimate-rust-crash-course/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.techopedia.com/definition/16441/scalar" target=_blank>https://www.techopedia.com/definition/16441/scalar</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int" target=_blank>https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://doc.rust-lang.org/book/ch03-02-data-types.html" target=_blank>https://doc.rust-lang.org/book/ch03-02-data-types.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://doc.rust-lang.org/reference/types/numeric.html" target=_blank>https://doc.rust-lang.org/reference/types/numeric.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#rust" class="text-xl">rust</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#integers">
+            Integers
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#floats">
+            Floats
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

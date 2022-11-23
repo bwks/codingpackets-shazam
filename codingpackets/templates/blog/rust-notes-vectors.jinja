@@ -1,0 +1,56 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="vector") }}
+ is 
+  a collection of items of the 
+  {{ text::emphasize(text="same") }}
+ type.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Create an empty mutable empty vector.
+// The type of the elements must be annotated.
+let mut stuff_and_things: Vec&lt;&str&gt; = Vec::new();
+
+// Add items to the vector.
+stuff_and_things.push("stuff");
+stuff_and_things.push("things");
+
+// Access the elements of a vector with square brackets and the index number.
+println!("{}", stuff_and_things[0]); // => stuff
+println!("{}", stuff_and_things[1]); // => things
+
+// Accessing an element that is out of bounds will result in a panic.
+println!("{}", stuff_and_things[2]); // => PANIC!
+
+// Create an immutable vector with 2 elements using the literal syntax.
+let stuff_and_things = vec!["stuff", "things"];
+
+// Specify the type annotation
+let stuff_and_things: Vec&lt;&str&gt; = vec!["stuff", "things"];
+
+// Create a mutable vector with the literal syntax
+let mut stuff_and_things = vec!["stuff", "things"];'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>When an empty vector is created with {{ text::emphasize(text="Vec::new") }}
+ it is un-allocated until elements are pushed into it.</li>
+  <li>A vector with elements has allocated memory and lives on the heap.</li>
+  <li>A vector is represented as a {{ text::emphasize(text="pointer to the data") }}
+ a {{ text::emphasize(text="length") }}
+ and a {{ text::emphasize(text="capacity") }}
+.</li>
+  <li>If a vector needs to grow past the size of its capacity, the vector is re-allocated with additional memory.</li>
+  <li>A vectors size is not known at compile time, they can grow or shrink at run time.</li>
+</ul>
+
+{% endblock page_content %}

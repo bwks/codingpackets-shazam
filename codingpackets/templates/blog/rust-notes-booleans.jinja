@@ -1,0 +1,42 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  The boolean type in Rust is defined with 
+  the {{ text::emphasize(text="bool") }}
+ 
+  type annotation and can be either a
+  {{ text::emphasize(text="true") }}
+ or 
+  {{ text::emphasize(text="false") }}
+ 
+  literal.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Assign `true` to the `stuff` variable
+let stuff = true;
+
+// Annotate the `bool` type
+let things: bool = false;'
+) }}
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>{{ text::emphasize(text="false") }}
+ has a bit battern of {{ text::emphasize(text="0x00") }}
+</li>
+  <li>{{ text::emphasize(text="true") }}
+ has a bit battern of {{ text::emphasize(text="0x01") }}
+</li>
+  <li>Booleans cannot be used in arithmatic unless they are cast to a {{ text::emphasize(text="u8") }}
+</li>
+
+</ul>
+
+
+{% endblock page_content %}

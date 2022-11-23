@@ -1,0 +1,1432 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Viptela is an SDWAN platform now owned by Cisco. In this blog I will setup a Viptela
+  control plane using self signed certificates for the purpose of testing in a lab environment.
+</p>
+<p>
+  The recommended mode of operation for production deployments is using Symantec signed certificates
+  that are managed by Viptela. Using Viptela issued certificates allows for ZTP and greatly
+  simplifies the lifecycle management of certificates as it is all handled by Viptela and their
+  software.
+</p>
+<p>
+  The one caveat to using Viptela issued certificates is that you need to raise a case to have
+  the controller certificates signed. This is fine for a production deployment where you do it
+  once and forget about it, but it does not really work in a lab where you spin up/down
+  environments for the purpose of testing infrastructure as code and testing code against infrastructure.
+</p>
+
+<h3 id="lab-topology">Lab Topology</h3>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/lab-topology.svg", width="600px") }}
+
+
+<h4><b>Lab IP Addressing</b></h4>
+
+{{ table::default(
+  header=["Host", "VPN 0", "VPN 512"],
+  rows=[
+    "vManage | 10.10.100.31/24 | 172.16.100.31/24",
+    "vBond | 10.10.100.32/24 | 172.16.100.32/24",
+    "vSmart | 10.10.100.33/24 | 172.16.100.33/24",
+    "vEdge | 10.10.100.34/24 | 172.16.100.34/24",
+  ],
+) }}
+
+<h4><b>Lab Software</b></h4>
+<ul>
+  <li>vManage - 16.3.2 / 17.2.0</li>
+  <li>vBond - 16.3.2 / 17.2.0</li>
+  <li>vSmart - 16.3.2 / 17.2.0</li>
+  <li>vEdge - 17.2.0</li>
+</ul>
+
+<p>
+  This lab assumes that you already have the virtual machine images booted in your hypervisor
+  platform of choice. I am personally running this lab in OpenStack, but you can just as easily
+  boot the VM's in VMware ESX/Fusion/Workstation or with a bit if fiddling Virtualbox or KVM.
+</p>
+<p>
+  The controllers will start on software version {{ text::emphasize(text="16.3.2") }}
+
+  and be upgraded to {{ text::emphasize(text="17.2.0") }}
+ during the course of the lab.
+</p>
+
+
+<h3 id="controllers">Controllers</h3>
+<p>
+  The Viptela control plane consists of the following components.
+</p>
+<h4><b>vManage NMS</b></h4>
+<p>
+  The vManage is the central point of configuration and monitoring for the Viptela solution.
+</p>
+
+<h4><b>vBond Orchestrator</b></h4>
+<p>
+  The vBond authenticates and validates devices that join the overlay network.
+</p>
+
+<h4><b>vSmart Controller</b></h4>
+<p>
+  The vSmart controller is the point of control over the routing policy in the overlay network.
+  vSmart controllers are similar to BGP route reflectors.
+</p>
+
+<h3 id="cli-modes">CLI Modes</h3>
+<p>
+  Viptela devices use an ubuntu 1404 base operating system. There are two cli modes to be
+  aware of when working with Viptela device software; the {{ text::emphasize(text="vshell") }}
+
+  and the {{ text::emphasize(text="viptela-cli") }}
+. When you login to a Viptela device
+  terminal you are placed in the {{ text::emphasize(text="viptela-cli") }}
+.
+</p>
+
+<h4><b>viptela-cli</b></h4>
+<p>
+  The {{ text::emphasize(text="viptela-cli") }}
+ is similar to a Cisco IOS terminal with nicer
+  features like candidate config and commit style management.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+vmanage#`
+) }}
+
+
+<h4><b>vshell</b></h4>
+<p>
+  To logon to the {{ text::emphasize(text="vshell") }}
+ use the {{ text::code(text="vshell") }}
+
+  command (Shocking right!). The {{ text::emphasize(text="vshell") }}
+ is very similar
+  to a bash shell.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vmanage# vshell
+
+# vshell
+
+vmanage:~$`
+) }}
+
+
+<p>
+  To exit out of the {{ text::emphasize(text="vshell") }}
+ and return to the
+  {{ text::emphasize(text="viptela-cli") }}
+ use the {{ text::code(text="exit") }}
+
+  keyword.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vmanage:~$ exit
+exit
+vmanage#`
+) }}
+
+
+<p>
+  This lab will use both the {{ text::emphasize(text="viptela-cli") }}
+ and the
+  {{ text::emphasize(text="vshell") }}
+. If you are following along, please take note of
+  which shell the commands are executed in.
+</p>
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Lets get cracking with the configuration. In this lab we will start by configuring the
+  root CA, then move onto installing certificates on the Viptela devices and finally
+  upgrade the vManage, vSmart and vBond to code version {{ text::emphasize(text="17.2.0") }}
+
+  to allow the virtual vEdge to join the control plane.
+</p>
+
+<h3 id="vmanage">vManage</h3>
+
+<p>
+  Login to the vManage web interface with the username and password {{ text::emphasize(text="admin") }}
+
+  and navigate to the settings page.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Administration",
+"Settings",
+]) }}
+
+
+<p>
+  Enter the organization name {{ text::emphasize(text="network-lab") }}
+.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/organization-name.png", width="900px") }}
+
+<p>
+  Also enter the vBond IP address <span class="font-mono">10.10.100.32</span>
+.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-address.png", width="900px") }}
+
+{{ text::important_block(text='
+    Ensure the Certificate Authorization method is set to $1.
+') 
+  | replace(from="$1", to=text::emphasize(text="Manual"))
+}}
+
+<h3 id="bootstrap-config">Bootstrap Config</h3>
+<p>
+  Apply the following bootstrap configs to the hosts.
+</p>
+<h4><b>vManage</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+system
+ system-ip 1.1.1.1
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface eth1
+  ip dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !`
+) }}
+
+
+<h4><b>vBond</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+system
+ system-ip 1.1.1.2
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32 local vbond-only
+!
+vpn 0
+ interface ge0/0
+  ip dhcp-client
+  ipv6 dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !`
+) }}
+
+
+<h4><b>vSmart</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+system
+ system-ip 1.1.1.3
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface eth1
+  ip dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !`
+) }}
+
+
+<h4><b>vEdge</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+system
+ system-ip 3.1.1.1
+ site-id 1
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface ge0/0
+  ip dhcp-client
+  ipv6 dhcp-client
+  tunnel-interface
+   encapsulation ipsec
+   no allow-service bgp
+   allow-service dhcp
+   allow-service dns
+   allow-service icmp
+   no allow-service sshd
+   no allow-service netconf
+   no allow-service ntp
+   no allow-service ospf
+   no allow-service stun
+  !
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !`
+) }}
+
+
+
+{{ text::note_block(text='
+    I am using DHCP for all interface IP address assignments in this lab.
+') }}
+
+<h3 id="certificate-server">Certificate Server</h3>
+<p>
+  For this lab I will use the vManage as the root certificate authority. I will utilize the
+  {{ text::code(text="openssl") }}
+ command to generate and sign certificates from the
+  {{ text::emphasize(text="vshell") }}
+ terminal.
+</p>
+
+<p>
+  Generate a root CA key named {{ text::emphasize(text="ROOTCA.key") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl genrsa -out ROOTCA.key 2048
+
+# output
+Generating RSA private key, 2048 bit long modulus
+.....................................................+++
+................+++
+e is 65537 (0x10001)`
+) }}
+
+
+<p>
+  Generate a {{ text::emphasize(text="ROOTCA.pem") }}
+ certificate and sign it with the
+  {{ text::emphasize(text="ROOTCA.key") }}
+ key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 1024 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=network-lab/CN=vmanage.lab" \
+    -out ROOTCA.pem`
+) }}
+
+
+{{ text::note_block(text='
+    The $1
+ certificate will need to be installed
+    manually on all the devices in the fabric.
+') 
+  | replace(from="$1", to=text::emphasize(text="ROOTCA.pem"))
+}}
+
+<p>
+  Exit out of the {{ text::emphasize(text="vshell") }}
+ and install the
+  {{ text::emphasize(text="ROOTCA.pem") }}
+ certificate from the
+  {{ text::emphasize(text="viptela-cli") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request root-cert-chain install /home/admin/ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 0
+Copying ... /home/admin/ROOTCA.pem via VPN 0
+Successfully installed the root certificate chain`
+) }}
+
+
+<p>
+  In the web interface generate a certificate signing request.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "vManage",
+    "Generate CSR",
+]) }}
+
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/generate-csr-1.png", width="900px") }}
+<p>
+  A window will popup with the CSR text. In the {{ text::emphasize(text="vshell") }}
+
+  use {{ text::code(text="vim") }}
+ to create a file named {{ text::emphasize(text="vmanage.csr") }}
+
+  with the text from the popup.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/generate-csr-2.png", width="900px") }}
+
+<p>
+  Sign the {{ text::emphasize(text="vmanage.csr") }}
+ file with the
+  {{ text::emphasize(text="ROOTCA.key") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl x509 -req -in vmanage.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vmanage.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vmanage_613e7c7c-07f8-443b-aa90-969bf12a64e4_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+
+<p>
+  Use the {{ text::code(text="cat") }}
+ command to view the contents of the
+  {{ text::emphasize(text="vmanage.crt") }}
+ file and install the certificate in the
+  web interface.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "Install Certificate",
+]) }}
+
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-install-certificate-1.png", width="900px") }}
+
+<p>
+  Paste the contents into the popup
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-install-certificate-2.png", width="900px") }}
+
+<p>
+  Sample successful certificate install log
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-install-certificate-3.png", width="900px") }}
+
+<p>
+  Finally, from the {{ text::emphasize(text="vshell") }}
+ install the
+  {{ text::emphasize(text="vmanage.crt") }}
+ certificate
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request certificate install /home/admin/vmanage.crt
+
+# output
+
+Installing certificate via VPN 0
+Successfully installed the certificate`
+) }}
+
+
+
+
+
+
+<h3 id="vbond">vBond</h3>
+<p>
+  Add the {{ text::emphasize(text="ROOTCA.pem") }}
+ certificate to the vBonds root certificate
+  chain.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     2.4MB/s   00:00
+Successfully installed the root certificate chain`
+) }}
+
+
+
+
+<p>
+  Add the vBond to vManage web interface
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Devices",
+    "Controllers",
+    "Add Controller",
+    "vBond",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-add-to-vmanage-1.png", width="900px") }}
+
+<p>
+  Enter the IP address of the {{ text::emphasize(text="vpn0") }}
+ interface: <span class="font-mono">10.10.100.32</span>
+.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-add-to-vmanage-2.png", width="900px") }}
+
+<p>
+  Example successfully added vBond.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-add-to-vmanage-3.png", width="900px") }}
+
+
+{{ text::important_block(text='
+    Do not enable a tunnel interface under the $1
+    interface or the vManage will not be able to connect to the vBond to add it.
+') 
+  | replace(from="$1", to=text::emphasize(text="vpn0"))
+}}
+
+<p>
+  Get a copy of the vBond CSR text.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "vBond",
+    "View CSR",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-csr-1.png", width="900px") }}
+
+<p>
+  A window will popup with the CSR text. In the {{ text::emphasize(text="vshell") }}
+ on
+  the {{ text::emphasize(text="vManage") }}
+ use {{ text::code(text="vim") }}
+ to create a file named
+  {{ text::emphasize(text="vbond.csr") }}
+ with the text from the popup.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-csr-2.png", width="900px") }}
+
+<p>
+  Sign the {{ text::emphasize(text="vbond.csr") }}
+ file with the
+  {{ text::emphasize(text="ROOTCA.key") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl x509 -req -in vbond.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vbond.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vbond_94cd241e-06cd-4fd3-9964-6f147710c59e_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+
+
+<p>
+  Use the {{ text::code(text="cat") }}
+ command to view the contents of the
+  {{ text::emphasize(text="vbond.crt") }}
+ file and install the certificate in the
+  web interface.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "Install Certificate",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-certificate-install-1.png", width="900px") }}
+
+<p>
+  Paste the contents into the popup
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-certificate-install-1.png", width="900px") }}
+
+<p>
+  Sample successful certificate install log
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-certificate-install-3.png", width="900px") }}
+
+<p>
+  Send the list of certs to the vBond.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "Send to vBond",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-certificate-install-4.png", width="900px") }}
+
+<p>
+  Example successfully updated vBond.
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-certificate-install-5.png", width="900px") }}
+
+<p>
+  Finally, on the {{ text::emphasize(text="viptela-cli") }}
+ of the
+  {{ text::emphasize(text="vBond") }}
+ install the
+  {{ text::emphasize(text="vbond.crt") }}
+ certificate
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vbond.crt vpn 512
+
+# output
+
+Installing certificate via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/vbond.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vbond.crt                                                                                                                                                                  100% 1310     2.5MB/s   00:00
+Successfully installed the certificate`
+) }}
+
+
+
+
+<h3 id="vsmart">vSmart</h3>
+<p>
+  Add the {{ text::emphasize(text="ROOTCA.pem") }}
+ certificate to the vSmarts root
+  certificate chain.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     1.9MB/s   00:00
+Successfully installed the root certificate chain`
+) }}
+
+
+
+
+<p>
+  Add the vSmart to vManage web interface
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Devices",
+    "Controllers",
+    "Add Controller",
+    "vSmart",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-add-to-vmanage-1.png", width="900px") }}
+
+<p>
+  Enter the IP address of the {{ text::emphasize(text="vpn0") }}
+ interface: <span class="font-mono">10.10.100.33</span>
+.
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-add-to-vmanage-2.png", width="900px") }}
+
+<p>
+  Get a copy of the vSmart CSR text.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "vSmart",
+    "View CSR",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-csr-1.png", width="900px") }}
+
+
+<p>
+  A window will popup with the CSR text. In the {{ text::emphasize(text="vshell") }}
+ on
+  the {{ text::emphasize(text="vManage") }}
+ use {{ text::code(text="vim") }}
+ to create a file named
+  {{ text::emphasize(text="vsmart.csr") }}
+ with the text from the popup.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-csr-2.png", width="900px") }}
+
+
+<p>
+  On the {{ text::emphasize(text="vManage") }}
+ sign the
+  {{ text::emphasize(text="vsmart.csr") }}
+ file with the
+  {{ text::emphasize(text="ROOTCA.key") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl x509 -req -in vsmart.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vsmart.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vsmart_4a850d7d-cf30-4b75-bf3f-7ad0ef899174_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+
+
+<p>
+  Use the {{ text::code(text="cat") }}
+ command to view the contents of the
+  {{ text::emphasize(text="vsmart.crt") }}
+ file and install the certificate in the
+  web interface.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+    "Install Certificate",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-certificate-install-1.png", width="900px") }}
+
+<p>
+  Paste the contents into the popup
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-certificate-install-2.png", width="900px") }}
+
+
+<p>
+  Sample successful certificate install log
+</p>
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-certificate-install-3.png", width="900px") }}
+
+<p>
+  No need to update the vBond this time as the vBond was updated as part of the certificate install.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "Controllers",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vsmart-certificate-install-4.png", width="900px") }}
+
+
+<p>
+  Finally, on the {{ text::emphasize(text="vSmart") }}
+ install the
+  {{ text::emphasize(text="vsmart.crt") }}
+ certificate
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vsmart.crt vpn 512
+
+# output
+
+Installing certificate via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/vsmart.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vsmart.crt                                                                                                                                                                 100% 1310     2.3MB/s   00:00
+Successfully installed the certificate`
+) }}
+
+
+
+<h3 id="vedge">vEdge</h3>
+<p>
+  Add the {{ text::emphasize(text="ROOTCA.pem") }}
+ certificate to the vEdge root
+  certificate chain.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     2.5MB/s   00:00
+Updating the root certificate chain..
+Successfully installed the root certificate chain`
+) }}
+
+
+{{ text::important_block(text='
+    The virtual vEdge must be of version 17.x or greater to use certificates that are not
+    issued by Viptela.
+') }}
+
+<p>
+  Generate a certificate signing request. Ensure to enter the organization name as
+  {{ text::emphasize(text="network-lab") }}
+ at the prompts.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request csr upload scp://admin@172.16.100.31:/home/admin/vedge-01.csr vpn 512
+
+# output
+
+Uploading CSR via VPN 512
+Enter organization name            : network-lab
+Re-enter organization name          : network-lab
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 413]
+CMD_MAAPI is true [mtid = 413]
+CMD_MAAPI is true [mtid = 0]
+Generating private/public pair and CSR for this vedge device
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 417]
+CMD_MAAPI is true [mtid = 417]
+CMD_MAAPI is true [mtid = 0]
+Generating CSR for this vedge device   ........[DONE]
+Copying ... admin@172.16.100.31:/home/admin/vedge-01.csr via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+server.csr                                                                                                                                                                 100% 1216     3.4MB/s   00:00
+CSR upload successful`
+) }}
+
+
+<p>
+  On the {{ text::emphasize(text="vManage") }}
+ have the
+  {{ text::emphasize(text="vedge-01.csr") }}
+ signed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vshell
+
+openssl x509 -req -in vedge-01.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vedge-01.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vedge-ea3feb44-7869-4d35-83fd-fb6e1e81c3f1-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+
+<p>
+  Back on the {{ text::emphasize(text="vEdge") }}
+ install the signed certificate.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vedge-01.crt vpn 512
+
+# output
+
+Copying ... admin@172.16.100.31:/home/admin/vedge-01.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vedge-01.crt                                                                                                                                                               100% 1310     2.7MB/s   00:00
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 423]
+CMD_MAAPI is true [mtid = 423]
+CMD_MAAPI is true [mtid = 0]
+Successfully installed the certificate`
+) }}
+
+
+
+<p>
+  Get the certificate details from the vEdge.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+show certificate serial
+
+# output
+
+Chassis number: ea3feb44-7869-4d35-83fd-fb6e1e81c3f1 serial number: F1EA24CA2A0565B8`
+) }}
+
+
+
+<p>
+  A vEdge serial file needs to be uploaded to the vManage to ensure only authorized vEdges can
+  connect to the fabric. Prior to software version {{ text::emphasize(text="17.x") }}
+ this
+  file was just a CSV file made up of the chassis number and certificate serial number of the
+  vEdges. After {{ text::emphasize(text="17.x") }}
+ the vEdge serial file became a signed
+  binary file that can only be downloaded from Viptela and only includes the vEdges for which
+  you have purchased a license.
+</p>
+<p>
+  This is the reason we start by installing the vManage, vBond and vSmart on software version
+  {{ text::emphasize(text="16.3.2") }}
+ and later upgrade to {{ text::emphasize(text="17.2.0") }}
+
+  after the vEdges are added to the control plane.
+</p>
+<p>
+  Create a file called {{ text::emphasize(text="vedges.csv") }}
+ and upload it to the vManage.
+  A sample file contents is below.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`ea3feb44-7869-4d35-83fd-fb6e1e81c3f1,F1EA24CA2A0565B8`
+) }}
+
+
+<p>
+  Repeat these steps for the desired number of vEdges you need in your topology.
+</p>
+
+{{ text::important_block(text='
+    Once you upgrade the vManage to a software version greater than 17.x you can no longer
+    add device serials with a CSV file. The device serial file becomes a signed binary only
+    available from the Viptela download portal.
+') }}
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Devices",
+    "Upload vEdge List",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-1.png", width="900px") }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-2.png", width="900px") }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-3.png", width="900px") }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-4.png", width="900px") }}
+
+<p>
+  Send the list of vEdges to the controllers.
+</p>
+
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "vEdge List",
+    "Send to Controllers",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-5.png", width="900px") }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vedge-add-6.png", width="900px") }}
+
+<h3 id="tunnel-interfaces">Tunnel Interfaces</h3>
+<p>
+  The next step is to enable the tunnel interfaces on the vManage/Bond/Smart to bring up the
+  control plane.
+</p>
+
+
+<h4><b>vManage/Smart</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+vpn 0
+ interface eth1
+  tunnel-interface
+ !`
+) }}
+
+
+
+<h4><b>vBond</b></h4>
+{{ text::code_block(
+  header="config",
+  language="text",
+  code=`# viptela-cli
+
+vpn 0
+ interface ge0/0
+ tunnel-interface encapsulation ipsec
+ !`
+) }}
+
+
+<h3 id="verification">Verification</h3>
+<p>
+  There are a number of CLI commands that can be used to verify control plane status.
+</p>
+<ul>
+ <li>{{ text::code(text="show control local-properties") }}</li>
+  <li>Verify certificate installation status</li>
+ <li>{{ text::code(text="show control connections-history") }}</li>
+  <li>See why a control connection is failing</li>
+ <li>{{ text::code(text="show control connections") }}</li>
+  <li>Status of any current control connections</li>
+</ul>
+
+{{ text::note_block(text='
+    On the vBond substitute the keyword $1
+  with $2.
+') 
+  | replace(from="$1", to=text::emphasize(text="control"))
+  | replace(from="$2", to=text::emphasize(text="orchestrator"))
+}}
+
+<h4><b>vManage</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+show control connections
+
+# output
+
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR    STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vsmart  dtls 1.1.1.3         1000       1      10.10.100.33                            12346 10.10.100.33                            12346 default         up              0:00:02:42
+0     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+1     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+2     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+3     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+4     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+5     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+6     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+7     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36`
+) }}
+
+
+
+<h4><b>vBond</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+show orchestrator connections
+
+# output
+
+PEER     PEER     PEER             SITE        DOMAIN      PEER             PRIVATE  PEER             PUBLIC
+TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP       PORT     PUBLIC IP        PORT    REMOTE COLOR     STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart   dtls     1.1.1.3          1000        1           10.10.100.33     12346    10.10.100.33     12346   default          up              0:00:03:30
+vsmart   dtls     1.1.1.3          1000        1           10.10.100.33     12446    10.10.100.33     12446   default          up              0:00:03:29
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12346    10.10.100.31     12346   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12446    10.10.100.31     12446   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12546    10.10.100.31     12546   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12646    10.10.100.31     12646   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12746    10.10.100.31     12746   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12846    10.10.100.31     12846   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12946    10.10.100.31     12946   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     13046    10.10.100.31     13046   default          up              0:00:07:16`
+) }}
+
+
+
+
+
+<h4><b>vSmart</b></h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+show control connections
+
+# output
+
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR    STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:00:19
+0     vmanage dtls 1.1.1.1         1000       0      10.10.100.31                            12346 10.10.100.31                            12346 default         up              0:00:00:10
+1     vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:00:18`
+) }}
+
+
+
+{{ text::note_block(text='
+    The vEdges will not be able to join the control plane until the vManage, vSmart and vBond
+    are upgraded to a software version greater than 17.x.
+') }}
+
+
+<h3 id="software-upgrade">Software Upgrade</h3>
+<p>
+  The software upgrade process is well documented on the Viptela support portal
+  {{ link::e(path="https://docs.viptela.com/Product_Documentation/Getting_Started/Hardware_and_Software_Installation/Software_Installation_and_Upgrade", description="here") }}
+  so I will not go into very much detail apart from a few points.
+</p>
+<p>
+  Head over to {{ link::e(path="https://docs.viptela.com/Downloads", description="https://docs.viptela.com/Downloads") }}
+
+  and download the release {{ text::emphasize(text="17.2.0") }}
+ for upgrades. You will only
+  need the {{ text::emphasize(text="vEdge Cloud, vSmart, Software vBond") }}
+ and the
+  {{ text::emphasize(text="vManage") }}
+ files.
+</p>
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/viptela-software-download.png", width="300px") }}
+
+<p>
+  Upload the files to the vManage file repository.
+</p>
+
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "Repository",
+    "Add New Software",
+    "vManage",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/software-upgrade-1.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/software-upgrade-2.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/software-upgrade-3.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/software-upgrade-4.png", width="900px") }}
+
+<h4><b>vManage</b></h4>
+<p>
+  Load the software on the vManage.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "Upgrade",
+    "vManage",
+    "17.2.0",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-1.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-2.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-3.png", width="900px") }}
+
+<p>
+  Set the default software version on the vManage.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "vManage",
+    "Set Default Version",
+    "17.2.0",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-4.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-5.png", width="900px") }}
+
+<p>
+  Activate the new software version on the vManage.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "vManage",
+    "Activate",
+    "17.2.0",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vmanage-software-upgrade-6.png", width="900px") }}
+
+
+{{ text::note_block(text='
+    Some of the JS and CSS styling changed between version 16.x and 17.x on the vManage web
+    interface. You will likely need to flush the page JS and CSS cache in order for the web
+    interface to render correctly after the upgrade to 17.2.0. See your web browser
+    documentation for instructions on how to do this.
+') }}
+
+<h4><b>vBond/Smart</b></h4>
+<p>
+  Load the software on the vBond/Smart, this can be done simultaneously for both devices.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "Controller",
+    "Upgrade",
+    "vBond/Smart",
+    "17.2.0",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-1.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-2.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-3.png", width="900px") }}
+
+<p>
+  Set the default software version on the vBond/Smart.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Maintenance",
+    "Software Upgrade",
+    "Controller",
+    "Set Default Version",
+    "vBond/Smart",
+    "17.2.0",
+]) }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-4.png", width="900px") }}
+
+<h3 id="validate-vedges">Validate vEdges</h3>
+<p>
+  Now that the controllers are all upgraded to software version 17.2.0 it is safe to validate the
+  vEdges so they can join the control plane.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "vEdge List",
+    "(vEdge)",
+    "Valid",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/validate-vedge-2.png", width="900px") }}
+
+<p>
+  Now send the list of vEdges to the other controllers.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Certificates",
+    "vEdge List",
+    "Send to Controllers",
+]) }}
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/validate-vedge-2.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/validate-vedge-3.png", width="900px") }}
+{{ image::boxed(path="blog/viptela-control-plane-setup/validate-vedge-4.png", width="900px") }}
+
+<p>
+  Once the vEdge list is pushed to the controllers the vEdges will start to join the control plane.
+  You can verify the status by checking the devices list in the vManage web interface or checking
+  the control connection on the vEdge.
+</p>
+
+{{ text::breadcrumbs(items=[
+    "Configuration",
+    "Devices",
+    "vEdge List",
+]) }}
+
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/validate-vedge-5.png", width="900px") }}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela-cli
+
+show control connections
+
+# output
+
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                     GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      10.10.100.33                            12346 10.10.100.33                            12346 default         up    0:08:43:33  0
+vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up    0:08:43:33  0
+vmanage dtls 1.1.1.1         1000       0      10.10.100.31                            12346 10.10.100.31                            12346 default         up    0:08:43:33  0`
+) }}
+
+
+<p>
+  View the dashboard to see the status of the Viptela platform.
+</p>
+
+{{ image::boxed(path="blog/viptela-control-plane-setup/dashboard-final.png", width="900px") }}
+
+<h3 id="snapshot-vms">Snapshot VMs</h3>
+<p>
+  At this point I usually take a snapshot of the VM's so that you can quickly build out a topology
+  starting with X number of vEdges connected to the controllers without having to going through this
+  process every time. I will leave this as an exercise for the reader to investigate if that is
+  something you wish to pursue.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you made it this far you should have a Viptela lab up and running  with a functioning
+  control plane using your own self signed certificates and X number of virtual vEdges validated
+  and ready to receive policy.
+</p>
+
+{% endblock page_content %}

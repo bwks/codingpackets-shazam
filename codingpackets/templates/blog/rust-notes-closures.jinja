@@ -1,0 +1,87 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A {{ text::emphasize(text="closure") }}
+ in 
+  Rust is an anonymous function. An anonymous function 
+  is a function without a name. A closure is defined 
+  with parameters between two pipes and expressions 
+  between curly braces {{ text::emphasize(text="|| {}") }}
+.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Closure with a single parameter and single expression.
+// Curly braces are optional with a single expression.  
+|param| expression;
+
+// Closure with multiple parameters and multiple expressions.
+// Curly braces are required for more than 1 expression.
+|param_1, param_2| { expression_1 ; expression_2 };
+
+// Assign a closure to the variable `add`. 
+let add = |a, b| a + b;
+
+// Call a closure
+add(1, 2); // => 3'
+) }}
+
+<p>
+  Unlike functions, closures CAN capture variables from 
+  their enclosing scope.
+  By default, closures {{ text::emphasize(text="borrow") }}
+
+  a reference to variables from their enclosing scope.
+</p>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='let one = "one".to_string();
+
+// Closure that `borrows` a reference to variable from enclosing scope.
+let f = || println!("{}", one);
+
+// Borrow a reference to `one`.
+f(); // => one'
+) }}
+
+<p>
+  Implement {{ text::emphasize(text="move") }}
+ semantics 
+  on a closure, to move the variable ownership to the closure.
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='let one = "one".to_string();
+
+// Closure that `moves` the captured variables from the enclosing scope into its scope.
+let f = move || println!("{}", one);
+
+// Move the value of `one` into the closure.
+f(); // => one
+
+// `one` is no longer valid.
+println!("{}", one) // => error: value borrowed after move'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>Type annotations for parameters are optional.</li>
+  <li>The paramater types and return type of a closure is inferred by how the closure is used.</li>
+  <li>Closures can be assigned to a variable and called like a normal function.</li>
+  <li>Closures can be passed around like a variable as an argument to other functions.</li>
+  <li>By default, closures borrow a reference to values in their enclosing scope.</li>
+  <li>Some types implement the {{ text::emphasize(text="copy") }}
+ trait, so they will be copied into a closure even with {{ text::emphasize(text="move") }}
+ symantics.</li>
+</ul>
+
+{% endblock page_content %}

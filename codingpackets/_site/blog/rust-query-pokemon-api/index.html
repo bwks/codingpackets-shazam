@@ -1,0 +1,719 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Rust Query Pokemon API</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 21st of April 2022
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 18th of April 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  This year I have been learning Rust, and I recently came across 
+  an excellent 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://blog.itsalwaysthe.network/posts/comparing-go-and-python-part-2/" target=_blank>post</a>
+  by Tyler Christiansen
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://twitter.com/supertylerc" target=_blank>(@supertylerc)</a> who BTW, looks EXACTLY like Captain Jean-Luc Picard, 
+  comparing Python and Go. It's an excellent post (the second in the series) and well 
+  worth a read. I am on a similar journey from Python to Rust, so I decided to emulate 
+  the Go part of the blog post in Rust as a bit of a fun exersize on Easter Monday 🐇. 
+</p>
+<p>
+  In this post, I will show you how to connect to the Pokemon API asynchronously 
+  to gather information on the first 150 Pokemon. Unlike in Tylers post, I will 
+  not be covering Python or a synchronous version of the Rust code.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Rust - 1.59.0</li>
+  <li>reqwest - 0.11</li>
+  <li>tokio - 1.12.0</li>
+  <li>futures - 0.3.21</li>
+  <li>serde - 1.0.136</li>
+  <li>serde_derive - 1.0.136</li>
+  <li>serde_json - 1.0.79</li>
+</ul>
+
+<h3 id="new-project">New Project</h3>
+<p>
+  Use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cargo</i>
+ to generate a new project.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cargo new pokemon</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  Add the following libraries to the dependencies section of 
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cargo.toml</i>
+ file. 
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">Cargo.toml</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1.12.0", features = ["full"] }
+futures = "0.3.21"
+serde = "1.0.136"
+serde_derive = "1.0.136"
+serde_json = "1.0.79"</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="lets-get-rusty">Lets Get Rusty 🦀</h3>
+<p>
+  I have placed comments in the following code block to try and 
+  explain what is going on and how it works. Admittedly, for some 
+  of the async code, I barely understand how it works myself.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">main.rs</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-rust hljs px-5 dark:opacity-80 rounded-b">use futures::StreamExt;
+use reqwest::{Client, Error};
+use serde_derive::Deserialize;
+use std::time::{Duration, Instant};
+
+// The number of concurrent requests to execute.
+const BUFFER_SIZE: usize = 50;
+
+// Struct to hold the Pokemon data.
+// The 'Deserialize' macro adds the 'Deserialize' trait to the struct.
+#[derive(Deserialize)]
+struct Pokemon {
+    // For the purpose of this exersize I am just capturing 
+    // the 'id' and 'name' fields, all other fields will be ignored.
+    id: u32,
+    name: String,
+}
+
+// The '#[tokio::main]' annotation sets the 'main' function up for 
+// asynchronous execution. 
+#[tokio::main]
+async fn main() {
+    // Start a timer
+    let start = Instant::now();
+
+    // Create a 'reqwest client' using the builder pattern.
+    // This allows you to set things like the timeout, headers etc..
+    let client = Client::builder()
+        // Set the timeout value to 2 seconds.
+        .timeout(Duration::from_secs(2))
+        // Build the client.
+        .build()
+        // If there are any errors, bail with the message 'got an error building client'
+        .expect("got an error building client");
+
+    // Create a vector of URLs to query consisting of the first 150 Pokemon.
+    let urls = (1..=150).map(|x| format!("https://pokeapi.co/api/v2/pokemon/{}", x));
+
+    // Here we get ready to asynchronously connect to the Pokemon API.
+    // We start by creating a iterable 'stream' of 'futures' out of the 'urls' vector.
+    let data: Vec&lt;Result&lt;String, Error&gt;&gt; = futures::stream::iter(urls)
+        // 'StreamExt::map()' performs an action on each iteration of the 'stream'
+        // and converts it to a new type.
+        .map(|url| {
+            // Create a new 'client' object from the original '&client' reference
+            // that is enclosed in this scope.
+            let client = &client;
+            // Start an async block moving ownership of any captured varibales
+            // into the block.
+            async move {
+                // Send a 'get' request to the 'url' and 'await' the response.
+                let resp = client.get(url).send().await?;
+                // Return the 'response text' as the 'String' portion of the
+                // 'Result&lt;String, Error&gt;' type.
+                resp.text().await
+            }
+        })
+        // Kick of the requests asynchronously in batches equal to 'BUFFER_SIZE'.
+        .buffer_unordered(BUFFER_SIZE)
+        // Collect all the responses and add them to the 'data' vector.
+        .collect()
+        // Wait for all requests to finish.
+        .await;
+
+    // Due to the asynchronous nature of the API calls, the responses are returned out of order.
+    // I want to print the Pokemon out in the order of their ID's lowest to highest.
+    //
+    // To do this, let's unpack the 'data: Vec&lt;Result&lt;String, Error&gt;&gt;' vector so we can deserialize
+    // the 'response text' into our 'Pokemon' struct.
+    //
+    // The 'pokemons: Vec&lt;Pokemon&gt;' vector needs to be mutable so we can sort it later.
+    let mut pokemons: Vec&lt;Pokemon&gt; = data
+        .iter()
+        .map(|d| match d {
+            Ok(v) =&gt; {
+                // Unpack the 'Result&lt;String, Error&gt;' and deserialize the text into a Pokemon struct.
+                // If there is an error, bail with the error message 'broken pokemon'
+                let pokemon: Pokemon = serde_json::from_str(v).expect("broken pokemon");
+                // Return the pokemon object
+                pokemon
+            }
+            // If any errors exist in 'Result&lt;String, Error&gt;', bail with the error message 'broken pokemon'
+            Err(_) =&gt; panic!("pokemon broken"),
+        })
+        // Collect all the Pokemon objects into the 'pokemons' vector.
+        .collect();
+
+    // Sort the pokemons vector by their id. We made 'pokemons' mutable 
+    // so it can be sorted in place.
+    pokemons.sort_by_key(|p| p.id);
+
+    // Iterate over the 'pokemons' vector to print the 'id' and 'name'.
+    for p in pokemons {
+        println!("{}: {}", p.id, p.name)
+    }
+
+    // Stop the timer
+    let duration = start.elapsed();
+    // Debug printing here ({:?}) to print out 'duration' for simplicity.
+    println!("Time elapsed: {:?}", duration);
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  I hope you got all that. You still with me? Clear as mud? Good! Let's continue.
+</p>
+<p>
+  Now, use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cargo</i>
+ to build a binary that is optimized for release
+  with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">--relase</i>
+ flag.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cargo build --release</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The binary <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">pokemon</i>
+ will be generated 
+  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">target/release</i>
+ directory.
+</p>
+
+<h3 id="gotta-catch-em-all">Gotta Catch Em All</h3>
+<p>
+  Alright, the moment of truth. Let's hit them so hard and fast they think their surrounded.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">target/release/./pokemon
+
+# Output
+1: bulbasaur
+2: ivysaur
+.
+. &lt;output omitted&gt;
+.
+149: dragonite
+150: mewtwo
+Time elapsed: 425.068076ms</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Holy crab apples Batman, that was fast <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">⚡ 425.068076ms ⚡</i>
+ 
+</p>
+<p>
+  &lt1 second is pretty darn good and the result is very close with the async Go version from Tylers post. 
+</p>
+
+<p>
+  The results for all 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">898</i>
+ 
+  Pokemon are around the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">1.5 - 2</i>
+ 
+  second mark. I updated the code to query the API in batches of 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">50</i>
+ 
+  which seemed like a good sweet spot without overloading the API server.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">target/release/./pokemon
+
+# Output
+1: bulbasaur
+2: ivysaur
+.
+. &lt;output omitted&gt;
+.
+897: spectrier
+898: calyrex
+Time elapsed: 1.630966447s</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to connect to the Pokemon API asynchronously 
+  to gather information on the lovable Pokemon. 
+  This was a super fun exercise that allowed me to learned a lot about the 
+  Rust async model. Thanks again to 
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://twitter.com/supertylerc" target=_blank>@supertylerc</a> for the inspiration. Peace out legends ✌️
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://pokeapi.co/docs/v2" target=_blank>https://pokeapi.co/docs/v2</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.rs/reqwest/0.8.4/reqwest/struct.ClientBuilder.html" target=_blank>https://docs.rs/reqwest/0.8.4/reqwest/struct.ClientBuilder.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.rs/tokio/latest/tokio/runtime/index.html#threaded-scheduler" target=_blank>https://docs.rs/tokio/latest/tokio/runtime/index.html#threaded-scheduler</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.rs/tokio/latest/tokio/runtime/index.html#threaded-scheduler" target=_blank>https://docs.rs/tokio/latest/tokio/runtime/index.html#threaded-scheduler</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://rust-lang-nursery.github.io/rust-cookbook/algorithms/sorting.html" target=_blank>https://rust-lang-nursery.github.io/rust-cookbook/algorithms/sorting.html</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://patshaughnessy.net/2020/1/20/downloading-100000-files-using-async-rust" target=_blank>https://patshaughnessy.net/2020/1/20/downloading-100000-files-using-async-rust</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://gist.github.com/patshaughnessy/27b1611e2c912346b929df97998d488d" target=_blank>https://gist.github.com/patshaughnessy/27b1611e2c912346b929df97998d488d</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stackoverflow.com/questions/51044467/how-can-i-perform-parallel-asynchronous-http-get-requests-with-reqwest" target=_blank>https://stackoverflow.com/questions/51044467/how-can-i-perform-parallel-asynchronous-http-get-requests-with-reqwest</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#rust" class="text-xl">rust</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
+            Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#new-project">
+            New Project
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#dependencies">
+            Dependencies
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lets-get-rusty">
+            Lets Get Rusty
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#gotta-catch-em-all">
+            Gotta Catch Em All
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,1274 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is the second post in a two part series on building a self hosted Cisco
+  SDWAN lab using an enterprise CA for certificates. You can find the first part
+  {{ link::i(path="/blog/cisco-sdwan-self-hosted-lab-part-1", description="here") }}
+.
+</p>
+<p>
+  In this part I will install the controller stack:
+</p>
+  <ul>
+    <li>vManage</li>
+    <li>vBond</li>
+    <li>vSmart</li>
+  </ul>
+
+<p>
+  Along with the WAN edges:
+</p>
+<ul>
+  <li>vEdge</li>
+  <li>cEdge</li>
+</ul>
+<p>
+  I am hosting this lab on an Ubuntu server running the KVM hypervisor.
+  I will also use the vManage as the enterprise root CA server.
+</p>
+
+<h3 id="pre-requisites">Pre Requisites</h3>
+<p>
+  This post assumes that you have the {{ text::emphasize(text="KVM") }}
+
+  hypervisor already installed along with the
+  {{ text::emphasize(text="libvirt") }}
+ management application. Additionally
+  you will need the {{ text::emphasize(text="virt-install") }}
+ and
+  {{ text::emphasize(text="cloud-localds") }}
+ CLI tools.
+</p>
+<p>
+  It is also assumed that you have downloaded the virtual disk images from
+  {{ link::e(path="https://software.cisco.com", description="https://software.cisco.com") }}
+ and
+  the serial file from the
+  {{ link::e(path="https://software.cisco.com/software/csws/ws/platform/home#pnp-devices", description="PnP Portal") }}
+ generated in part one.
+</p>
+
+<h3 id="lab-diagram">Lab Diagram</h3>
+<p>
+  The following diagram depicts the topology for the lab.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/cisco-sdwan-lab.svg", width="600px") }}
+
+<h3 id="vmanage">vManage</h3>
+<p>
+  Over on the build server, create a working directory and copy the VM image
+  files to the directory. I will be working from the
+  {{ text::emphasize(text="~/sdwan-testlab") }}
+ directory which contains
+  the following files.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tree sdwan-testlab
+
+# output
+
+sdwan-testlab
+├── csr1000v-ucmk9.16.11.1a-serial.qcow2
+├── sdwan-testlab.viptela
+├── viptela-bond-19.1.0-genericx86-64.qcow2
+├── viptela-edge-19.1.0-genericx86-64.qcow2
+├── viptela-smart-19.1.0-genericx86-64.qcow2
+└── viptela-vmanage-19.1.0-genericx86-64.qcow2`
+) }}
+
+
+{{ text::note_block(text='
+    The $1 and the $2 share the same image.
+    I copied the $2 image twice
+    renaming it for the $1.
+')
+  | replace(from="$1", to=text::emphasize(text="vBond"))
+  | replace(from="$2", to=text::emphasize(text="vEdge"))
+ }}
+
+<p>
+  The vManage requires a second disk for the database. Create a thin
+  provisioned disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qemu-img create -f qcow2 vmanage-disk2.qcow2 100G
+
+# output
+
+Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536 lazy_refcounts=off refcount_bits=16`
+) }}
+
+
+<p>
+  Start the vManage installation
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vmanage \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 8192 \
+    --disk path=viptela-vmanage-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=vmanage-disk2.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+<p>
+  This will start the VM and attach to a virtual console. Once you see the message
+  {{ text::emphasize(text="System Ready") }}
+ login with the username/password
+  {{ text::emphasize(text="admin") }}
+. You will then need to follow the prompts
+  to initialize the database.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Sun Jun  2 03:33:42 UTC 2019: System Ready
+
+
+viptela 19.1.0
+
+vmanage login: admin
+Password:
+Welcome to Viptela CLI
+admin connected from 127.0.0.1 using console on vmanage
+Available storage devices:
+hdb	100GB
+1) hdb
+Select storage device to use: 1
+Would you like to format hdb? (y/n): y`
+) }}
+
+<p>
+  Once this is done the VM will reboot. Login again and apply the bootstrap configuration.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+system
+ system-ip 1.1.1.1
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 172.16.255.1/24
+  tunnel-interface
+  !
+  no shutdown
+ !
+vpn 512
+  interface eth0
+  ip dhcp-client
+  no shutdown
+!
+commit and-quit
+!`
+) }}
+
+
+<p>
+  While here, generate the Root CA certificate. First login to the
+  {{ text::emphasize(text="vshell") }}
+ which is a Unix
+  like shell. Login with the {{ text::code(text="vshell") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vmanage# vshell
+vmanage:~$`
+) }}
+
+
+<p>
+  Generate a Root CA key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl genrsa -out ROOTCA.key 2048
+
+# output
+
+Generating RSA private key, 2048 bit long modulus
+..............
+..
+e is 65537 (0x10001)`
+) }}
+
+
+<p>
+  Next generate the Root CA certificate. I will generate a certificate
+  with 5 years of validity.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 2000 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=sdwan-testlab/CN=vmanage.lab" \
+    -out ROOTCA.pem`
+) }}
+
+<p>
+  This will create a Root CA cert named
+  {{ text::emphasize(text="ROOTCA.pem") }}
+ {{ text::code(text="cat") }}
+
+  the file contents so you can copy and paste them in an
+  upcoming step.
+</p>
+
+<p>
+  {{ text::code(text="exit") }}
+ back to the cli shell and find the IP address of the
+  vpn512 interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vmanage# show int | tab
+
+# output
+
+                                          IF      IF      IF                                                                TCP
+                AF                        ADMIN   OPER    TRACKER  ENCAP                                     SPEED          MSS                 RX       TX
+VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT TYPE  MTU  HWADDR             MBPS   DUPLEX  ADJUST  UPTIME      PACKETS  PACKETS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0    eth1       ipv4  172.16.255.1/24     Up      Up      -        null   transport  -    52:54:00:fe:62:b7  -      -       -       0:00:14:33  701      185
+0    system     ipv4  1.1.1.1/32          Up      Up      -        null   loopback   -    -                  -      -       -       0:00:18:20  0        0
+512  eth0       ipv4  192.168.122.129/24  Up      Up      -        null   mgmt       -    52:54:00:ea:c0:fc  -      -       -       0:00:00:07  862      155`
+) }}
+
+<p>
+  Once you have the IP address browse to the URL
+  {{ text::emphasize(text="https://&lt;ip-address&gt;") }}
+ and login with the
+  username/password {{ text::emphasize(text="admin") }}
+.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-1.png", width="900px") }}
+
+<p>
+  The dashboard looks like this.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-2.png", width="900px") }}
+
+<p>
+  Once logged in navigate to the settings page.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Administration",
+"Settings",
+]) }}
+
+
+<p>
+  Enter the {{ text::emphasize(text="Organization Name") }}
+ and click Save.
+  This field must match what you used when creating the vBond profile.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-3.png", width="900px") }}
+
+<p>
+  Enter the {{ text::emphasize(text="vBond") }}
+ IP Address and click Save.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-4.png", width="900px") }}
+
+<p>
+  Change the {{ text::emphasize(text="Controller Certificate Authorization") }}
+
+  to use Enterprise Root Certificate. Paste in the contents of the generated
+  {{ text::emphasize(text="ROOTCA.pem") }}
+ file from the previous step and
+  click Import & Save.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-5.png", width="900px") }}
+
+<p>
+  Keep the {{ text::emphasize(text="WAN Edge Cloud Certificate Authorization") }}
+
+  method as Automated (vManage - signed Certificate). This way the vManage will automatically
+  signed the cloud edge certs when they connect to the vManage.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-6.png", width="900px") }}
+
+<p>
+  Next we need to create a CSR for the vManage. Navigate to the certificates section.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"vManage",
+"...",
+"Generate CSR",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-7.png", width="900px") }}
+
+<p>
+  A window will popup with the CSR text. This can be ignored for the vManage.
+</p>
+<p>
+  Back in the {{ text::emphasize(text="vshell") }}
+ there will be a file
+  called {{ text::emphasize(text="vmanage_csr") }}
+. Sign this file with
+  the {{ text::emphasize(text="ROOTCA.key") }}
+ and
+  {{ text::emphasize(text="ROOTCA.pem") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl x509 -req -in vmanage_csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vmanage.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vmanage-951c1251-07b2-4a4e-984c-4e1dea25a4f1-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+<p>
+  This creates a file called {{ text::emphasize(text="vmanage.crt") }}
+
+  {{ text::code(text="cat") }}
+ the file in order to copy and paste it into the
+  web interface in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the certificate by
+  pasting the contents of the {{ text::emphasize(text="vmanage.crt") }}
+ file
+  and click Install.
+</p>
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"Install Certificate",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-8.png", width="900px") }}
+
+<p>
+  You should see a success message similar to the below.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vmanage-install-9.png", width="900px") }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<p>
+  For convenience sake, I recommend SSHing to the vManage from another
+  terminal in order to sign the cert of the other devices.
+</p>
+
+<h3 id="vbond">vBond</h3>
+<p>
+  Start the install of the vBond VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vbond \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-bond-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+<p>
+  Once you see the message {{ text::emphasize(text="System Ready") }}
+
+  login with the username/password {{ text::emphasize(text="admin") }}
+
+  and apply the following bootstrap config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+system
+ host-name vbond
+ system-ip 1.1.1.2
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2 local vbond-only
+!
+vpn 0
+ interface ge0/0
+  no tunnel-interface
+  ip address 172.16.255.2/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!`
+) }}
+
+
+<p>
+  Navigate to the devices page to add the vBond to the vManage.
+</p>
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Devices",
+"Controllers",
+"Add Controller",
+"vBond",
+]) }}
+
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-1.png", width="900px") }}
+
+
+<p>
+  Enter the vBond details add click Add.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-2.png", width="900px") }}
+
+<p>
+  Navigate to the certificates page to get the vBond CSR text.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"vBond",
+"...",
+"View CSR",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-3.png", width="900px") }}
+
+<p>
+  Copy the CSR text and go to the vManage {{ text::emphasize(text="vshell") }}
+
+  to generate the certificate.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-4.png", width="900px") }}
+
+<p>
+  Use {{ text::code(text="vim") }}
+ to create a file called
+  {{ text::emphasize(text="vbond.csr") }}
+ with the contents of
+  the vBond CSR from the previous step. Then sign the CSR with the Root
+  CA certificate.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl x509 -req -in vbond.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vbond.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vbond-3da48c78-a077-4f5e-aabe-d4f77746f12a-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+<p>
+  This will create a certificate file called {{ text::emphasize(text="vbond.crt") }}
+.
+  {{ text::code(text="cat") }}
+ the contents of the {{ text::emphasize(text="vbond.crt") }}
+
+  file in order to copy and past the contents to the vManage in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the vBond certificate by
+  pasting in the contents of the {{ text::emphasize(text="vbond.crt") }}
+ file
+  and click Install.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"Install Certificate",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-5.png", width="900px") }}
+
+<p>
+  If it was successful you will see a success message similar to the below.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vbond-install-6.png", width="900px") }}
+<p>
+  Finally activate the control plane {{ text::emphasize(text="tunnel") }}
+
+  on the {{ text::emphasize(text="ge0/0") }}
+ interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+vpn 0
+ interface ge0/0
+  tunnel-interface
+   encapsulation ipsec
+  !
+  no shutdown
+ !
+!
+commit and-quit
+!`
+) }}
+
+<p>
+  Confirm that control connections are active between the vBond and vManage.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show orchestrator connections
+
+# output
+                                                  PEER                      PEER
+         PEER     PEER     PEER             SITE        DOMAIN      PEER             PRIVATE  PEER             PUBLIC                                   ORGANIZATION
+INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP       PORT     PUBLIC IP        PORT    REMOTE COLOR     STATE           NAME                    UPTIME
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0        vmanage  dtls     1.1.1.1          1000        0           172.16.255.1     12346    172.16.255.1     12346   default          up              sdwan-testlab           0:02:19:17
+0        vmanage  dtls     1.1.1.1          1000        0           172.16.255.1     12446    172.16.255.1     12446   default          up              sdwan-testlab           0:02:19:17`
+) }}
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<h3 id="vsmart">vSmart</h3>
+<p>
+  Start the install of the vSmart VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vsmart \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-smart-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+<p>
+  Once you see the message {{ text::emphasize(text="System Ready") }}
+
+  login with the username/password {{ text::emphasize(text="admin") }}
+
+  and apply the following bootstrap config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+system
+ system-ip 1.1.1.3
+ site-id 1000
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 172.16.255.3/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!`
+) }}
+
+<p>
+  Navigate to the devices page to add the vSmart to the vManage.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Devices",
+"Controllers",
+"Add Controller",
+"vSmart",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-1.png", width="900px") }}
+
+<p>
+  Enter the vSmart details and click Add.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-2.png", width="900px") }}
+
+<p>
+  Navigate to the certificates page to get the vSmart CSR text.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"vSmart",
+"...",
+"View CSR",
+]) }}
+
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-3.png", width="900px") }}
+
+<p>
+  Copy the CSR text and go to the vManage {{ text::emphasize(text="vshell") }}
+
+  to generate the certificate.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-4.png", width="900px") }}
+
+<p>
+  Use {{ text::code(text="vim") }}
+ to create a file called
+  {{ text::emphasize(text="vsmart.csr") }}
+ with the contents of
+  the vSmart CSR from the previous step. Then sign the CSR with the Root
+  CA certificate.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`openssl x509 -req -in vsmart.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vsmart.crt -days 2000 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=sdwan-testlab/O=Viptela LLC/CN=vsmart-5ade0771-9aa7-4bef-a46b-8ad27b723251-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key`
+) }}
+
+<p>
+  This will create a certificate file called {{ text::emphasize(text="vsmart.crt") }}
+.
+  {{ text::code(text="cat") }}
+ the contents of the {{ text::emphasize(text="vsmart.crt") }}
+
+  file in order to copy and past the contents to the vManage in the next step.
+</p>
+<p>
+  Navigate to the certificates page and install the vSmart certificate by
+  pasting in the contents of the {{ text::emphasize(text="vsmart.crt") }}
+ file
+  and click Install.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Certificates",
+"Controllers",
+"Install Certificate",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-5.png", width="900px") }}
+
+<p>
+  If it was successful you will see a success message similar to the below.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vsmart-install-6.png", width="900px") }}
+
+<p>
+  Finally activate the control plane {{ text::emphasize(text="tunnel") }}
+
+  on the {{ text::emphasize(text="eth1") }}
+ interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+vpn 0
+ interface eth1
+  tunnel-interface
+  !
+  no shutdown
+ !
+!
+commit and-quit
+!`
+) }}
+
+<p>
+  Confirm that control connections are active between the vSmart, vBond and vManage.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show orchestrator connections
+
+# output
+                                                  PEER                      PEER
+     PEER
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR     STATE UPTIME
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         up     0:00:01:22
+0     vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12346 172.16.255.1                            12346 default         up     0:00:01:13
+1     vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         up     0:00:01:22`
+) }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<p>
+  Now with the controllers out of the way, let move onto the WAN edge devices.
+</p>
+
+<h3 id="wan-edge-list">WAN Edge List</h3>
+<p>
+  Do you remember in part one when I said to keep the serial file safe for a later time?
+  Now is that time! In order for WAN edges to join the fabric, you need to upload the
+  serial file generated in part one of this series.
+</p>
+<p>
+  Navigate to the devices page and upload the serial file from the location you
+  save it to previously. Keep the box ticked to validate the list and send to
+  controllers.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Devices",
+"Upload WAN Edge List",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-1.png", width="900px") }}
+
+<p>
+  A success message looks similar to the below.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-2.png", width="900px") }}
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/wan-edge-list-3.png", width="900px") }}
+
+<h3 id="vedge">vEdge</h3>
+<p>
+  To add a virtual edge you need to generate a bootstrap file. Navigate to the devices page.
+</p>
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Devices",
+"WAN Edge List",
+"A vEdge Cloud",
+"...",
+"Generate Bootstrap Configuration",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-1.png", width="900px") }}
+
+
+<p>
+  For KVM select {{ text::emphasize(text="Cloud-Init") }}
+. (VMWare uses Encoded String). Then
+  click OK.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-2.png", width="900px") }}
+
+<p>
+  You can either download the file and SCP it across to the host server, or copy and paste the
+  contents via a terminal to the server. Use the method you are most comfortable with.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/vedge-install-3.png", width="900px") }}
+
+<p>
+  On the host server, create and ISO image from the cloud-init file that can be mounted to
+  the vEdge on boot. I named the file {{ text::emphasize(text="vedge.cfg") }}
+ and
+  copied it to the working directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cloud-localds config.iso vedge.cfg`
+) }}
+
+
+<p>
+  Boot the vEdge with the {{ text::emphasize(text="config.iso") }}
+ disk attached.
+  This will ensure that the image boots with the correct chassis number.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vedge \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 2048 \
+    --disk path=viptela-edge-19.1.0-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=config.iso,device=cdrom \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+<p>
+  Once you see the message {{ text::emphasize(text="System Ready") }}
+
+  login with the username/password {{ text::emphasize(text="admin") }}
+
+  and apply the following bootstrap config.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+system
+ system-ip 3.1.1.1
+ site-id 1
+ organization-name "sdwan-testlab"
+ vbond 172.16.255.2
+!
+vpn 0
+ interface ge0/0
+  tunnel-interface
+   encapsulation ipsec
+  ip address 172.16.255.11/24
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !
+commit and-quit
+!`
+) }}
+
+<p>
+  Confirm that the chassis number is the same as the one from the cloud-init config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show certificate serial
+
+# output
+
+Certificate not yet installed ... giving up.
+Chassis number: 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX serial number:`
+) }}
+
+
+<p>
+  Install the Root CA cert by SCPing it from the vManage via the VPN 512 interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request root-cert-chain install vpn 512 scp://admin@192.168.122.129:/home/admin/ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@192.168.122.129:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '192.168.122.129' (ECDSA) to the list of known hosts.
+viptela 19.1.0
+
+admin@192.168.122.129s password:
+ROOTCA.pem                                    100% 1277     2.0MB/s   00:00
+Updating the root certificate chain..
+Successfully installed the root certificate chain`
+) }}
+
+<p>
+  Now activate the vEdge using the chassis number and the one time password from the
+  cloud-init file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request vedge-cloud activate chassis-number 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX token a38892fd6310f07c5XXXXXXXXXXXX`
+) }}
+
+
+<p>
+  It will take a minute or two, but confirm that the control connections are active
+  to the vManage, vBond and vSmart.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show control connections
+
+# output
+
+                                                                                       PEER                                          PEER                                          CONTROLLER
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                           GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     PROXY STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      172.16.255.3                            12446 172.16.255.3                            12446 default         No    up     0:00:00:39  0
+vbond   dtls 0.0.0.0         0          0      172.16.255.2                            12346 172.16.255.2                            12346 default         -     up     0:00:00:39  0
+vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12446 172.16.255.1                            12446 default         No    up     0:00:00:39  0`
+) }}
+
+
+
+
+
+
+
+
+<h3 id="cedge">cEdge</h3>
+<p>
+  Navigate to the devices page to generate the bootstrap config for the cEdge.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Configuration",
+"Devices",
+"WAN Edge List",
+"A cEdge Cloud",
+"...",
+"Generate Bootstrap Configuration",
+]) }}
+
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-1.png", width="900px") }}
+
+<p>
+  For KVM select {{ text::emphasize(text="Cloud-Init") }}
+. (VMWare uses Encoded String). Then
+  click OK.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-2.png", width="900px") }}
+
+<p>
+  You can either download the file and SCP it across to the host server, or copy and paste the
+  contents via a terminal to the server. Use the method you are most comfortable with.
+</p>
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/cedge-install-3.png", width="900px") }}
+
+<p>
+  Unlike the vEdge it does not look like you can mount a cloud-init ISO to set the
+  initial boot parameters. The cloud-init config file will need to be named
+  {{ text::emphasize(text="ciscosdwan.cfg") }}
+ and copied via SCP to the cEdge
+  after it boots up.
+</p>
+
+<p>
+  Boot up the cEdge VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name=cedge \
+    --os-type=linux \
+    --os-variant=rhel4 \
+    --arch=x86_64 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --ram=4096 \
+    --disk path=csr1000v-ucmk9.16.11.1a-serial.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:default,model=virtio \
+    --network=network:default,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+<p>
+  Once you see the VM is booted up
+  login with the username/password {{ text::emphasize(text="admin") }}
+.
+</p>
+
+<p>
+  Find the IP address of the {{ text::emphasize(text="GigabitEthernet1") }}
+ so
+  you can SCP the {{ text::emphasize(text="ciscosdwan.cfg") }}
+ file to the device.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ip int brie
+
+# output
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       192.168.122.66  YES DHCP   up                    up
+GigabitEthernet2       unassigned      YES unset  up                    up
+Loopback65528          192.168.1.1     YES other  up                    up`
+) }}
+
+<p>
+  From the host SCP the {{ text::emphasize(text="ciscosdwan.cfg") }}
+ file to
+  the cEdge.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`scp ciscosdwan.cfg admin@192.168.122.66:ciscosdwan.cfg
+
+# output
+
+Password:
+ciscosdwan.cfg                                                                                    100%   25KB 598.1KB/s   00:00`
+) }}
+
+
+<p>
+  Reset the SDWAN software in order for the chassis serial number from the
+  {{ text::emphasize(text="ciscosdwan.cfg") }}
+ file to be
+  applied to the device.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request platform software sdwan software reset`
+) }}
+
+
+<p>
+  Once the router is back online, login and confirm that the chassis number
+  is the same as the one from the {{ text::emphasize(text="ciscosdwan.cfg") }}
+
+  config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show sdwan certificate serial
+
+# output
+
+Certificate not yet installed ... giving up.
+Chassis number: CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX serial number:`
+) }}
+
+
+<p>
+  Apply the bootstrap configuration.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config-transaction
+!
+system
+ system-ip             3.1.2.1
+ site-id               2
+ admin-tech-on-failure
+ organization-name     sdwan-testlab
+ vbond 172.16.255.2
+!
+hostname cedge
+interface GigabitEthernet2
+ no shutdown
+ ip address 172.16.255.12 255.255.255.0
+exit
+interface Tunnel0
+ no shutdown
+ ip unnumbered GigabitEthernet2
+ tunnel source GigabitEthernet2
+ tunnel mode sdwan
+exit
+sdwan
+ interface GigabitEthernet2
+  tunnel-interface
+   encapsulation ipsec
+   color default
+  exit
+ exit
+ !
+!
+commit
+end
+!`
+) }}
+
+
+<p>
+  Install the Root CA cert by SCPing it from the vManage via the
+  {{ text::emphasize(text="GigabitEthernet1") }}
+ interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`copy scp://admin@192.168.122.129 bootflash:
+
+# output
+
+Address or name of remote host [192.168.122.129]?
+Source username [admin]?
+Source filename [home/admin/ROOTCA.pem]? /home/admin/ROOTCA.pem
+Destination filename [ROOTCA.pem]?
+viptela 19.1.0
+
+
+Password:
+ Sending file modes: C0644 1277 ROOTCA.pem
+!
+1277 bytes copied in 1.790 secs (713 bytes/sec)`
+) }}
+
+
+<p>
+  Now install the Root CA certificate.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request platform software sdwan root-cert-chain install bootflash:ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 0
+Copying ... /bootflash/ROOTCA.pem via VPN 0
+Updating the root certificate chain..
+Successfully installed the root certificate chain`
+) }}
+
+
+<p>
+  The vEdge should be activated automatically, but if it is not you can do it manually
+  using the the chassis number and the one time password from the
+  cloud-init file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`request platform software sdwan vedge_cloud activate chassis-number CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX token 14fe4d0f135f116cXXXXXXXXXXXX`
+) }}
+
+
+<p>
+  It will take a minute or two, but confirm that the control connections are active
+  to the vManage, vBond and vSmart.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show sdwan control connections
+
+# output
+
+                                                                                       PEER                                          PEER                                    CONTROLLER
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                     GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     PROXY STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      172.16.255.3                            12446 172.16.255.3                            12446 default               up     0:00:02:47  0
+vbond   dtls -               0          0      172.16.255.2                            12346 172.16.255.2                            12346 default               up     0:00:02:51  0
+vmanage dtls 1.1.1.1         1000       0      172.16.255.1                            12446 172.16.255.1                            12446 default               up     0:00:02:51  0`
+) }}
+
+
+<p>
+  And that's it. A functioning Cisco SDWAN lab with both vEdges and cEdges. Here is a couple of images
+  of the finished product.
+</p>
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/final-dashboard.png", width="900px") }}
+
+{{ image::boxed(path="blog/cisco-sdwan-self-hosted-lab-part-2/final-network.png", width="900px") }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  This was a pretty loooooonnnnngggg post. If you got this far, thanks for hanging in there.
+  In this series of posts, we configured a Cisco SDWAN lab using an Enterprise CA with the
+  vManage, vBond and vSmart controllers and both the cEdge and vEdge devices. If Cisco dCloud
+  labs don't meet your needs, then building your own lab might. Until next time!
+</p>
+
+{% endblock page_content %}

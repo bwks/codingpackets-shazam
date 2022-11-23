@@ -1,0 +1,219 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post, I will show you how to read and write JSON data 
+  with Rust using the wonderful serde library.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Rust - 1.59.0</li>
+  <li>serde - 1.0.136</li>
+  <li>serde_derive - 1.0.136</li>
+  <li>serde_json - 1.0.79</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  Add the following libraries to the dependencies section of 
+  the {{ text::emphasize(text="cargo.toml") }}
+ file. 
+</p>
+{{ text::code_block(
+  header="Cargo.toml",
+  language="ini",
+  code='[dependencies]
+serde = "1.0.136"
+serde_derive = "1.0.136"
+serde_json = "1.0.79"'
+) }}
+
+<h3 id="unknown-json-model">Unknown JSON Model</h3>
+<p>
+  When you have a JSON data structure with an unknown data model, you 
+  can deserialize the data into a 
+  {{ text::emphasize(text="serde_json::Value") }}
+. 
+  But Rust is a strongly typed language, what is the sorcery?
+  {{ text::emphasize(text="serde_json::Value") }}
+ 
+  is an enum with variants that match all valid JSON data types. It's 
+  used to automagically map JSON data to something that Rust 
+  can understand.
+</p>
+<p>
+  Feast your eyes on the wizardry of the 
+  {{ text::emphasize(text="serde_json::Value") }}
+ enum
+  young grasshopper. 
+</p>
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='pub enum Value {
+    Null,
+    Bool(bool),
+    Number(Number),
+    String(String),
+    Array(Vec<Value>),
+    Object(Map<String, Value>),
+}'
+) }}
+
+<p>
+  The following example uses {{ text::emphasize(text="serde_json::Value") }}
+
+  to deserialize JSON data.
+</p>
+{{ text::code_block(
+  header="main.rs",
+  language="rust",
+  code='use serde_json::Value;
+use std::process::exit;
+
+fn main() {
+    // Some JSON input data as a &str.
+    let data = r#"
+        {
+            "hostname": "rt01",
+            "ipv4_addresses": [
+                "10.1.1.1/24",
+                "172.16.1.1/24"
+            ]
+        }"#;
+
+    // Parse the string of data into serde_json::Value.
+    let json_data: Value = match serde_json::from_str(data) {
+        Ok(v) => v,
+        Err(_) => {
+            // Write `error` to `stderr`.
+            eprintln!("Unable to load data");
+            // Exit the program with exit code `1`.
+            exit(1);
+        }
+    };
+
+    // Access data fields with square brackets [] syntax.
+    println!(
+        "hostname {} has these IPv4 addresses {}",
+        json_data["hostname"], json_data["ipv4_addresses"]
+    );
+    // => hostname "rt01" has these IPv4 addresses ["10.1.1.1/24","172.16.1.1/24"]
+}'
+) }}
+
+<h3 id="structured-json-model">Structured JSON Model</h3>
+<p>
+  When you know the shape of the JSON data model you can deserialize 
+  it into a struct(s) to gain the type safety guarantees of Rust and 
+  the benefits of using a struct as a data container. 
+</p>
+
+{{ text::code_block(
+  header="main.rs",
+  language="rust",
+  code='use serde_derive::Deserialize;
+use std::process::exit;
+
+// Annotate the struct with the Deserialize macro.
+#[derive(Deserialize)]
+struct NetDevice {
+    hostname: String,
+    ipv4_addresses: Vec<String>,
+}
+
+fn main() {
+    // The same JSON input data from the previous example.
+    let data = r#"
+        {
+            "hostname": "rt01",
+            "ipv4_addresses": [
+                "10.1.1.1/24",
+                "172.16.1.1/24"
+            ]
+        }"#;
+
+    // Parse the string of data into a NetDevice struct. This is exactly the
+    // same function as the one that produced serde_json::Value above, but
+    // now we are asking it for a NetDevice as output.
+    let netdev: NetDevice = match serde_json::from_str(data) {
+        Ok(v) => v,
+        Err(_) => {
+            // Write `msg` to `stderr`.
+            eprintln!("Unable to load data");
+            // Exit the program with exit code `1`.
+            exit(1);
+        }
+    };
+
+    // Access struct fields with the dot (.) operator.
+    println!(
+        "hostname {} has these IPv4 addresses {}",
+        netdev.hostname,
+        netdev.ipv4_addresses.join(", ")
+    );
+    //  => hostname rt01 has these IPv4 addresses 10.1.1.1/24, 172.16.1.1/24
+}'
+) }}
+
+<h3 id="struct-to-json">Struct to JSON</h3>
+<p>
+  Now, lets take the 
+  {{ text::emphasize(text="NetDevice") }}
+ 
+  struct and serialize it to a valid JSON data structure.
+</p>
+
+{{ text::code_block(
+  header="main.rs",
+  language="rust",
+  code='use serde_derive::Serialize;
+use std::process::exit;
+
+// Annotate the struct with the Serialize macro.
+#[derive(Serialize)]
+struct NetDevice {
+    hostname: String,
+    ipv4_addresses: Vec<String>,
+}
+
+fn main() {
+    // Instantiate a NetDevice object.
+    let netdev = NetDevice {
+        hostname: "rt01".to_string(),
+        ipv4_addresses: vec!["10.1.1.1/24".to_string(), "172.16.1.1/24".to_string()],
+    };
+
+    // Serialize it to a JSON string.
+    let j = match serde_json::to_string(&netdev) {
+        Ok(v) => v,
+        Err(_) => {
+            // Write `msg` to `stderr`.
+            eprintln!("Unable to load data");
+            // Exit the program with exit code `1`.
+            exit(1);
+        }
+    };
+
+    // Now you can print, write to a file, or send JSON to a HTTP server.
+    // In our case we are just printing out the JSON data.
+    println!("{}", j);
+    // => {"hostname":"rt01","ipv4_addresses":["10.1.1.1/24","172.16.1.1/24"]}
+}'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to read and write JSON data with Rust. 
+  Thanks to the marvelous serde library, the process is relatively painless.
+</p>
+<p>
+  Thanks for tuning in you beautiful hooman, I hope you have a wonderful day ✌️
+</p>
+{% endblock page_content %}

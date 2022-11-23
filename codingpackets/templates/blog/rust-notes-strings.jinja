@@ -1,0 +1,56 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  There are two <i>"mainly used"</i> string types in Rust. 
+  The {{ text::emphasize(text="str") }}
+ slice, 
+  which is mostly seen as a borrowed 
+  {{ text::emphasize(text="&str") }}
+ slice. And 
+  the errm ... {{ text::emphasize(text="String") }}
+.
+  Wait ... Wut?
+</p>
+
+{{ text::code_block(
+  header="rust",
+  language="rust",
+  code='// Create a `borrowed string`.
+let stuff = "stuff";
+
+// Create a `borrowed string` and annotate the type.
+let stuff: &str = "stuff";
+
+// Create a `String`.
+let things = "things".to_string();
+let things = String::from("things");
+
+// Create a `String` and annotate the type.
+let things: String = "things".to_string();
+let things: String = String::from("things");'
+) }}
+
+
+<h3 id="considerations">Considerations</h3>
+<ul>
+  <li>The data in a borrowed {{ text::emphasize(text="&str") }}
+ slice CANNOT be modified.</li>
+  <li>The data in a {{ text::emphasize(text="String") }}
+ CAN be modified.</li>
+  <li>A {{ text::emphasize(text="&str") }}
+ has a {{ text::emphasize(text="static") }}
+ lifetime and is guaranteed to be valid for the duration of the entire program</li>
+  <li>A {{ text::emphasize(text="&str") }}
+ is made up of a ptr to some bytes and a length.</li>
+  <li>A {{ text::emphasize(text="String") }}
+ is made up of a ptr to some bytes and a length and a capacity that may be larger than the length.</li>
+  <li>Both {{ text::emphasize(text="&str") }}
+ and {{ text::emphasize(text="String") }}
+ are valid {{ text::emphasize(text="UTF-8") }}
+.</li>
+</ul>
+
+{% endblock page_content %}

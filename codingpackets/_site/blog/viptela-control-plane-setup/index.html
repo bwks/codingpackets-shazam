@@ -1,0 +1,3294 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Viptela Control Plane Setup</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 22nd of March 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Viptela is an SDWAN platform now owned by Cisco. In this blog I will setup a Viptela
+  control plane using self signed certificates for the purpose of testing in a lab environment.
+</p>
+<p>
+  The recommended mode of operation for production deployments is using Symantec signed certificates
+  that are managed by Viptela. Using Viptela issued certificates allows for ZTP and greatly
+  simplifies the lifecycle management of certificates as it is all handled by Viptela and their
+  software.
+</p>
+<p>
+  The one caveat to using Viptela issued certificates is that you need to raise a case to have
+  the controller certificates signed. This is fine for a production deployment where you do it
+  once and forget about it, but it does not really work in a lab where you spin up/down
+  environments for the purpose of testing infrastructure as code and testing code against infrastructure.
+</p>
+
+<h3 id="lab-topology">Lab Topology</h3>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/viptela-control-plane-setup/lab-topology.svg" alt="blog/viptela-control-plane-setup/lab-topology.svg">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h4><b>Lab IP Addressing</b></h4>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="pt-2 pb-4 text-xl">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
+    <table class="border-4 border-zinc-900 table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        
+          <th class="pt-1 pb-2 px-2">Host</th>
+        
+          <th class="pt-1 pb-2 px-2">VPN 0</th>
+        
+          <th class="pt-1 pb-2 px-2">VPN 512</th>
+        
+        </tr>
+      </thead>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">vManage </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> 10.10.100.31/24 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 172.16.100.31/24</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">vBond </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> 10.10.100.32/24 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 172.16.100.32/24</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-900">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">vSmart </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> 10.10.100.33/24 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 172.16.100.33/24</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">vEdge </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> 10.10.100.34/24 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> 172.16.100.34/24</td>
+            
+          
+        </tr>
+      
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<h4><b>Lab Software</b></h4>
+<ul>
+  <li>vManage - 16.3.2 / 17.2.0</li>
+  <li>vBond - 16.3.2 / 17.2.0</li>
+  <li>vSmart - 16.3.2 / 17.2.0</li>
+  <li>vEdge - 17.2.0</li>
+</ul>
+
+<p>
+  This lab assumes that you already have the virtual machine images booted in your hypervisor
+  platform of choice. I am personally running this lab in OpenStack, but you can just as easily
+  boot the VM's in VMware ESX/Fusion/Workstation or with a bit if fiddling Virtualbox or KVM.
+</p>
+<p>
+  The controllers will start on software version <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">16.3.2</i>
+
+  and be upgraded to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.2.0</i>
+ during the course of the lab.
+</p>
+
+
+<h3 id="controllers">Controllers</h3>
+<p>
+  The Viptela control plane consists of the following components.
+</p>
+<h4><b>vManage NMS</b></h4>
+<p>
+  The vManage is the central point of configuration and monitoring for the Viptela solution.
+</p>
+
+<h4><b>vBond Orchestrator</b></h4>
+<p>
+  The vBond authenticates and validates devices that join the overlay network.
+</p>
+
+<h4><b>vSmart Controller</b></h4>
+<p>
+  The vSmart controller is the point of control over the routing policy in the overlay network.
+  vSmart controllers are similar to BGP route reflectors.
+</p>
+
+<h3 id="cli-modes">CLI Modes</h3>
+<p>
+  Viptela devices use an ubuntu 1404 base operating system. There are two cli modes to be
+  aware of when working with Viptela device software; the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+
+  and the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+. When you login to a Viptela device
+  terminal you are placed in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+.
+</p>
+
+<h4><b>viptela-cli</b></h4>
+<p>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+ is similar to a Cisco IOS terminal with nicer
+  features like candidate config and commit style management.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+vmanage#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>vshell</b></h4>
+<p>
+  To logon to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vshell</i>
+
+  command (Shocking right!). The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ is very similar
+  to a bash shell.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# vshell
+
+# vshell
+
+vmanage:~$</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  To exit out of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ and return to the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+ use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">exit</i>
+
+  keyword.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage:~$ exit
+exit
+vmanage#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  This lab will use both the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+ and the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+. If you are following along, please take note of
+  which shell the commands are executed in.
+</p>
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Lets get cracking with the configuration. In this lab we will start by configuring the
+  root CA, then move onto installing certificates on the Viptela devices and finally
+  upgrade the vManage, vSmart and vBond to code version <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.2.0</i>
+
+  to allow the virtual vEdge to join the control plane.
+</p>
+
+<h3 id="vmanage">vManage</h3>
+
+<p>
+  Login to the vManage web interface with the username and password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i>
+
+  and navigate to the settings page.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Administration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+<p>
+  Enter the organization name <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">network-lab</i>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/organization-name.png" alt="blog/viptela-control-plane-setup/organization-name.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Also enter the vBond IP address <span class="font-mono">10.10.100.32</span>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-address.png" alt="blog/viptela-control-plane-setup/vbond-address.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Ensure the Certificate Authorization method is set to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Manual</i>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="bootstrap-config">Bootstrap Config</h3>
+<p>
+  Apply the following bootstrap configs to the hosts.
+</p>
+<h4><b>vManage</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+system
+ system-ip 1.1.1.1
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface eth1
+  ip dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>vBond</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+system
+ system-ip 1.1.1.2
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32 local vbond-only
+!
+vpn 0
+ interface ge0/0
+  ip dhcp-client
+  ipv6 dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>vSmart</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+system
+ system-ip 1.1.1.3
+ site-id 1000
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface eth1
+  ip dhcp-client
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h4><b>vEdge</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+system
+ system-ip 3.1.1.1
+ site-id 1
+ organization-name "network-lab"
+ vbond 10.10.100.32
+!
+vpn 0
+ interface ge0/0
+  ip dhcp-client
+  ipv6 dhcp-client
+  tunnel-interface
+   encapsulation ipsec
+   no allow-service bgp
+   allow-service dhcp
+   allow-service dns
+   allow-service icmp
+   no allow-service sshd
+   no allow-service netconf
+   no allow-service ntp
+   no allow-service ospf
+   no allow-service stun
+  !
+  no shutdown
+ !
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I am using DHCP for all interface IP address assignments in this lab.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="certificate-server">Certificate Server</h3>
+<p>
+  For this lab I will use the vManage as the root certificate authority. I will utilize the
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">openssl</i>
+ command to generate and sign certificates from the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ terminal.
+</p>
+
+<p>
+  Generate a root CA key named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl genrsa -out ROOTCA.key 2048
+
+# output
+Generating RSA private key, 2048 bit long modulus
+.....................................................+++
+................+++
+e is 65537 (0x10001)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Generate a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate and sign it with the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+ key.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 1024 \
+    -subj "/C=AU/ST=NSW/L=NSW/O=network-lab/CN=vmanage.lab" \
+    -out ROOTCA.pem</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate will need to be installed
+    manually on all the devices in the fabric.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Exit out of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ and install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate from the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request root-cert-chain install /home/admin/ROOTCA.pem
+
+# output
+
+Uploading root-ca-cert-chain via VPN 0
+Copying ... /home/admin/ROOTCA.pem via VPN 0
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  In the web interface generate a certificate signing request.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Generate CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/generate-csr-1.png" alt="blog/viptela-control-plane-setup/generate-csr-1.png">
+</div>
+<!-- IMAGE END -->
+
+<p>
+  A window will popup with the CSR text. In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+
+  use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vim</i>
+ to create a file named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.csr</i>
+
+  with the text from the popup.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/generate-csr-2.png" alt="blog/viptela-control-plane-setup/generate-csr-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Sign the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.csr</i>
+ file with the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl x509 -req -in vmanage.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vmanage.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vmanage_613e7c7c-07f8-443b-aa90-969bf12a64e4_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ command to view the contents of the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.crt</i>
+ file and install the certificate in the
+  web interface.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-install-certificate-1.png" alt="blog/viptela-control-plane-setup/vmanage-install-certificate-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Paste the contents into the popup
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-install-certificate-2.png" alt="blog/viptela-control-plane-setup/vmanage-install-certificate-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Sample successful certificate install log
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-install-certificate-3.png" alt="blog/viptela-control-plane-setup/vmanage-install-certificate-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Finally, from the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmanage.crt</i>
+ certificate
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request certificate install /home/admin/vmanage.crt
+
+# output
+
+Installing certificate via VPN 0
+Successfully installed the certificate</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+
+
+<h3 id="vbond">vBond</h3>
+<p>
+  Add the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate to the vBonds root certificate
+  chain.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     2.4MB/s   00:00
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<p>
+  Add the vBond to vManage web interface
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-add-to-vmanage-1.png" alt="blog/viptela-control-plane-setup/vbond-add-to-vmanage-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the IP address of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vpn0</i>
+ interface: <span class="font-mono">10.10.100.32</span>
+.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-add-to-vmanage-2.png" alt="blog/viptela-control-plane-setup/vbond-add-to-vmanage-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Example successfully added vBond.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-add-to-vmanage-3.png" alt="blog/viptela-control-plane-setup/vbond-add-to-vmanage-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Do not enable a tunnel interface under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vpn0</i>
+    interface or the vManage will not be able to connect to the vBond to add it.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Get a copy of the vBond CSR text.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">View CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-csr-1.png" alt="blog/viptela-control-plane-setup/vbond-csr-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  A window will popup with the CSR text. In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ on
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vManage</i>
+ use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vim</i>
+ to create a file named
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.csr</i>
+ with the text from the popup.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-csr-2.png" alt="blog/viptela-control-plane-setup/vbond-csr-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Sign the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.csr</i>
+ file with the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl x509 -req -in vbond.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vbond.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vbond_94cd241e-06cd-4fd3-9964-6f147710c59e_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ command to view the contents of the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.crt</i>
+ file and install the certificate in the
+  web interface.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-certificate-install-1.png" alt="blog/viptela-control-plane-setup/vbond-certificate-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Paste the contents into the popup
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-certificate-install-1.png" alt="blog/viptela-control-plane-setup/vbond-certificate-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Sample successful certificate install log
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-certificate-install-3.png" alt="blog/viptela-control-plane-setup/vbond-certificate-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Send the list of certs to the vBond.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Send to vBond</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-certificate-install-4.png" alt="blog/viptela-control-plane-setup/vbond-certificate-install-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Example successfully updated vBond.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-certificate-install-5.png" alt="blog/viptela-control-plane-setup/vbond-certificate-install-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Finally, on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">viptela-cli</i>
+ of the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vBond</i>
+ install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vbond.crt</i>
+ certificate
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vbond.crt vpn 512
+
+# output
+
+Installing certificate via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/vbond.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vbond.crt                                                                                                                                                                  100% 1310     2.5MB/s   00:00
+Successfully installed the certificate</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<h3 id="vsmart">vSmart</h3>
+<p>
+  Add the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate to the vSmarts root
+  certificate chain.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     1.9MB/s   00:00
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<p>
+  Add the vSmart to vManage web interface
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vSmart</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-add-to-vmanage-1.png" alt="blog/viptela-control-plane-setup/vsmart-add-to-vmanage-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Enter the IP address of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vpn0</i>
+ interface: <span class="font-mono">10.10.100.33</span>
+.
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-add-to-vmanage-2.png" alt="blog/viptela-control-plane-setup/vsmart-add-to-vmanage-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Get a copy of the vSmart CSR text.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vSmart</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">View CSR</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-csr-1.png" alt="blog/viptela-control-plane-setup/vsmart-csr-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  A window will popup with the CSR text. In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vshell</i>
+ on
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vManage</i>
+ use <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">vim</i>
+ to create a file named
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.csr</i>
+ with the text from the popup.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-csr-2.png" alt="blog/viptela-control-plane-setup/vsmart-csr-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  On the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vManage</i>
+ sign the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.csr</i>
+ file with the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.key</i>
+
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl x509 -req -in vsmart.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vsmart.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vsmart_4a850d7d-cf30-4b75-bf3f-7ad0ef899174_0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ command to view the contents of the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.crt</i>
+ file and install the certificate in the
+  web interface.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Install Certificate</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-certificate-install-1.png" alt="blog/viptela-control-plane-setup/vsmart-certificate-install-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Paste the contents into the popup
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-certificate-install-2.png" alt="blog/viptela-control-plane-setup/vsmart-certificate-install-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  Sample successful certificate install log
+</p>
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-certificate-install-3.png" alt="blog/viptela-control-plane-setup/vsmart-certificate-install-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  No need to update the vBond this time as the vBond was updated as part of the certificate install.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controllers</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vsmart-certificate-install-4.png" alt="blog/viptela-control-plane-setup/vsmart-certificate-install-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<p>
+  Finally, on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vSmart</i>
+ install the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vsmart.crt</i>
+ certificate
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vsmart.crt vpn 512
+
+# output
+
+Installing certificate via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/vsmart.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vsmart.crt                                                                                                                                                                 100% 1310     2.3MB/s   00:00
+Successfully installed the certificate</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h3 id="vedge">vEdge</h3>
+<p>
+  Add the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
+ certificate to the vEdge root
+  certificate chain.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request root-cert-chain install scp://admin@172.16.100.31:/home/admin/ROOTCA.pem vpn 512
+
+# output
+
+Uploading root-ca-cert-chain via VPN 512
+Copying ... admin@172.16.100.31:/home/admin/ROOTCA.pem via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+ROOTCA.pem                                                                                                                                                                 100% 1269     2.5MB/s   00:00
+Updating the root certificate chain..
+Successfully installed the root certificate chain</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The virtual vEdge must be of version 17.x or greater to use certificates that are not
+    issued by Viptela.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Generate a certificate signing request. Ensure to enter the organization name as
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">network-lab</i>
+ at the prompts.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request csr upload scp://admin@172.16.100.31:/home/admin/vedge-01.csr vpn 512
+
+# output
+
+Uploading CSR via VPN 512
+Enter organization name            : network-lab
+Re-enter organization name          : network-lab
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 413]
+CMD_MAAPI is true [mtid = 413]
+CMD_MAAPI is true [mtid = 0]
+Generating private/public pair and CSR for this vedge device
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 417]
+CMD_MAAPI is true [mtid = 417]
+CMD_MAAPI is true [mtid = 0]
+Generating CSR for this vedge device   ........[DONE]
+Copying ... admin@172.16.100.31:/home/admin/vedge-01.csr via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+server.csr                                                                                                                                                                 100% 1216     3.4MB/s   00:00
+CSR upload successful</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  On the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vManage</i>
+ have the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vedge-01.csr</i>
+ signed.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vshell
+
+openssl x509 -req -in vedge-01.csr \
+    -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
+    -out vedge-01.crt -days 500 -sha256
+
+# output
+
+Signature ok
+subject=/C=US/ST=California/L=San Jose/OU=network-lab/O=vIPtela Inc/CN=vedge-ea3feb44-7869-4d35-83fd-fb6e1e81c3f1-0.viptela.com/emailAddress=support@viptela.com
+Getting CA Private Key</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Back on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vEdge</i>
+ install the signed certificate.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+request certificate install scp://admin@172.16.100.31:/home/admin/vedge-01.crt vpn 512
+
+# output
+
+Copying ... admin@172.16.100.31:/home/admin/vedge-01.crt via VPN 512
+Warning: Permanently added '172.16.100.31' (ECDSA) to the list of known hosts.
+viptela 16.3.2
+
+admin@172.16.100.31s password:
+vedge-01.crt                                                                                                                                                               100% 1310     2.7MB/s   00:00
+CMD_MAAPI is true [mtid = 0]
+CMD_MAAPI is true [mtid = 423]
+CMD_MAAPI is true [mtid = 423]
+CMD_MAAPI is true [mtid = 0]
+Successfully installed the certificate</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Get the certificate details from the vEdge.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+show certificate serial
+
+# output
+
+Chassis number: ea3feb44-7869-4d35-83fd-fb6e1e81c3f1 serial number: F1EA24CA2A0565B8</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  A vEdge serial file needs to be uploaded to the vManage to ensure only authorized vEdges can
+  connect to the fabric. Prior to software version <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.x</i>
+ this
+  file was just a CSV file made up of the chassis number and certificate serial number of the
+  vEdges. After <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.x</i>
+ the vEdge serial file became a signed
+  binary file that can only be downloaded from Viptela and only includes the vEdges for which
+  you have purchased a license.
+</p>
+<p>
+  This is the reason we start by installing the vManage, vBond and vSmart on software version
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">16.3.2</i>
+ and later upgrade to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.2.0</i>
+
+  after the vEdges are added to the control plane.
+</p>
+<p>
+  Create a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vedges.csv</i>
+ and upload it to the vManage.
+  A sample file contents is below.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ea3feb44-7869-4d35-83fd-fb6e1e81c3f1,F1EA24CA2A0565B8</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Repeat these steps for the desired number of vEdges you need in your topology.
+</p>
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Once you upgrade the vManage to a software version greater than 17.x you can no longer
+    add device serials with a CSV file. The device serial file becomes a signed binary only
+    available from the Viptela download portal.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Upload vEdge List</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-1.png" alt="blog/viptela-control-plane-setup/vedge-add-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-2.png" alt="blog/viptela-control-plane-setup/vedge-add-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-3.png" alt="blog/viptela-control-plane-setup/vedge-add-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-4.png" alt="blog/viptela-control-plane-setup/vedge-add-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Send the list of vEdges to the controllers.
+</p>
+
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vEdge List</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Send to Controllers</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-5.png" alt="blog/viptela-control-plane-setup/vedge-add-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vedge-add-6.png" alt="blog/viptela-control-plane-setup/vedge-add-6.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="tunnel-interfaces">Tunnel Interfaces</h3>
+<p>
+  The next step is to enable the tunnel interfaces on the vManage/Bond/Smart to bring up the
+  control plane.
+</p>
+
+
+<h4><b>vManage/Smart</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+vpn 0
+ interface eth1
+  tunnel-interface
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h4><b>vBond</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">config</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+vpn 0
+ interface ge0/0
+ tunnel-interface encapsulation ipsec
+ !</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="verification">Verification</h3>
+<p>
+  There are a number of CLI commands that can be used to verify control plane status.
+</p>
+<ul>
+ <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show control local-properties</i></li>
+  <li>Verify certificate installation status</li>
+ <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show control connections-history</i></li>
+  <li>See why a control connection is failing</li>
+ <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show control connections</i></li>
+  <li>Status of any current control connections</li>
+</ul>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    On the vBond substitute the keyword <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">control</i>
+  with <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">orchestrator</i>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h4><b>vManage</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+show control connections
+
+# output
+
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR    STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vsmart  dtls 1.1.1.3         1000       1      10.10.100.33                            12346 10.10.100.33                            12346 default         up              0:00:02:42
+0     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+1     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+2     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+3     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+4     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+5     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+6     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36
+7     vbond   dtls 1.1.1.2         0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:06:36</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<h4><b>vBond</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+show orchestrator connections
+
+# output
+
+PEER     PEER     PEER             SITE        DOMAIN      PEER             PRIVATE  PEER             PUBLIC
+TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP       PORT     PUBLIC IP        PORT    REMOTE COLOR     STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart   dtls     1.1.1.3          1000        1           10.10.100.33     12346    10.10.100.33     12346   default          up              0:00:03:30
+vsmart   dtls     1.1.1.3          1000        1           10.10.100.33     12446    10.10.100.33     12446   default          up              0:00:03:29
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12346    10.10.100.31     12346   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12446    10.10.100.31     12446   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12546    10.10.100.31     12546   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12646    10.10.100.31     12646   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12746    10.10.100.31     12746   default          up              0:00:07:15
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12846    10.10.100.31     12846   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     12946    10.10.100.31     12946   default          up              0:00:07:16
+vmanage  dtls     1.1.1.1          1000        0           10.10.100.31     13046    10.10.100.31     13046   default          up              0:00:07:16</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+
+<h4><b>vSmart</b></h4>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+show control connections
+
+# output
+
+      PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB
+INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  REMOTE COLOR    STATE           UPTIME
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0     vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:00:19
+0     vmanage dtls 1.1.1.1         1000       0      10.10.100.31                            12346 10.10.100.31                            12346 default         up              0:00:00:10
+1     vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up              0:00:00:18</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The vEdges will not be able to join the control plane until the vManage, vSmart and vBond
+    are upgraded to a software version greater than 17.x.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<h3 id="software-upgrade">Software Upgrade</h3>
+<p>
+  The software upgrade process is well documented on the Viptela support portal
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.viptela.com/Product_Documentation/Getting_Started/Hardware_and_Software_Installation/Software_Installation_and_Upgrade" target=_blank>here</a>
+  so I will not go into very much detail apart from a few points.
+</p>
+<p>
+  Head over to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.viptela.com/Downloads" target=_blank>https://docs.viptela.com/Downloads</a>
+
+  and download the release <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">17.2.0</i>
+ for upgrades. You will only
+  need the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vEdge Cloud, vSmart, Software vBond</i>
+ and the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vManage</i>
+ files.
+</p>
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="300px" 
+    src="/img/blog/viptela-control-plane-setup/viptela-software-download.png" alt="blog/viptela-control-plane-setup/viptela-software-download.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Upload the files to the vManage file repository.
+</p>
+
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Repository</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add New Software</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/software-upgrade-1.png" alt="blog/viptela-control-plane-setup/software-upgrade-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/software-upgrade-2.png" alt="blog/viptela-control-plane-setup/software-upgrade-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/software-upgrade-3.png" alt="blog/viptela-control-plane-setup/software-upgrade-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/software-upgrade-4.png" alt="blog/viptela-control-plane-setup/software-upgrade-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>vManage</b></h4>
+<p>
+  Load the software on the vManage.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">17.2.0</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-1.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-2.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-3.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Set the default software version on the vManage.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Set Default Version</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">17.2.0</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-4.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-5.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Activate the new software version on the vManage.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vManage</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Activate</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">17.2.0</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vmanage-software-upgrade-6.png" alt="blog/viptela-control-plane-setup/vmanage-software-upgrade-6.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Some of the JS and CSS styling changed between version 16.x and 17.x on the vManage web
+    interface. You will likely need to flush the page JS and CSS cache in order for the web
+    interface to render correctly after the upgrade to 17.2.0. See your web browser
+    documentation for instructions on how to do this.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h4><b>vBond/Smart</b></h4>
+<p>
+  Load the software on the vBond/Smart, this can be done simultaneously for both devices.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond/Smart</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">17.2.0</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-1.png" alt="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-2.png" alt="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-3.png" alt="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Set the default software version on the vBond/Smart.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Maintenance</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Software Upgrade</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Controller</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Set Default Version</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vBond/Smart</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">17.2.0</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-4.png" alt="blog/viptela-control-plane-setup/vbond-vsmart-software-upgrade-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="validate-vedges">Validate vEdges</h3>
+<p>
+  Now that the controllers are all upgraded to software version 17.2.0 it is safe to validate the
+  vEdges so they can join the control plane.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vEdge List</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">(vEdge)</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Valid</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/validate-vedge-2.png" alt="blog/viptela-control-plane-setup/validate-vedge-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Now send the list of vEdges to the other controllers.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Certificates</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vEdge List</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Send to Controllers</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/validate-vedge-2.png" alt="blog/viptela-control-plane-setup/validate-vedge-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/validate-vedge-3.png" alt="blog/viptela-control-plane-setup/validate-vedge-3.png">
+</div>
+<!-- IMAGE END -->
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/validate-vedge-4.png" alt="blog/viptela-control-plane-setup/validate-vedge-4.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Once the vEdge list is pushed to the controllers the vEdges will start to join the control plane.
+  You can verify the status by checking the devices list in the vManage web interface or checking
+  the control connection on the vEdge.
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Configuration</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Devices</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">vEdge List</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/validate-vedge-5.png" alt="blog/viptela-control-plane-setup/validate-vedge-5.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela-cli
+
+show control connections
+
+# output
+
+PEER    PEER PEER            SITE       DOMAIN PEER                                    PRIV  PEER                                    PUB                                     GROUP
+TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                              PORT  PUBLIC IP                               PORT  LOCAL COLOR     STATE UPTIME      ID
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vsmart  dtls 1.1.1.3         1000       1      10.10.100.33                            12346 10.10.100.33                            12346 default         up    0:08:43:33  0
+vbond   dtls -               0          0      10.10.100.32                            12346 10.10.100.32                            12346 default         up    0:08:43:33  0
+vmanage dtls 1.1.1.1         1000       0      10.10.100.31                            12346 10.10.100.31                            12346 default         up    0:08:43:33  0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  View the dashboard to see the status of the Viptela platform.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/viptela-control-plane-setup/dashboard-final.png" alt="blog/viptela-control-plane-setup/dashboard-final.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="snapshot-vms">Snapshot VMs</h3>
+<p>
+  At this point I usually take a snapshot of the VM's so that you can quickly build out a topology
+  starting with X number of vEdges connected to the controllers without having to going through this
+  process every time. I will leave this as an exercise for the reader to investigate if that is
+  something you wish to pursue.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you made it this far you should have a Viptela lab up and running  with a functioning
+  control plane using your own self signed certificates and X number of virtual vEdges validated
+  and ready to receive policy.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://viptela.com" target=_blank>http://viptela.com</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/viptela.html" target=_blank>https://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/viptela.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#sdwan" class="text-xl">sdwan</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#viptela" class="text-xl">viptela</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-topology">
+            Lab Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#controllers">
+            Controllers
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#cli-modes">
+            CLI Modes
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vmanage">
+            vManage
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#bootstrap-config">
+            Bootstrap Config
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#certificate-server">
+            Certificate Server
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vbond">
+            vBond
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vsmart">
+            vSmart
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vedge">
+            vEdge
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tunnel-interfaces">
+            Tunnel Interfaces
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software-upgrade">
+            Software Upgrade
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#validate-vedges">
+            Validate vEdges
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#snapshot-vms">
+            Snapshot VMs
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>
