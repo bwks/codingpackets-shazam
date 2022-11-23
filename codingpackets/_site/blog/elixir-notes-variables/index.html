@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Elixir Notes: Variables</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 28th of January 2021
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 26th of January 2021
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Elixir Notes: Variables</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 28th of January 2021
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 26th of January 2021
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -120,7 +130,7 @@
 <h3 id="intro">Intro</h3>
 <p>
   Define a variable in Elixir with the equals
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">=</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">=</i>
   operator.
 </p>
 
@@ -130,7 +140,7 @@
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">=</i>
+    The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">=</i>
  operator is also used 
     for pattern matching.
   </p>
@@ -176,27 +186,27 @@ BooHoo = "Im invalid and will cause an error" # -> ** (MatchError) no match of r
 <h3 id="considerations">Considerations</h3>
 <ul>
   <li>
-    Variables can start with a lowercase <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">[a-z]</i>
+    Variables can start with a lowercase <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[a-z]</i>
 
-    or an underscore <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">_</i>
+    or an underscore <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">_</i>
 
   </li>
   <li>
     Variables can contain upper/lower case
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">[a-zA-Z]</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[a-zA-Z]</i>
  and the
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">_</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">_</i>
  underscore characters.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">snake_case</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">snake_case</i>
  is the 
     formatting convention used for variable naming.
   </li>
   <li>
-    Variables can end with a question mark <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">?</i>
+    Variables can end with a question mark <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">?</i>
  
-    or an exclaimation mark <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">!</i>
+    or an exclaimation mark <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">!</i>
 
   </li>
   <li>

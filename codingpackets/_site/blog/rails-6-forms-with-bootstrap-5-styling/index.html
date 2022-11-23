@@ -1,0 +1,701 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Rails 6 Forms With Bootstrap 5 Styling</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 24th of December 2020
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Forms allow you to receive data from your users via the
+  webapp and store that information in your database and/or
+  send it off for external processing to something like an 
+  API.
+</p>
+<p>
+  In this post I will go over the process of using forms 
+  in rails 6 and styling them with the Bootstrap 5 CSS 
+  framework.
+</p>
+<p>
+  for this exercise, lets pretend we have a
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Sites</i>
+ application 
+  that you might use to store information about branch 
+  locations.
+</p>
+<ul>
+  <li>Rails - 6.0.3.4</li>
+  <li>Bootstrap - 5.0.0-beta1</li>
+</ul>
+
+<h3 id="routes">Routes</h3>
+<p>
+  In order for users to see the desired form and also 
+  submit the data they enter you will need to have the 
+  correct routes setup. 
+</p>
+
+<p>
+  The easiest way to achieve this is by using the 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://guides.rubyonrails.org/routing.html#resources-on-the-web" target=_blank>resources</a>
+
+  routes.
+  Defining the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">resources</i>
+ 
+  routes will automatically create all the most common routes 
+  that are used.
+</p>
+<p>
+  Add <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">resources</i>
+ routes for the 
+  desired component in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">config/routes.rb</i>
+ file.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># config/routes.rb 
+
+Rails.application.routes.draw do
+  resources 'sites'
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  You can verify which routes are available with the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">rails routes</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rails routes | grep site
+
+# output 
+    sites GET    /sites(.:format)          sites#index
+          POST   /sites(.:format)          sites#create
+ new_site GET    /sites/new(.:format)      sites#new
+edit_site GET    /sites/:id/edit(.:format) sites#edit
+     site GET    /sites/:id(.:format)      sites#show
+          PATCH  /sites/:id(.:format)      sites#update
+          PUT    /sites/:id(.:format)      sites#update
+          DELETE /sites/:id(.:format)      sites#destroy</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The highlighted routes that are pointing to the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">sites#create</i>
+ and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">sites#new</i>
+ controller
+  actions are the most important routes for our current task.
+</p>
+
+<h3 id="controller">Controller</h3>
+<p>
+  In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">sites_controller.rb</i>
+
+  file add the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">new</i>
+ and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create</i>
+ methods.
+</p>
+<p>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">new</i>
+ method is what 
+  is used to serve the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">@site</i>
+ 
+  model instance to the web application 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">view</i>
+.
+</p>
+<p>
+  When the form is submitted the form fields are submitted as 
+  a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">paramaters</i>
+ hash to the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create</i>
+ method.
+</p>
+<p>
+  Before the record can be saved the received 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">paramaters</i>
+ need to be 
+  validated via a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">strong parameters</i>
+ 
+  check. The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">site_params</i>
+ 
+  private method is used for this purpose.
+</p>
+<p>
+  This is a security measure to prevent users from submitting 
+  fields that are not in your form and potentially overwritting/adding 
+  data to a record that they should not have access to.
+</p>
+<p>
+  In the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">site_params</i>
+ method 
+  you specifically define the fields that users are allowed to 
+  add/edit.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># app/controllers/sites_controller.rb 
+
+class SitesController < ApplicationController 
+
+  def new
+    @site = Site.new
+  end
+
+  def create
+    @site = Site.new(site_params)
+    if @site.save
+      redirect_to sites_path
+    end
+  end
+  
+  private
+    def site_params
+      params.require(:site).permit(:name, :code, :description)
+    end
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="view">View</h3>
+<p>
+  Now for the Juicy bit. Firstly create the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">new.html.erb</i>
+ view file in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">app/views/sites/</i>
+ directory. This 
+  file will be used to present our form to the users.
+</p>
+
+<p>
+  Using the 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://guides.rubyonrails.org/form_helpers.html#dealing-with-basic-forms" target=_blank>form_with</a>
+ 
+  helper we can pass in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">@site</i>
+ model instance and 
+  define our form fields. Rails will automatically create the HTML markup for the 
+  web app.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-erb hljs px-5 dark:opacity-80 rounded-b"><%# app/views/sites/new.html.erb %>
+
+<%= form_with(model: @site) do |f| %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.label :code %>
+      <%= f.text_field :code %>
+
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+
+    <%= f.submit "Submit" %>
+
+<% end %></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  But the results are not very exciting .....
+</p>
+
+<h4>Bootstrap</h4>
+<p>
+  To spice the form up, lets sprinkle in some Bootstrap styling.
+</p>
+<p>
+  Using some of the code from  
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://getbootstrap.com/docs/5.0/forms/form-control/#example" target=_blank>this</a>
+
+  form example. Wrap the form fields in <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">divs</i>
+ and 
+  apply the CSS classes to the field parameters.
+</p>
+<p>
+  I also wrapped the entire form in a 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://getbootstrap.com/docs/5.0/components/card/#body" target=_blank>card</a>
+
+  to give it a nice looking outline.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-erb hljs px-5 dark:opacity-80 rounded-b"><%# app/views/sites/new.html.erb %>
+
+<%= form_with(model: @site) do |f| %>
+&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;
+
+    &lt;div class="mb-3"&gt;
+      <%= f.label :name, { class: "form-label"} %>
+      <%= f.text_field :name, { class: "form-control", placeholder: "Site Name" } %>
+    &lt;/div&gt;
+
+    &lt;div class="mb-3"&gt;
+      <%= f.label :code, { class: "form-label"} %>
+      <%= f.text_field :code, { class: "form-control", placeholder: "Site Code" } %>
+    &lt;/div&gt;
+
+    &lt;div class="mb-3"&gt;
+      <%= f.label :description, { class: "form-label"} %>
+      <%= f.text_field :description, { class: "form-control", placeholder: "Description" } %>
+    &lt;/div&gt;
+
+    <%= f.submit "Submit", class: "btn btn-primary" %>
+
+  &lt;/div&gt;
+&lt;/div&gt;
+<% end %></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Much better dont you think?
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+   There are ruby gems that you can use to create bootstrap 
+   styled forms and write mostly erb code. I personally 
+   like this method better as there is more freedom over 
+   the layout.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we created a web form for our Rails 6 app and 
+  styled it with Bootstrap 5. Don't be formless like Brue Lee, 
+  get some forms in your life.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://getbootstrap.com/docs/5.0/forms/overview/" target=_blank>https://getbootstrap.com/docs/5.0/forms/overview/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://dev.to/antman/using-bootstrap-4-in-rails-6-39hk" target=_blank>https://dev.to/antman/using-bootstrap-4-in-rails-6-39hk</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://guides.rubyonrails.org/form_helpers.html#dealing-with-basic-forms" target=_blank>https://guides.rubyonrails.org/form_helpers.html#dealing-with-basic-forms</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#rails" class="text-xl">rails</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#bootstrap" class="text-xl">bootstrap</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#routes">
+            Routes
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#controller">
+            Controller
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#view">
+            View
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

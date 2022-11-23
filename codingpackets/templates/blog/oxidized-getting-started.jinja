@@ -1,0 +1,327 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/ytti/oxidized", description="Oxidized") }} is a network device configuration
+  backup tool which was developed to be a replacement for
+  {{ link::e(path="http://www.shrubbery.net/rancid/", description="Rancid") }}. Oxidized is written in Ruby and is
+  quite extensible, at the time of writing it supports collection of configuration for over 90
+  network operating system types.
+</p>
+
+<p>
+  In this post I will install and configure Oxidized enabling the collection of config
+  from Juniper vSRX and Cisco IOSv devices. The configurations will be stored as files on
+  the Oxidized host.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Oxidized</b> - 0.21.0</li>
+  <li><b>Oxidized Host</b> - Debian 9</li>
+  <li><b>Juniper vSRX</b> - 12.1X47-D15.4</li>
+  <li><b>Cisco IOSv</b> - vios-adventerprisek9-m.vmdk.SPA.156-1.T</li>
+</ul>
+
+<h3 id="install">Install</h3>
+<p>
+  There are a number of {{ link::e(path="https://github.com/ytti/oxidized#installation", description="installation") }}
+  methods available including building from source and installing a Docker container. For this
+  blog I will install Oxidized via the Ruby gem.
+</p>
+
+<p>First update the base system and install the dependencies.</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt update
+sudo apt install -y ruby ruby-dev libsqlite3-dev libssl-dev pkg-config cmake libssh2-1-dev`
+) }}
+
+<p>Now install then Oxidized gem.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo gem install oxidized`
+) }}
+
+<h3 id="configuration">Configuration</h3>
+<h4><b>Oxidized User</b></h4>
+<p>
+  It is not recommended to run Oxidized as the root user, I will setup a user called
+  {{ text::emphasize(text="oxidized") }}
+ to manage the Oxidized application along with
+  the associated directories.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo useradd oxidized
+sudo chsh -s /usr/sbin/nologin oxidized
+sudo mkdir -p /opt/oxidized/{output,.config/oxidized/}
+sudo usermod -m -d /opt/oxidized oxidized`
+) }}
+
+<p>
+  Oxidized defaults to using the {{ text::emphasize(text="$HOME") }}
+ directory of the
+  user that runs the application. To change this behaviour set an environment variable
+  {{ text::emphasize(text="$OXIDIZED_HOME") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`echo "OXIDIZED_HOME=/opt/oxidized" | sudo tee --append /etc/environment`
+) }}
+
+<h4><b>Oxidized Config File</b></h4>
+<p>
+  Create a file named {{ text::emphasize(text="config") }}
+ in the
+  {{ text::emphasize(text="/opt/oxidized/.config/oxidized/") }}
+ directory with the
+  following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`# /opt/oxidized/.config/oxidized/config
+
+---
+username: vagrant
+password: vagrant
+model: junos
+interval: 3600
+use_syslog: true
+log: /opt/oxidized/.config/oxidized/logs/
+debug: false
+rest: false
+threads: 30
+timeout: 20
+retries: 3
+prompt: !ruby/regexp /^([\w.@-]+[#>]\s?)$/
+next_adds_job: false
+pid: "/opt/oxidized/pid"
+
+input:
+  default: ssh
+  debug: false
+  ssh:
+    secure: false
+
+output:
+  file:
+    directory: /opt/oxidized/output/configs
+
+source:
+  default: csv
+  csv:
+    file: /opt/oxidized/.config/oxidized/router.db
+    delimiter: !ruby/regexp /:/
+    map:
+      name: 0
+      ip: 1
+      model: 2
+      group: 3
+    vars_map: {}
+
+model_map:
+  juniper: junos
+  cisco: ios
+
+vars: {}
+
+groups:
+  juniper:
+    username: vagrant
+    password: Vagrant
+  cisco:
+    username: vagrant
+    password: vagrant
+
+models: {}`
+) }}
+
+<p>
+  The Oxidized configuration file is in a {{ text::emphasize(text="yaml") }}
+ format.
+  There are a number of elements in this configuration file which I will touch on.
+</p>
+<ul>
+  <li><b>interval</b> - How often to collect data (seconds).</li>
+  <li><b>input</b> - The method to get config from devices.</li>
+  <li><b>output</b> - How to store the configuration.</li>
+  <li><b>source</b> - The data source for the list of devices.</li>
+  <li><b>model_map</b> - Used to map device groups to models.</li>
+  <li><b>groups</b> - Group specific variables.</li>
+  <li><b>models</b> - Model specific variables.</li>
+</ul>
+<p>
+  Under the {{ text::emphasize(text="source") }}
+ section you will notice a
+  {{ text::emphasize(text="map") }}
+ section. The {{ text::emphasize(text="map") }}
+
+  section defines the column number in which to find attributes such as
+  {{ text::emphasize(text="name") }}
+ and {{ text::emphasize(text="ip") }}
+ in the
+  data source.
+</p>
+
+<h4><b>Oxidized Datafile</b></h4>
+<p>
+  Create a data source file named {{ text::emphasize(text="router.db") }}
+ in the
+  {{ text::emphasize(text="/opt/oxidized/.config/oxidized/") }}
+ directory with the
+  following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="csv",
+  code=`# /opt/oxidized/.config/oxidized/router.db
+
+# name:ip:model:group
+ios1:192.168.121.133:cisco:cisco
+srx1:192.168.121.91:juniper:junipers`
+) }}
+<p>
+  I have added a comment line to show how the {{ text::emphasize(text="map") }}
+ values
+  from above align to the columns in the data source file. As you can see this follows the
+  {{ text::emphasize(text="csv") }}
+ format using a colon ({{ text::emphasize(text=":") }}
+)
+  as the column delimiter.
+</p><br>
+
+
+<p>
+  Finally adjust the permissions of the {{ text::emphasize(text="/opt/oxidized") }}
+ directory
+  changing the ownership to the {{ text::emphasize(text="oxidized") }}
+ user.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo chown -R oxidized:oxidized /opt/oxidized`
+) }}
+
+<h4><b>Oxidized Service</b></h4>
+<p>
+  The oxidized github repo provides a number of helper scripts to manage to oxidized
+  application. I will use the systemd service script to manage oxidized for this install.
+  This script and others can be found {{ link::e(path="https://github.com/ytti/oxidized/tree/master/extra", description="here") }}.
+</p>
+<p>
+  Create a file named {{ text::emphasize(text="oxidized.service") }}
+ in the
+  {{ text::emphasize(text="/lib/systemd/system/") }}
+ directory with the
+  following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ini",
+  code=`# /lib/systemd/system/oxidized.service
+
+[Unit]
+Description=Oxidized - Network Device Configuration Backup Tool
+After=network-online.target multi-user.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/oxidized
+User=oxidized
+KillSignal=SIGKILL
+
+[Install]
+WantedBy=multi-user.target`
+) }}
+
+<p>
+  Start and enable the {{ text::emphasize(text="oxidized") }}
+ service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start oxidized.service
+sudo systemctl enable oxidized.service`
+) }}
+
+{{ text::note_block(text='
+    If the configuration file is updated, the $1 will need to be restarted.
+') 
+  | replace(from="$1", to=text::emphasize(text="oxidized.service"))
+}}
+
+<h3 id="verification">Verification</h3>
+<p>
+  When the oxidized service is started it will attempt to fetch the configuration from all
+  the devices in the data file. Confirm that the configuration was backed up by inspecting
+  the {{ text::emphasize(text="output") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tree /opt/oxidized/output/
+
+# output
+
+/opt/oxidized/output/
+├── cisco
+│   └── ios1
+└── juniper
+    └── srx1`
+) }}
+<p>
+  Because I configured the {{ text::emphasize(text="groups") }}
+ config parameter, Oxidized
+  creates a folder for each group of devices. You can group devices based on a logical
+  construct such as; customer, region, business function, etc... whatever makes sense for your
+  use case.
+</p>
+
+
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>
+  If for some reason things are not working as expected check the following items for a clue
+  as to what is going on.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="systemctl status oxidized.service") }}
+ -
+    Confirm the oxidized service is running with no errors
+  </li>
+  <li>{{ text::emphasize(text="/opt/oxidized/.config/oxidized/logs/oxidized.log") }}
+ - Check oxidized log</li>
+  <li>{{ text::emphasize(text="/opt/oxidized/.config/oxidized/crash") }}
+ - Check oxidized crash log</li>
+  <li>{{ text::emphasize(text="/var/log/syslog") }}
+ - Check the system log</li>
+  <li>{{ text::emphasize(text="debug: true") }}
+ - Enable debugging in the oxidized config</li>
+</ul>
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Oxidized is a pretty useful tool for keeping your network device configurations backed up.
+  In future posts, I will configure Oxidized to store the device configurations in Gitlab,
+  tighten  up security by encrypting the passwords and putting a secure web server in front
+  of the rest API.
+</p>
+
+{% endblock page_content %}

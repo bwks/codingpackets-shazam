@@ -1,0 +1,214 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/norman/friendly_id", description="Friendly ID") }}, is 
+  a ruby gem that makes adding slugs to your Rails 
+  records painless giving you nice human readible URI's. 
+  Instead of accessing URI's by their database ID: 
+  {{ text::emphasize(text="/site/23") }}
+ they are 
+  accessed via {{ text::emphasize(text="/site/hogwarts") }}
+ 
+  instead. Much better.
+</p>
+<p>
+  In this post I will show you how to add Friendly ID to your 
+  Rails 6 app.
+</p>
+
+<ul>
+  <li>Rails - 6.0.3.4</li>
+  <li>Friendly ID - 5.4.0</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Add the {{ text::emphasize(text="friendly_id") }}
+ gem to your 
+  {{ text::emphasize(text="Gemfile") }}
+.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# Gemfile
+
+gem 'friendly_id', '~> 5.4.0'"
+) }}
+
+<p>
+  Install the gem with the {{ text::code(text="bundle") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="bundle install"
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  Add a {{ text::emphasize(text="slug") }}
+ field to 
+  the required tables.
+</p>
+
+{{ text::note_block(text='
+    In the following examples I will be working with a 
+    $1 model.
+')
+ | replace(from="$1", to=text::emphasize(text="Site"))
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="rails generate migration AddSlugToSites slug:uniq"
+) }}
+
+<p>
+  This will create a 
+  {{ text::emphasize(text="db/migrate/&lt;timestamp&gt;_add_slug_to_sites.rb") }}
+ 
+  file.
+</p>
+
+<p>
+  Use the {{ text::emphasize(text="friendly_id") }}
+  generator to create the configuration files.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="rails generate friendly_id"
+) }}
+
+<p>
+  This creates two files
+</p>
+<ul>
+  <li>{{ text::emphasize(text="config/initializers/friendly_id.rb") }}
+</li>
+  <li>{{ text::emphasize(text="db/migrate/&lt;timestamp&gt;_create_friendly_id_slugs.rb") }}
+</li>
+</ul>
+
+<p>
+  {{ text::emphasize(text="friendly_id.rb") }}
+  is used to customize the Friendly ID install. This works out of 
+  the box and no changes arr required.
+</p>
+
+<p>
+  {{ text::emphasize(text="&lt;timestamp&gt;_create_friendly_id_slugs.rb") }}
+  Creates a history table of model slugs. This is used in 
+  the event a slug is changed the resource can still be 
+  found via the old slug thus avoiding broken URLs.
+</p>
+<p>
+  This feature has a storage and performance impact so if you dont 
+  need this for your app, you can delete this migration file.
+</p>
+
+<p>
+  Apply the database migration.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="rails db:migrate"
+) }}
+
+<p>
+  Configure your model to use 
+  {{ text::emphasize(text="friendly_id") }}.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/models/site.rb
+
+class User < ApplicationRecord
+  extend FriendlyId
+  friendly_id :code, use: :slugged
+end"
+) }}
+
+<p>
+  Configure your controller to fetch 
+  records using the 
+  {{ text::emphasize(text="friendly_id") }}
+.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/controllers/sites_controller.rb
+
+class SiteController < ApplicationController
+  def show
+    # @site = Site.find(params[:id])         # << old
+    @site = Site.friendly.find(params[:id])  # << new
+  end
+end"
+) }}
+
+<p>
+  Alternately, if you use a private method to 
+  access individual records you might use 
+  something like the below.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/controllers/sites_controller.rb
+
+class SiteController < ApplicationController
+  before_action :set_site, only: [:show, :edit, :update, :destroy]
+
+  def show
+  end
+
+  private
+    def set_site
+      # @site = Site.find(params[:id])         # << old
+      @site = Site.friendly.find(params[:id])  # << new
+    end
+end"
+) }}
+
+<p>
+  If you already have records in your table, update 
+  them with a {{ text::emphasize(text="friendly_id") }}
+ 
+  from the {{ text::emphasize(text="rails console") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# in rails console
+
+Site.find_each(&:save)"
+) }}
+
+<p>
+  Finally, because we added an initializer, a restart of 
+  the server is required.
+</p>
+
+<h3 id="testing">Testing</h3>
+<p>
+  Go to a resources URI and confirm you can access the record. IE:
+  {{ text::emphasize(text="http://&lt;hostname&gt;/site/hogwarts") }}
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we added Friendly URI slugs to our Rails 6 app using 
+  the Friendly ID gem. Maximo Leviato!!!
+</p>
+{% endblock page_content %}

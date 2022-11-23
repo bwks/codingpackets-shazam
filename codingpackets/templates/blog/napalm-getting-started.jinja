@@ -1,0 +1,597 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="http://napalm.readthedocs.io/en/latest/", description="Napalm") }} is a network automation library written in python that
+  abstracts the differences between libraries such as Juniper's {{ link::e(path="https://github.com/Juniper/py-junos-eznc", description="pyez") }}
+  and Arista's {{ link::e(path="https://github.com/arista-eosplus/pyeapi", description="pyeapi") }} bringing a common interface across many API's.
+</p>
+<p>
+  Napalm is well supported in the network community, originally started by David Barroso and Elisa Jasinska Napalm now has
+  a long list of contributors. Napalm supports a large number of {{ link::e(path="http://napalm.readthedocs.io/en/latest/support/index.html", description="device types") }}
+  and configuration {{ link::e(path="http://napalm.readthedocs.io/en/latest/support/index.html#available-configuration-templates", description="methods") }}.
+  Be sure the check the documentation to ensure your devices are supported.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  In this lab I will setup a Centos minimal server to install Napalm then connect to and extract data from a Cisco Nexus 9K,
+  Juniper SRX and Arista EOS images. We will also cover applying device configuration with Napalm.
+</p>
+
+<h3 id="topology">Topology</h3>
+{{ image::boxed(path="blog/napalm-getting-started/napalm-basic.svg", height="250px") }}
+
+<h3 id="code-versions">Code Versions</h3>
+<ul>
+  <li>Centos/7 - 1702.01</li>
+  <li>Nexusv - 7.0.3.I6.1</li>
+  <li>vSRX - 12.1X47-D15.4</li>
+  <li>vEOS - 4.18.1F</li>
+  <li>Napalm - 1.2.0</li>
+  <li>Python - 2.7.13</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  I ran into issues with SSL certificates when using the {{ text::emphasize(text="napalm-eos") }}
+ module.
+  The default python install on centos 7 is {{ text::emphasize(text="python 2.7.5") }}
+ which is quite old
+  and was the source of the problems. See the following {{ link::e(path="https://github.com/jerearista/vagrant-veos/issues/5", description="link") }}
+  for a workaround if you insist on using {{ text::emphasize(text="python 2.7.5") }}
+.
+  You can follow
+  {{ link::i(path="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal", description="this") }}
+  post to upgrade the python install to a modern version on Centos 7 minimal.
+</p>
+<p>
+  Install required YUM packages
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y epel-release
+sudo yum group install -y "Development tools"
+sudo yum install -y gcc libffi-devel libxml2-devel libxslt-devel openssl openssl-devel sshpass python-virtualenv
+
+# if did not install python from suggested blog post
+
+sudo yum install -y gcc libffi-devel libxml2-devel libxslt-devel python2-pip python-devel openssl openssl-devel sshpass python-setuptools python-virtualenv`
+) }}
+<p>
+  Dependancy installation instructions for {{ text::emphasize(text="yum") }}
+ and {{ text::emphasize(text="apt") }}
+ based systems can be found in
+  the {{ link::e(path="http://napalm.readthedocs.io/en/latest/installation/#dependencies", description="official docs") }}.
+</p>
+
+<p>
+  Upgrade pip and setuptools
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo pip2.7 install -U pip setuptools`
+) }}
+
+<p>
+  Create a virtual environment and install Napalm
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# as normal user
+
+mkdir envs
+virtualenv -p python2.7 envs/napalm-test
+source envs/napalm-test/bin/activate
+
+# inside virtual environment
+
+pip install -U pip setuptools
+pip install napalm`
+) }}
+
+<h3 id="usage">Usage</h3>
+
+<p>
+  To connect to devices, access to the API's needs to be enabled.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# junos
+
+system {
+    services {
+        netconf {
+            ssh;
+        }
+    }
+}
+
+# eos
+
+config
+management api http-commands
+  no shutdown
+  protocol https
+!
+
+# nexus
+
+conf t
+feature scp-server
+feature nxapi
+interface mgmt 0
+ vrf context managment
+!`
+) }}
+<p>
+  You will also need to configure the interfaces with IP addresses, I will leave this as an
+  exercise for the reader.
+</p>
+
+<h3 id="connecting-to-devices">Connecting To Devices</h3>
+<p>
+  Connecting to a device requires you to know a few things about the device. IE the device type and the login
+  credentials. Each supported {{ link::e(path="http://napalm.readthedocs.io/en/latest/support/index.html#general-support-matrix", description="device") }}
+  type has a {{ text::emphasize(text="driver") }}
+ that is used to setup the connection and perform actions on the devices.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# in python IDLE session
+
+from napalm_base import get_network_driver
+
+nxos_driver = get_network_driver('nxos')
+nxos = nxos_driver('169.254.1.11', 'vagrant', 'vagrant')
+
+junos_driver = get_network_driver('junos')
+junos = junos_driver('169.254.1.12', 'root', 'Juniper')
+
+eos_driver = get_network_driver('eos')
+eos = eos_driver('169.254.1.13', 'vagrant', 'vagrant')`
+) }}
+
+
+<p>
+  Now that the connection properties are setup we can connect to the devices.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.open()
+
+junos.open()
+
+eos.open()`
+) }}
+
+<h3 id="getting-data">Getting Data</h3>
+<p>
+  Each driver has a number of methods for retrieving data from and configuring devices. View the list of supported
+  methods for each device type in the
+  {{ link::e(path="http://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix", description="docs") }}.
+</p>
+<p>
+  Now that we are connected its time to use some of the available methods.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.get_facts()
+
+# output
+
+{'fqdn': 'nxosv',
+ u'hostname': 'nxosv',
+ u'interface_list': ['mgmt0',
+  'Ethernet1/1',
+  'Ethernet1/2',
+  'Ethernet1/3',
+  'Ethernet1/4',
+  'Ethernet1/5',
+  'Ethernet1/6',
+  'Ethernet1/7',
+  'Ethernet1/8',
+  'Ethernet1/9',
+  'Ethernet1/10',
+  'Ethernet1/11',
+  'Ethernet1/12',
+  'Ethernet1/13',
+  'Ethernet1/14',
+  'Ethernet1/15',
+  'Ethernet1/16',
+  'Ethernet1/17',
+  'Ethernet1/18',
+  'Ethernet1/19',
+  'Ethernet1/20',
+  'Ethernet1/21',
+  'Ethernet1/22',
+  'Ethernet1/23',
+  'Ethernet1/24',
+  'Ethernet1/25',
+  'Ethernet1/26',
+  'Ethernet1/27',
+  'Ethernet1/28',
+  'Ethernet1/29',
+  'Ethernet1/30',
+  'Ethernet1/31',
+  'Ethernet1/32',
+  'Ethernet1/33',
+  'Ethernet1/34',
+  'Ethernet1/35',
+  'Ethernet1/36',
+  'Ethernet1/37',
+  'Ethernet1/38',
+  'Ethernet1/39',
+  'Ethernet1/40',
+  'Ethernet1/41',
+  'Ethernet1/42',
+  'Ethernet1/43',
+  'Ethernet1/44',
+  'Ethernet1/45',
+  'Ethernet1/46',
+  'Ethernet1/47',
+  'Ethernet1/48',
+  'Ethernet1/49',
+  'Ethernet1/50',
+  'Ethernet1/51',
+  'Ethernet1/52',
+  'Ethernet1/53',
+  'Ethernet1/54',
+  'Ethernet1/55',
+  'Ethernet1/56',
+  'Ethernet1/57',
+  'Ethernet1/58',
+  'Ethernet1/59',
+  'Ethernet1/60',
+  'Ethernet1/61',
+  'Ethernet1/62',
+  'Ethernet1/63',
+  'Ethernet1/64'],
+ u'model': 'NX-OSv Chassis',
+ u'os_version': '7.0(3)I6(1)',
+ u'serial_number': '9VV6Z8H5H4H',
+ 'uptime': 17801,
+ u'vendor': u'Cisco'}
+
+
+junos.get_interfaces()
+
+# output
+
+{'.local.': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'dsc': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'ge-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': 31272.0,
+  u'mac_address': u'08:00:27:AE:F4:51',
+  u'speed': 1000},
+ 'ge-0/0/1': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': 31272.0,
+  u'mac_address': u'08:00:27:82:DC:49',
+  u'speed': 1000},
+ 'gr-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': 800},
+ 'gre': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'ip-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': 800},
+ 'ipip': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'irb': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'4C:96:14:10:01:30',
+  u'speed': -1},
+ 'lo0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'lsi': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'lsq-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': 31273.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'lt-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'02:96:14:10:01:33',
+  u'speed': 800},
+ 'mt-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': 800},
+ 'mtun': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'pimd': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'pime': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'pp0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'ppd0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': 800},
+ 'ppe0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': 800},
+ 'sp-0/0/0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': 31273.0,
+  u'mac_address': u'Unspecified',
+  u'speed': 800},
+ 'st0': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'None',
+  u'speed': -1},
+ 'tap': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': True,
+  u'last_flapped': -1.0,
+  u'mac_address': u'Unspecified',
+  u'speed': -1},
+ 'vlan': {u'description': u'',
+  u'is_enabled': True,
+  u'is_up': False,
+  u'last_flapped': 31282.0,
+  u'mac_address': u'00:00:00:00:00:00',
+  u'speed': 1000}}
+
+
+eos.get_environment()
+
+# output
+
+{u'cpu': {0: {u'%usage': 5.3}},
+ u'fans': {},
+ u'memory': {u'available_ram': 66772, u'used_ram': 1830768},
+ u'power': {},
+ u'temperature': {}}`
+) }}
+
+<p>
+  The great thing about Napalm is that it abstracts all the differences between the various API's and returns
+  data in the same structure no matter the device type. Consider the {{ text::emphasize(text="get_arp_table()") }}
+ method. This
+  method returns the arp table from {{ text::emphasize(text="nxos") }}
+, {{ text::emphasize(text="junos") }}
+ and {{ text::emphasize(text="eos") }}
+ all in the same
+  format making it much eaiser to reconcile the data in our code.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.get_arp_table()
+
+# output
+
+[{u'age': 1015.0,
+  u'interface': u'Ethernet1/1',
+  u'ip': u'169.254.1.10',
+  u'mac': u'08:00:27:FE:41:B6'},
+ {u'age': 917.0,
+  u'interface': u'Ethernet1/1',
+  u'ip': u'169.254.1.12',
+  u'mac': u'08:00:27:82:DC:49'},
+ {u'age': 558.0,
+  u'interface': u'Ethernet1/1',
+  u'ip': u'169.254.1.13',
+  u'mac': u'08:00:27:EB:40:24'}]
+
+
+junos.get_arp_table()
+
+# output
+
+[{'age': 491.0,
+  'interface': u'ge-0/0/0.0',
+  'ip': u'10.0.2.2',
+  'mac': u'52:54:00:12:35:02'},
+ {'age': 1104.0,
+  'interface': u'ge-0/0/1.0',
+  'ip': u'169.254.1.10',
+  'mac': u'08:00:27:FE:41:B6'},
+ {'age': 851.0,
+  'interface': u'ge-0/0/1.0',
+  'ip': u'169.254.1.11',
+  'mac': u'08:00:27:6C:EE:14'},
+ {'age': 832.0,
+  'interface': u'ge-0/0/1.0',
+  'ip': u'169.254.1.13',
+  'mac': u'08:00:27:EB:40:24'}]
+
+
+eos.get_arp_table()
+
+# output
+
+[{u'age': 0.0,
+  u'interface': u'Ethernet1',
+  u'ip': u'169.254.1.10',
+  u'mac': u'08:00:27:FE:41:B6'},
+ {u'age': 0.0,
+  u'interface': u'Ethernet1',
+  u'ip': u'169.254.1.11',
+  u'mac': u'08:00:27:6C:EE:14'},
+ {u'age': 0.0,
+  u'interface': u'Ethernet1',
+  u'ip': u'169.254.1.12',
+  u'mac': u'08:00:27:82:DC:49'},
+ {u'age': 0.0,
+  u'interface': u'Management1',
+  u'ip': u'10.0.2.2',
+  u'mac': u'52:54:00:12:35:02'},
+ {u'age': 0.0,
+  u'interface': u'Management1',
+  u'ip': u'10.0.2.3',
+  u'mac': u'52:54:00:12:35:03'}]`
+) }}
+
+<h3 id="configuring-devices">Configuring Devices</h3>
+<p>
+  When configuring devices there are a number of ways to do it with Napalm. The general workflow is to
+  load a candidate configuration, compare the configuration diff, if the changes are acceptable commit the
+  changes.
+</p>
+<p>
+  Be sure the check the configuration support {{ link::e(path="http://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix", description="matrix") }}
+  for the methods supported by your devices.
+</p>
+
+<p>
+  Firstly we need to define a configuration. Configuration can either be defined as a variable or loaded from
+  a file. In this case I will create a configuration variable.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos_ntp = 'ntp server 1.1.1.1 use-vrf default'`
+) }}
+
+<p>
+  Once the configuration is defined we will load a candidate configuration. It is possible to either replace the
+  whole configuration or merge with the existing configuration. In this instance I will merge the configuration with the
+  current configuration.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.load_merge_candidate(config=nxos_ntp)`
+) }}
+
+<p>
+  Once the candidate configuration is loaded, we can compare it to the running configuration to be sure that
+  it is what we intended.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.compare_config()
+
+# output
+
+'ntp server 1.1.1.1 use-vrf default'`
+) }}
+
+<p>
+  Once we are happy with the changes it is time to commit the configuration.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`nxos.commit_config()`
+) }}
+
+<p>
+  To confirm the changes were successful lets check the running configuration.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`config = nxos.get_config()
+
+print(config['running'])
+
+# output
+
+!Command: show running-config
+. &lt;snip&gt;
+.
+.
+ntp server 1.1.1.1 use-vrf default
+.
+.
+. &lt;snip&gt;
+line vty`
+) }}
+<p>
+  As you can see the NTP server is now apart of the running config.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Napalm is a fantastic library with a broad range of supported devices across multiple vendors. The library
+  is well maintained and the developers are very helpful. I suggest reading over the official documentation
+  and having a play around with the library to see how it can add value to your organisation. If you have questions
+  the best place to ask is over at the {{ link::e(path="https://networktocode.herokuapp.com/", description="network.toCode()") }} slack
+  channel.
+</p>
+
+{% endblock page_content %}

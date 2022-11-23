@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">AWS Static Website with Pulumi</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 6th of September 2022
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">AWS Static Website with Pulumi</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 6th of September 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -156,7 +166,7 @@
   You will also need to register a domain-name in Route 53. The process 
   to register a domain can be found in the the docs 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html" target=_blank>here</a>. I have previously registered 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">stratuslabs.net</i> 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">stratuslabs.net</i> 
   and will use that domain for this demo. 
 </p>
 
@@ -190,7 +200,7 @@
 <h4>Route 53</h4>
 <p>
   Route 53 is used to Register our domain 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">stratuslabs.net</i>.
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">stratuslabs.net</i>.
   Route 53 also hosts the following DNS records in a hosted zone.
 </p>
 
@@ -346,8 +356,8 @@
     <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     The HTTPS certificate must be generated with Certificate 
-    Manager in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">us-east-1</i> region. Although CloudFront is a Global service, 
-    it can only use certificates from the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">us-east-1</i> region.</div>
+    Manager in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">us-east-1</i> region. Although CloudFront is a Global service, 
+    it can only use certificates from the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">us-east-1</i> region.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -419,9 +429,9 @@
 <h4>Website Code</h4>
 <p>
   Within your Pulumi project directory create a directory tree 
-  of <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">www\_site</i> with 
-  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">index.html</i>
-  and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">error.html</i> files.
+  of <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">www\_site</i> with 
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">index.html</i>
+  and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">error.html</i> files.
   These are the only files you need for a basic site. Check out the 
   code in the above GitHub link for some sample contents.
 </p>
@@ -455,7 +465,7 @@
 <p>
   This is it, the moment you have been waiting for. The code below describes 
   our AWS infrastructure. Place the following code in your 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.go</i> file.
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.go</i> file.
   The code is commented to explain what is happening to 
   build the infrastructure.
 </p>

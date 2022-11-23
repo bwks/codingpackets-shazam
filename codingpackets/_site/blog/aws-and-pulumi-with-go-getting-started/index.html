@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">AWS and Pulumi with Go Getting Started</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 3rd of September 2022
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">AWS and Pulumi with Go Getting Started</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 3rd of September 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -173,7 +183,7 @@
 </p>
 <p>
   Add the credentials as environment variables in your 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.zshrc</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
    file.
   This allows Pulumi to utilize the credentials automagically.
 </p>
@@ -234,7 +244,7 @@ sudo mv go/ /usr/local</code></pre>
 <h5>Configure Go Path</h5>
 <p>
   Add Go to your path via your
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.zshrc</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
    file.
   This gives you access to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">go</i> cli command.
 </p>
@@ -282,7 +292,7 @@ export PATH=$PATH:/usr/local/go/bin</code></pre>
 <h5>Configure Pulumi Path</h5>
 <p>
   Add Pulumi to your path via your  
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.zshrc</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
    file.
   This gives you access to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi</i> cli command.
 </p>
@@ -353,7 +363,7 @@ export PATH=$PATH:$HOME/.pulumi/bin</code></pre>
 <h5>Configure Pulumi Credentials</h5>
 <p>
   Add the Pulumi access token to your 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.zshrc</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.zshrc</i>
    file. 
 </p>
   
@@ -394,17 +404,17 @@ export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"</code></pre>
 </p>
 <ul>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Project</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Project</i>
      - 
     Specifies the language runtime and other configuration options for the project.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Stack</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Stack</i>
      - 
     Isolated instance of a Pulumi program. Usually named after the desired envionment (dev, test, prod, etc..)
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Resource</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Resource</i>
      - 
     Configuration items to be managed such as S3 bucket and EC2 instance.
   </li>
@@ -414,12 +424,12 @@ export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"</code></pre>
 <p>
   When creating a new project the folder name is used 
   for the project name. The project folder will also have a 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Pulumi.yaml</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Pulumi.yaml</i>
    file. 
 </p>
 <p>
   Create a project named 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">testing123</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">testing123</i>
   .
 </p>
 
@@ -464,23 +474,23 @@ export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"</code></pre>
 
 <ul>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">new</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">new</i>
      - 
     Initialize a new project.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">aws-go</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">aws-go</i>
      - 
     The template that is used to build the project.
     In this case, the project is for AWS using the Go language.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">--stack test</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">--stack test</i>
      - 
     The name of the stack.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">--yes</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">--yes</i>
      - 
     Accept default config values.
   </li>
@@ -491,27 +501,27 @@ export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"</code></pre>
 </p>
 <ul>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Pulumi.yaml</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Pulumi.yaml</i>
      - 
     The project configuration file.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Pulumi.test.yaml</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Pulumi.test.yaml</i>
      - 
     The stack configuration file.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">go.mod</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">go.mod</i>
      - 
     Go modules property file which includes the Go version and the dependencies.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">go.sum</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">go.sum</i>
      - 
     Checksum file for Go dependencies.
   </li>
   <li>
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.go</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.go</i>
      - 
     The entrypoint for the Pulumi program.
   </li>
@@ -520,12 +530,12 @@ export PULUMI_ACCESS_TOKEN="&lt;pulumi-token&gt;"</code></pre>
 <h4>Define Resources</h4>
 <p>
   The default 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.go</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.go</i>
    file 
   defines the code to build and S3 bucket.
 </p>
 <p>
-  Open up the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.go</i>
+  Open up the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.go</i>
   
   file and let step through it. I have added some additional comments 
   below to furhter explain what is happening.
@@ -644,9 +654,9 @@ Duration: 10s</code></pre>
 
 <p>
   We can see from the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Outputs</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Outputs</i>
    section that the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">my-bucket-22610e5</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">my-bucket-22610e5</i>
    S3 Bucket
   was created.
 </p>

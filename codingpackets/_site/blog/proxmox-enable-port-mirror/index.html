@@ -1,0 +1,799 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Proxmox Enable Port Mirror</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 26th of November 2021
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 15th of November 2021
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  In a couple of previous posts I covered how to 
+  configure 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-configure-open-vswitch/">Open vSwitch</a>
+   and 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-import-extrahop-appliances/">Import Extrahop Appliances</a>
+  on Proxmox.
+</p>
+
+<p>
+  The Extrahop Discovery Appliance (EDA) can  
+  ingest network traffic on its capture port 
+  for analysis. In my lab, I am hosting the EDA 
+  as a VM on a Proxmox host and using a Juniper 
+  switch to mirror traffic to it from my local LAN. 
+  Unfortunately, this is not enough for the EDA VM to 
+  receive traffic 😔
+</p>
+<p>
+🚀 Enter Open vSwitch 🚀
+</p>
+<p>
+  Open vSwitch allows you to configure a port mirror 
+  to forward traffic from a Proxmox host 
+  to a VM used to capture packets. In this post, I will 
+  show you how to configure Open vSwitch to forward 
+  traffic from the Proxmox host to a guest VM.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+</ul>
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    I have a newer post with a better way to achieve the below 
+    result by using
+    <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-hook-script-port-mirror/">hook scripts</a>.
+    I suggest you review this post, then head over there for a better 
+    solution. This post will remain unaltered for posterity.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="lab-network">Lab Network</h3>
+<p>
+  The following diagram show the lab setup outlined 
+  in this post. The goal, is to have traffic port mirrored 
+  from the Juniper switch to the eda01 VM.
+</p>
+
+<p>
+  
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/proxmox-enable-port-mirror/port-mirror-lab.png" alt="blog/proxmox-enable-port-mirror/port-mirror-lab.png">
+</div>
+<!-- IMAGE END -->
+
+</p>
+<p>
+  The following points summarise the diagram.
+</p>
+<ul>
+  <li>fw01 is a PaloAlto firewall and is the default gateway for all networks.</li>
+  <li>sw01 is a Juniper switch and is used to connect LAN devices.</li>
+  <li>pmx01 is a Proxmox host and has two physical interfaces:</li>
+  <ul>
+    <li>eno1 is configured as a trunk port and carries multiple VLANs.</li>
+    <li>enp1s0 is configured as an access port.</li>
+  </ul>
+  <li>pmx01 has the following virtual network components:</li>
+  <ul>
+    <li>vmbr0 and vmbr1 are virtual switches.</li>
+    <li>A tap* interface is created for each vNIC interface on a VM automatically.</li>
+    <li>Tap interfaces have the naming format; <i>tap&lt;vm-id&gt;i&lt;interface-number&gt;</i>.</li>
+  </ul>
+  <li>eda01 and exa01 are VM guests hosted on the Proxmox host.</li>
+  <li>Port mirror sources are denoted in yellow.</li>
+  <li>Port mirror destinations are denoted in green.</li>
+</ul>
+
+<h3 id="proxmox-host">Proxmox Host</h3>
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    All commands run on the Proxmox host will be 
+    executed as the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
+ user.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    The Juniper switch side is already configured to mirror traffic. 
+    The config for that can be found at the end of the post.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+<p>
+  Keep the above lab network in mind when using the 
+  following Open vSwitch command to enable a port 
+  mirror from the Proxmox host to the EDA VM.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">/usr/bin/ovs-vsctl \\
+  -- --id=@p get port tap201i1 \\
+  -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
+  -- set bridge vmbr1 mirrors=@m</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  The command is pretty verbose, but what it is doing 
+  is creating a port mirror named 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda-mirror</i>
+ that 
+  sources traffic from <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmbr1</i>
+
+  and sends it to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tap201i1</i>
+
+</p>
+
+<p>
+  Case closed, game over right? WRONG! This gets the packet 
+  capture working and I can now see traffic from the LAN being 
+  ingested by the EDA, BUT! It does not survive a restart of 
+  the Proxmox host or the EDA VM. Why?
+</p>
+<p>
+  The command to start the port mirror is not persistent 
+  and that explains why it does not survive a reboot of the 
+  Proxmox host. But why does the port mirror stop working 
+  when the VM reboots? The answer is the port mirror is not 
+  tied to the tap interface name, but the tap interface UUID. 
+  When the VM restarts, the UUID of the tap interface changes.
+</p>
+<p>
+  The following command can be used to see the UUID of the tap201i1 
+  interface. Reboot your VM and watch the UUID change.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  Long story short, I could not find a way to make a port mirror persistent 
+  via OVS. So what now? Bash scripts (duct tape) and crontab (glue) to the 
+  rescue 💪
+</p>
+
+<h3 id="bash-scripts">Bash Scripts</h3>
+<p>
+  To solve this problem I created two bash scripts. 
+  First lets create a directory to store the bash scripts.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /root/scripts/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  The first script I mostly copied from 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/0xvext/proxmox-seconiontap.sh" target=_blank>here</a>.
+  The script cleans up old port mirrors and starts a new 
+  one as well as setting up some logging.
+</p>
+<p>
+  Create a file named 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">proxmox-eda-span.sh</i>
+ 
+  in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/root/scripts/</i>
+ 
+  directory with the following contents.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#! /usr/bin/env bash
+# /root/scripts/proxmox-eda-span.sh
+# This script is used to create a port mirror from 
+# a Proxmox host to a VMs virtual NIC. 
+#
+# Modified from the original script found here:
+# https://github.com/0xvext/proxmox-seconiontap.sh
+# All credit to @0xvext
+
+EDA_LOG=/root/scripts/proxmox-eda-span.log
+
+/usr/bin/date >> $EDA_LOG
+
+/usr/bin/echo "####################" >> $EDA_LOG
+
+/usr/bin/echo "Clearing any existing mirror..." >> $EDA_LOG
+
+/usr/bin/ovs-vsctl clear bridge vmbr1 mirrors
+
+/usr/bin/echo "Creating mirror on vmbr1 for EDA" >> $EDA_LOG
+
+/usr/bin/ovs-vsctl \\
+  -- --id=@p get port tap201i1 \\
+  -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
+  -- set bridge vmbr1 mirrors=@m >> $EDA_LOG
+
+/usr/bin/echo "Showing existing mirrors..." >> $EDA_LOG
+
+/usr/bin/ovs-vsctl list Mirror >> $EDA_LOG
+
+/usr/bin/echo "####################" >> $EDA_LOG</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The second one checks if the EDA VM is running 
+  and, if its uptime is less than 240 seconds, it will 
+  start the port mirror by running the first script.
+</p>
+<p>
+  Create a file named 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">check-eda-status.sh</i>
+ 
+  in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/root/scripts/</i>
+ 
+  directory with the following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#!/usr/bin/env bash
+# /root/scripts/check-eda-status.sh
+# This script is used to restart the packet capture
+# to the Extrahop EDA if the VM reboots for some reason.
+# This script should be run via crontab every 2 minutes EG:
+# */2 * * * * /root/scripts/check-eda-status.sh
+
+VM_STATUS=$(/usr/sbin/qm status 201 --verbose | /usr/bin/egrep ^status | /usr/bin/awk '{print $2}');
+
+UPTIME=$(/usr/sbin/qm status 201 --verbose | /usr/bin/egrep ^uptime | /usr/bin/awk '{print $2}');
+
+if [[ $VM_STATUS == "running" ]]; then
+  if [[ $UPTIME < 240 ]]; then
+    /usr/bin/bash /root/scripts/proxmox-eda-span.sh;
+  fi
+fi</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Finally, we need to add an entry to the crontab 
+  that will run every two minutes to check the status 
+  of the EDA VM.
+</p>
+<p>
+  Open the crontab with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">contab -e</i>
+ 
+  command and add the following entry.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># EDA Port Mirror
+*/2 * * * * /root/scripts/check-eda-status.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  Now if the Proxmox host or the EDA VM restarts 
+  the port mirror will "automagically" be enabled.
+</p>
+
+<h3 id="juniper-switch">Juniper Switch</h3>
+<p>
+  To round out the post, the Juniper port mirror 
+  config is below.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Port mirror sources
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/4.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/4.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/9.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/9.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/11.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/11.0
+
+# Port mirror destination
+set ethernet-switching-options analyzer NETWORK-ANALYZER output interface ge-0/0/6.0</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Bit of a long post, but hopefully you made it here 
+  and it was worth it. In this post, we covered the 
+  process of creating a port mirror with Open vSwitch 
+  to mirror traffic from a Proxmox host to a guest VM.
+  Stay classy legends ✌️
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://forum.proxmox.com/threads/creating-a-disk-from-cli-with-qm-set.61615/" target=_blank>https://forum.proxmox.com/threads/creating-a-disk-from-cli-with-qm-set.61615/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/0xvext/proxmox-seconiontap.sh" target=_blank>https://github.com/0xvext/proxmox-seconiontap.sh</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://andrewhofmans.com/blog/how-to/mirrored-ports-with-open-vswitch/" target=_blank>https://andrewhofmans.com/blog/how-to/mirrored-ports-with-open-vswitch/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.openvswitch.org/en/latest/faq/configuration/" target=_blank>https://docs.openvswitch.org/en/latest/faq/configuration/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://vext.info/2018/09/03/cheat-sheet-port-mirroring-ids-data-into-a-proxmox-vm.html#full-post" target=_blank>https://vext.info/2018/09/03/cheat-sheet-port-mirroring-ids-data-into-a-proxmox-vm.html#full-post</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.reddit.com/r/Proxmox/comments/lmnzr6/port_mirroring_with_open_vswitch_in_proxmox_no/" target=_blank>https://www.reddit.com/r/Proxmox/comments/lmnzr6/port_mirroring_with_open_vswitch_in_proxmox_no/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://backreference.org/2014/06/17/port-mirroring-with-linux-bridges/" target=_blank>https://backreference.org/2014/06/17/port-mirroring-with-linux-bridges/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://gist.github.com/djoreilly/c5ea44663c133b246dd9d42b921f7646" target=_blank>https://gist.github.com/djoreilly/c5ea44663c133b246dd9d42b921f7646</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#proxmox" class="text-xl">proxmox</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#open-vswitch" class="text-xl">open-vswitch</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#extrahop" class="text-xl">extrahop</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#linux" class="text-xl">linux</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-network">
+            Lab Network
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#proxmox-host">
+            Proxmox Host
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#bash-scripts">
+            Bash Scripts
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#juniper-switch">
+            Juniper Switch
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,868 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Jinja2 For Network Engineers</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 18th of August 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://jinja2.readthedocs.io/en/latest/" target=_blank>Jinja2</a>
+ is a templating language built in python and loosely based
+  on the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.djangoproject.com/en/1.11/topics/templates/" target=_blank>Django</a>
+ templating language.
+  Jinja2 is used in many projects as a templating engine with some notable examples:
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.ansible.com/" target=_blank>Ansible</a>
+, <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.saltstack.com/en/latest/" target=_blank>Salt</a>
+ and
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="http://flask.pocoo.org/" target=_blank>Flask</a>
+.
+</p>
+<p>
+  Jinja2 aims to implement some of the most common features of python right into the templating system allowing
+  for the programatic creation of static file contents.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Jinja2 is hosted on PyPi so can be installed with <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">pip</i>
+. I prefer to use virtual environments to manage
+  python projects.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># create virtual environment
+
+python3.6 -m venv ~/envs/jinja2-env/
+
+# activate virtual environment
+
+source ~/envs/jinja2-env/bin/activate
+
+# install jinja2
+
+pip install jinja2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  For reference the following software versions are used in this blog.
+</p>
+<ul>
+  <li>Jinja2 - 2.9.6</li>
+  <li>Python - 3.6.1</li>
+</ul>
+
+
+<h3 id="delimiters">Delimiters</h3>
+<p>
+  Jinja2 templates have the following delimiters which define functionality to be executed by the templating engine.
+</p>
+<ul>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{{ ... }}</i>
+ variables and expressions</li>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% ... %}</i>
+ statements eg: for, if and include</li>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{# ... #}</i>
+ comments</li>
+</ul>
+
+<h3 id="variables">Variables</h3>
+<p>
+  Variables are defined with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{{ some_variable }}</i>
+ syntax.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">jinja</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b">{{ some_variable }}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="loop-controls">Loop Controls</h3>
+<p>
+  A <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">for</i>
+ loop makes it possible for blocks of text to be repeated without having to copy and
+  paste them manually.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">jinja</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># example
+
+{% for stuff in things %}
+    {{ stuff }}
+{% endfor %} # note: for loops need to be ended
+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="conditionals">Conditionals</h3>
+<p>
+  Conditionals render content based on when a condition is either <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">True</i>
+ for <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">False</i>
+
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">jinja</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco
+
+{% if stuff in things %}
+    {{ stuff }}
+{% endif %} # note: if statements need to be ended
+
+
+{% if stuff not in things %}
+    no stuff here
+{% endif %} # note: if statements need to be ended
+</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="usage">Usage</h3>
+<p>
+  The Jinja2 workflow has 3 main steps
+</p>
+<ul>
+  <li>Define variables</li>
+  <li>Define a template</li>
+  <li>Render the template with the defined varibales</li>
+</ul>
+
+<p>Lets start with a simple example. Define some <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface</i>
+ variables as a python dictionary.</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># cisco
+
+interface = {
+    'name': 'gigabitethernet0/0',
+    'description': 'Uplink to WAN',
+    'ip_address': '10.10.10.1 255.255.255.0',
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface_template</i>
+ defining variables that will be replaced with values from
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface</i>
+ variable.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">jinja</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco interface template
+
+interface_template = '''
+interface {{ interface.name }}
+ description {{ interface.description }}
+ ip address {{ interface.ip_address }}
+ no shutdown
+!
+'''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Note: Jinja2 uses the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">'.'</i>
+ syntax to access a dictionaries keys. For example <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface.name</i>
+
+  refers to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface</i>
+ variable and the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">name</i>
+ key. It is also possible to use python
+  syntax to access the dictionary keys IE: <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface['name']</i>
+. More info can be found in the
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://jinja2.readthedocs.io/en/latest/templates.html#variables" target=_blank>docs</a>
+.
+</p>
+
+<p>
+  If we go ahead and render the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">interface_template</i>
+ you wil get the following result.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">from jinja2 import Template
+
+template = Template(interface_template)
+template.render(interface=interface)
+
+# output
+
+interface gigabitethernet0/0
+description Uplink to WAN
+ip address 10.10.10.1 255.255.255.0
+no shutdown
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  We managed to render a single interface configuration, not terribly exciting. Lets add more interfaces and
+  expand out our template with a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">for</i>
+ loop.
+</p>
+<p>
+  Because we are adding multiple interfaces create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">list</i>
+ of <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dictionaries</i>
+ for each interface
+  to be configured.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">interfaces = [
+    {'description': 'Uplink to WAN',
+     'ip_address': '10.10.10.1 255.255.255.0',
+     'name': 'gigabitethernet0/0'},
+    {'description': 'Crosslink to R2',
+     'ip_address': '10.10.20.1 255.255.255.0',
+     'name': 'gigabitethernet0/1'}
+]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Add a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">for</i>
+ loop to the previously configured template.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco interface template
+interfaces_template = '''
+{% for interface in interfaces %}
+interface {{ interface.name }}
+ description {{ interface.description }}
+ ip address {{ interface.ip_address }}
+ no shutdown
+!
+{% endfor %}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Lets render the template now and see how that looks.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">template = Template(interfaces_template)
+template.render(interfaces=interfaces)
+
+# output
+
+interface gigabitethernet0/0
+ description Uplink to WAN
+ ip address 10.10.10.1 255.255.255.0
+ no shutdown
+!
+interface gigabitethernet0/1
+ description Crosslink to R2
+ ip address 10.10.20.1 255.255.255.0
+ no shutdown
+!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Lets say we swap the device out with a Juniper router. This is where the advantages of configuration templating really
+  show their value.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># juniper interface template
+
+interfaces_template = '''
+interfaces {
+{% for interface in interfaces %}
+    {{ interface.name }} {
+    description {{ interface.description }};
+    unit 0 {
+        family inet {
+            address {{ interface.ip_address }};
+            }
+        }
+    }
+{% endfor %}
+}
+'''</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Juniper and Cisco have different interface naming standards so change the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">name</i>
+ and the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ip_address</i>
+ values.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">interfaces = [
+    {'description': 'Uplink to WAN',
+     'ip_address': '10.10.10.1/24',
+     'name': 'ge-0/0/0'},
+    {'description': 'Crosslink to R2',
+     'ip_address': '10.10.20.1/24',
+     'name': 'ge-0/0/1'}
+]</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now render the interface template.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">python</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">template = Template(interfaces_template)
+template.render(interfaces=interfaces)
+
+# output
+
+interfaces {
+    ge-0/0/0 {
+    description Uplink to WAN;
+    unit 0 {
+        family inet {
+            address 10.10.10.1/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+    description Crosslink to R2;
+    unit 0 {
+        family inet {
+            address 10.10.20.1/24;
+            }
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Jinja2 is a powerful tool that allows you to build repeatable configuration templates. I have just scratched the surface
+  in this post, Jinja2 has many features that make it an excellent tool for creating device configuration templates.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://readthedocs.org/projects/jinja2/" target=_blank>https://readthedocs.org/projects/jinja2/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://jinja.pocoo.org/docs/2.9/" target=_blank>http://jinja.pocoo.org/docs/2.9/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#python" class="text-xl">python</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#jinja2" class="text-xl">jinja2</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#installation">
+            Installation
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#delimiters">
+            Delimiters
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#variables">
+            Variables
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#loop-controls">
+            Loop Controls
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#conditionals">
+            Conditionals
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#usage">
+            Usage
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

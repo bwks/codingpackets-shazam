@@ -1,0 +1,182 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Proxmox has two kinds of virtual switches that can 
+  be utilised. Linux bridges (the default) and Open vSwitch (OVS).
+  Linux Bridges are generally fine unless you want to 
+  configure a lot of VLANs and/or do port mirroring. I 
+  have a use-case for both, so 
+  in this post, I will show you how to configure 
+  Proxmox to use Open vSwitch.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+</ul>
+
+{{ text::note_block(text='
+    All commands run on the Proxmox host will be 
+    executed as the $1 user.
+') 
+  | replace(from="$1", to=text::emphasize(text="root"))
+}}
+
+<h3 id="requried-packages">Requried Packages</h3>
+<p>
+  In order to utilise Open vSwitch you need to install the 
+  {{ text::emphasize(text="openvswitch-switch") }}
+ 
+  package.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='apt install openvswitch-switch'
+) }}
+
+<h3 id="network-config">Network Config</h3>
+<p>
+  The {{ text::emphasize(text="/etc/network/interfaces") }}
+ 
+  file is used to configure the networking for 
+  Proxmox nodes. The below is the config I use for my 
+  LAB node.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code='# /etc/network/interfaces
+auto lo
+iface lo inet loopback
+
+auto eno1
+iface eno1 inet manual
+	ovs_type OVSPort
+	ovs_bridge vmbr0
+
+auto enp1s0
+iface enp1s0 inet manual
+	ovs_type OVSPort
+	ovs_bridge vmbr1
+
+auto vlan10
+iface vlan10 inet static
+	address 172.16.255.12/24
+	gateway 172.16.255.1
+	ovs_type OVSIntPort
+	ovs_bridge vmbr0
+	ovs_options tag=10
+
+auto vmbr0
+iface vmbr0 inet manual
+	ovs_type OVSBridge
+	ovs_ports eno1 vlan10
+
+auto vmbr1
+iface vmbr1 inet manual
+	ovs_type OVSBridge
+	ovs_ports enp1s0'
+) }}
+<p>
+  The above config can be summarised as follows.
+</p>
+<h4>Physical Interfaces</h4>
+<p>
+  My Proxmox node has two physical interfaces: 
+  {{ text::emphasize(text="eno1") }}
+ and 
+  {{ text::emphasize(text="enp1s0") }}
+. 
+  Physical interfaces are assigned the 
+  {{ text::emphasize(text="OVSPort") }}
+
+   interface type. The ports are mapped to OVS 
+   bridges as follows:
+</p>
+<ul>
+  <li>eno1 - vmbr0</li>
+  <li>enp1s0 - vmbr1</li>
+</ul>
+<p>
+  For my setup, management and guest VLANs are trunked to 
+  {{ text::emphasize(text="vmbr0") }}
+ and 
+  {{ text::emphasize(text="vmbr1") }}
+ is used 
+  as a port mirror destination.
+</p>
+<h4>OVS Bridges</h4>
+<p>
+  OVS bridges are a virtual switch and are 
+  assigned the {{ text::emphasize(text="OVSBridge") }}
+
+  type.
+</p>
+<h4>VLAN Interfaces</h4>
+<p>
+  VLAN interfaces are used to assign IP addresses 
+  to the Proxmox host. I have a single 
+  {{ text::emphasize(text="vlan10") }}
+ interface 
+  which is used for management of the host.
+  VLAN interfaces are assigned the 
+  {{ text::emphasize(text="OVSIntPort") }}
+ 
+  interface type.
+</p>
+
+  
+<h3 id="apply-config">Apply Config</h3>
+<p>
+  When the 
+  {{ text::emphasize(text="/etc/network/interfaces") }}
+
+  file is updated the networking 
+  service needs to be restarted for the config 
+  to take effect.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='systemctl restart networking.service'
+) }}
+
+<p>
+  Sometimes, that is not enough and you may also need to 
+  restart the host.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='reboot now'
+) }}
+
+{{ text::important_block(text='
+    I found that more ofthen than not, the host needs to be 
+    restarted after changing from Linux bridges to OVS. 
+    To be safe, before attempting anything, migrate 
+    the VMs to another host, or shut them down.
+') }}
+<p>
+  Thats it! Now, when you create a VM, you can assign 
+  it a VLAN ID and there is nothing to do on the host. 
+  The VLAN will be trunked through to the network switch.
+</p>
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to configure Proxmox 
+  to utilise Open vSwitch instead of Linux Bridges. 
+  In a future post, I will show you how to enable 
+  port mirroring on Open vSwitch bridges.
+</p>
+
+{% endblock page_content %}

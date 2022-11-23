@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">NeoVim Install and Configure</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 22nd of March 2022
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">NeoVim Install and Configure</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 22nd of March 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -173,7 +183,7 @@ sudo apt install -y ./nvim-linux64.deb</code></pre>
 
 <p>
   Clean up
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.deb</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.deb</i>
 
   file.
 </p>
@@ -195,7 +205,7 @@ sudo apt install -y ./nvim-linux64.deb</code></pre>
 
 <p>
   Make the required directories and the NeoVim configuration file. The NeoVim configuration file is located at
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.config/nvim/init.vim</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.config/nvim/init.vim</i>
 .
 </p>
 
@@ -217,23 +227,23 @@ touch ~/.config/nvim/init.vim</code></pre>
 
 <h3 id="vim-modes">VIM Modes</h3>
 <p>
-  VIM has two modes: <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">COMMAND</i>
+  VIM has two modes: <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">COMMAND</i>
  mode and 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">INSERT</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">INSERT</i>
  mode. You start out in 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">COMMAND</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">COMMAND</i>
  mode. You can press <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">i</i>
  
-  to enter <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">INSERT</i>
+  to enter <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">INSERT</i>
  mode. To return to 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">COMMAND</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">COMMAND</i>
  mode press <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">ESC</i>
 .
 </p>
 <p>
   At this point, if you want to rage quit, you can press 
   <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">ESC</i>
- and type <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">:q!</i>
+ and type <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">:q!</i>
  then press 
   <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">ENTER</i>
  to exit VIM without having to burn your computer.
@@ -267,7 +277,7 @@ touch ~/.config/nvim/init.vim</code></pre>
 
 <p>
   Now lets setup vim-plug. Pluggins will be installed in the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.local/share/nvim/plugged</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.local/share/nvim/plugged</i>
  directory.
 </p>
 
@@ -291,7 +301,7 @@ touch ~/.config/nvim/init.vim</code></pre>
 <h3 id="neovim-config-file">NeoVim Config File</h3>
 <p>
   Initially, lets setup the NeoVim config file to install the plugins with vim-plug. 
-  Edit the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.config/nvim/init.vim</i>
+  Edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.config/nvim/init.vim</i>
  file 
   and add the follow block of code to the top.
 </p>
@@ -364,15 +374,15 @@ call plug#end()</code></pre>
 
 
 <p>
-  Now, from <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">COMMAND</i>
+  Now, from <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">COMMAND</i>
  mode type
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">:w</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">:w</i>
  and hit <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">ENTER</i>
  to 
   save the file.
 </p>
 <p>
-  Now type <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">:PlugInstall</i>
+  Now type <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">:PlugInstall</i>
  and hit 
   <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">ENTER</i>
  to install the plugins. You should see a screen 
@@ -421,7 +431,7 @@ call plug#end()</code></pre>
 
 
 <p>
-  Type <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">:q!</i>
+  Type <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">:q!</i>
  to close this window.
   At this point, NeoVim and vim-plug are installed. It's time to configure them.
 </p>
@@ -429,7 +439,7 @@ call plug#end()</code></pre>
 <h3 id="material-theme">Material Theme</h3>
 <p>
   I like the material theme and I am using the deep ocean colour scheme.
-  Add the following LUA snippet below the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">call plug#end()</i>
+  Add the following LUA snippet below the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">call plug#end()</i>
 
   statement.
 </p>
@@ -731,9 +741,9 @@ EOF</code></pre>
 
 
 <p>
-  Confirm <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Rust</i>
+  Confirm <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Rust</i>
  and 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Cargo</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Cargo</i>
  are installed.
 </p>
 
@@ -753,9 +763,9 @@ which cargo</code></pre>
 
 
 <p>
-  Add <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">rustfmt</i>
+  Add <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">rustfmt</i>
  and 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">clippy</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">clippy</i>
  for formatting and code style linting.
 </p>
 
@@ -775,7 +785,7 @@ rustup component add clippy</code></pre>
 
 
 <p>
-  Install <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">rust-analyzer</i>
+  Install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">rust-analyzer</i>
 .
 </p>
 
@@ -794,7 +804,7 @@ rustup component add clippy</code></pre>
 
 
 <p>
-  Make <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">rust-analyzer</i>
+  Make <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">rust-analyzer</i>
  executable.
 </p>
 
@@ -819,9 +829,9 @@ rustup component add clippy</code></pre>
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
 <p>
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">rust-analyzer</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">rust-analyzer</i>
  must be installed in a location 
-  in your <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">$PATH</i>
+  in your <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$PATH</i>
 . A reload of your shell may be 
   required.
 </p>

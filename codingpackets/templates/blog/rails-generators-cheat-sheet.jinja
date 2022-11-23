@@ -1,0 +1,445 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="overview">Overview</h3>
+<p>
+  As I am digging into Rails again I find myself constantly having 
+  to look the naming and syntax of generators up so I am documenting them 
+  in this post.
+</p>
+<p>
+  Rails utilizes convention over configuration to speed up development 
+  and increase developer happiness. If you embrace this fact you will 
+  be alot happer working wih rails.
+  This means that the folders are structured in a certain way and 
+  the files/classes/methods need to be named to an opinionated 
+  standard. This is to enforce best practices and assist with 
+  auto-loading.
+</p>
+
+{{ text::note_block(text='
+    This post is mostly a reference for me and is not a deep dive.
+    It may or may not make sense to you without some experiense 
+    with Rails. 
+')
+}}
+
+<h3 id="controllers">Controllers</h3>
+<h4>Naming Conventions</h4>
+<p>
+  {{ link::e(path="https://guides.rubyonrails.org/action_controller_overview.html", description="Controllers") }}
+ 
+  favour pluralization for Controller names.
+</p>
+<p>
+  Singular words are capitalized:
+  {{ text::emphasize(text="Devices") }}
+.
+</p>
+<p>
+  Multiple word controllers should use CamelCase, with 
+  only the last word pluralized: {{ text::emphasize(text="ServiceContracts") }}
+
+</p>
+
+<h4>Generators</h4>
+<p>
+  When using the controller generator you define the pluralized controller 
+  {{ text::emphasize(text="name") }}
+ with an 
+  optional list of {{ text::emphasize(text="actions") }}
+ and 
+  {{ text::emphasize(text="options") }}
+.
+</p>
+<p>
+  Controller generators use the following syntax.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='rails generate controller PluralizedName [list of actions] [list of --options]'
+) }}
+
+<p>
+  Controller generators create a number of files and also update the routes file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rails generate controller Devices index show
+  
+# output
+create  app/controllers/services_controller.rb
+ route  get 'services/index' get 'services/show'
+create    app/views/services
+create    app/views/services/index.html.erb
+create    app/views/services/show.html.erb
+invoke  test_unit
+create    test/controllers/services_controller_test.rb
+invoke  helper
+create    app/helpers/services_helper.rb
+invoke    test_unit
+invoke  assets
+invoke    css
+create      app/assets/stylesheets/services.css`
+) }}
+
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code='# app/controllers/services_controller.rb
+class ServicesController < ApplicationController
+  def index
+  end
+
+  def show
+  end
+end'
+) }}
+
+<h3 id="models">Models</h3>
+
+<h4>Naming Conventions</h4>
+<p>
+  {{ link::e(path="https://guides.rubyonrails.org/active_record_basics.html", description="Models") }}
+ 
+  favour singular words for the model name.
+</p>
+<p>
+  Singular words are capitalized:
+  {{ text::emphasize(text="Device") }}
+.
+</p>
+<p>
+  Multiple word models should use CamelCase: 
+  {{ text::emphasize(text="ServiceContracts") }}
+
+</p>
+
+<h4>Model to Database Tables Naming</h4>
+<p>
+  Singular {{ text::emphasize(text="CamelCase") }}
+ model 
+  names map to pluralized {{ text::emphasize(text="snake_case") }}
+ 
+  database table names.
+</p>
+
+{{ table::default(
+  header=["Model", "DB Table"],
+  rows=[
+      "Device | devices",
+      "ServiceContract | service_contracts",
+  ],
+) }}
+
+<h4>Generators</h4>
+  When using the model generator you define the singular model 
+  {{ text::emphasize(text="name") }}
+ with an 
+  optional list of {{ text::emphasize(text="field:type") }}
+ references and 
+  {{ text::emphasize(text="options") }}
+.  
+
+<p>
+  The list of supported types can be found 
+  {{ link::e(path="https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column", description="here") }}
+.
+</p>
+<p>
+  Model generators use the following syntax
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='rails generate model SingularName [list of field[:type][:index]] [list of --options]'
+) }}
+
+<p>
+  Model generators create a model file as well as the database migration file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='rails generate model Device name:string description:text'
+) }}
+
+<p>
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code='# app/models/role.rb
+class Role < ApplicationRecord
+end'
+) }}
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_create_roles.rb 
+class CreateRoles < ActiveRecord::Migration[6.0]
+  def change
+    create_table :roles do |t|
+      t.string :name
+      t.text :description
+
+      t.timestamps
+    end
+  end
+end'
+) }}
+
+<h3 id="migrations">Migrations</h3>
+
+<h4>Naming Conventions</h4>
+<p>
+  Migrations names should use CamelCase: 
+  {{ text::emphasize(text="CreateMacAddressTable") }}
+
+</p>
+
+<h4>Generators</h4>
+<p>
+  {{ link::e(path="https://guides.rubyonrails.org/active_record_migrations.html", description="Migrations") }}
+
+  generators have some special conventions that allow for conventient 
+  creation of migration files.
+</p>
+
+<p>
+  Migration generators use the following syntax.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='rails generate migration NAME [list of field[:type][:index]] [list of --options]'
+) }}
+
+<h4>Create a Table</h4>
+<p>
+  Create a complete migration with the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration CreateMacAddresses mac_address:macaddr description:string'
+) }}
+<p>
+  This generates the following migration file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_create_mac_addresses.rb 
+class CreateMacAddresses < ActiveRecord::Migration[6.0]
+  def change
+    create_table :mac_addresses do |t|
+      t.macaddr :mac_address
+      t.string :description
+    end
+  end
+end'
+) }}
+
+<h4>Add a Column</h4>
+<p>
+  If the migration name includes the phrase 
+  {{ text::emphasize(text="Add<i>Column</i>To<i>Table</i>") }}
+ and is 
+  followed by a list of {{ text::emphasize(text="name:type") }}
+
+  values a complete migration will be generated.
+  
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration AddDescriptionToRoles description:text'
+) }}
+<p>
+  This generates the following migration file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_add_description_to_roles.rb 
+class AddDescriptionToRoles < ActiveRecord::Migration[6.0]
+  def change
+    add_column :roles, :description, :text
+  end
+end'
+) }}
+
+<h4>Remove a Column</h4>
+<p>
+  If the migration name includes the phrase 
+  {{ text::emphasize(text="Remove<i>Column</i>From<i>Table</i>") }}
+ and is 
+  followed by a list of {{ text::emphasize(text="name:type") }}
+
+  values a complete migration will be generated.
+  
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration RemoveDescriptionFromRoles description:text'
+) }}
+<p>
+  This generates the following migration file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_remove_description_from_roles.rb 
+class RemoveDescriptionFromRoles < ActiveRecord::Migration[6.0]
+  def change
+    remove_column :roles, :description, :text
+  end
+end'
+) }}
+
+
+
+<h4>Rename a Column</h4>
+<p>
+  First create a migration
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration ChangeMacAddressesColumn'
+) }}
+<p>
+  The above command will generate an empty change migration file. Add the 
+  following code to rename the column. <br>
+  {{ text::code(text="rename_column :table_name, :old_column_name, :new_column_name") }}
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_change_mac_addresses_column.rb 
+class ChangeMacAddressesColumn < ActiveRecord::Migration[6.0]
+  def change
+    rename_column :mac_addresses, :mac, :mac_address
+  end
+end'
+) }}
+
+
+<h4>One to Many Association</h4>
+<p>
+  Create a migration to associate rooms with a site. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration AddAssociationToRooms site:references'
+) }}
+<p>
+  The following completed migration will be generated.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_add_association_to_rooms.rb 
+class AddAssociationToRooms < ActiveRecord::Migration[6.0]
+  def change
+    add_reference :rooms, :site, null: false, foreign_key: true
+  end
+end'
+) }}
+
+<p>
+  Now you need to update the models with the {{ text::code(text="has_many") }}
+
+  and {{ text::code(text="belongs_to") }}
+ properties.
+</p>
+
+<p>
+  A site {{ text::emphasize(text="has_many") }}
+ rooms (plural)
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/models/site.rb 
+class Site < ApplicationRecord
+  has_many :rooms, dependent: :destroy
+end'
+) }}
+
+<p>
+  A room {{ text::emphasize(text="belongs_to") }}
+ a site (singular).
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/models/room.rb 
+class Room < ApplicationRecord
+  belongs_to :site
+end'
+) }}
+
+
+<h4>Delete a Table</h4>
+<p>
+  First create a migration
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails generate migration DropRoles'
+) }}
+<p>
+  The above command will generate an empty change migration file. Add the 
+  following code to rename the column. <br>
+  {{ text::code(text="drop_table :table_name") }}
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+    code='# db/migrate/&lt;timestamp&gt;_drop_table.rb 
+class DropRoles < ActiveRecord::Migration[6.0]
+  def change
+    drop_table :roles
+  end
+end'
+) }}
+
+<h3 id="reverse-a-generator">Reverse a Generator</h3>
+<p>
+  Reversing a generator is possible using the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails destroy GENERATOR [args] [options]'
+) }}
+
+<p>
+  Some examples below.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+    code='rails destroy controller Devices
+rails destroy model Device
+rails destroy migration AddDescriptionToDevices'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Rails generators are super powerful. Use them responsibily.
+</p>
+{% endblock page_content %}

@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Juniper Protocol Independent Routing</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 23rd of February 2019
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Juniper Protocol Independent Routing</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 23rd of February 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -127,11 +137,11 @@
   <p>
     The RE holds a copy of all routes from all
     protocols in its routing table. The
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">best</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">best</i>
  routes based
-    on the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">protocol preference</i>
+    on the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">protocol preference</i>
 
-    are declared <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">active</i>
+    are declared <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">active</i>
  and
     placed in the forwarding table.
     The forwarding table is shared with the PFE.
@@ -142,7 +152,7 @@
   <p>
     The PFE stores a local copy of the forwarding table
     received from the RE containing the
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">best</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">best</i>
  routes to each
     destination.
   </p>
@@ -175,7 +185,7 @@
   <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    For a static route to be present in the routing table the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">next-hop must be valid.</i></div>
+    For a static route to be present in the routing table the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">next-hop must be valid.</i></div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -575,16 +585,16 @@
     Generated routes are identical to an aggregate route except
     that a generated route has an IP address defined for its
     next-hop and the ability to apply the
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">discard</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">discard</i>
  option.
   </p>
   <p>
     Contributing routes must have an IP address for a next-hop
     or come from a connected P2P interface. Additionally, routes
     with a next-hop options of either
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">discard</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">discard</i>
  or
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">reject</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">reject</i>
  cannot contribute.
   </p>
 

@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Linux Networking</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 13th of December 2017
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 12th of October 2017
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Linux Networking</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 13th of December 2017
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 12th of October 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -165,7 +175,7 @@
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;</i></td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;</i></td>
             
           
         </tr>
@@ -180,7 +190,7 @@
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/network/interfaces.d/&lt;ifname&gt;</i></td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/network/interfaces.d/&lt;ifname&gt;</i></td>
             
           
         </tr>
@@ -195,7 +205,7 @@
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/network/interfaces.d/&lt;ifname&gt;.intf</i></td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/network/interfaces.d/&lt;ifname&gt;.intf</i></td>
             
           
         </tr>
@@ -571,11 +581,11 @@ iface swp1 inet static
 
 
 <p>
-  In Cumulus linux the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">nameserver</i>
+  In Cumulus linux the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">nameserver</i>
  and
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">search</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">search</i>
  domain properties are configured in the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/resolv.conf</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/resolv.conf</i>
  file.
 </p>
 
@@ -658,7 +668,7 @@ iface lo:1 inet6 static
 <h4><b>Cumulus</b></h4>
 <p>
   Loopback IP Addresses in Cumulus Linux should be configured in the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/network/interfaces</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/network/interfaces</i>
  file.
 </p>
 
@@ -686,7 +696,7 @@ iface lo inet loopback
 <h3 id="vlan-l3-interface">VLAN L3 Interface</h3>
 <h4><b>Centos</b></h4>
 <p>
-  Load the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">8021q</i>
+  Load the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">8021q</i>
  kernel module.
 </p>
 
@@ -736,8 +746,8 @@ VLAN=yes</code></pre>
 
 <h4><b>Ubuntu</b></h4>
 <p>
-  Install <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vlan</i>
- package to enable <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">802.1q</i>
+  Install <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vlan</i>
+ package to enable <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">802.1q</i>
 .
 </p>
 
@@ -757,7 +767,7 @@ VLAN=yes</code></pre>
 
 
 <p>
-  Load the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">8021q</i>
+  Load the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">8021q</i>
  kernel module.
 </p>
 
@@ -825,7 +835,7 @@ iface eth1.10 inet6 static
 <p>
   Cumulus Linux has the option of using a <a href="https://docs.cumulusnetworks.com/display/DOCS/VLAN-aware+Bridge+Mode+for+Large-scale+Layer+2+Environments">
   vlan-aware</a> bridge which reduces the configuration required for large layer 2 networks. Note: Only one
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vlan-aware</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vlan-aware</i>
  bridge is allowed per-switch.
 
 

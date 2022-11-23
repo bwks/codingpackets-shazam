@@ -1,0 +1,63 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Handy tips and tricks for working with the 
+  Palo Alto network CLI.
+</p>
+
+
+<h3 id="config-output-format">Config Output Format</h3>
+<p>
+  The configuration output format can be changed. This can be 
+  useful for backing up the config or capturing a structured 
+  format from the CLI.
+</p>
+<p>
+  The following formats are available:
+</p>
+<ul>
+  <li>default</li>
+  <li>json</li>
+  <li>set</li>
+  <li>xml</li>
+</ul>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Set the desired format from operational mode (&gt;). 
+
+> set cli config-output-format &lt;format&gt;
+
+# Enter configuration mode to view the config in the selected format.
+
+> configure
+# show'
+) }}
+
+
+<h3 id="testing-things">Testing Things</h3>
+<p>
+  The {{ text::code(text="test") }}
+ command can be used to 
+  test a number of things from the CLI.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Command format
+
+test &lt;test-object&gt; [options]'
+) }}
+
+
+<h4>HTTPs Server Connectivity Test</h4>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='test http-server address 8.8.8.8 protocol HTTPS'
+) }}
+
+{% endblock page_content %}

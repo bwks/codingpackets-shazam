@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">CI/CD For Networking Part 2</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 24th of January 2018
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">CI/CD For Networking Part 2</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 24th of January 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -124,7 +134,7 @@
 
 <h3 id="dns">DNS</h3>
 <p>
-  The DNS service will be provided by <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+  The DNS service will be provided by <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  as it's
   lightweight and easy to setup.
 </p>
@@ -145,7 +155,7 @@
 
 
 <p>
-  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  user and group and assign the user
   to the group.
 </p>
@@ -167,7 +177,7 @@ sudo useradd -r -g dnsmasq dnsmasq</code></pre>
 
 
 <p>
-  Backup the old <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/dnsmasq.conf</i>
+  Backup the old <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/dnsmasq.conf</i>
  configuration file.
 </p>
 
@@ -187,7 +197,7 @@ sudo useradd -r -g dnsmasq dnsmasq</code></pre>
 
 
 <p>
-  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/dnsmasq.conf</i>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/dnsmasq.conf</i>
  file with the following contents.
 </p>
 
@@ -224,7 +234,7 @@ no-poll</code></pre>
 
 
 <p>
-  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/resolv.dnsmasq</i>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/resolv.dnsmasq</i>
  file that uses
   google DNS as the upstream DNS servers.
 </p>
@@ -248,9 +258,9 @@ nameserver 8.8.4.4</code></pre>
 
 
 <p>
-  Set the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">nameserver</i>
+  Set the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">nameserver</i>
  attribute in
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/resolv.conf</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/resolv.conf</i>
  file to use a loopback address.
 </p>
 
@@ -272,7 +282,7 @@ nameserver 127.0.0.1</code></pre>
 
 
 <p>
-  Add the device host to IP address mappings to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/hosts</i>
+  Add the device host to IP address mappings to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/hosts</i>
 
   file.
 </p>
@@ -304,9 +314,9 @@ nameserver 127.0.0.1</code></pre>
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    When the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/hosts</i>
+    When the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/hosts</i>
  file is updated the
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  service needs to be restarted to update its
     DNS cache.
 </div>
@@ -316,7 +326,7 @@ nameserver 127.0.0.1</code></pre>
 
 
 <p>
-  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  configuration can be tested for syntax errors
   with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">dnsmasq --test</i>
  command.
@@ -342,7 +352,7 @@ dnsmasq: syntax check OK.</code></pre>
 
 
 <p>
-  Start and enable the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+  Start and enable the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  service.
 </p>
 
@@ -364,9 +374,9 @@ sudo systemctl enable dnsmasq</code></pre>
 
 <p>
   The hosts in this lab get their management IP addresses via DHCP. An update
-  to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
+  to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/sysconfig/network-scripts/ifcfg-eth0</i>
 
-  file is required to use the local <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">dnsmasq</i>
+  file is required to use the local <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dnsmasq</i>
  service.
 </p>
 
@@ -395,7 +405,7 @@ PEERDNS=no</code></pre>
 
 
 <p>
-  Restart the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">network</i>
+  Restart the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">network</i>
  service.
 </p>
 
@@ -417,7 +427,7 @@ PEERDNS=no</code></pre>
 
 <h3 id="ntp">NTP</h3>
 <p>
-  Install the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ntp</i>
+  Install the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ntp</i>
  service.
 </p>
 
@@ -437,7 +447,7 @@ PEERDNS=no</code></pre>
 
 
 <p>
-  Backup the old <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ntp.conf</i>
+  Backup the old <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ntp.conf</i>
  configuration file.
 </p>
 
@@ -457,7 +467,7 @@ PEERDNS=no</code></pre>
 
 
 <p>
-  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ntp.conf</i>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ntp.conf</i>
  file with the following contents.
 </p>
 
@@ -521,8 +531,8 @@ disable monitor</code></pre>
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     The subnet that can query the NTP server is restricted to
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">192.168.121.0/24</i> and the
-    upstream NTP servers are set to the Google and Apple <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">stratum 1</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">192.168.121.0/24</i> and the
+    upstream NTP servers are set to the Google and Apple <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">stratum 1</i>
     time servers.
 </div>
   </div>
@@ -531,7 +541,7 @@ disable monitor</code></pre>
 
 
 <p>
-  Start and enable the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ntp</i>
+  Start and enable the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ntp</i>
  service.
 </p>
 
@@ -583,7 +593,7 @@ sudo systemctl enable ntpd</code></pre>
 <h3 id="root-ca">Root CA</h3>
 <p>
   The root CA server will provide certificate signing services.
-  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">openssl</i>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">openssl</i>
  package will be used
   to generate the root certificate and to also sign the hosts certificates.
 </p>
@@ -645,9 +655,9 @@ sudo systemctl enable ntpd</code></pre>
 
 
 <p>
-  Move the certificates to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ssl/certs</i>
+  Move the certificates to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ssl/certs</i>
  directory
-  and update the permissions and ownership to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+  and update the permissions and ownership to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
  user.
 </p>
 
@@ -670,7 +680,7 @@ sudo chmod 0400 ROOTCA.key</code></pre>
 
 
 <p>
-  Once this is done the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ROOTCA.pem</i>
+  Once this is done the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ROOTCA.pem</i>
  will need to be
   imported into the trusted certificate store of the host devices. The host themselves will
   need to generate a certificate signing request and have the certificate signed by the root

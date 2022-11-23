@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Lucky Webapp Add Select2 Dropdowns</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 14th of September 2021
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Lucky Webapp Add Select2 Dropdowns</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 14th of September 2021
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -117,7 +127,7 @@
 <p>
   In this post I will cover the process of adding 
   searchable dropdown boxes to your Lucky webapp with the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Select2</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Select2</i>
  
   Javascript library and styling them with Bootstrap 5.
 </p>
@@ -174,7 +184,7 @@ yarn remove turbolinks</code></pre>
 <h3 id="setup">Setup</h3>
 <p>
   Import and configure Select2 into the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">src/js/app.js</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">src/js/app.js</i>
  
   file and disable turbolinks.
 </p>
@@ -206,7 +216,7 @@ $(document).ready(function () {
 
 <p>
   Import the SCSS into the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">src/css/app.scss</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">src/css/app.scss</i>
  
   file.
 </p>
@@ -230,7 +240,7 @@ $(document).ready(function () {
 <h3 id="usage">Usage</h3>
 <p>
   Apply the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">content-search</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">content-search</i>
  CSS 
   class to dropdowns you would like to use Select2.
 </p>
@@ -261,7 +271,7 @@ end</code></pre>
 <h3 id="deprecation-warnings">Deprecation Warnings</h3>
 <p>
   After installing the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">select2-bootstrap-5-theme</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">select2-bootstrap-5-theme</i>
  
   I was getting some deprecation warnings from Dart related to 
   division.
@@ -269,7 +279,7 @@ end</code></pre>
 
 <p>
   To work around this, update the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">webpack.mix.js</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">webpack.mix.js</i>
  
   file to silence the warnings.
 </p>

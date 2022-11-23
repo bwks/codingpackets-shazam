@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Juniper vMX 19.1R1.6 Vagrant Libvirt Box Install</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 31st of August 2019
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Juniper vMX 19.1R1.6 Vagrant Libvirt Box Install</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 31st of August 2019
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -115,7 +125,7 @@
 <h3 id="intro">Intro</h3>
 <p>
   In this post I will cover how to create a Juniper vMX 19.1R1.6 Vagrant box for use with the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  provider. This post is an update
   to a previous post
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/juniper-vmx-vagrant-libvirt-box-install">post</a>
@@ -129,10 +139,10 @@
 </p>
 <p>
   This post assumes a working installation of Vagrant with the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  plugin already installed. You can follow this
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
-  to get the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  to get the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  plugin installed.
 </p>
 
@@ -172,7 +182,7 @@
 <p>
   Navigate to the Juniper software
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vmx" target=_blank>download</a>
-  page and download the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">kvm</i>
+  page and download the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">kvm</i>
  image.
 </p>
 
@@ -194,7 +204,7 @@
 <h3 id="install">Install</h3>
 <p>
   Create and change into a directory for vMX files. I like to keep my custom vagrant boxes under
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/</i>
 .
 </p>
 
@@ -216,9 +226,9 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 
 
 <p>
-  Copy the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-bundle-19.1R1.6.tgz</i>
+  Copy the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmx-bundle-19.1R1.6.tgz</i>
  file downloaded
-  earlier to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+  earlier to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
  directory.
 </p>
 
@@ -238,7 +248,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 
 
 <p>
-  Extract the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-bundle-19.1R1.6.tgz</i>
+  Extract the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmx-bundle-19.1R1.6.tgz</i>
  file.
 </p>
 
@@ -260,7 +270,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 <p>
   The vMX requires two VMs. One for the control plane and one for the forwarding plane. Copy
   the required files from the extracted directory to the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
  directory.
 </p>
 
@@ -284,7 +294,7 @@ cp vmx/images/vFPC-20190315.img vfp-hda.img</code></pre>
 
 <p>
   Create a network for the link between the two VMs. Create a file called
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmx-int</i>
  with the following contents.
 </p>
 
@@ -308,7 +318,7 @@ cp vmx/images/vFPC-20190315.img vfp-hda.img</code></pre>
 
 
 <p>
-  Now add and start the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+  Now add and start the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmx-int</i>
  network.
 </p>
 
@@ -329,7 +339,7 @@ virsh net-start vmx-int</code></pre>
 
 <p>
   Open two terminal windows (be sure the navigate to the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/vagrant/boxes/juniper/vmx/</i>
  directory)
   and launch both of the vMX vms.
 </p>
@@ -403,7 +413,7 @@ virt-install \
 
 <h4><b>VCP Configuration</b></h4>
 <p>
-  Login to the VCP with the username <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+  Login to the VCP with the username <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
  there is no
   password.
 </p>
@@ -435,7 +445,7 @@ root> configure</code></pre>
 
 <p>
   Paste in the initial bootstrap configuration to allow SSH and set the
-  root password to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Juniper</i>
+  root password to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Juniper</i>
 .
 </p>
 
@@ -465,7 +475,7 @@ commit and-quit</code></pre>
 
 <p>
   There is a limit to how many characters can be pasted into the terminal over the console so
-  grab the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">fxp0</i>
+  grab the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">fxp0</i>
  ip address and SSH to the guest to finish
   the configuration.
 </p>
@@ -547,7 +557,7 @@ commit and-quit</code></pre>
 
 <p>
   Exit out and confirm you can SSH in with the vagrant user and the vagrant
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">insecure_private_key</i>
  key.
 </p>
 
@@ -641,7 +651,7 @@ Power Off the system ? [yes,no] (no) yes</code></pre>
 
 <h4><b>VFP Configuration</b></h4>
 <p>
-  Login to the VFP with the username / password <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">root</i>
+  Login to the VFP with the username / password <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">root</i>
  and
   prepare the VM for use with Vagrant.
 </p>
@@ -671,7 +681,7 @@ service sshd restart</code></pre>
 
 
 <p>
-  Set the root password to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Juniper</i>.
+  Set the root password to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Juniper</i>.
 </p>
 
 <!-- CODE BLOCK START -->
@@ -694,7 +704,7 @@ Retype new password:  &lt;Juniper&gt;</code></pre>
 
 <p>
   Again due to the character limit when connected to the console grab the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ext</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ext</i>
  IP address and SSH to the guest.
 </p>
 
@@ -740,12 +750,12 @@ root@localhost:~#</code></pre>
 <p>
   The VFP uses the Windriver linux OS and most of the file system is read only. I could not
   figure out how to add users so I will utilize the root user to login to this host with Vagrant.
-  I also could not write to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/root</i>
+  I also could not write to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/root</i>
  directory which is
   the root users default home directory so I will change that to
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/root</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/root</i>
 . I will also utilize the Vagrant
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">insecure_private_key</i>
  with the root user.
 </p>
 
@@ -814,9 +824,9 @@ crontab -e
 
 <p>
   Exit out and confirm you can SSH in with the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant</i>
  user and the vagrant
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">insecure_private_key</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">insecure_private_key</i>
  key.
 </p>
 
@@ -874,9 +884,9 @@ root@localhost:~#</code></pre>
 <h4><b>VCP Box Creation</b></h4>
 
 <p>
-  The good folks who maintain the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  The good folks who maintain the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  plugin
-  have a script can be used to convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+  have a script can be used to convert <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
  images to a
   vagrant box. Download the libvirt conversion script.
 </p>
@@ -897,7 +907,7 @@ root@localhost:~#</code></pre>
 
 
 <p>
-  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+  Create a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">metadata.json</i>
  with the following
   contents for the VCP box.
 </p>
@@ -938,7 +948,7 @@ root@localhost:~#</code></pre>
 
 
   <p>
-    Copy the original HDA disk: <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">junos-vmx-x86-64-19.1R1.6.qcow2</i>
+    Copy the original HDA disk: <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">junos-vmx-x86-64-19.1R1.6.qcow2</i>
  overwriting
     the existing HDA disk.
   </p>
@@ -960,7 +970,7 @@ root@localhost:~#</code></pre>
 
 
 <p>
-  Create a VCP vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+  Create a VCP vagrant box with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create_box.sh</i>
  script.
 </p>
 
@@ -993,7 +1003,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vcp.json</i>
+  Create a metadata file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vcp.json</i>
  so that the
   box is added with the correct version number.
 </p>
@@ -1084,11 +1094,11 @@ extreme/xos                   (libvirt, 22.4.1.4)
 
 
 <p>
-  The VCP also requires the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">HDB</i>
+  The VCP also requires the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">HDB</i>
  and
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">HDC</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">HDC</i>
  drives from the initial VCP build. There is a
-  limitation of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  limitation of the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  provider where it
   can only package in one storage volume with the box. Create a directory to store these
   volumes and they will be copied by Vagrant prior to building a box using the
@@ -1118,7 +1128,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 <h4><b>VFP Box Creation</b></h4>
 <p>
-  Create a file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">metadata.json</i>
+  Create a file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">metadata.json</i>
  with the following
   contents for the VCP box.
 </p>
@@ -1139,9 +1149,9 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 
 <p>
-  Convert <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vfp-hda.img</i>
+  Convert <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vfp-hda.img</i>
  to the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">qcow2</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">qcow2</i>
  format.
 </p>
 
@@ -1161,7 +1171,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 
 <p>
-  Create a VFP vagrant box with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">create_box.sh</i>
+  Create a VFP vagrant box with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">create_box.sh</i>
  script.
 </p>
 
@@ -1193,7 +1203,7 @@ Total bytes written: 333250560 (318MiB, 17MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vfp.json</i>
+  Create a metadata file called <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vfp.json</i>
  so that the
   box is added with the correct version number.
 </p>
@@ -1285,7 +1295,7 @@ juniper/vmx-vcp               (libvirt, 19.1R1.6)
 
 <h3 id="testing">Testing</h3>
 <p>
-  Now that the boxes are installed create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+  Now that the boxes are installed create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrantfile</i>
 
   and confirm you can build VMs with Vagrant.
 </p>
@@ -1310,7 +1320,7 @@ juniper/vmx-vcp               (libvirt, 19.1R1.6)
 
 
 <p>
-  Add a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+  Add a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrantfile</i>
  to the test directory with the
   following contents
 </p>
@@ -1555,10 +1565,10 @@ end</code></pre>
 
 
 <p>
-  The two triggers in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Vagrantfile</i>
+  The two triggers in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Vagrantfile</i>
  are used to copy
-  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">HDB</i>
- and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">HDC</i>
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">HDB</i>
+ and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">HDC</i>
 
   base storage volumes that are required by the VCP prior to build. They also delete to
   storage volumes when the VCP is destroyed.
@@ -1943,7 +1953,7 @@ Domain vmx-vfp has been undefined</code></pre>
 
 
 <p>
-  Remove the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vmx-int</i>
+  Remove the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmx-int</i>
  network.
 </p>
 

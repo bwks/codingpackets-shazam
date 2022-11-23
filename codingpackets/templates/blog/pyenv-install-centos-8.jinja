@@ -1,0 +1,132 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/pyenv/pyenv", description="Pyenv") }} is a similar 
+  tool to rbenv, where you can easily install and use mulitple 
+  versions of python. This allows you to test across multiple 
+  versions of python as well as pin an app to a specific release. 
+</p>
+
+<h3 id="software-versions-used">Software Versions Used</h3>
+<ul>
+  <li>Centos - 8.2.2004</li>
+  <li>Pyenv - 1.2.21</li>
+</ul>
+
+<h3 id="pre-requisites">Pre-requisites</h3>
+<p>
+  Install the dependencies required to use pyenv.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo dnf groupinstall -y "Development Tools"
+sudo dnf install -y zlib zlib-devel bzip2-devel openssl-devel sqlite-devel readline-devel'
+) }}
+
+
+<h3 id="installation">Installation</h3>
+<p>
+  Use the installed script to install pyenv.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='curl https://pyenv.run | bash'
+) }}
+
+<p>
+  Update your shell environment, I am using zsh.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code='# ~/.zshrc
+
+
+# PYENV
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+# PYENV Auto-completions. This should be towards the end of the file.
+eval "$(pyenv init -)"'
+) }}
+
+<p>
+  Restart your shell environment.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='exec "$SHELL"'
+) }}
+
+<p>
+  Verify the version of pyenv installed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pyenv --version
+
+# output
+
+pyenv 1.2.21'
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  Install a version of python.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Python 3
+
+pyenv install 3.8.6
+
+# Python 2
+
+pyenv install 2.7.16'
+) }}
+
+
+<p>
+  Install a version of python.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Python 3
+
+pyenv install 3.8.6
+
+# Python 2
+
+pyenv install 2.7.16'
+) }}
+
+<p>
+  Use a version of python.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Application specific python version(s).
+
+pyenv local 3.8.6 2.7.16
+
+# Systemwide python version(s)
+
+pyenv global 3.8.1 2.7.18'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Welcome to the end. If you followed along you will have 
+  pyenv installed and configured for use on Centos 8.
+</p>
+{% endblock page_content %}

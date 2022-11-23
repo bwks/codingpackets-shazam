@@ -1,0 +1,378 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In a previous 
+  {{ link::i(path="/blog/proxmox-enable-port-mirror/", description="post") }}
+  I showed you how to configure a port mirror in Proxmox. 
+  In that post, I used a bit of a dirty hack (bash scripts and crontab)
+  to ensure the port mirror is activated if the host or the VM 
+  reboots. 
+</p>
+<p>
+  Luckily for me, I have some really smart colleagues who mentioned 
+  that in libvirt, there is a hook mechanism that can be used to 
+  trigger scripts based on VM state. A quick 
+  {{ link::e(path="https://duckduckgo.com/", description="duck hunt") }} revealed that 
+  Proxmox has implemented this feature as well 🥳 
+</p>
+<p>
+  In this post I will show you how to use Hook Scripts with 
+  Proxmox to enable/disable a port mirror depending on the 
+  VMs {{ text::emphasize(text="execution phase") }}
+.
+</p>
+<p>
+  As an added bonus, I will also show you how to duplicate a 
+  port mirror source, to multiple destinations within Proxmox.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+</ul>
+
+<h3 id="lab-network">Lab Network</h3>
+<p>
+  The following diagram show the lab setup outlined 
+  in this post. The goal, is to have traffic port mirrored 
+  from the Juniper switch to both the eda01 and eta01 VMs.
+  Both the eda01 and eta01 VMs need a dedicated feed 
+  therefore, port mirror traffic will be duplicated on 
+  {{ text::emphasize(text="vmbr1") }}
+
+</p>
+
+<p>
+  {{ image::boxed(path="blog/proxmox-hook-script-port-mirror/port-mirror-lab.png", width="600px") }}
+</p>
+<p>
+  The following points summarise the diagram.
+</p>
+<ul>
+  <li>fw01 is a PaloAlto firewall and is the default gateway for all networks.</li>
+  <li>sw01 is a Juniper switch and is used to connect LAN devices.</li>
+  <li>pmx01 is a Proxmox host and has two physical interfaces:</li>
+  <ul>
+    <li>eno1 is configured as a trunk port and carries multiple VLANs.</li>
+    <li>enp1s0 is configured as an access port.</li>
+  </ul>
+  <li>pmx01 has the following virtual network components:</li>
+  <ul>
+    <li>vmbr0 and vmbr1 are virtual switches.</li>
+    <li>A tap* interface is created for each vNIC interface on a VM automatically.</li>
+    <li>Tap interfaces have the naming format; <i>tap&lt;vm-id&gt;i&lt;interface-number&gt;</i>.</li>
+  </ul>
+  <li>eda01, exa01 and eta01 are VM guests hosted on the Proxmox host.</li>
+  <li>Port mirror sources are denoted in yellow.</li>
+  <li>Port mirror destinations are denoted in green.</li>
+</ul>
+
+<h3 id="hook-scripts">Hook Scripts</h3>
+<p>
+  As previously mentioned, 
+  <a href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hook_scripts">
+  hook scripts</a> allow you to run a script based on a 
+  VMs {{ text::emphasize(text="execution phase") }}
+.
+</p>
+<p>
+  This feature is not extensively documented (that I could find).
+  From what I can gather the supported phases are:
+</p>
+<ul>
+  <li>pre-start</li>
+  <li>post-start</li>
+  <li>pre-stop</li>
+  <li>post-stop</li>
+</ul>
+
+<p>
+  An example hook script can be found in the onboard docs at the 
+  following location:
+</p>
+<p>
+  {{ text::emphasize(text="/usr/share/pve-docs/examples/guest-example-hookscript.pl") }}
+
+</p>
+<p>
+  For all you Perl loving heathons, that should be right up your 
+  alley. For everyone else, it looks like you can run a script in 
+  any language that has a runtime installed.
+</p>
+
+<p>
+  For my purposes, I will be using the bash script from the previous 
+  {{ link::i(path="/blog/proxmox-enable-port-mirror/", description="post") }}
+  with a couple of alterations to make it more portable and useable 
+  for multiple guests.
+</p>
+<h4>Hook Script Location</h4>
+<p>
+  Hook scripts need to be stored in a 
+  {{ text::emphasize(text="snippets/") }}
+
+  directory on a storage pool that Proxmox 
+  knows about. I will place my scripts in the 
+  {{ text::emphasize(text="/var/lib/vz/") }}
+
+  directory that maps to the 
+  {{ text::emphasize(text="local") }}
+
+  storage pool.
+</p>
+
+<h4>Hook Script</h4>
+<p>
+  Create a file named 
+  {{ text::emphasize(text="extrahop-port-mirror.sh") }}
+ 
+  in the 
+  {{ text::emphasize(text="/var/lib/vz/snippets/") }}
+ 
+  directory with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code='#! /usr/bin/env bash
+# /var/lib/vz/snippets/extrahop-port-mirror.sh
+VM_ID=$1;
+EXECUTION_PHASE=$2
+SOURCE_PORT="enp1s0";
+VM_BRIDGE="vmbr1";
+LOGGING=/root/scripts/extrahop-port-mirror.log;
+
+function create_mirror {
+
+  /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Creating mirror on $VM_BRIDGE for $VM_ID"... >> $LOGGING;
+
+  /usr/bin/ovs-vsctl \\
+    -- --id=@"$SOURCE_PORT" get Port "$SOURCE_PORT" \\
+    -- --id=@tap"$VM_ID"i1 get Port tap"$VM_ID"i1 \\
+    -- --id=@"$VM_ID"m create \\
+           Mirror name="$VM_ID"-mirror \\
+           select-dst-port=@"$SOURCE_PORT" \\
+           select-src-port=@"$SOURCE_PORT" \\
+           output-port=@tap"$VM_ID"i1 \\
+    -- add Bridge "$VM_BRIDGE" mirrors @"$VM_ID"m; >> $LOGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+function clear_mirror {
+
+   /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Clearing mirror on $VM_BRIDGE for $VM_ID..." >> $LOGGING;
+
+  /usr/bin/ovs-vsctl \\
+    -- --id=@"$VM_ID"m get Mirror "$VM_ID"-mirror \\
+    -- remove Bridge "$VM_BRIDGE" mirrors @"$VM_ID"m; >> $LOGGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+function show_mirrors {
+
+  /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Show existing mirrors..." >> $LOGGING;
+
+  /usr/bin/ovs-vsctl list Mirror >> $LOGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+if [[ "$EXECUTION_PHASE" == "post-start" ]]; then
+
+  clear_mirror;
+
+  create_mirror;
+
+  show_mirrors;
+
+elif [[ "$EXECUTION_PHASE" == "pre-stop" ]]; then
+
+  clear_mirror;
+
+  show_mirrors;
+
+fi'
+) }}
+<p>
+  When Proxmox executes this script, it does so with 2 
+  arguments.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="VM_ID") }}
+</li>
+  <li>{{ text::emphasize(text="EXECUTION_PHASE") }}
+</li>
+</ul>
+<p>
+  These arguments can be mapped to variables in the script.
+  In my case I am mapping them as follows.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="VM_ID=$1") }}
+</li>
+  <li>{{ text::emphasize(text="EXECUTION_PHASE=$2") }}
+</li>
+</ul>
+<p>
+  The other variables: 
+  {{ text::emphasize(text="SOURCE_PORT") }}
+,
+  {{ text::emphasize(text="VM_BRIDGE") }}
+ and 
+  {{ text::emphasize(text="LOGGING") }}
+ should 
+  be confirgured to match your setup.
+</p>
+
+<p>
+  This script allows you to add and remove multiple port mirror 
+  destinations by using the 
+  {{ text::emphasize(text="add") }}
+ 
+  and 
+  {{ text::emphasize(text="remove") }}
+ commands 
+  rather than the 
+  {{ text::emphasize(text="set") }}
+ and 
+  {{ text::emphasize(text="clear") }}
+ commands from 
+  the previous post.
+</p>
+
+<p>
+  The other thing that is required, is to make the script 
+  executable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="chmod +x /var/lib/vz/snippets/extrahop-port-mirror.sh"
+) }}
+
+<h4>Connect Hook Script</h4>
+<p>
+  Now that the hook script is created, we need to connect it to 
+  a VM. Connect the hookscript to both the eda01 and eta01 VMs 
+  with the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="qm set 201 --hookscript local:snippets/extrahop-port-mirror.sh
+qm set 204 --hookscript local:snippets/extrahop-port-mirror.sh
+
+# Output
+update VM 201: -hookscript local:snippets/extrahop-port-mirror.sh
+update VM 204: -hookscript local:snippets/extrahop-port-mirror.sh"
+) }}
+
+<p>
+  That's it! Now when the VM or host shuts down or restarts, the port 
+  mirror will be automagically activated/deactivated. Additionally,
+  {{ text::emphasize(text="vmbr1") }}
+ is sending a duplicate 
+  data feed to both the eda01 and eta01.
+</p>
+
+<h4>How to Disconnect Hook a Script</h4>
+<p>
+  If for some reason you want to disconnect a hook script from a VM, 
+  use the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="qm set 201 --delete hookscript
+
+# Output
+update VM 201: -delete hookscript"
+) }}
+
+<h4>Example Log File</h4>
+<p>
+  Below is an example of the log file that is generated.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='####################
+Sat Nov 27 06:24:50 AEST 2021
+Clearing mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:24:50 AEST 2021
+Show existing mirrors...
+_uuid               : 89c4a723-130d-4871-a84d-d143e165ec7d
+external_ids        : {}
+name                : "201-mirror"
+output_port         : a9e16d6a-2010-484e-a924-cb4f1a46195f
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {tx_bytes=82504527671, tx_packets=82870736}
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Clearing mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Creating mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Show existing mirrors...
+_uuid               : 7c33f30a-2bdf-44d2-8ce2-8d7d92d5cc7f
+external_ids        : {}
+name                : "204-mirror"
+output_port         : e36be586-eda1-44e1-b6d0-45b802b16ecf
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {}
+
+_uuid               : 89c4a723-130d-4871-a84d-d143e165ec7d
+external_ids        : {}
+name                : "201-mirror"
+output_port         : a9e16d6a-2010-484e-a924-cb4f1a46195f
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {tx_bytes=82511889277, tx_packets=82881722}
+####################'
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how use a Proxmox hook script to 
+  automagically start/stop a port mirror destined for multiple 
+  VMs connected to the same virtual bridge. I believe this method 
+  is a nice improvement over my  
+  {{ link::i(path="/blog/proxmox-enable-port-mirror/", description="previous") }}
+  attempt and I hope you find it useful.
+</p>
+
+{% endblock page_content %}

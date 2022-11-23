@@ -1,0 +1,169 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/kaminari/kaminari", description="Kaminari") }}
+ is a 
+  Gem that can be used with Rails to make paginating records 
+  super simple.
+</p>
+<p>
+  In this post I will show you how to add pagination to your 
+  rails app using the Kaminari gem and style the paginator 
+  with Bootstrap and Font Awesome.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Rails - 6.0.3.4</li>
+  <li>Kaminari - 1.2.1</li>
+  <li>Bootstrap - 5.0.0-beta1</li>
+  <li>Font Awesome (Free) - 5.15.1</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Add the Kaminari gem to your {{ text::emphasize(text="Gemfile") }}
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# Gemfile
+
+gem 'kaminari', '~> 1.2.1'"
+) }}
+
+<p>
+  Then use {{ text::emphasize(text="bundle") }}
+ to install the gem.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="bundle install"
+) }}
+
+<h3 id="usage">Usage</h3>
+<h4>Controllers</h4>
+<p>
+  Set the controller views methods that require pagination to 
+  paginate records with the below query.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/controllers/users_controller.rb
+
+def index
+  @users = User.order(:name).page params[:page]
+end"
+) }}
+
+<h4>Views</h4>
+<p>
+  In the view that require pagination use the 
+  {{ text::emphasize(text="paginate") }}
+ helper to 
+  magically paginate the records.
+</p>
+{{ text::code_block(
+  header="file",
+  language="erb",
+  code="<%# app/views/users/index.html.erb %>
+
+<%= paginate @users %>"
+) }}
+
+<p>
+  Thats it! Your records are paginated and you have links on 
+  your view for the pages of records. The default styling however 
+  it super simple and not very 2020 bling bling.
+</p>
+
+<h3 id="customize">Customize</h3>
+<p>
+  There are a number 
+  of {{ link::e(path="https://github.com/amatsuda/kaminari_themes", description="themes") }}
+
+  that can be used to change to look of the paginator.
+</p>
+
+<h4>Bootstrap</h4>
+<p>
+  To use the bootstrap paginator, there is a handy kaminari generator.
+  The generator creates template files that will be used to render the 
+  bootstrap paginator.
+</p>
+{{ text::note_block(text='
+  Even though I am using 
+  {{ text::emphasize(text="bootstrap 5") }}
+ the 
+  {{ text::emphasize(text="bootstrap4") }}
+ theme still 
+  works without issues.
+')
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="rails generate kaminari:views bootstrap4"
+) }}
+
+<p>
+  The templates can be found in the 
+  {{ text::emphasize(text="app/views/kaminari") }}
+ folder.
+</p>
+
+<h4>Font Awesome</h4>
+<p>
+  The default 
+  {{ text::emphasize(text="<< First") }}
+ 
+  {{ text::emphasize(text="< Previous") }}
+
+  {{ text::emphasize(text="Next >") }}
+
+  {{ text::emphasize(text="Last >>") }}
+ tags are a 
+  bit lame. Luckily you can use Font Awesome icons in their place. 
+</p>
+<p>
+  In the {{ text::emphasize(text="config/locals/en.yml") }}
+
+  file add the following 
+  {{ text::emphasize(text="views") }}
+ config under the 
+  {{ text::emphasize(text="en") }}
+ section.
+</p>
+{{ text::code_block(
+  header="file",
+  language="yaml",
+  code=`en:
+  views:
+    pagination:
+      next: '&lt;i class="fas fa-angle-right"&gt;&lt;/i&gt;'
+      previous: '&lt;i class="fas fa-angle-left"&gt;&lt;/i&gt;'
+      first: '&lt;i class="fas fa-angle-double-left"&gt;&lt;/i&gt;'
+      last: '&lt;i class="fas fa-angle-double-right"&gt;&lt;/i&gt;'`
+) }}
+
+<p>
+  This will change the text to use these nice chevron style arrows
+  instead. Customize these according to the tastes of your app.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we added pagination to our Rails 6 app utilising the 
+  Kaminari Gem and styled the paginator with Bootstrap and Font Awesome.
+</p>
+{% endblock page_content %}

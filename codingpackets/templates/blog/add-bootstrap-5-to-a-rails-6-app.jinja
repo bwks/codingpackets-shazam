@@ -1,0 +1,137 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to add the
+  {{ link::e(path="https://getbootstrap.com/docs/5.0/getting-started/introduction/", description="Bootstrap") }}
+ 
+  CSS framework to your Rails 6 application.
+</p>
+<p>
+  Bootstrap is a solid CSS framework that allows us to make 
+  our app look really nice and work across a multitude of 
+  device types and browsers without having to get bogged down 
+  in the details.
+</p>
+
+{{ text::note_block(text='
+  This post assumes that you already have Rails 6 installed
+  and ready to go.
+')
+}}
+
+<h3 id="software">Software</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li>Rails - 6.0.3.4</li>
+  <li>Popper.js - core/2.5.4</li>
+  <li>Bootstrap - 5.0.0-beta1</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Add the {{ text::emphasize(text="popper.js") }}
+ and 
+  {{ text::emphasize(text="bootstrap") }}
+ packages through 
+  yarn.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='yarn add @popperjs/core@^2.5.4
+yarn add bootstrap@5.0.0-beta1'
+) }}
+
+<p>
+  Add the {{ text::emphasize(text="stylesheet_pack_tag") }}
+ tag 
+  to the {{ text::emphasize(text="views/layouts/application.html.erb") }}
+  file in the {{ text::emphasize(text="&lt;head&gt;&lt;/head&gt;") }}
+ section.
+</p>
+{{ text::code_block(
+  header="file",
+  language="rails",
+  code="<%# views/layouts/application.html.erb %>
+
+<%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>"
+) }}
+
+<p>
+  Also, remove the {{ text::emphasize(text="stylesheet_link_tag") }}
+ tag 
+  from the same
+  {{ text::emphasize(text="views/layouts/application.html.erb") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="rails",
+  code="<%# views/layouts/application.html.erb %>
+
+<%# Delete me %>
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>"
+) }}
+
+<p>
+  In the {{ text::emphasize(text="app/assets/stylesheets/application.css") }}
+  file add the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="css",
+  code='/* app/assets/stylesheets/application.css */
+
+/* import the bootstrap library */
+@import "bootstrap"
+
+/* import other css files below. */'
+) }}
+
+<p>
+  In the {{ text::emphasize(text="app/javascript/packs/application.js") }}
+
+  file, add the following contents at the end.
+</p>
+{{ text::code_block(
+  header="file",
+  language="javascript",
+  code='// app/javascript/packs/application.js
+
+// import the bootsrap library.
+import "bootstrap;"
+
+// import the app/assets/stylesheets/application.css 
+// file from the previous step.
+import "../../assets/stylesheets/application;"'
+) }}
+
+<p>
+  Now restart your server and fingers crossed you should be good to go. 
+</p>
+
+<h3 id="usage">Usage</h3>
+<p>
+  For detailed usage, check the 
+  {{ link::e(path="https://getbootstrap.com/docs/5.0/getting-started/introduction/", description="docs") }}. 
+  But as an example, to add a nicely styled button, 
+  add the bootstrap CSS classes to the tag.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="html",
+  code='&lt;button type="button" class="btn btn-primary"&gtPrimary&lt;/button&gt'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we added Bootstrap 5 to our Rails 6 application. 
+  Behold the beauty of Bootstrap 5.
+</p>
+{% endblock page_content %}

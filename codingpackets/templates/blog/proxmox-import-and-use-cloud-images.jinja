@@ -1,0 +1,313 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover the process to import 
+  and use cloud based images in Proxmox. Cloud based 
+  images are handy because they are configurable on 
+  boot via 
+  {{ text::emphasize(text="cloud-init") }}
+. 
+  I will use the image created in this post in a future 
+  post on how to deploy VMs in Proxmox via Terraform.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+  <li><b>Ubuntu</b> - 20.04</li>
+</ul>
+
+<h3 id="image-prep">Image Prep</h3>
+<p>
+  Prior to uploading the cloud images to the Proxmox 
+  host, I will be downloading them to an Ubuntu host 
+  to install the {{ text::emphasize(text="qemu-guest-agent") }}
+.
+  The guest agent allows for introspection into the guest from 
+  the host and better integrations to control the 
+  guest shutdown, restart etc..
+</p>
+<p>
+  The
+  {{ text::emphasize(text="libguestfs-tools") }}
+ 
+  package allows you to install packages into an image 
+  without booting it up. The
+  {{ text::emphasize(text="libguestfs-tools") }}
+ 
+  package conflicts with Proxmox. For this reason, I 
+  am using my Ubuntu host to complete this step.
+</p>
+<p>
+  Lets get started by downloading a cloud image.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='curl -O http://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img'
+) }}
+
+<p>
+  Now install {{ text::emphasize(text="libguestfs-tools") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install libguestfs-tools -y'
+) }}
+
+<p>
+  Install the {{ text::emphasize(text="qemu-guest-agent") }}
+ 
+  into the image.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo virt-customize -a focal-server-cloudimg-amd64.img --install qemu-guest-agent
+
+# output
+[   0.0] Examining the guest ...
+[  27.1] Setting a random seed
+virt-customize: warning: random seed could not be set for this type of guest
+[  27.3] Setting the machine ID in /etc/machine-id
+[  27.4] Installing packages: qemu-guest-agent
+[ 130.6] Finishing off'
+) }}
+
+<p>
+  Once the package is installed, copy the image to the 
+  Proxmox host.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='scp ubuntu-20.04-server-cloudimg-amd64.img &lt;user&gt;@&lt;host&gt;:/tmp/'
+) }}
+
+<h3 id="proxmox-host">Proxmox Host</h3>
+<p>
+  Create a new VM that will be used as the base for 
+  future images.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm create 9001 \\
+  --name ubuntu-2004-cloud-init --numa 0 --ostype l26 \\
+  --cpu cputype=host --cores 2 --sockets 1 \\
+  --memory 2048  \\
+  --net0 virtio,bridge=vmbr0'
+) }}
+
+<p>
+  Import the cloud image to a storage pool. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="qm importdisk 9001 /tmp/ubuntu-20.04-server-cloudimg-amd64.img local-lvm
+  
+# output
+Successfully imported disk as 'unused0:local-lvm:vm-9001-disk-0'"
+) }}
+
+<p>
+  Attach the disk to the VM as a SCSI drive.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="qm set 9001 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9001-disk-0
+
+# output
+update VM 9001: -scsi0 local-lvm:vm-9001-disk-0 -scsihw virtio-scsi-pci"
+) }}
+
+
+<p>
+  Create a {{ text::emphasize(text="cloud-init") }}
+ 
+  CDROM drive. This allows you to 
+  assign configuration to the VM on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 9001 --ide2 local-lvm:cloudinit
+
+# output
+update VM 9001: -ide2 local-lvm:cloudinit
+  Logical volume "vm-9001-cloudinit" created.'
+) }}
+
+<p>
+  Make the VM disk bootable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 9001 --boot c --bootdisk scsi0
+
+# output
+update VM 9001: -boot c -bootdisk scsi0'
+) }}
+
+<p>
+  Assign a serial console to the VM. This 
+  required by some {{ text::emphasize(text="cloud-init") }}
+ 
+  images.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 9001 --serial0 socket --vga serial0
+
+# output
+update VM 9001: -serial0 socket -vga serial0'
+) }}
+
+<p>
+  Enable the guest agent.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 9001 --agent enabled=1
+
+# output
+update VM 9001: -agent enabled=1'
+) }}
+
+
+<p>
+  Convert the VM to a template. The template 
+  will be used to clone future VMs. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm template 9001
+
+# output
+Renamed "vm-9001-disk-0" to "base-9001-disk-0" in volume group "pve"
+Logical volume pve/base-9001-disk-0 changed.
+WARNING: Combining activation change with other commands is not advised.'
+) }}
+
+<h3 id="create-vm">Create VM</h3>
+<p>
+  Now that the VM template is built, lets create a 
+  VM from the template.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm clone 9001 999 \\
+  --name ubuntu-test \\
+  --full \\
+  --storage local-lvm
+
+# output
+create full clone of drive ide2 (local-lvm:vm-9001-cloudinit)
+  Logical volume "vm-999-cloudinit" created.'
+) }}
+
+
+<p>
+  Assign an SSH key to the VM that will be applied 
+  via {{ text::emphasize(text="cloud-init") }}
+ on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 999 --sshkey ~/.ssh/id_rsa.pub
+
+# output
+update VM 999: -sshkeys ssh-rsa...'
+) }}
+
+<p>
+  For this test I will assign an IP address to the VM 
+  that will be applied via {{ text::emphasize(text="cloud-init") }}
+ 
+  on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 999 --ipconfig0 ip=192.168.255.60/24,gw=192.168.255.1
+  
+# output
+update VM 999: -ipconfig0 ip=192.168.255.60/24,gw=192.168.255.1'
+) }}
+
+<p>
+  Start the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm start 999
+
+# output
+generating cloud-init ISO'
+) }}
+
+<p>
+  Once the VM has booted, SSH to the VM with the 
+  SSH key previously defined and the default 
+  username, {{ text::emphasize(text="ubuntu") }}
+ 
+  in the case of Ubuntu cloud images.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="ssh ubuntu@192.168.255.60
+
+# Accept hostkey
+The authenticity of host '192.168.255.60 (192.168.255.60)' cant be established.
+ECDSA key fingerprint is SHA256:4iiOYYaI1uS7cH1YqIByhZfTAJSgwtiQtLSMkkUHAdc.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+
+ubuntu@ubuntu-test:~$"
+) }}
+
+<h3 id="clean-up">Clean Up</h3>
+<p>
+  Shutdown and delete the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="qm stop 999 && qm destroy 999"
+) }}
+
+<p>
+  Remove the orginal cloud image
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="rm /tmp/ubuntu-20.04-server-cloudimg-amd64.img"
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I covered the process to import an 
+  Ubuntu cloud image as a VM template, deploy a 
+  VM from the template and configure the VM via 
+  {{ text::emphasize(text="cloud-init") }}
+.
+</p>
+
+{% endblock page_content %}

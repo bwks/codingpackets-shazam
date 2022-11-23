@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">ExtraHop Discover Appliance GCP Deployment With Terraform</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 27th of March 2022
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">ExtraHop Discover Appliance GCP Deployment With Terraform</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 27th of March 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -152,7 +162,7 @@
   An EDA deployment file for GCP which can be downloaded 
   from the 
     <a class="text-sky-600 no-underline hover:text-sky-800" href="https://customers.extrahop.com/downloads/virtual-appliances" target=_blank>customer portal</a>. The deployment file should be saved in the same 
-    location as your <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.tf</i>
+    location as your <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.tf</i>
  file.
 </p>
 
@@ -181,64 +191,64 @@
 <ul>
   <li>There are 2 Virtual Private Clouds (VPC):</li>
   <ul>
-    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
+    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">mgmt-vpc</i>
  for the manamgement interface of an EDA.</li>
-    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">capture-vpc</i>
  for workloads that have their traffic mirrored to an EDA and the EDA capture interface.</li>
   </ul>
-  <li>The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
- has a single subnet <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">10.0.0.0/24</i>
+  <li>The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">mgmt-vpc</i>
+ has a single subnet <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">10.0.0.0/24</i>
 .</li>
-  <li>The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+  <li>The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">capture-vpc</i>
  has 2 subnets:</li>
   <ul>
-    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.0.0/24</i>
+    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.0.0/24</i>
  for the capture target.</li>
-    <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.0/24</i>
+    <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.1.0/24</i>
  for workload VMs.</li>
   </ul>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda01</i>
  is the ExtraHop sensor that is capturing packets.</li>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
- is a workload VM that has its traffic mirrored to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">deb01</i>
+ is a workload VM that has its traffic mirrored to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda01</i>
 .</li>
   <li>
-    The instance group <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-ig</i>
- is required to group the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">mgmt-vpc</i>
+    The instance group <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-ig</i>
+ is required to group the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">mgmt-vpc</i>
  VPC
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-mgmt-net</i>
- subnet and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-mgmt-net</i>
+ subnet and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda01</i>
  VM together for use as a load balancer backend.
   </li>
   <li>A load balancer is required to mirror traffic between VMs in GCP. The load balancer has the following components:</li>
   <ul>
-    <li>A backend service <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-lb-be</i>
- that's attached to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">capture-vpc</i>
+    <li>A backend service <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-lb-be</i>
+ that's attached to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">capture-vpc</i>
  VPC.</li>
-    <li>A backend that's attached to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-ig</i>
+    <li>A backend that's attached to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-ig</i>
  instance group.</li>
-    <li>A frontend <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-lb-fe</i>
- that's attached to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">extrahop-capture-net</i>
+    <li>A frontend <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-lb-fe</i>
+ that's attached to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-capture-net</i>
  subnet.</li>
   </ul>
-  <li>A traffic mirror policy (denoted by the pink line) is used to mirror traffic from the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+  <li>A traffic mirror policy (denoted by the pink line) is used to mirror traffic from the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">deb01</i>
  VM to the load balancer frontend.</li>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
- and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda01</i>
+ and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">deb01</i>
  have external IP addresses assigned (denoted by the red line) allowing them to access the internet.</li>
 </ul>
 
 <h3 id="terraform-code">Terraform Code</h3>
 <p>
   For simplicity I have placed all of the code for this post 
-  in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">main.tf</i>
+  in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">main.tf</i>
  file. 
-  The code is split into sections denoted by comments (<i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">//</i>
+  The code is split into sections denoted by comments (<i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">//</i>
 ).
 </p>
 <p>
   If you are following along, you will need to update the 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Variables</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Variables</i>
  section to 
   suit your environment.
 </p>
@@ -486,7 +496,7 @@ resource "google_compute_packet_mirroring" "extrahop_pm" {
     <div class="px-4 pb-4 dark:text-zinc-900">
   For this lab I am NOT using the recommended image size for
   an EDA in GCP. The recommended size is an 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">n1-standard-4 (4 vCPU, 15 GB memory)</i>.
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">n1-standard-4 (4 vCPU, 15 GB memory)</i>.
 </div>
   </div>
 </div>
@@ -536,10 +546,10 @@ Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
 <h4>Capture Settings</h4>
 <p>
   The default discovery mode for an EDA is 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Layer 2</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Layer 2</i>
  discovery, which discovers 
   devices in its broadcast domain. There is no broadcast domain in a VPC. 
-  Therefore, we need to enable <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Layer 3</i>
+  Therefore, we need to enable <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Layer 3</i>
  
   discovery and, define the subnets that contain devices we want to track 
   as an asset. 
@@ -581,19 +591,19 @@ Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
 
 
 <p>
-  To enable L3 discovery, under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Local Device Discovery</i>
+  To enable L3 discovery, under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Local Device Discovery</i>
  
-  section, tick the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Enable local device discovery</i>
+  section, tick the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Enable local device discovery</i>
  
   checkbox.
 </p>
 <p>
-  To configure remote networks, under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Remote Device Discovery</i>
+  To configure remote networks, under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Remote Device Discovery</i>
  
   section, enter the desired prefixes. We will add 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.0/24</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.1.0/24</i>
  from our 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">workloads-net</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">workloads-net</i>
  subnet.
 </p>
 <p>
@@ -608,25 +618,25 @@ Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
   </ul>
 </div>
 <p>
-  Now click the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Restart</i>
+  Now click the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Restart</i>
  action 
-  for the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">Capture Status</i>
+  for the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Capture Status</i>
  item.
 </p>
 
 <h3 id="verification">Verification</h3>
 <p>
-  Lets confirm that the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">eda01</i>
+  Lets confirm that the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">eda01</i>
  can see 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">deb01</i>
  in its data feed.
 </p>
 <p>
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">deb01</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">deb01</i>
  received the IP address 
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.1.2</i>
  via DHCP. In the UI search 
-  bar on the top right, search for the IP <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+  bar on the top right, search for the IP <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.1.2</i>
 .
   Clicking into the result takes you to the asset page.
 </p>
@@ -641,7 +651,7 @@ Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
 
 
 <p>
-  We can see that <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">172.16.1.2</i>
+  We can see that <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">172.16.1.2</i>
  is discovered 
   as a remote device and is having its traffic analized.
 </p>
@@ -650,7 +660,7 @@ Apply complete! Resources: 20 added, 0 changed, 0 destroyed.</code></pre>
 <p>
   Don't forget to run <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">terraform destroy</i>
  to clean up all the 
-  infrastructure and save yourself some <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">$DOLLARS</i>
+  infrastructure and save yourself some <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$DOLLARS</i>
 .
 </p>
 

@@ -1,0 +1,102 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://www.packer.io", description="Packer") }} is another fantastic tool
+  in the infrastructure as code tool belt from Hashicorp. Packer allows
+  you to build base or golden images for Hypervisors such as KVM,
+  Virtualbox and VMware based on configuration files. But that is not all,
+  it can even build images for cloud providers such as Azure, AWS as well
+  as Docker and LXC. That is pretty baller when you think about it.
+</p>
+
+<p>
+  In this post I will show you how to install Packer on a Linux machine.
+  I will be installing Packer on an Ubuntu machine, but the instructions
+  are compatible with most other modern linux distributions.
+</p>
+
+<p>
+  The following code versions will be used in this lab.
+</p>
+<ul>
+  <li><b>Ubuntu</b> - 1804</li>
+  <li><b>Packer</b> - 1.4.0</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Download Packer
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`wget https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip`
+) }}
+
+<p>
+  Unzip Packer zipfile.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`unzip packer_1.4.0_linux_amd64.zip`
+) }}
+
+<p>
+  Move Packer executable to {{ text::emphasize(text="/opt") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir /opt/packer/
+sudo mv packer /opt/packer/packer`
+) }}
+
+<p>
+  Link Packer executable to a location in your {{ text::emphasize(text="$PATH") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ln -s /opt/packer/packer /usr/local/bin/packer`
+) }}
+
+<h3 id="testing">Testing</h3>
+<p>
+  Confirm the {{ text::code(text="packer") }}
+ command is available.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`which packer
+
+# output
+
+/usr/local/bin/packer`
+) }}
+
+<p>
+  Check the version of Packer.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`packer --version
+
+# output
+
+1.4.0`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  You now have a working Packer install so go out and build some
+  infrastructure as code already.
+</p>
+{% endblock page_content %}

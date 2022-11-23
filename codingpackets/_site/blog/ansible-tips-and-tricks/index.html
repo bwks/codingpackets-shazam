@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Ansible Tips and Tricks</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 12th of June 2019
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 11th of June 2018
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Ansible Tips and Tricks</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 12th of June 2019
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 11th of June 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -124,9 +134,9 @@
 
 <h3 id="callbacks">Callbacks</h3>
 <p>
-  Convert the output of a playbook run to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">json</i>. Either
-  set the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">stdout_callback = json</i> setting in the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible.cfg</i> or alternatively set the
+  Convert the output of a playbook run to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">json</i>. Either
+  set the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">stdout_callback = json</i> setting in the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i> or alternatively set the
   <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">ANSIBLE_STDOUT_CALLBACK=json</i> variable at the CLI on playbook execution.
 </p>
 

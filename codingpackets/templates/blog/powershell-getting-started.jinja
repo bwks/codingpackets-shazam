@@ -1,0 +1,86 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  PowerShell can be used to codify Microsoft Windows environments.
+  This post covers the basics of getting started with PowerShell.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Windows - 10</li>
+  <li>PowerShell - 5.1.19041.1023</li>
+</ul>
+
+<h3 id="cmdlets">Cmdlets</h3>
+<p>
+  Get a list of cmdlets
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='Get-Command'
+) }}
+
+<h3 id="getting-help">Getting Help</h3>
+<p>
+  Get help for a cmdlet
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='help &lt;cmdlet&gt;'
+) }}
+
+<p>
+  PowerShell ships with a minimal help system. To update the help 
+  system use the following cmdlet
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='Udpate-Help'
+) }}
+
+<h3 id="aliases">Aliases</h3>
+<p>
+  Many common unix/linux commands are aliased to windows commands.
+  The get a list of aliases use the {{ text::code(text="Get-Alias") }}
+ cmdlet.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='Get-Alias'
+) }}
+
+
+<h3 id="finding-the-version">Finding the Version</h3>
+<p>
+  To get the PowerShell Engine version, get 
+  the {{ text::emphasize(text="PSVersion") }}
+
+  key from the 
+  {{ text::emphasize(text="$PSVersionTable") }}
+
+  hash table.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='$PSVersionTable.PSVersion
+
+# output
+
+Major  Minor  Build  Revision
+-----  -----  -----  --------
+5      1      19041  1023'
+) }}
+{% endblock page_content %}

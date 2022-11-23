@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Juniper CLI Quick Reference</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 21st of January 2019
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 17th of November 2018
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Juniper CLI Quick Reference</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 21st of January 2019
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 17th of November 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -404,7 +414,7 @@ file copy test.txt ftp://blah:blah@blah.com/some/directory/filename</code></pre>
 <h3 id="daemons">Daemons</h3>
 <p>
   Processes in Junos run in protected memory space called Daemons. Its possible to restart a
-  misbehaving or failed process such as <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">lldp</i>
+  misbehaving or failed process such as <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">lldp</i>
 . Processors
   are restarted from operational mode with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">restart</i>
  command.
@@ -450,7 +460,7 @@ request system reboot</code></pre>
 
 <h3 id="logs">Logs</h3>
 <p>
-  Log files are stored in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/var/log/</i>
+  Log files are stored in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/var/log/</i>
  folder. Logs can
   be viewed with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">show log</i>
  command.
@@ -471,11 +481,11 @@ request system reboot</code></pre>
 
 
 <p>
-  The log files can be very long, view the last <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400"><i>N</i></i>
+  The log files can be very long, view the last <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400"><i>N</i></i>
 
-  number of messages by <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">'|'</i>
+  number of messages by <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">'|'</i>
  piping to
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">last &lt;number of messages&gt;</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">last &lt;number of messages&gt;</i>
 .
 </p>
 
@@ -601,7 +611,7 @@ request system reboot</code></pre>
 
 <h4><b>Navigating The Config Hierarchy</b></h4>
 <p>
-  When you first enter configuration mode you are at the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">top</i>
+  When you first enter configuration mode you are at the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">top</i>
 
   of the configuration hierarchy.
 </p>
@@ -632,7 +642,7 @@ vagrant@vsrx#</code></pre>
 
 
 <p>
-  Move <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">up</i>
+  Move <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">up</i>
  one level with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">up</i>
  command.
 </p>
@@ -661,7 +671,7 @@ vagrant@vsrx#</code></pre>
 
 
 <p>
-  Move back to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">top</i>
+  Move back to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">top</i>
  with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">top</i>
  command.
 </p>
@@ -690,11 +700,11 @@ vagrant@vsrx#</code></pre>
 
 <h4><b>Candidate Configuration</b></h4>
 <p>
-  Changes made to the configuration are placed in a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">staging</i>
+  Changes made to the configuration are placed in a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">staging</i>
 
-  area called a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">candidate</i>
+  area called a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">candidate</i>
  configuration. Changes need
-  to be <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">committed</i>
+  to be <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">committed</i>
  to the running configuration before they
   take effect.
 </p>
@@ -809,7 +819,7 @@ vagrant@vsrx#</code></pre>
 
 
 
- in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/config/</i>
+ in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/config/</i>
  directory will be loaded.
 </p>
 

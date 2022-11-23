@@ -1,0 +1,199 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/ktbyers/netmiko", description="Netmiko") }}
+ is a python library created by a living legend amongst
+  network engineers, Kirk Byers. Netmiko aims to simplify SSH connections to network devices with python by extending the
+  {{ link::e(path="https://github.com/paramiko/paramiko", description="paramiko") }}
+ library to deal with the idiosyncrasies of SSHing to our
+  favorite network gear.
+</p>
+<p>
+  Netmiko has a huge amount of support within the network community, with over 50 contributers and a huge user base
+  ensuring that it is well tested. There is also a large number of device vendors supported making it an excellent
+  tool when using SSH as an access and configuration method.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  In this lab I will setup a Centos minimal server to install Netmiko then connect to and configure both a
+  Cisco router and ASA.
+</p>
+
+<h3 id="topology">Topology</h3>
+{{ image::boxed(path="blog/netmiko-getting-started/netmiko-basic.svg", width="400px") }}
+
+<h3 id="code-versions">Code Versions</h3>
+<ul>
+  <li>Centos/7 - 1702.01</li>
+  <li>ASAv - 9.8.1</li>
+  <li>CSR1000v - 3.15.00.S.155-2.S</li>
+  <li>Python - 2.7.5</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Install requied YUM packages
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y epel-release
+sudo yum group install -y "Development tools"
+sudo yum install -y gcc libffi-devel python2-pip python-devel openssl-devel sshpass python-setuptools python-virtualenv`
+) }}
+
+<p>
+  Upgrade pip and setuptools
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo pip install -U pip setuptools`
+) }}
+
+<p>
+  Create a virtual environment and install Netmiko
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# as normal user
+
+mkdir envs
+virtualenv envs/netmiko-test
+source netmiko-test/bin/activate
+
+# inside virtual environment
+
+pip install netmiko`
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  Connecting to a device requires you to know a few things about the device. IE the device type and the login
+  credentials.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# import library
+
+from netmiko import ConnectHandler
+
+# connection properties described in a dictionary
+
+csr = {
+    'device_type': 'cisco_ios',
+    'ip': '169.254.1.12',
+    'username': 'vagrant',
+    'password': 'vagrant',
+}
+
+asa = {
+    'device_type': 'cisco_asa',
+    'ip': '169.254.1.11',
+    'username': 'vagrant',
+    'password': 'vagrant',
+}`
+) }}
+
+
+<p>
+  Connect to the devices now the connection properties are setup.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# the ** unpacks a dictionary
+
+csr_session = ConnectHandler(**csr)
+
+asa_session = ConnectHandler(**asa)`
+) }}
+
+
+<p>
+  Now that we are connected its time to run some commands.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`print(csr_session.send_command('show ip int brief'))
+# output
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       10.0.2.15       YES DHCP   up                    up
+GigabitEthernet2       169.254.1.12    YES manual up                    up
+
+print(asa_session.send_command('show int ip brie'))
+# output
+
+Interface                  IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0         169.254.1.11    YES manual up                    up
+Management0/0              10.0.2.15       YES DHCP   up                    up`
+) }}
+
+
+<p>
+  Send a list of commands.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`commands = [
+    'show nameif',
+    'show hostname',
+]
+
+result = [asa_session.send_command(i) for i in commands]
+
+for i in result:
+    print(i)
+
+# output
+
+Interface                Name                     Security
+GigabitEthernet0/0       inside                   100
+Management0/0            management                 0
+
+asa`
+) }}
+
+
+<p>
+  Send a list of configuration commands.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`commands = [
+    'ntp server 8.8.8.8',
+    'logging host 10.10.10.10',
+]
+
+result = csr_session.send_config_set(commands)
+
+print(result)
+
+# output
+<span class="text">
+config term
+Enter configuration commands, one per line.  End with CNTL/Z.
+csr(config)# ntp server 8.8.8.8
+csr(config)# logging host 10.10.10.10
+csr(config)# end
+csr#</span>`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  As you can see, Netmiko helps to put a programatic interface around SSHing to a network device. Its a great tool
+  for when there is no API available but you do have an SSH interface. For more information check out the github
+  repo and Kirk's website both linked bellow.
+</p>
+{% endblock page_content %}

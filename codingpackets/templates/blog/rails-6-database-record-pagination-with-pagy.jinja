@@ -1,0 +1,226 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will outline a method the paginate database records 
+  in a Rails 6 app using the {{ link::e(path="https://github.com/ddnexus/pagy", description="Pagy") }}.
+  gem.   I will also cover the process of styling the paging navbar with bootstrap 
+  and font awesome icons.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Rails - 6.0.3.4</li>
+  <li>Pagy - 3.5</li>
+  <li>Bootstrap - 5.0.0-beta1</li>
+  <li>Font Awesome (Free) - 5.15.1</li>
+</ul>
+
+{{ text::note_block(text='
+    Pagy works with any rack app, therefore it is not tightly integrated 
+    into rails and is a bit more involved to setup than other paging gems.
+')
+}}
+
+
+<h3 id="installation">Installation</h3>
+<p>
+  Add the Pagy gem to your {{ text::emphasize(text="Gemfile") }}
+
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# Gemfile
+
+gem 'pagy', '~> 3.5'"
+) }}
+
+<p>
+  Then use {{ text::code(text="bundle") }}
+ to install the gem.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="bundle install"
+) }}
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Include the Pagy backend into the 
+  {{ text::emphasize(text="app/controllers/application_controller.rb") }}
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::Base
+  include Pagy::Backend
+end"
+) }}
+
+<p>
+  Include the Pagy frontend into the 
+  {{ text::emphasize(text="app/helpers/application_helper.rb") }}
+ 
+  file.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/helpers/application_helper.rb
+
+module ApplicationHelper
+  include Pagy::Frontend
+end"
+) }}
+
+<p>
+  Copy the {{ text::emphasize(text="pagy.rb") }}
+  configuration file from 
+  {{ link::e(path="https://github.com/ddnexus/pagy/blob/master/lib/config/pagy.rb", description="here") }}
+  to your {{ text::emphasize(text="config/initializers/") }}
+  directory.
+</p>
+<p>
+  This file is where you apply some of the customization for Pagy 
+  and also enable any {{ text::emphasize(text="extras") }}.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# config/initializers/pagy.rb
+
+# Uncomment this line to enable bootstrap.
+require 'pagy/extras/bootstrap'
+
+# Return 25 records per page.
+Pagy::VARS[:items] = 25
+
+# Change to layout of the paginator nav bar.
+Pagy::VARS[:size] = [1,2,2,1]`
+) }}
+
+<p>
+  To use font awesome icons create a partial
+  {{ text::emphasize(text="paginator.html.erb") }} template 
+  file in the {{ text::emphasize(text="app/views/shared/") }}
+  directory.
+</p>
+<p>
+  I used the template from 
+  {{ link::e(path="https://github.com/ddnexus/pagy/blob/master/lib/templates/bootstrap_nav.html.erb", description="here") }}. 
+  Replacing the {{ text::emphasize(text="pagy_t") }}
+ calls 
+  with the Font Awesome icon HTML as strings I want to use.
+</p>
+
+<p>
+  Here is a quote from the docs:
+</p>
+{{ text::quote_block(
+  attribution="https://github.com/ddnexus/pagy/blob/master/lib/templates/bootstrap_nav.html.erb",
+  text=`This template is i18n-ready: if you dont use i18n, then you can replace the pagy_t
+calls with the actual strings ("&lsaquo; Prev", "Next &rsaquo;", "&hellip;").`
+) }}
+
+
+<p>
+  For Example: <br>
+  &nbsp; &nbsp; From: {{ text::code(text="pagy_t('pagy.nav.prev')") }}
+  To: {{ text::code(text=`'&lt;i class="fas fa-angle-left"&gt;&lt;/i&gt;'`) }}
+
+</p>
+<p>
+  The complete template is below.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="erb",
+  code=`# app/views/shared/paginator.html.erb
+
+&lt;% link = pagy_link_proc(pagy, 'class="page-link"') %&gt;
+&lt;nav aria-label="pager"  class="pagy-bootstrap-nav" role="navigation"&gt;
+  &lt;ul class="pagination"&gt;
+  &lt;% if pagy.prev %&gt;    
+    &lt;li class="page-item prev"&gt;&lt;%== link.call(pagy.prev, '&lt;i class="fas fa-angle-left"&gt;&lt;/i&gt;', 'aria-label="previous"') %&gt;&lt;/li&gt;
+  &lt;% else %&gt;    
+    &lt;li class="page-item prev disabled"&gt;&lt;a href="#" class="page-link"&gt;&lt;%== '&lt;i class="fas fa-angle-left"&gt;&lt;/i&gt;' %&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;% end -%&gt;
+  &lt;% pagy.series.each do |item| %&gt;
+    &lt;%# series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36] %&gt
+    &lt;% if item.is_a?(Integer) %&gt;    
+      &lt;li class="page-item"&gt;&lt;%== link.call(item) %&gt;&lt;/li&gt;
+    &lt;% elsif item.is_a?(String) %&gt;    
+      &lt;li class="page-item active"&gt;&lt;%== link.call(item) %&gt;&lt;/li&gt;
+    &lt;% elsif item == :gap %&gt;    
+      &lt;li class="page-item disabled gap"&gt;&lt;a href="#" class="page-link"&gt;&lt;%== '&lt;i class="fas fa-ellipsis-h"&gt;&lt;/i&gt;' %&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+  &lt;% if pagy.next %&gt;    
+      &lt;li class="page-item next"&gt;&lt;%== link.call(pagy.next, '&lt;i class="fas fa-angle-right"&gt;&lt;/i&gt;', 'aria-label="next"') %&gt;&lt;/li&gt;
+    &lt;% else %&gt;    
+      &lt;li class="page-item next disabled"&gt;&lt;a href="#" class="page-link"&gt;&lt;%== '&lt;i class="fas fa-angle-right"&gt;&lt;/i&gt;' %&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;% end %&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;`
+) }}
+
+<p>
+  Now, Because we altered an initializer, restart your rails 
+  server to apply the changes.
+</p>
+
+<h3 id="usage">Usage</h3>
+<p>
+  In the controller actions that require paging. Wrap you 
+  queries in {{ text::emphasize(text="pagy") }}
+ 
+  calls.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# app/controllers/devices_controller.rb
+
+class DevicesController < ApplicationController
+  def index
+    @pagy, @devices = pagy(Devices.all)
+  end
+end"
+) }}
+
+
+<p>
+  In the associated views render the paginator partial template 
+  created in a previous step.
+</p>
+{{ text::code_block(
+  header="file",
+  language="erb",
+  code=`# app/views/devices/index.html.erb
+
+<%= render partial: "shared/paginator", locals: { pagy: @pagy }%>`
+) }}
+
+<p>
+  And that's it. Behold the blazing fast beauty of Pagy.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we added pagination to a Rails 6 app using the Pagy 
+  gem. We also used Bootstrap to style the paginator and used Font 
+  Awesome icons for the navigators and seperator.
+</p>
+{% endblock page_content %}

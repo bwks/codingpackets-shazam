@@ -1,0 +1,491 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="http://docs.python-cerberus.org/en/stable/index.html", description="Cerberus") }} is a lightweight
+  python library that can be used to validate the correct data is being supplied to configuration
+  management tools such as Ansible and Salt or perhaps even Jinja directly. Along with having
+  many useful built in features, Cerberus also makes it relatively straight forward to extend and
+  customize to your needs.
+</p>
+<p>
+  During this post I will cover the basic usage of Cerberus and extending it to add support
+  for validating IPv4/6 and MAC address data types.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Python</b> - 3.6.1</li>
+  <li><b>Cerberus</b> - 1.2</li>
+</ul>
+
+<h3 id="install-cerberus">Install Cerberus</h3>
+
+<p>
+  I will use {{ link::e(path="https://github.com/pypa/pipenv", description="pipenv") }} to manage a virtual environment
+  for this post. First create a directory to install the virtual environment.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/cerberus && cd ~/cerberus`
+) }}
+
+<p>Now install Cerberus along with PyYaml and activate the virtual environment.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`pipenv install cerberus pyyaml && pipenv shell`
+) }}
+
+<h3 id="schema">Schema</h3>
+<p>
+  A schema is defined as a python dictionary or optionally JSON/YAML. The schema enforces
+  the data structure and value types that are required. As an example, the below code snippet
+  defines both that the {{ text::emphasize(text="hostname") }}
+ key is required and must be
+  of the type {{ text::emphasize(text="string") }}
+.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`schema = {
+  "hostname": {
+    "type": "string",
+    "required": True
+  }
+}`
+) }}
+
+<h3 id="validation-rules">Validation Rules</h3>
+<p>
+  Validation rules are used to ensure the values provided are correct according to the intentions
+  of the schema author. Cerberus has a nice set of validation rules built in, I will cover two
+  kinds of validators; types and required values. See
+  {{ link::e(path="http://docs.python-cerberus.org/en/stable/validation-rules.html", description="here") }} for
+  a full list of validators.
+</p>
+<p>
+  In the above example the {{ text::emphasize(text="hostname") }}
+ value must be of the
+  type {{ text::emphasize(text="string") }}
+.
+  Out of the box, Cerberus supports validation of many common types including; string, int, boolean,
+  etc ... Consult the <a href="http://docs.python-cerberus.org/en/stable/validation-rules.html#type">
+  documentation</a> for a full list of supported types.</p>
+<p>
+  Additionally, the {{ text::emphasize(text="required") }}
+ validation rule specifies
+  that the {{ text::emphasize(text="hostname") }}
+ key is required.
+</p>
+
+<h3 id="data">Data</h3>
+<p>
+  Now that we have a schema defined, the next piece to the puzzle is creating some data to be
+  validated. Some example data that aligns to the schema is as follows.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`data = {
+  "hostname": "rt01"
+}`
+) }}
+
+
+<h3 id="basic-usage">Basic Usage</h3>
+<p>
+  Lets start with a simple example to demonstrate how to use Cerberus.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# import the Validator class.
+
+from cerberus import Validator
+
+schema = {
+  "hostname": {
+    "type": "string",
+    "required": True
+  }
+}
+
+data = {
+  "hostname": "rt01"
+}
+
+# create an instance of the Validator class.
+
+v = Validator()
+
+# Validate the data against the schema.
+
+v.validate(data, schema)
+True`
+) }}
+<p>
+  Since the data we provided to the schema was correct the validation was successful and
+  the output of {{ text::emphasize(text="True") }}
+ is returned.
+</p>
+
+<p>
+  Lets try to validate some data that does not contain a hostname field. Because the
+  hostname field is required, we can expect to get a data validation error.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`data = {}
+
+v.validate(data, schema)
+False
+
+# Check what went wrong with the validation
+
+v.errors
+{'hostname': ['required field']}`
+) }}
+<p>
+  As you can see Cerberus give us a nice informational message describing any problems with
+  the data validation.
+</p>
+
+
+<h3 id="further-usage">Further Usage</h3>
+<p>
+  A more elaborate schema will be used in the next section of this post. The schema defines
+  {{ text::emphasize(text="hostname") }}
+, {{ text::emphasize(text="system_mac") }}
+,
+  {{ text::emphasize(text="vlans") }}
+ and {{ text::emphasize(text="interfaces") }}
+ keys.
+  Both the {{ text::emphasize(text="vlans") }}
+ and
+  {{ text::emphasize(text="interfaces") }}
+ keys
+  are a list of dictionaries so they contain a nested schema.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`schema = {
+  "hostname": {
+    "type": "string",
+    "required": True
+  },
+  "system_mac": {
+    "type": "mac_address",
+  },
+  "vlans": {
+    "type": "list",
+    "schema": {
+      "type": "dict",
+      "schema": {
+        "name": {
+          "type": "string"
+        },
+        "number": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "interfaces": {
+    "type": "list",
+    "schema": {
+      "type": "dict",
+      "schema": {
+        "name": {
+          "type": "string"
+        },
+        "ipv4_address": {
+          "type": "ipv4_address"
+        },
+        "ipv4_prefix": {
+          "type": "integer"
+        },
+        "ipv6_address": {
+          "type": "ipv6_address"
+        },
+        "ipv6_prefix": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}`
+) }}
+
+<p>
+  The above schema can also be defined in YAML as an example see below.
+</p>
+<p></p>
+{{ text::code_block(
+  header="yaml",
+  language="yaml",
+  code=`---
+hostname:
+  type: "string"
+  required: True
+
+system_mac:
+  type: "mac_address"
+
+vlans:
+  type: "list"
+  schema:
+    type: "dict"
+    schema:
+      name:
+        type: "string"
+      number:
+        type: "integer"
+
+interfaces:
+  type: "list"
+  schema:
+    type: "dict"
+    schema:
+      ipv4_address:
+        type: "ipv4_address"
+      ipv4_prefix:
+        type: "integer"
+      ipv6_address:
+        type: "ipv6_address"
+      ipv6_prefix:
+        type: "integer"
+      name:
+        type: "string"`
+) }}
+
+<p>
+  As with the schema, data can be provided as either Python, JSON or YAML. See below for
+  example data that matches the above schema.
+</p>
+
+<h4><b>Python</b></h4>
+{{ text::code_block(
+  header="json",
+  language="json",
+  code=`data = {
+  "hostname": "rt01",
+  "system_mac": "00:11:22:aa:bb:cc",
+  "vlans": [
+    {
+      "name": "data",
+      "number": 100
+    },
+    {
+      "name": "voice",
+      "number": 200
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "eth1",
+      "ipv4_address": "10.100.10.10",
+      "ipv4_prefix": 24,
+      "ipv6_address": "2001:0db8:abcd:100:10:100:20:10",
+      "ipv6_prefix": 64
+    },
+    {
+      "name": "eth2",
+      "ipv4_address": "10.100.20.10",
+      "ipv4_prefix": 24,
+      "ipv6_address": "2001:0db8:abcd:200:10:100:20:10",
+      "ipv6_prefix": 64
+    }
+  ]
+}`
+) }}
+
+<h4><b>YAML</b></h4>
+{{ text::code_block(
+  header="yaml",
+  language="yaml",
+  code=`---
+hostname: "rt01"
+
+system_mac: "00:11:22:aa:bb:cc"
+
+vlans:
+  - name: "data"
+    number: 100
+  - name: "voice"
+    number: 200
+
+interfaces:
+  - name: "eth1"
+    ipv4_address: "10.100.10.10"
+    ipv4_prefix: 24
+    ipv6_address: "2001:0db8:abcd:100:10:100:20:10"
+    ipv6_prefix: 64
+  - name: "eth2"
+    ipv4_address: "10.100.20.10"
+    ipv4_prefix: 24
+    ipv6_address: "2001:0db8:abcd:200:10:100:20:10"
+    ipv6_prefix: 64`
+) }}
+
+<h3 id="extending-cerberus">Extending Cerberus</h3>
+<p>
+  In the above schema we have defined keys that are of the
+  {{ text::emphasize(text="ipv4_address") }}
+, {{ text::emphasize(text="ipv6_address") }}
+
+  and {{ text::emphasize(text="mac_address") }}
+ types.
+  Cerberus does not have built in support for these types so we will need to add this
+  functionality.
+</p>
+
+<p>
+  The below code snippet adds type validation for the {{ text::emphasize(text="ipv4_address") }}
+,
+  {{ text::emphasize(text="ipv6_address") }}
+ and {{ text::emphasize(text="mac_address") }}
+
+  types. We start by subclassing the {{ text::emphasize(text="Validator") }}
+ class and adding
+  the new type methods prefixed with {{ text::emphasize(text="_validate_type_") }}
+. When
+  the {{ text::emphasize(text="CustomValidator") }}
+ class is instantiated the new types
+  will be available.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`import re
+
+from ipaddress import ip_address
+
+
+def validate_ip_address(address):
+    """
+    Validate address is either an IPv4 or IPv6 address.
+    :param address: String - IPv4 or IPv6 address
+    :return: Int - 0, 4 or 6
+    """
+    if not isinstance(address, str):
+        return 0
+    try:
+        return ip_address(address).version
+    except ValueError:
+        return 0
+
+class CustomValidator(Validator):
+    """
+    Add type checking for network related fields.
+    """
+    def _validate_type_ipv4_address(self, value):
+        """
+        Check the value is a valid IPv4 address
+        :param value: String - IPv4 Address
+        :return: Bool
+        """
+        if validate_ip_address(value) == 4:
+            return True
+
+    def _validate_type_ipv6_address(self, value):
+        """
+        Check the value is a valid IPv6 address
+        :param value: String - IPv4 Address
+        :return: Bool
+        """
+        if validate_ip_address(value) == 6:
+            return True
+
+    def _validate_type_mac_address(self, value):
+        """
+        Check the value is a valid MAC address.
+        Valid format: 00:11:22:aa:bb:cc
+        :param value: String - MAC address in unix format
+        :return: Bool
+        """
+        try:
+            if bool(re.match('([a-fA-F0-9]{2}[:]){5}([a-fA-F0-9]{2})', value)):
+                return True
+        except TypeError:
+            pass`
+) }}
+
+<h3 id="testing">Testing</h3>
+<p>
+  To make use of the new validators, create an instance of the {{ text::emphasize(text="CustomValidator") }}
+
+  class and use it just like you previously used the {{ text::emphasize(text="Validator") }}
+
+  class.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`v = CustomValidator()
+
+v.validate(data, schema)
+True`
+) }}
+
+<h4><b>Alternate Validation Method</b></h4>
+<p>
+  Instead of subclassing the {{ text::emphasize(text="Validator") }}
+ class it's also
+  possible to define a function and specify the function as a validator in the schema. Lets
+  use a slightly modified version of the {{ text::emphasize(text="_validate_type_mac_address") }}
+
+  method to illustrate this point.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`def mac_address(field, value, error):
+    """
+    Validate MAC address
+    Takes a MAC address in colon ':' separated format unix format
+    EG: '00:11:22:aa:bb:cc'
+    :param field: Passed from Cerberus
+    :param value: String - MAC address in unix format
+    :param error: Passed from Cerberus
+    """
+    try:
+        if not bool(re.match('([a-fA-F0-9]{2}[:]){5}([a-fA-F0-9]{2})', value)):
+            error(field, 'Not a valid MAC address')
+    except TypeError:
+        error(field, 'Not a valid MAC address')
+
+schema = {'mac': {'validator': mac_address}}
+data = {'mac': '00:11:22:aa:bb:cc'}
+
+
+v = Validator()
+
+v.validate(data, schema)
+True`
+) }}
+<p>
+  In the above example we defined a {{ text::emphasize(text="validator") }}
+ key and
+  assigned the {{ text::emphasize(text="mac_address") }}
+ function as the means
+  of validation.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  More and more we are using tools like Ansible, Salt and Jinja templating in our day to day
+  work. Having a schema validation tool such as Cerberus allows you to ensure the correct data
+  is being passed to your configuration templates. If you dont have a database feeding your
+  variables, Cerberus is a pretty good alternative to ensure data consistency.
+</p>
+
+{% endblock page_content %}

@@ -1,0 +1,296 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In a couple of previous posts I covered how to 
+  configure 
+  {{ link::i(path="/blog/proxmox-configure-open-vswitch/", description="Open vSwitch") }}
+   and 
+  {{ link::i(path="/blog/proxmox-import-extrahop-appliances/", description="Import Extrahop Appliances") }}
+  on Proxmox.
+</p>
+
+<p>
+  The Extrahop Discovery Appliance (EDA) can  
+  ingest network traffic on its capture port 
+  for analysis. In my lab, I am hosting the EDA 
+  as a VM on a Proxmox host and using a Juniper 
+  switch to mirror traffic to it from my local LAN. 
+  Unfortunately, this is not enough for the EDA VM to 
+  receive traffic 😔
+</p>
+<p>
+🚀 Enter Open vSwitch 🚀
+</p>
+<p>
+  Open vSwitch allows you to configure a port mirror 
+  to forward traffic from a Proxmox host 
+  to a VM used to capture packets. In this post, I will 
+  show you how to configure Open vSwitch to forward 
+  traffic from the Proxmox host to a guest VM.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+</ul>
+
+{{ text::important_block(text='
+    I have a newer post with a better way to achieve the below 
+    result by using
+    $1.
+    I suggest you review this post, then head over there for a better 
+    solution. This post will remain unaltered for posterity.
+') 
+  | replace(from="$1", to=link::i(path="/blog/proxmox-hook-script-port-mirror/", description="hook scripts"))
+}}
+
+<h3 id="lab-network">Lab Network</h3>
+<p>
+  The following diagram show the lab setup outlined 
+  in this post. The goal, is to have traffic port mirrored 
+  from the Juniper switch to the eda01 VM.
+</p>
+
+<p>
+  {{ image::boxed(path="blog/proxmox-enable-port-mirror/port-mirror-lab.png", width="600px") }}
+</p>
+<p>
+  The following points summarise the diagram.
+</p>
+<ul>
+  <li>fw01 is a PaloAlto firewall and is the default gateway for all networks.</li>
+  <li>sw01 is a Juniper switch and is used to connect LAN devices.</li>
+  <li>pmx01 is a Proxmox host and has two physical interfaces:</li>
+  <ul>
+    <li>eno1 is configured as a trunk port and carries multiple VLANs.</li>
+    <li>enp1s0 is configured as an access port.</li>
+  </ul>
+  <li>pmx01 has the following virtual network components:</li>
+  <ul>
+    <li>vmbr0 and vmbr1 are virtual switches.</li>
+    <li>A tap* interface is created for each vNIC interface on a VM automatically.</li>
+    <li>Tap interfaces have the naming format; <i>tap&lt;vm-id&gt;i&lt;interface-number&gt;</i>.</li>
+  </ul>
+  <li>eda01 and exa01 are VM guests hosted on the Proxmox host.</li>
+  <li>Port mirror sources are denoted in yellow.</li>
+  <li>Port mirror destinations are denoted in green.</li>
+</ul>
+
+<h3 id="proxmox-host">Proxmox Host</h3>
+{{ text::note_block(text='
+    All commands run on the Proxmox host will be 
+    executed as the $1
+ user.
+') 
+  | replace(from="$1", to=text::emphasize(text="root"))
+}}
+{{ text::note_block(text='
+    The Juniper switch side is already configured to mirror traffic. 
+    The config for that can be found at the end of the post.
+') }}
+<p>
+  Keep the above lab network in mind when using the 
+  following Open vSwitch command to enable a port 
+  mirror from the Proxmox host to the EDA VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/usr/bin/ovs-vsctl \\
+  -- --id=@p get port tap201i1 \\
+  -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
+  -- set bridge vmbr1 mirrors=@m'
+) }}
+<p>
+  The command is pretty verbose, but what it is doing 
+  is creating a port mirror named 
+  {{ text::emphasize(text="eda-mirror") }}
+ that 
+  sources traffic from {{ text::emphasize(text="vmbr1") }}
+
+  and sends it to {{ text::emphasize(text="tap201i1") }}
+
+</p>
+
+<p>
+  Case closed, game over right? WRONG! This gets the packet 
+  capture working and I can now see traffic from the LAN being 
+  ingested by the EDA, BUT! It does not survive a restart of 
+  the Proxmox host or the EDA VM. Why?
+</p>
+<p>
+  The command to start the port mirror is not persistent 
+  and that explains why it does not survive a reboot of the 
+  Proxmox host. But why does the port mirror stop working 
+  when the VM reboots? The answer is the port mirror is not 
+  tied to the tap interface name, but the tap interface UUID. 
+  When the VM restarts, the UUID of the tap interface changes.
+</p>
+<p>
+  The following command can be used to see the UUID of the tap201i1 
+  interface. Reboot your VM and watch the UUID change.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'"
+) }}
+<p>
+  Long story short, I could not find a way to make a port mirror persistent 
+  via OVS. So what now? Bash scripts (duct tape) and crontab (glue) to the 
+  rescue 💪
+</p>
+
+<h3 id="bash-scripts">Bash Scripts</h3>
+<p>
+  To solve this problem I created two bash scripts. 
+  First lets create a directory to store the bash scripts.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="mkdir /root/scripts/"
+) }}
+<p>
+  The first script I mostly copied from 
+  {{ link::e(path="https://github.com/0xvext/proxmox-seconiontap.sh", description="here") }}.
+  The script cleans up old port mirrors and starts a new 
+  one as well as setting up some logging.
+</p>
+<p>
+  Create a file named 
+  {{ text::emphasize(text="proxmox-eda-span.sh") }}
+ 
+  in the 
+  {{ text::emphasize(text="/root/scripts/") }}
+ 
+  directory with the following contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code='#! /usr/bin/env bash
+# /root/scripts/proxmox-eda-span.sh
+# This script is used to create a port mirror from 
+# a Proxmox host to a VMs virtual NIC. 
+#
+# Modified from the original script found here:
+# https://github.com/0xvext/proxmox-seconiontap.sh
+# All credit to @0xvext
+
+EDA_LOG=/root/scripts/proxmox-eda-span.log
+
+/usr/bin/date >> $EDA_LOG
+
+/usr/bin/echo "####################" >> $EDA_LOG
+
+/usr/bin/echo "Clearing any existing mirror..." >> $EDA_LOG
+
+/usr/bin/ovs-vsctl clear bridge vmbr1 mirrors
+
+/usr/bin/echo "Creating mirror on vmbr1 for EDA" >> $EDA_LOG
+
+/usr/bin/ovs-vsctl \\
+  -- --id=@p get port tap201i1 \\
+  -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
+  -- set bridge vmbr1 mirrors=@m >> $EDA_LOG
+
+/usr/bin/echo "Showing existing mirrors..." >> $EDA_LOG
+
+/usr/bin/ovs-vsctl list Mirror >> $EDA_LOG
+
+/usr/bin/echo "####################" >> $EDA_LOG'
+) }}
+
+<p>
+  The second one checks if the EDA VM is running 
+  and, if its uptime is less than 240 seconds, it will 
+  start the port mirror by running the first script.
+</p>
+<p>
+  Create a file named 
+  {{ text::emphasize(text="check-eda-status.sh") }}
+ 
+  in the 
+  {{ text::emphasize(text="/root/scripts/") }}
+ 
+  directory with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code=`#!/usr/bin/env bash
+# /root/scripts/check-eda-status.sh
+# This script is used to restart the packet capture
+# to the Extrahop EDA if the VM reboots for some reason.
+# This script should be run via crontab every 2 minutes EG:
+# */2 * * * * /root/scripts/check-eda-status.sh
+
+VM_STATUS=$(/usr/sbin/qm status 201 --verbose | /usr/bin/egrep ^status | /usr/bin/awk '{print $2}');
+
+UPTIME=$(/usr/sbin/qm status 201 --verbose | /usr/bin/egrep ^uptime | /usr/bin/awk '{print $2}');
+
+if [[ $VM_STATUS == "running" ]]; then
+  if [[ $UPTIME < 240 ]]; then
+    /usr/bin/bash /root/scripts/proxmox-eda-span.sh;
+  fi
+fi`
+) }}
+
+<p>
+  Finally, we need to add an entry to the crontab 
+  that will run every two minutes to check the status 
+  of the EDA VM.
+</p>
+<p>
+  Open the crontab with the {{ text::code(text="contab -e") }}
+ 
+  command and add the following entry.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# EDA Port Mirror
+*/2 * * * * /root/scripts/check-eda-status.sh"
+) }}
+<p>
+  Now if the Proxmox host or the EDA VM restarts 
+  the port mirror will "automagically" be enabled.
+</p>
+
+<h3 id="juniper-switch">Juniper Switch</h3>
+<p>
+  To round out the post, the Juniper port mirror 
+  config is below.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# Port mirror sources
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/4.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/4.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/9.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/9.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/11.0
+set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/11.0
+
+# Port mirror destination
+set ethernet-switching-options analyzer NETWORK-ANALYZER output interface ge-0/0/6.0"
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Bit of a long post, but hopefully you made it here 
+  and it was worth it. In this post, we covered the 
+  process of creating a port mirror with Open vSwitch 
+  to mirror traffic from a Proxmox host to a guest VM.
+  Stay classy legends ✌️
+</p>
+
+{% endblock page_content %}

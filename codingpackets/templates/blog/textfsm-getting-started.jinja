@@ -1,0 +1,267 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://github.com/google/textfsm", description="Textfsm") }} is a text parsing library written in python to turn
+  plain text into structured data. Originally created by Google, the project seemed largely abandoned until recently
+  being added to github and receiving a small update.
+</p>
+
+<p>
+  This post will show how to extract interesting data from the output of the {{ text::code(text="show interface") }}
+ command on a
+  Cisco ASA using TextFSM. For reference the software versions used in this post are below.
+</p>
+<ul>
+  <li>TextFSM - 0.3.2</li>
+  <li>Python - 2.7.13</li>
+  <li>Ubuntu - 1604</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Create a virtual environment and install {{ text::emphasize(text="textfsm") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virtualenv -p python2.7 ~/envs/textfsm-env
+source ~/envs/textfsm-env/bin/activate
+
+# inside virtual environment
+
+pip install textfsm`
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  The good folks over at {{ link::e(path="http://networktocode.com/", description="network.toCode()") }} maintain a
+  {{ link::e(path="https://github.com/networktocode/ntc-templates", description="library") }} of templates and helpers for working with
+  TextFSM. I will borrow one of the templates for this post and in a future post go into more depth around
+  using the library.
+</p>
+<p>
+  Use {{ text::code(text="curl") }}
+ to download the {{ text::emphasize(text="cisco_asa_show_interface.template") }}
+ template.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/networktocode/ntc-templates/master/templates/cisco_asa_show_interface.template`
+) }}
+
+<p>
+  Templates use a series of regular expressions to define the data to be extracted from plain text output. There is a
+  pretty good explaination of the components of TextFSM {{ link::e(path="https://github.com/google/textfsm/wiki/Code-Lab", description="here") }}.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# textfsm template
+
+Value Required INTERFACE (\S+)
+Value INTERFACE_ZONE (.+?)
+Value LINK_STATUS (\w+)
+Value PROTOCOL_STATUS (.*)
+Value HARDWARE_TYPE ([\w ]+)
+Value BANDWIDTH (\d+\s+\w+)
+Value DELAY (\d+\s+\w+)
+Value DUPLEX (\w+\-\w+)
+Value SPEED (\d+\w+\s\w+)
+Value DESCRIPTION (.*)
+Value ADDRESS ([a-zA-Z0-9]+.[a-zA-Z0-9]+.[a-zA-Z0-9]+)
+Value MTU (\d+)
+Value IP_ADDRESS (\d+\.\d+\.\d+\.\d+)
+Value NET_MASK (\d+\.\d+\.\d+\.\d+)
+Value ONEMIN_IN_PPS (\d+)
+Value ONEMIN_IN_RATE (\d+)
+Value ONEMIN_OUT_PPS (\d+)
+Value ONEMIN_OUT_RATE (\d+)
+Value ONEMIN_DROP_RATE (\d+)
+Value FIVEMIN_IN_PPS (\d+)
+Value FIVEMIN_IN_RATE (\d+)
+Value FIVEMIN_OUT_PPS (\d+)
+Value FIVEMIN_OUT_RATE (\d+)
+Value FIVEMIN_DROP_RATE (\d+)
+
+Start
+  ^.*Interface ${INTERFACE} "${INTERFACE_ZONE}", is ${LINK_STATUS}.*protocol is ${PROTOCOL_STATUS}
+  ^\s+Hardware is ${HARDWARE_TYPE} -> Continue
+  ^.*BW ${BANDWIDTH}.*DLY ${DELAY}
+  ^.*\(${DUPLEX}.*Auto-Speed\(${SPEED}\)
+  ^.*Description: ${DESCRIPTION}
+  ^.*MAC address ${ADDRESS}.*MTU ${MTU}
+  ^.*IP address ${IP_ADDRESS}, .*subnet mask ${NET_MASK}
+  ^.*1 minute input rate ${ONEMIN_IN_PPS} pkts/sec,\s+${ONEMIN_IN_RATE} bytes/sec
+  ^.*1 minute output rate ${ONEMIN_OUT_PPS} pkts/sec,\s+${ONEMIN_OUT_RATE} bytes/sec
+  ^.*1 minute drop rate, ${ONEMIN_DROP_RATE}
+  ^.*5 minute input rate ${FIVEMIN_IN_PPS} pkts/sec,\s+${FIVEMIN_IN_RATE} bytes/sec
+  ^.*5 minute output rate ${FIVEMIN_OUT_PPS} pkts/sec,\s+${FIVEMIN_OUT_RATE} bytes/sec
+  ^.*5 minute drop rate, ${FIVEMIN_DROP_RATE} -> Record`
+) }}
+
+<p>
+  Lets fire up a python interpreter and create an {{ text::emphasize(text="interfaces") }}
+ variable with the output of the
+  {{ text::code(text="show interface") }}
+ command from a Cisco ASA.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# output of show interface
+
+interfaces = '''
+Interface GigabitEthernet0/0 "inside", is up, line protocol is up
+  Hardware is i82540EM rev02, BW 1000 Mbps, DLY 10 usec
+    Auto-Duplex(Full-duplex), Auto-Speed(1000 Mbps)
+    Input flow control is unsupported, output flow control is off
+    MAC address 0800.2735.03c6, MTU 1500
+    IP address 169.254.1.11, subnet mask 255.255.255.0
+    0 packets input, 0 bytes, 0 no buffer
+    Received 0 broadcasts, 0 runts, 0 giants
+    0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+    0 pause input, 0 resume input
+    0 L2 decode drops
+    1 packets output, 60 bytes, 0 underruns
+    0 pause output, 0 resume output
+    0 output errors, 0 collisions, 1 interface resets
+    0 late collisions, 0 deferred
+    0 input reset drops, 0 output reset drops
+    input queue (blocks free curr/low): hardware (511/511)
+    output queue (blocks free curr/low): hardware (511/510)
+  Traffic Statistics for "inside":
+    0 packets input, 0 bytes
+    1 packets output, 28 bytes
+    0 packets dropped
+      1 minute input rate 0 pkts/sec,  0 bytes/sec
+      1 minute output rate 0 pkts/sec,  0 bytes/sec
+      1 minute drop rate, 0 pkts/sec
+      5 minute input rate 0 pkts/sec,  0 bytes/sec
+      5 minute output rate 0 pkts/sec,  0 bytes/sec
+      5 minute drop rate, 0 pkts/sec
+Interface Management0/0 "management", is up, line protocol is up
+  Hardware is i82540EM rev02, BW 1000 Mbps, DLY 10 usec
+    Auto-Duplex(Full-duplex), Auto-Speed(1000 Mbps)
+    Input flow control is unsupported, output flow control is off
+    MAC address 0800.277d.ea42, MTU 1500
+    IP address 10.0.2.15, subnet mask 255.255.255.0
+    1086 packets input, 83965 bytes, 0 no buffer
+    Received 2 broadcasts, 0 runts, 0 giants
+    0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+    0 pause input, 0 resume input
+    0 L2 decode drops
+    1071 packets output, 130571 bytes, 0 underruns
+    0 pause output, 0 resume output
+    0 output errors, 0 collisions, 1 interface resets
+    0 late collisions, 0 deferred
+    0 input reset drops, 0 output reset drops
+    input queue (blocks free curr/low): hardware (497/458)
+    output queue (blocks free curr/low): hardware (510/506)
+  Traffic Statistics for "management":
+        1085 packets input, 62837 bytes
+    1071 packets output, 114891 bytes
+    2 packets dropped
+      1 minute input rate 16 pkts/sec,  905 bytes/sec
+      1 minute output rate 16 pkts/sec,  1762 bytes/sec
+      1 minute drop rate, 0 pkts/sec
+      5 minute input rate 0 pkts/sec,  0 bytes/sec
+      5 minute output rate 0 pkts/sec,  0 bytes/sec
+      5 minute drop rate, 0 pkts/sec
+'''`
+) }}
+
+<p>
+  Next up we will open the {{ text::emphasize(text="cisco_asa_show_interface.template") }}
+ file and run the {{ text::emphasize(text="interfaces") }}
+
+  data through the parser.
+</p>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code=`# import library
+
+import textfsm
+
+# open the template file
+
+with open('cisco_asa_show_interface.template', 'r') as f:
+    template = textfsm.TextFSM(f)
+
+# run the interface data through the template parser
+
+template.ParseText(interfaces)
+
+# output
+
+[['GigabitEthernet0/0',
+  'inside',
+  'up',
+  'up',
+  'i82540EM rev02',
+  '1000 Mbps',
+  '10 usec',
+  'Full-duplex',
+  '1000 Mbps',
+  '',
+  '0800.2735.03c6',
+  '1500',
+  '169.254.1.11',
+  '255.255.255.0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0'],
+ ['Management0/0',
+  'management',
+  'up',
+  'up',
+  'i82540EM rev02',
+  '1000 Mbps',
+  '10 usec',
+  'Full-duplex',
+  '1000 Mbps',
+  '',
+  '0800.277d.ea42',
+  '1500',
+  '10.0.2.15',
+  '255.255.255.0',
+  '16',
+  '905',
+  '16',
+  '1762',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0',
+  '0']]`
+) }}
+
+<p>
+  As you can see above, the parser returns a list of lists where each list contains the values defined
+  in the {{ text::emphasize(text="cisco_asa_show_interface.template") }}
+.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  TextFSM is a great tool for getting structured data out of devices that dont have an API. In a future post I will
+  use TextFSM along with {{ link::e(path="https://github.com/ktbyers/netmiko", description="Netmiko") }} and the
+  {{ link::e(path="https://github.com/networktocode/ntc-templates", description="ntc-templates") }} libraries to programatically extract
+  data from network devices without an API.
+</p>
+
+{% endblock page_content %}

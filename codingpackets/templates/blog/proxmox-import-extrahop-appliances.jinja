@@ -1,0 +1,599 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will show you how to import the
+  Extrahop Discovery Appliance (EDA) and the
+  Extrahop Explore Appliance (EXA) into Proxmox.
+</p>
+
+<p>
+  The following software was used as part of 
+  this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+  <li><b>Extrahop Discovery Appliance 1100v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Explore Appliance 5100v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Trace Appliance 1150v</b> - 8.6.2.1446</li>
+  <li><b>Extrahop Command Appliance</b> - 8.6.2.1446</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<p>
+  This post assumes that you have already downloaded
+  the images to the Proxmox host. I have 
+  downloaded them to the 
+  {{ text::emphasize(text="/tmp/") }}
+ directory. 
+  Additionally, all commands will be run as the 
+  {{ text::emphasize(text="root") }}
+ 
+  user. With all that out of the way, lets get started.
+</p>
+
+<h3 id="extrahop-discovery-appliance">Extrahop Discovery Appliance</h3>
+<p>
+  First, extract the image.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.tar.gz
+
+# output
+eda-1100v-kvm/
+eda-1100v-kvm/extrahop-boot.qcow2
+eda-1100v-kvm/extrahop-boot.qcow2.md5
+eda-1100v-kvm/eda-1100v.xml.md5
+eda-1100v-kvm/extrahop-data.qcow2.md5
+eda-1100v-kvm/eda-1100v.xml
+eda-1100v-kvm/extrahop-data.qcow2'
+) }}
+
+<p>
+  Create a VM for the EDA. The VM will have 
+  two interfaces, one for management and 
+  one for packet capture.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm create 201 \
+  --name eda01 --numa 0 --ostype l26 \
+  --cpu cputype=host --cores 2 --sockets 1 \
+  --memory 4096  \
+  --scsihw virtio-scsi-pci \
+  --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
+  --net1 virtio,bridge=vmbr1,firewall=0, \
+  --serial0 socket'
+) }}
+
+<p>
+  Import the boot disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-boot.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused0:local-lvm:vm-201-disk-0'`
+) }}
+
+<p>
+  Attach the boot disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 201 --scsi0 local-lvm:vm-201-disk-0'
+) }}
+
+<p>
+  Make the bootdisk bootable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 201 --boot c --bootdisk scsi0'
+) }}
+
+<p>
+  Import the data disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-data.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused1:local-lvm:vm-201-disk-1'`
+) }}
+
+<p>
+  Attach the data disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 201 --scsi1 local-lvm:vm-201-disk-1'
+) }}
+
+<p>
+  Create a third disk for an on box packet capture disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm set 201 -scsi2 qnap-nfs1:50,format=qcow2
+
+# output
+update VM 201: -scsi2 qnap-nfs1:50,format=qcow2
+Formatting '/mnt/pve/qnap-nfs1/images/201/vm-201-disk-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off preallocation=metadata compression_type=zlib size=53687091200 lazy_refcounts=off refcount_bits=16`
+) }}
+
+<p>
+  Start the EDA VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm start 201'
+) }}
+
+<p>
+  Connect to the terminal and configure an 
+  IP address.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm terminal 201
+  
+# Username: shell
+# Password: default
+
+enable
+configure
+interface 1
+ ip ipaddr 172.16.0.10 255.255.255.0 172.16.0.1 172.16.0.23
+ exit
+ running_config save
+ y
+exit'
+) }}
+
+<p>
+  Thats it for the EDA, lets move onto the EXA.
+</p>
+
+
+
+
+
+
+
+<h3 id="extrahop-explore-appliance">Extrahop Explore Appliance</h3>
+<p>
+  Extract the image.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-exa-5100v-xs-kvm-8.6.2.1446.tar.gz
+
+# output
+exa-5100v-xs-kvm/
+exa-5100v-xs-kvm/exa-5100v-xs.xml
+exa-5100v-xs-kvm/exa-5100v-xs.xml.md5
+exa-5100v-xs-kvm/extrahop-boot.qcow2
+exa-5100v-xs-kvm/extrahop-boot.qcow2.md5'
+) }}
+
+<p>
+  Create a VM for the EXA. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm create 202 \
+  --name exa01 --numa 0 --ostype l26 \
+  --cpu cputype=host --cores 4 --sockets 1 \
+  --memory 8192  \
+  --scsihw virtio-scsi-pci \
+  --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
+  --serial0 socket'
+) }}
+
+<p>
+  Import the boot disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 202 /tmp/exa-5100v-xs-kvm/extrahop-boot.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused0:local-lvm:vm-202-disk-0'`
+) }}
+
+<p>
+  Attach the boot disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 202 --scsi0 local-lvm:vm-202-disk-0'
+) }}
+
+<p>
+  Make the bootdisk bootable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 202 --boot c --bootdisk scsi0'
+) }}
+
+<p>
+  Create a second disk for metric storage.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 202 -scsi1 local-lvm:100,format=raw
+
+# output
+update VM 202: -scsi1 local-lvm:100,format=raw
+  Logical volume "vm-202-disk-1" created.'
+) }}
+
+<p>
+  Start the EXA VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm start 202'
+) }}
+
+<p>
+  Connect to the terminal and configure an 
+  IP address.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm terminal 202
+  
+# Username: shell
+# Password: default
+
+enable
+configure
+interface 1
+ ip ipaddr 172.16.0.11 255.255.255.0 172.16.0.1 172.16.0.23
+ exit
+ running_config save
+ y
+exit'
+) }}
+
+<p>
+  Thats it for the EXA, now onto the ETA.
+</p>
+
+
+
+
+
+
+
+
+
+<h3 id="extrahop-trace-appliance">Extrahop Trace Appliance</h3>
+<p>
+  Extract the image.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir /tmp/eta-1150v/
+tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.ova -C /tmp/eta-1150v/
+
+# output
+extrahop-eta-1150v-vmware.ovf
+extrahop-eta-1150v-vmware.mf
+extrahop-eta-1150v-vmware-disk1.vmdk
+extrahop-eta-1150v-vmware-disk2.vmdk'
+) }}
+
+<p>
+  Convert the {{ text::emphasize(text="boot") }}
+ and 
+  {{ text::emphasize(text="data") }}
+
+  disks from {{ text::emphasize(text="vmdk") }}
+ to 
+  {{ text::emphasize(text="qcow2") }}
+ images.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='/usr/bin/qemu-img convert -p -f vmdk -O qcow2 /tmp/eta-1150v/extrahop-eta-1150v-vmware-disk1.vmdk /tmp/eta-1150v/extrahop-boot.qcow2
+/usr/bin/qemu-img convert -p -f vmdk -O qcow2 /tmp/eta-1150v/extrahop-eta-1150v-vmware-disk2.vmdk /tmp/eta-1150v/extrahop-data.qcow2'
+) }}
+
+<p>
+  Create a VM for the ETA. The VM will have 
+  two interfaces, one for management and 
+  one for packet capture.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm create 203 \
+  --name eta01 --numa 0 --ostype l26 \
+  --cpu cputype=host --cores 2 --sockets 1 \
+  --memory 16384  \
+  --scsihw virtio-scsi-pci \
+  --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
+  --net1 virtio,bridge=vmbr1,firewall=0, \
+  --serial0 socket'
+) }}
+
+<p>
+  Import the boot disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 203 /tmp/eta-1150v/extrahop-boot.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused0:local-lvm:vm-203-disk-0'`
+) }}
+
+<p>
+  Attach the boot disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 203 --scsi0 local-lvm:vm-203-disk-0'
+) }}
+
+<p>
+  Make the bootdisk bootable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 203 --boot c --bootdisk scsi0'
+) }}
+
+<p>
+  Import the data disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 203 /tmp/eta-1150v/extrahop-data.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused1:local-lvm:vm-203-disk-1'`
+) }}
+
+<p>
+  Attach the data disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 203 --scsi1 local-lvm:vm-203-disk-1'
+) }}
+
+<p>
+  Create a third disk for packet capture disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm set 203 -scsi2 qnap-nfs1:100,format=qcow2
+
+# output
+update VM 203: -scsi2 qnap-nfs1:100,format=qcow2
+Formatting '/mnt/pve/qnap-nfs1/images/203/vm-203-disk-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off preallocation=metadata compression_type=zlib size=53687091200 lazy_refcounts=off refcount_bits=16`
+) }}
+
+<p>
+  Start the EDA VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm start 203'
+) }}
+
+<p>
+  Connect to the terminal and configure an 
+  IP address.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm terminal 203
+  
+# Username: shell
+# Password: default
+
+enable
+configure
+interface 1
+ ip ipaddr 172.16.0.12 255.255.255.0 172.16.0.1 172.16.0.23
+ exit
+ running_config save
+ y
+exit'
+) }}
+
+<p>
+  Thats it for the ETA, lets move onto the ECA.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 id="extrahop-command-appliance">Extrahop Command Appliance</h3>
+<p>
+  First, extract the image.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='tar -xvf extrahop-eca-kvm-8.6.2.1446.tar.gz
+
+# output
+eca-kvm/
+eca-kvm/extrahop-boot.qcow2
+eca-kvm/extrahop-boot.qcow2.md5
+eca-kvm/eca.xml
+eca-kvm/extrahop-data.qcow2.md5
+eca-kvm/extrahop-data.qcow2
+eca-kvm/eca.xml.md5'
+) }}
+
+<p>
+  Create a VM for the ECA.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm create 204 \
+  --name eca01 --numa 0 --ostype l26 \
+  --cpu cputype=host --cores 2 --sockets 1 \
+  --memory 4096  \
+  --scsihw virtio-scsi-pci \
+  --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
+  --serial0 socket'
+) }}
+
+<p>
+  Import the boot disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 204 /tmp/eca-kvm/extrahop-boot.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused0:local-lvm:vm-204-disk-0'`
+) }}
+
+<p>
+  Attach the boot disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 204 --scsi0 local-lvm:vm-204-disk-0'
+) }}
+
+<p>
+  Make the bootdisk bootable.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 204 --boot c --bootdisk scsi0'
+) }}
+
+<p>
+  Import the data disk.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qm importdisk 204 /tmp/eca-kvm/extrahop-data.qcow2 local-lvm
+
+# output
+Successfully imported disk as 'unused1:local-lvm:vm-204-disk-1'`
+) }}
+
+<p>
+  Attach the data disk to the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm set 204 --scsi1 local-lvm:vm-204-disk-1'
+) }}
+
+
+<p>
+  Start the ECA VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm start 204'
+) }}
+
+<p>
+  Connect to the terminal and configure an 
+  IP address.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='qm terminal 204
+  
+# Username: shell
+# Password: default
+
+enable
+configure
+interface 1
+ ip ipaddr 172.16.0.13 255.255.255.0 172.16.0.1 172.16.0.23
+ exit
+ running_config save
+ y
+exit'
+) }}
+
+<p>
+  Thats it for the ECA, and also, thats it for
+  the post 😊
+</p>
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I covered the process of importing 
+  the appliances into Proxmox. In a future post, 
+  I will show you how to configure a port mirror on 
+  Proxmox to forward traffic to the EDA capture port.
+</p>
+
+{% endblock page_content %}

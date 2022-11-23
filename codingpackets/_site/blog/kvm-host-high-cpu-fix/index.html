@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">KVM Host High CPU Fix</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 26th of January 2019
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 8th of September 2018
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">KVM Host High CPU Fix</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 26th of January 2019
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 8th of September 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -154,9 +164,9 @@
 <p>
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://twitter.com/Kroupouk666" target=_blank>@Kroupouk666</a> was kind enough to offer a
   potential solution which involves setting the KVM
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">halt_poll_ns</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">halt_poll_ns</i>
  parameter to
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">0</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">0</i>
 .
 </p>
 
@@ -174,7 +184,7 @@
   I run my labs with Vagrant using the libvirt provider and I have been using Vagrant triggers
   to throttle the CPU of these type of hosts that run with very high CPU. This potential solution,
   if it works, is much more agreeable so I figured I'd give it a try. First I checked the existing
-  value which was <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">200000</i>
+  value which was <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">200000</i>
  and apparently the default.
 </p>
 
@@ -198,7 +208,7 @@
 
 
 <p>
-  Next up I changed the value to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">0</i>
+  Next up I changed the value to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">0</i>
  as suggested.
 </p>
 

@@ -1,0 +1,272 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Howdy Folks! This post covers the process of installing 
+  the PostgreSQL database on Linux and a few of the 
+  common details around configuration and operation.
+</p>
+
+<h3 id="software-versions-used-in-this-post">Software Versions Used in this Post</h3>
+<ul>
+  <li>PostgreSQL - 13.1</li>
+  <li>Ubuntu - 20.04</li>
+  <li>Centos - 8.2.2004</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<h4>Ubuntu</h4>
+<p>
+  This is almost a direct copy from the 
+  {{ link::e(path="https://www.postgresql.org/download/linux/ubuntu/", description="documentation") }}
+  for Ubuntu Linux 2004.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Create the file repository configuration:
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+# Import the repository signing key:
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# Update the package lists:
+sudo apt update
+
+# Install the latest version of PostgreSQL along with development libraries.
+# If you want a specific version, use 'postgresql-12' or similar instead of 'postgresql':
+sudo apt -y install postgresql postgresql-contrib libpq-dev`
+) }}
+
+
+<h4>Centos</h4>
+<p>
+  This is almost a direct copy from the
+  {{ link::e(path="https://www.postgresql.org/download/linux/redhat/", description="documentation") }}
+  for Redhat Linux.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# Install the repository RPM:
+sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
+# Disable the built-in PostgreSQL module:
+sudo dnf -qy module disable postgresql
+
+# Install PostgreSQL and the development libraries:
+sudo dnf install -y postgresql13-server postgresql13-devel postgresql13-contrib libpq-devel"
+) }}
+
+<h3 id="verification">Verification</h3>
+
+<h4>Version</h4>
+<p>
+  Verify the version of Postgres that is installed.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# Ubuntu
+
+/usr/lib/postgresql/13/bin/postgres -V
+postgres (PostgreSQL) 13.1 (Ubuntu 13.1-1.pgdg20.04+1)
+
+# Centos
+
+/usr/pgsql-13/bin/postgres -V
+postgres (PostgreSQL) 13.1'
+) }}
+
+<h3 id="service">Service</h3>
+<h4>Ubuntu</h4>
+<p>
+  On Ubuntu distributions the {{ text::emphasize(text="postgresql") }}
+ service 
+  is started and enabled to run at start up automatically. Verify with the 
+  {{ text::code(text="systemctl status") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='systemctl status postgresql.service
+
+# output 
+
+● postgresql.service - PostgreSQL RDBMS
+     Loaded: loaded (/lib/systemd/system/postgresql.service; enabled; vendor preset: enabled)
+     Active: active (exited) since Fri 2020-11-20 22:59:44 UTC; 51s ago
+   Main PID: 138906 (code=exited, status=0/SUCCESS)
+      Tasks: 0 (limit: 2248)
+     Memory: 0B
+     CGroup: /system.slice/postgresql.service
+
+Nov 20 22:59:44 devbox systemd[1]: Starting PostgreSQL RDBMS...
+Nov 20 22:59:44 devbox systemd[1]: Finished PostgreSQL RDBMS.'
+) }}
+
+<h4>Centos</h4>
+<p>
+  On Centos distributions the {{ text::emphasize(text="postgresql-&lt;version&gt;") }}
+ 
+  database needs to be initialized and the service 
+  started and enabled. 
+</p>
+<p>
+  Initialize the database.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
+
+# output 
+
+Initializing database ... OK'
+) }}
+
+<p>
+  Start and enable the service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo systemctl start postgresql-13
+sudo systemctl enable postgresql-13
+
+# output 
+
+Created symlink /etc/systemd/system/multi-user.target.wants/postgresql-13.service → /usr/lib/systemd/system/postgresql-13.service.'
+) }}
+<p>
+  Verify with the {{ text::code(text="systemctl status") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='systemctl status postgresql-13.service
+
+# output 
+
+● postgresql-13.service - PostgreSQL 13 database server
+   Loaded: loaded (/usr/lib/systemd/system/postgresql-13.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2020-11-23 14:38:14 AEST; 1min 1s ago
+     Docs: https://www.postgresql.org/docs/13/static/
+  Process: 8091 ExecStartPre=/usr/pgsql-13/bin/postgresql-13-check-db-dir ${PGDATA} (code=exited, status=0/SUCCESS)
+ Main PID: 8096 (postmaster)
+    Tasks: 8 (limit: 23803)
+   Memory: 17.7M
+   CGroup: /system.slice/postgresql-13.service
+           ├─8096 /usr/pgsql-13/bin/postmaster -D /var/lib/pgsql/13/data/
+           ├─8098 postgres: logger
+           ├─8101 postgres: checkpointer
+           ├─8102 postgres: background writer
+           ├─8103 postgres: walwriter
+           ├─8104 postgres: autovacuum launcher
+           ├─8105 postgres: stats collector
+           └─8106 postgres: logical replication launcher
+
+Nov 23 14:38:14 centos8.homelab.local systemd[1]: Starting PostgreSQL 13 database server...
+Nov 23 14:38:14 centos8.homelab.local postmaster[8096]: 2020-11-23 14:38:14.921 AEST [8096] LOG:  redirecting log output to logging collector process
+Nov 23 14:38:14 centos8.homelab.local postmaster[8096]: 2020-11-23 14:38:14.921 AEST [8096] HINT:  Future log output will appear in directory "log".
+Nov 23 14:38:14 centos8.homelab.local systemd[1]: Started PostgreSQL 13 database server.'
+) }}
+
+<h4>IP/Port</h4>
+<p>
+  The default IP address and port combination that Postgres listens on is 
+  {{ text::emphasize(text="localhost:5432") }}
+ using the TCP protocol.
+</p>
+<p>
+  Verify that the host ip/port combination is open with the {{ text::code(text="ss") }}
+ 
+  command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='ss -tunlap | grep 5432
+
+# output 
+
+tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*'
+) }}
+
+
+<h3 id="configuration-files">Configuration Files</h3>
+<p>
+  Configuration files are stored at the folling locations
+</p>
+<h4>Ubuntu</h4>
+<p>
+  {{ text::emphasize(text="/etc/postgresql/13/main/postgresql.conf") }}
+
+</p>
+
+<h4>Centos</h4>
+<p>
+  {{ text::emphasize(text="/var/lib/pgsql/13/data/postgresql.conf") }}
+
+</p> 
+
+<h3 id="postgres-login">Postgres Login</h3>
+<p>
+  Switch to the postgres user and enter the Postgres application.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo -u postgres psql'
+) }}
+
+<h3 id="database-creation">Database Creation</h3>
+<p>
+  Create a database named {{ text::emphasize(text="testing123_db") }}
+
+  using the template {{ text::emphasize(text="template1") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='create database testing123_db template template1;'
+) }}
+
+<h3 id="user-creation">User Creation</h3>
+<p>
+  Create a database user {{ text::emphasize(text="user_name") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='create user user_name with encrypted password "mypassword";'
+) }}
+
+<p>
+  Apply permission for the database 
+  {{ text::emphasize(text="testing123_db") }}
+ to user
+  {{ text::emphasize(text="user_name") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='grant all privileges on database testing123_db to user_name;'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  You did it! PostgreSQL is installed and ready to rock and roll as your 
+  RDBMS.
+</p>
+{% endblock page_content %}

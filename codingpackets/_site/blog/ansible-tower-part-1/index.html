@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Ansible Tower Part 1</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 26th of March 2017
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Ansible Tower Part 1</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 26th of March 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -141,7 +151,7 @@
 <h3 id=get-ansible-tower>Get Ansible Tower</h3>
 <p>
   Go to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower-trial" target=_blank>https://www.ansible.com/tower-trial</a> and enter
-  your details to download the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">.tar</i> installation file. There are a number of methods to
+  your details to download the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">.tar</i> installation file. There are a number of methods to
   start a trial with Ansible, we will use the tower for linux method.
 </p>
 
@@ -161,7 +171,7 @@
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">The file will be named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible-tower-setup-latest.tar.gz</i>.</div>
+    <div class="px-4 pb-4 dark:text-zinc-900">The file will be named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible-tower-setup-latest.tar.gz</i>.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -231,7 +241,7 @@ cd ansible-tower-setup-3.1.1</code></pre>
 
 
 <p>
-  Edit the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">inventory</i> file and add the required passwords.
+  Edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i> file and add the required passwords.
 </p>
 <ul>
   <li>admin_password</li>
@@ -239,7 +249,7 @@ cd ansible-tower-setup-3.1.1</code></pre>
   <li>rabbitmq_password</li>
 </ul>
 <p>
-  I have used <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">redhat</i> for all three.
+  I have used <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">redhat</i> for all three.
 </p>
 
 
@@ -282,7 +292,7 @@ rabbitmq_use_long_name=false</code></pre>
 
 
 <p>
-  Edit the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/ansible/ansible.cfg</i> file and uncomment <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ask_sudo_pass = True</i>.
+  Edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/ansible/ansible.cfg</i> file and uncomment <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ask_sudo_pass = True</i>.
 </p>
 
 
@@ -315,8 +325,8 @@ ask_sudo_pass = True
 
 
 <p>
-  To install Tower, execute the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">setup.sh</i> as a sudo user. This will kickoff the playbook
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">install.yml</i>.
+  To install Tower, execute the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">setup.sh</i> as a sudo user. This will kickoff the playbook
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">install.yml</i>.
 </p>
 
 
@@ -370,8 +380,8 @@ Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
 
 
 <p>
-  Browse to the tower url <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">https://&lt;tower-hostname-or-ip&gt;</i> and login with the username
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">admin</i> and the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">admin_password</i> previously set in the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">inventory</i> file.
+  Browse to the tower url <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">https://&lt;tower-hostname-or-ip&gt;</i> and login with the username
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin</i> and the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">admin_password</i> previously set in the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i> file.
 </p>
 
 
@@ -386,7 +396,7 @@ Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
 
 <p>
   Remember the license file we requested earlier? By now it should have been emailed to you.
-  Upload it via the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">browse</i> button.
+  Upload it via the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">browse</i> button.
 </p>
 
 

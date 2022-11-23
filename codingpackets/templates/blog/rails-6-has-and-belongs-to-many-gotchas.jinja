@@ -1,0 +1,191 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently came across a couple of caveates when working with 
+  {{ text::emphasize(text="has_and_belongs_to_many") }}
+ 
+  relationships with Rails. This post covers them and how to 
+  solve or work around them.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<ul>
+  <li>Rails - 6.0.3.4</li>
+</ul>
+
+<h3 id="many-to-many-relationship-type">Many to Many Relationship Type</h3>
+<p>
+  When creating a many to many relationship, you can use two 
+  different types. A direct relationship between two models 
+  or an inderect relationship between an intermediate model. 
+  The {{ link::e(path="https://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association", description="docs") }}
+ 
+  cover this really well, so I wont rehash it here. 
+</p>
+<p>
+  For my examples I am using a direct relationship between two 
+  models. This utilizes a join table to join the models together.
+</p>
+
+<h3 id="relationship-naming">Relationship Naming</h3>
+<p>
+  When creating a relationship between two tables the order of 
+  the associatied table names matter.
+</p>
+<p>
+  Lets say we want to create a 
+  relationship between the {{ text::emphasize(text="tenants") }}
+ 
+  and {{ text::emphasize(text="tags") }}
+ tables.
+</p>
+<p>
+  If you use a generator to create a join table, for example: 
+  {{ text::code(text="rails generate migration TenantsTags") }}
+ you will 
+  end up with a schema that looks something like the below.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=' # db/schema.rb
+
+create_table "tenants_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id"
+    t.uuid "tag_id"
+    t.index ["tag_id"], name: "index_tenants_tags_on_tag_id"
+    t.index ["tenant_id"], name: "index_tenants_tags_on_tenant_id"
+  end'
+) }}
+<p>
+  Notice how {{ text::emphasize(text="tenants") }}
+ comes 
+  before {{ text::emphasize(text="tags") }}
+ in the join 
+  table name?
+</p>
+
+<p>
+  If you try to add any {{ text::emphasize(text="tags") }}
+ 
+  to a {{ text::emphasize(text="tenant") }}
+ you will get 
+  an error similar to the below.
+</p>
+{{ text::code_block(
+  header="error",
+  language="ruby",
+  code=`Caused by:
+PG::UndefinedTable: ERROR:  relation "tags_tenants" does not exist
+LINE 8:  WHERE a.attrelid = '"tags_tenants"'::regclass`
+) }}
+<p>
+  Why is that? The table absolutely exists in the schema definition. 
+  Or does it? If you look closely at the error you will see that 
+  rails is looking for {{ text::emphasize(text="tags_tenants") }}
+ 
+  not {{ text::emphasize(text="tenants_tags") }}
+.
+</p>
+<p>
+  After some digging I found this note in the 
+  {{ link::e(path="https://api.rubyonrails.org/v6.1.0/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_and_belongs_to_many", description="docs") }}
+. 
+
+</p>
+
+{{ text::quote_block(
+  attribution="https://api.rubyonrails.org/v6.1.0/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_and_belongs_to_many",
+  text="Unless the join table is explicitly specified as an option, it is guessed using the lexical order of the class names. So a join between Developer and Project will give the default join table name of “developers_projects” because “D” precedes “P” alphabetically"
+) }} 
+
+<p>
+  Essentially, you need to name the join table names in alphabetical order.
+  Reverse the join table name around to 
+  {{ text::emphasize(text="tags_tenants") }}
+ and it will work 
+  as expected.
+</p>
+
+<h3 id="model-naming">Model Naming</h3>
+<p>
+  For this example I have a direct many to many relationship 
+  between the {{ text::emphasize(text="vrfs") }}
+ 
+  and {{ text::emphasize(text="tags") }}
+ tables.
+</p>
+<p>
+  The next caveate I hit was related to Model naming.
+  I have a {{ text::emphasize(text="vrf") }}
+ model 
+  and to stop rails from naming it weird, I have some 
+  inflection rules. 
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code="# config/initializers/inflections.rb
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.irregular 'vrf', 'vrfs'
+  inflect.acronym 'VRF'
+  inflect.acronym 'VRFs'
+end"
+) }}
+
+<p>
+  This impacted rail's ability to find the 
+  {{ text::emphasize(text="vrf") }}
+ table from the
+  {{ text::emphasize(text="tags") }}
+ table.
+</p>
+<p>
+  In the below error notice the Capitalized 
+  {{ text::emphasize(text="Vrf") }}
+ rather 
+  than the uppercase {{ text::emphasize(text="VRF") }}
+
+</p>
+{{ text::code_block(
+  header="error",
+  language="ruby",
+  code='NameError: uninitialized constant Tag::Vrf'
+) }}
+<p>
+  To work around this you need to explicitly tell 
+  the {{ text::emphasize(text="tag") }}
+ model 
+  the class name of the {{ text::emphasize(text="vrf") }}
+ 
+  model in the {{ text::emphasize(text="has_and_belongs_to_many") }}
+ 
+  association.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# app/model/tags.rb
+
+class Tag < ApplicationRecord
+  has_and_belongs_to_many :vrfs, class_name: "VRF"
+end`
+) }}
+<p>
+  After that, the associations work as expected. 
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I covered a couple of the caveats I encountered 
+  while working with the {{ text::emphasize(text="has_and_belongs_to_many") }}
+ 
+  association in Rails. This will help future Brad. If you are 
+  reading this, it may help you too. 
+</p>
+{% endblock page_content %}

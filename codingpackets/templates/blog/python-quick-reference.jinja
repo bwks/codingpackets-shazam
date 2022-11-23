@@ -1,0 +1,171 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="best-practices">Best Practices</h3>
+<p>
+  {{ link::e(path="http://docs.python-guide.org/en/latest/" , description="Python Style Guide") }}<br>
+</p>
+
+<h3 id="comment">Comment</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="# Single line comment
+
+# Multiple
+# line
+# comment"
+) }}
+
+<h3 id="doc-string">Doc String</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code='"""Single line docstring"""
+
+"""
+Multiple
+line
+docstring
+"""'
+) }}
+
+
+<h3 id="variable">Variable</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="stuff = 'stuff'"
+) }}
+
+<h3 id="string">String</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="'Single line string'
+
+'''
+Multiple
+line
+string
+'''"
+) }}
+
+<h3 id="integer">Integer</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="42"
+) }}
+
+
+<h3 id="boolean">Boolean</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="True
+
+# or
+
+False"
+) }}
+
+<h3 id="list">List</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="['stuff', 'things']"
+) }}
+
+<h3 id="tuple">Tuple</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="('stuff', 'things')"
+) }}
+
+<h3 id="dictionary">Dictionary</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="{'stuff_key': 'stuff_value', 'things_key': 'things_value'}"
+) }}
+
+<h3 id="for-loop">For Loop</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="# Iterate list or tuple
+for thing in things:
+    print(thing)
+
+# Iterate dictionary
+for key, value in stuff.items():
+    print(key, value)"
+) }}
+
+
+<h3 id="while-loop">While Loop</h3>
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="thing = True
+while thing is True:
+    print(thing)
+    thing = False"
+) }}
+
+
+<h3 id="if-elif-else">If, Elif, Else</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="if 1 > 42:
+    print('One')
+elif 42 < 1:
+    print('The answer')
+else:
+    print('Maths is fun')"
+) }}
+
+
+<h3 id="function">Function</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="def stuff():
+    '''Get stuff'''
+    stuff = ['stuff', 'more stuff', 'other stuff']
+    return stuff"
+) }}
+
+
+<h3 id="class">Class</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code='class StuffAndThings(object):
+    """Stuff and things"""
+    def __init__(self, stuff, things):
+        self.stuff = stuff
+        self.things = things
+
+    def get_stuff():
+        """Get stuff"""
+        return self.stuff
+
+    def get_things():
+        """Get things"""
+        return self.things'
+) }}
+
+<h3 id="using-modules">Using Modules</h3>
+{{ text::code_block(
+  header="python",
+  language="python",
+  code='import os'
+) }}
+
+{% endblock page_content %}

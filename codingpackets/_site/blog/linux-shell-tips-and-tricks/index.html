@@ -84,19 +84,29 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Linux Shell Tips and Tricks</h1>
-  <div class="">
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        updated: 3rd of September 2019
-      </p>
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 6th of July 2018
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Linux Shell Tips and Tricks</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 3rd of September 2019
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 6th of July 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -190,7 +200,7 @@ EOF</code></pre>
 
   <p>
     Use the double <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">&gt;&gt;</i>
- operator to <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">append</i>
+ operator to <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">append</i>
 
     content to an existing file.
   </p>
@@ -271,10 +281,10 @@ EOF</code></pre>
 
   <h3 id="grep-egrep">grep | egrep</h3>
   <p>
-    Search a file and ignore lines that start with a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">#</i>
+    Search a file and ignore lines that start with a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">#</i>
 ,
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">space</i>
- or <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">tab</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">space</i>
+ or <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">tab</i>
 .
   </p>
 
@@ -302,7 +312,7 @@ EOF</code></pre>
   <p>
     Get some context around a match with the <code class="code-green">grep/egrep</code>
  command using the
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-C &lt;num_of_context_lines&gt;</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-C &lt;num_of_context_lines&gt;</i>
  flag.
   </p>
   
@@ -347,7 +357,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
 
   <p>
     I adapted the above into a bash function that can be placed in your
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.bashrc</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.bashrc</i>
  file. Call the function with
     <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">tping &lt;ip-address&gt;</i>
 
@@ -485,11 +495,11 @@ sudo tail -f &lt;alt . expands&gt;
   <p>
     A <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">space</i>
  at the start of a set of commands stops the line being written to your
-    <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.bash_history</i>
+    <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.bash_history</i>
 . Good for keeping things like passwords
-    and API keys out of your <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/.bash_history</i>
+    and API keys out of your <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/.bash_history</i>
  or when running
-    dangerous <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">sudo</i>
+    dangerous <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">sudo</i>
  commands.
   </p>
 
@@ -513,7 +523,7 @@ sudo tail -f &lt;alt . expands&gt;
 
   <p>
     <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">!</i>
-<i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">&lt;number_of_command&gt;</i>
+<i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">&lt;number_of_command&gt;</i>
  to re-execute a
     command from the output of the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">history</i>
  command.
@@ -574,9 +584,9 @@ pwd
 
   <p>
     <i class="px-2 py-0.5 font-mono font-semibold rounded border border-neutral-300 bg-white dark:bg-neutral-200 dark:text-zinc-900">!</i>
-<i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">&lt;command&gt;</i>
+<i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">&lt;command&gt;</i>
  repeats the last occurrence
-    of <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">&lt;command&gt;</i>
+    of <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">&lt;command&gt;</i>
 .
   </p>
 

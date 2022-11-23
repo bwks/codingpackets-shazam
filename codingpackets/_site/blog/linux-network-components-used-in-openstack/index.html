@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Linux Network Components Used In Openstack</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 8th of November 2017
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Linux Network Components Used In Openstack</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 8th of November 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -129,8 +139,8 @@
 
 <h3 id="linux-network-components">Linux Network Components</h3>
 <p>
-  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
- and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bridge-utils</i>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">iproute2</i>
+ and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">bridge-utils</i>
  packages are used to
   build the following four components that are used in openstack networking.
 </p>
@@ -166,7 +176,7 @@
   <li>IP addresses</li>
   <li>IP routing table</li>
   <li>port numbers</li>
-  <li><i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/proc/net</i>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/proc/net</i>
  directory</li>
 </ul>
 
@@ -197,9 +207,9 @@
 
 <h3 id="lab-setup">Lab Setup</h3>
 <p>
-  To build this lab, I will be using <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant</i>
+  To build this lab, I will be using <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant</i>
  with the
-  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">vagrant-libvirt</i>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vagrant-libvirt</i>
  provider. For reference the code versions are as follows.
 </p>
 <ul>
@@ -228,14 +238,14 @@
 
 <h3 id="requirements">Requirements</h3>
 <p>
-  The <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
+  The <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">iproute2</i>
  package will be the default in "most" modern linux
   distributions out of the box.
 </p>
 <p>
   Linux bridges are created using the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">brctl</i>
  command which is available in
-  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">bridge-utils</i>
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">bridge-utils</i>
  package. Ubuntu does not have it installed by default.
 </p>
 
@@ -481,7 +491,7 @@ rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
 <h3 id="helpful-commands">Helpful Commands</h3>
 
 <p>
-  Get detailed information about a VTEP with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-d</i>
+  Get detailed information about a VTEP with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-d</i>
  flag.
 </p>
 
@@ -508,7 +518,7 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 
 
 <p>
-  Use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-i</i>
+  Use the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-i</i>
  flag with tcpdump when capturing within a namespace to
   prevent buffering of the capture and have sent to stdout.
 </p>
@@ -530,8 +540,8 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 
 <h3 id="outro">Outro</h3>
 <p>
-  Networking in linux has come a long way, with <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">iproute2</i>
- and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">brctl</i>
+  Networking in linux has come a long way, with <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">iproute2</i>
+ and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">brctl</i>
 
   we learned how to configure multi-tenant network stacks that are used by Openstack Neutron.
 </p>

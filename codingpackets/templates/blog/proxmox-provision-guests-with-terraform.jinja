@@ -1,0 +1,318 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Recently, I have started using Proxmox as a hypervisor in my home 
+  lab. In this post I will show you how to provision Proxmox guest VMs using 
+  Terraform. I use this method to deploy about 20 VMs across 3 Proxmox hosts 
+  in my home lab.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+  <li><b>Terraform</b> - 1.0.11</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<p>
+  This post assumes you already have Terraform installed. Installation 
+  instructions can be found in the 
+  {{ link::e(path="https://www.terraform.io/", description="docs") }} 
+  for multiple platforms.
+</p>
+
+<p>
+  In a previous 
+  {{ link::i(path="/blog/proxmox-import-and-use-cloud-images/", description="post") }} I 
+  imported an Ubuntu cloud-init image to Proxmox. I will be using that image 
+  to build the VMs via Terraform in this post. 
+</p>
+
+<p>
+  I create my VMs on local storage on each Proxmox host. I also needed to clone the 
+  cloud-init VM template to all the Proxmox hosts. If you store your VMs on 
+  shared storage, you can just have the VM template on the shared storage. 
+</p>
+
+<h3 id="proxmox-host">Proxmox Host</h3>
+<p>
+  On the Proxmox host, create a Terraform user, role and authentication token 
+  that will be used by Terraform to connect to Proxmox and manage guests.
+</p>
+
+<p>
+  When generating the token, the important part to note is the 
+  {{ text::code(text="--privsep=0") }}
+ flag. Without this, token based auth will not work.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pveum role add terraform-role -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.Audit VM.PowerMgmt Datastore.AllocateSpace Datastore.Audit"
+pveum user add terraform@pve
+pveum aclmod / -user terraform@pve -role terraform-role
+pveum user token add terraform@pve terraform-token --privsep=0
+
+# Output
+┌──────────────┬──────────────────────────────────────┐
+│ key          │ value                                │
+╞══════════════╪══════════════════════════════════════╡
+│ full-tokenid │ terraform@pve!terraform-token        │
+├──────────────┼──────────────────────────────────────┤
+│ info         │ {"privsep":0}                        │
+├──────────────┼──────────────────────────────────────┤
+│ value        │ 12345abc-a123-4567-b234-1233456789ab │
+└──────────────┴──────────────────────────────────────┘'
+) }}
+
+{{ text::important_block(text='
+    The token must be noted down. It cannot be accessed later.
+') }}
+
+<h3 id="dev-machine">Dev Machine</h3>
+<h4>Terraform Credentials</h4>
+<p>
+  On the machine you will be running Terraform from, add 
+  the following environment variables to your environment 
+  file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code='# ~/.zshrc
+export PM_API_TOKEN_ID="terraform@pve!terraform-token"
+export PM_API_TOKEN_SECRET="12345abc-a123-4567-b234-1233456789ab"'
+) }}
+
+<p>
+  Source the environment file, to load in the new variables into your environment.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='source ~/.zshrc'
+) }}
+
+
+<h4>Terraform Configuration</h4>
+<p>
+  Create and change to a project directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='mkdir -p ~/terraform/proxmox/ && cd ~/terraform/proxmox/'
+) }}
+
+<p>
+  Create the following files to configure and use Terraform.
+</p>
+<p>
+  {{ text::emphasize(text="provider.tf") }}
+ tells 
+  Terraform about the providers being used.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="tf",
+  code='# ~/terraform/proxmox/provider.tf
+terraform {
+    required_providers {
+        proxmox = {
+        source = "telmate/proxmox"
+        version = "2.9.0"
+        }
+    }
+}'
+) }}
+
+<p>
+  {{ text::emphasize(text="vars.tf") }}
+ 
+  is used to store variables used in other Terraform files. In 
+  this file, we also define our VM parameters.
+</p>
+{{ text::code_block(
+  header="file",
+  language="tf",
+  code='# ~/terraform/proxmox/vars.tf
+variable "proxmox_host" {
+    default = "172.31.254.11"
+}
+
+variable "ssh_key" {
+  default = "ssh-rsa abc123..."
+}
+
+variable "virtual_machines" {
+    default = {
+        "tf-test-01" = {
+            hostname = "tf-test"
+            ip_address = "172.31.255.13/24"
+            gateway = "172.31.255.1",
+            vlan_tag = 100,
+            target_node = "pmx01",
+            cpu_cores = 2,
+            cpu_sockets = 1,
+            memory = "2048",
+            hdd_size = "20G",
+            vm_template = "ubuntu-2004-cloud-init",
+        },
+        "tf-test-02" = {
+            hostname = "tf-test"
+            ip_address = "172.31.255.14/24"
+            gateway = "172.31.255.1",
+            vlan_tag = 100,
+            target_node = "pmx02",
+            cpu_cores = 2,
+            cpu_sockets = 1,
+            memory = "2048",
+            hdd_size = "20G",
+            vm_template = "ubuntu-2004-cloud-init",
+        },
+    }
+}'
+) }}
+
+<p>
+  {{ text::emphasize(text="main.tf") }}
+ 
+  is used to define the resources that will be provisioned. 
+  The below file has a 
+  {{ text::emphasize(text="for_each") }}
+ loop that 
+  loops through the 
+  {{ text::emphasize(text="virtual_machines") }}
+ variable 
+  in the {{ text::emphasize(text="vars.tf") }}
+ file to 
+  create multiple resources.
+</p>
+{{ text::code_block(
+  header="file",
+  language="tf",
+  code='# ~/terraform/proxmox/main.tf
+provider "proxmox" {
+    pm_api_url = "https://${var.proxmox_host}:8006/api2/json"
+    pm_tls_insecure = true
+
+    # Uncomment the below for debugging.
+    # pm_log_enable = true
+    # pm_log_file = "terraform-plugin-proxmox.log"
+    # pm_debug = true
+    # pm_log_levels = {
+    # _default = "debug"
+    # _capturelog = ""
+    # }
+}
+
+resource "proxmox_vm_qemu" "virtual_machines" {
+    for_each = var.virtual_machines
+
+    name = each.value.hostname
+    target_node = each.value.target_node
+    clone = each.value.vm_template
+    agent = 1
+    os_type = "cloud-init"
+    cores = each.value.cpu_cores
+    sockets = each.value.cpu_sockets
+    cpu = "host"
+    memory = each.value.memory
+    scsihw = "virtio-scsi-pci"
+    bootdisk = "scsi0"
+    disk {
+        slot = 0
+        size = each.value.hdd_size
+        type = "scsi"
+        storage = "local-lvm"
+        iothread = 1
+    }
+    
+    network {
+        model = "virtio"
+        bridge = "vmbr0"
+   	    tag = each.value.vlan_tag
+    }
+
+    # Not sure exactly what this is for. something about 
+    # ignoring network changes during the life of the VM.
+    lifecycle {
+        ignore_changes = [
+        network,
+        ]
+    }
+
+    # Cloud-init config
+    ipconfig0 = "ip=${each.value.ip_address},gw=${each.value.gateway}"
+    sshkeys = var.ssh_key
+}
+
+output "vm_ipv4_addresses" {
+  value = {
+      for instance in proxmox_vm_qemu.virtual_machines:
+      instance.name => instance.default_ipv4_address
+  }
+}'
+) }}
+
+<h4>Proxmox Provider Install</h4>
+<p>
+  Install the Proxmox Terraform provider. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='terraform init'
+) }}
+
+<h4>Terraform Usage</h4>
+<p>
+  Ask Terraform to plan the changes that will be deployed. This 
+  is a dry-run and no changes will be applied.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='terraform plan'
+) }}
+
+<p>
+  If you are happy with what you see, ship it by applying the changes. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='terraform apply'
+) }}
+
+<p>
+  If the stars aligned correctly and the ducks are standing in a row, 
+  you will have 2x new Ubuntu VMs provisioned in Proxmox.
+</p>
+
+<p>
+  If you made a mistake or no longer need to resources, throw them in 
+  the virtual trash. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='terraform destroy'
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to configure and use the Proxmox 
+  Terraform provider to provision VMs in Proxmox. Terraform is a 
+  fantastic tool and the Proxmox provider works really well. They 
+  make an excellent combination of tools when used together.
+</p>
+
+{% endblock page_content %}

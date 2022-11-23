@@ -1,0 +1,178 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Centos 7 minimal ships with {{ text::emphasize(text="python 2.7.5") }}
+ and using such an old python version can cause problems
+  when using some python packages for network automation. This post describes how to install {{ text::emphasize(text="python 2.7.13") }}
+
+  and {{ text::emphasize(text="python 3.6.2") }}
+ on a Centos 7 minimal server.
+</p>
+
+<h3 id="install-python">Install Python</h3>
+<p>
+  Install required YUM packages.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install -y gcc wget zlib zlib-devel openssl openssl-devel`
+) }}
+
+<p>
+  Use {{ text::code(text="wget") }}
+ to download the python tar files.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /tmp
+wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz
+wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz`
+) }}
+
+<p>
+  Extract the tar files.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`tar -xvf Python-2.7.13.tgz
+tar -xvf Python-3.6.2.tgz`
+) }}
+
+<p>
+  Build the python versions and make an alternate install.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /tmp/Python-2.7.13
+./configure --prefix=/usr/local
+sudo make altinstall
+
+cd /tmp/Python-3.6.2
+./configure --prefix=/usr/local
+sudo make altinstall`
+) }}
+<p>
+  {{ text::code(text="sudo make altinstall") }}
+ prevents replacement of the {{ text::emphasize(text="/usr/bin/python") }}
+ binary. Its
+  recommended to leave the system python alone on RHEL distributions as {{ text::emphasize(text="yum") }}
+ uses the system python
+  for updates.
+</p>
+
+<p>
+  Create a symlink for {{ text::emphasize(text="/usr/bin/python3.6") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ln -s /usr/local/bin/python3.6 /usr/bin/python3.6`
+) }}
+
+
+{{ text::note_block(text='
+This is not required for $1
+') 
+  | replace(from="$1", to=text::emphasize(text="python2.7"))
+}}
+
+
+<h3 id="install-pip">Install Pip</h3>
+<p>
+  Install {{ text::emphasize(text="pip") }}
+ with both {{ text::emphasize(text="python2.7") }}
+ and {{ text::emphasize(text="python3.6") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /tmp
+wget "https://bootstrap.pypa.io/get-pip.py"
+sudo /usr/local/bin/python2.7 get-pip.py
+sudo /usr/local/bin/python3.6 get-pip.py`
+) }}
+
+<p>
+  Create symlinks for {{ text::emphasize(text="pip") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo ln -s /usr/local/bin/pip2.7 /usr/bin/pip2
+sudo ln -s /usr/local/bin/pip3.6 /usr/bin/pip3`
+) }}
+
+
+<h3 id="upgrade-pip-and-setuptools">Upgrade PIP and Setuptools</h3>
+<p>
+  Old versions of {{ text::emphasize(text="setuptools") }}
+ and {{ text::emphasize(text="pip") }}
+ can also cause issues with some network automation
+  libraries so update them with {{ text::emphasize(text="pip") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo pip2 install -U pip setuptools
+sudo pip3 install -U pip setuptools`
+) }}
+
+<h3 id="confirmation">Confirmation</h3>
+<p>
+  Confirm {{ text::emphasize(text="python") }}
+ and {{ text::emphasize(text="pip") }}
+ versions.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`python2.7 --version
+# output
+
+Python 2.7.13
+
+python3.6 --version
+# output
+
+Python 3.6.2
+
+pip2.7 --version
+# output
+
+pip 9.0.1 from /usr/local/lib/python2.7/site-packages (python 2.7)
+
+pip3.6 --version
+# output
+
+pip 9.0.1 from /usr/local/lib/python3.6/site-packages (python 3.6)`
+) }}
+
+<h3 id="clean-up">Clean up</h3>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cd /tmp
+ rm -f get-pip.py
+ sudo rm -rf Python-*`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  There it is, modern python versions installed on Centos 7 minimal the traditional way.
+  This post is mostly for documentation, in practice you would use your configuration management tools to install
+  these versions of python.
+</p>
+
+{% endblock page_content %}

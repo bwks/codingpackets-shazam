@@ -1,0 +1,922 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Oxidized Gitlab Storage Backend</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 3rd of June 2018
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  In a previous
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/oxidized-getting-started">post</a>
+  I installed and configured Oxidized using the local file system for storage. In this post
+  I will configure Oxidized to use
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://about.gitlab.com/installation/?version=ce" target=_blank>Gitlab</a>
+  community edition as a storage backend.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    This post assumes you already have Oxidized installed and have either an on-premises Gitlab
+    instance or Gitlab cloud account.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Oxidized</b> - 0.21.0</li>
+  <li><b>Oxidized Host</b> - Debian 9</li>
+  <li><b>Juniper vSRX</b> - 12.1X47-D15.4</li>
+  <li><b>Cisco IOSv</b> - vios-adventerprisek9-m.vmdk.SPA.156-1.T</li>
+</ul>
+
+<h3 id="install-dependencies">Install Dependencies</h3>
+
+<p>
+  In order to use Git with Oxidized a couple of dependencies will need to be installed. Git
+  is required, the other dependencies will vary based on the operating system.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install -y git zlib1g zlib1g-dev</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>Now install the rugged gem.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo gem install rugged</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="configuration">Configuration</h3>
+<h4><b>Oxidized User Configuration</b></h4>
+<p>
+  In order to push to git the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">oxidized</i>
+ users git
+  config parameters need to be set.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo -H -u oxidized bash -c 'git config --global user.name "oxidized"'
+sudo -H -u oxidized bash -c 'git config --global user.email "oxidized@oxidized.local"'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Oxidized will push configs to Gitlab via ssh. In order for this to happen the
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">oxidized</i>
+ users public SSH key needs to be uploaded to
+  gitlab. First create SSH keys for the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">oxidized</i>
+ user.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo -H -u oxidized bash -c 'cat /dev/zero | ssh-keygen -q -N ""'
+
+# output
+
+Enter file in which to save the key (/opt/oxidized/.ssh/id_rsa): # press enter</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">cat</i>
+ the oxidized users public ssh key. The output will be added to the oxidized
+  user account in gitlab in a later step.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo cat /opt/oxidized/.ssh/id_rsa.pub
+
+# output
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJSzTAsTQpMo7fuO4NbEfbmErKI2AZfOd5D9ZutD8zxTRboiTu1AlPjwpXAfVwTkRoFxIfImqnBWUN7HsEnKNzOgdK6rmlMSlODngBihlklne8RfgWO/05sr1G9EcGizkYmE/c87qLS5dl8+KrCOpQZH8q1ojiz4jcOHstEr4jdG+/UTZZquYS/TTf3VfZx3VGKA4ovgJsISoazyhxOy+z16hJDxupTXTsNpmYx65PDa8jqFUAqWzgCqM3Jz0tKGDjgoURb3/mlO0reuwM4F8auBW+3HBV9sAnpXNj9F7se6qz oxidized@stretch</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4><b>Gitlab User Configuration</b></h4>
+<p>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">oxidized</i>
+ user in Gitlab.
+  Filling in the name, username and email then press the save button.
+</p>
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>admin</li>
+    <li>users</li>
+    <li>new user</li>
+  </ul>
+</div>
+
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="400px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-add-user.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-add-user.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Either login to gitlab with the oxidized account or use the root/admin account to impersonate
+  the gitlab user in order to add the oxidized users SSH keys. Paste in the public ssh key
+  from the previous step.
+</p>
+
+<div>
+  <ul class="breadcrumb-darkmode">
+    <li>settings</li>
+    <li>ssh keys</li>
+  </ul>
+</div>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-user-ssh-key.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-user-ssh-key.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>Gitlab Project</b></h4>
+<p>
+  Create a project in order to store the device configurations. Fill in the required details.
+  I am calling this project <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">configs</i>
+.
+</p>
+
+<ul class="breadcrumb-darkmode">
+  <li>projects</li>
+  <li>new project</li>
+</ul>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-project-1.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-project-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Navigate to the project and copy the project git url. This will be required for the configuration
+  on the oxidized server.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="700px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-project-2.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-project-2.png">
+</div>
+<!-- IMAGE END -->
+
+
+<h4><b>Oxidized Config File</b></h4>
+<p>
+  Back on the Oxidzied server, edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/opt/oxidized/.config/oxidized/config</i>
+
+  file. I will be using the configuration file from my getting started
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/oxidized-getting-started">post</a>.
+</p>
+
+<p>
+  Edit the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">output</i>
+ section adding the following
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">git</i>
+ config.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">output:
+  default: git
+  git:
+    single_repo: true
+    user: oxidized
+    email: oxidized@oxidized.local
+    repo: /opt/oxidized/output/configs.git</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  This config instructs Oxidized to create a bare repo on the local host to store the device
+  configurations.
+</p>
+
+
+<p>
+  Add a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">hooks</i>
+ section that defines the details
+  of the Gitlab repo url from a previous step. The below config will attempt to push
+  to the remote repo when a diff in a devices configuration is detected.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">hooks:
+  push_to_remote:
+    type: githubrepo
+    events: [post_store]
+    remote_repo: "git@gitlab:oxidized/configs.git"
+    publickey: /opt/oxidized/.ssh/id_rsa.pub
+    privatekey: /opt/oxidized/.ssh/id_rsa</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  The full configuration is below for reference.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /opt/oxidized/.config/oxidized/config
+
+username: vagrant
+password: vagrant
+model: junos
+interval: 3600
+use_syslog: true
+log: /opt/oxidized/.config/oxidized/logs/
+debug: false
+rest: false
+threads: 30
+timeout: 20
+retries: 3
+prompt: !ruby/regexp /^([\w.@-]+[#>]\s?)$/
+next_adds_job: false
+pid: "/opt/oxidized/pid"
+
+input:
+  default: ssh
+  debug: false
+  ssh:
+    secure: false
+
+output:
+  default: git
+  git:
+    single_repo: true
+    user: oxidized
+    email: oxidized@oxidized.local
+    repo: /opt/oxidized/output/configs.git
+
+source:
+  default: csv
+  csv:
+    file: /opt/oxidized/.config/oxidized/router.db
+    delimiter: !ruby/regexp /:/
+    map:
+      name: 0
+      ip: 1
+      model: 2
+      group: 3
+    vars_map: {}
+
+model_map:
+  juniper: junos
+  cisco: ios
+
+vars: {}
+
+groups:
+  juniper:
+    username: vagrant
+    password: Vagrant
+  cisco:
+    username: vagrant
+    password: vagrant
+
+models: {}
+
+hooks:
+  push_to_remote:
+    type: githubrepo
+    events: [post_store]
+    remote_repo: "git@gitlab:oxidized/configs.git"
+    publickey: /opt/oxidized/.ssh/id_rsa.pub
+    privatekey: /opt/oxidized/.ssh/id_rsa</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Restart the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">oxidized</i>
+ service to load the changes into
+  the running application.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart oxidized.service</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="verification">Verification</h3>
+<p>
+  Oxidized will attempt to fetch the configuration from all
+  the devices in the data file. Confirm that the configuration was backed up by inspecting
+  the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">output</i>
+ directory.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tree /opt/oxidized/output/configs.git/
+
+# output
+
+/opt/oxidized/output/configs.git/
+├── config
+├── description
+├── FETCH_HEAD
+├── HEAD
+├── hooks
+│   └── README.sample
+├── index
+├── info
+│   └── exclude
+├── objects
+│   ├── 29
+│   │   └── 026884319c5e6106f7a881a9baf1f070908065
+│   ├── 4b
+│   │   └── 825dc642cb6eb9a060e54bf8d69288fbee4904
+│   ├── 4f
+│   │   └── 3b1c4e61e7faf454c649ffdebfd45d5f30a77b
+│   ├── 89
+│   │   └── 9c241db65f454b0da932872f74475fa6835b30
+│   ├── 8a
+│   │   └── 38914166ff328499e41b5675abd552dfdacb1b
+│   ├── aa
+│   │   └── 70b15598cfc9e291defe2ff1ad8a41220151ab
+│   ├── b4
+│   │   └── cde70a2255372aaf1200e014fe51faca59c91c
+│   ├── b7
+│   │   └── debdf515c0ebf06ea31d25e0671edfafcb658c
+│   ├── f2
+│   │   └── cbaeb7e951a3107da76e46d559c6f6c0a2508c
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    │   └── master
+    ├── remotes
+    │   └── origin
+    │       └── master
+    └── tags</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Oxidized creates a bare repo so there is no working directory.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Check the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/var/log/syslog</i>
+ for the status of the git push.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo tail /var/log/syslog
+
+# output
+
+Jun  3 00:23:03 localhost systemd[1]: Started Oxidized - Network Device Configuration Backup Tool.
+Jun  3 00:23:03 localhost oxidized[14751]: Oxidized starting, running as pid 14751
+Jun  3 00:23:03 localhost oxidized[14751]: lib/oxidized/nodes.rb: Loading nodes
+Jun  3 00:23:03 localhost oxidized[14751]: lib/oxidized/nodes.rb: Loaded 2 nodes
+Jun  3 00:23:09 localhost oxidized[14751]: Configuration updated for cisco/ios1
+Jun  3 00:23:09 localhost oxidized[14751]: GithubRepo: Pushing local repository(/opt/oxidized/output/configs.git/)...
+Jun  3 00:23:09 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxidized/configs.git
+Jun  3 00:23:18 localhost oxidized[14751]: Configuration updated for juniper/srx1
+Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: Pushing local repository(/opt/oxidized/output/configs.git/)...
+Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxidized/configs.git</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Navigate to the project and confirm the project is updated with the device configurations.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-project-configs-1.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-project-configs-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Storing configs in git has the advantage of remote config backup and change history over time,
+  but my favorite feature is inspecting configuration diffs. Diffs can be viewed inline or side
+  by side and you get a great visual representation of the changes which make things a little
+  bit easier in a troubleshooting scenario.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="900px" 
+    src="/img/blog/oxidized-gitlab-storage-backend/oxidized-project-configs-diff-1.png" alt="blog/oxidized-gitlab-storage-backend/oxidized-project-configs-diff-1.png">
+</div>
+<!-- IMAGE END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Backing up your network device configurations should be considered a critical piece of operating
+  a network. Oxidized helps simplify this process and using Git as a backend configuration
+  store adds some great features such as version control history and visual diff inspection
+  to this critical activity.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/ytti/oxidized" target=_blank>https://github.com/ytti/oxidized</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/ytti/oxidized/issues/1038" target=_blank>https://github.com/ytti/oxidized/issues/1038</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password" target=_blank>https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how" target=_blank>https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#oxidized" class="text-xl">oxidized</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-dependencies">
+            Install Dependencies
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration">
+            Configuration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,364 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://jinja2.readthedocs.io/en/latest/", description="Jinja2") }}
+ is a templating language built in python and loosely based
+  on the {{ link::e(path="https://docs.djangoproject.com/en/1.11/topics/templates/", description="Django") }}
+ templating language.
+  Jinja2 is used in many projects as a templating engine with some notable examples:
+  {{ link::e(path="https://docs.ansible.com/", description="Ansible") }}
+, {{ link::e(path="https://docs.saltstack.com/en/latest/", description="Salt") }}
+ and
+  {{ link::e(path="http://flask.pocoo.org/", description="Flask") }}
+.
+</p>
+<p>
+  Jinja2 aims to implement some of the most common features of python right into the templating system allowing
+  for the programatic creation of static file contents.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Jinja2 is hosted on PyPi so can be installed with {{ text::emphasize(text="pip") }}
+. I prefer to use virtual environments to manage
+  python projects.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# create virtual environment
+
+python3.6 -m venv ~/envs/jinja2-env/
+
+# activate virtual environment
+
+source ~/envs/jinja2-env/bin/activate
+
+# install jinja2
+
+pip install jinja2'
+) }}
+
+
+<p>
+  For reference the following software versions are used in this blog.
+</p>
+<ul>
+  <li>Jinja2 - 2.9.6</li>
+  <li>Python - 3.6.1</li>
+</ul>
+
+
+<h3 id="delimiters">Delimiters</h3>
+<p>
+  Jinja2 templates have the following delimiters which define functionality to be executed by the templating engine.
+</p>
+<ul>
+  <li>{{ text::emphasize(text="{{ ... }}") }}
+ variables and expressions</li>
+  <li>{{ text::emphasize(text="{% ... %}") }}
+ statements eg: for, if and include</li>
+  <li>{{ text::emphasize(text="{# ... #}") }}
+ comments</li>
+</ul>
+
+<h3 id="variables">Variables</h3>
+<p>
+  Variables are defined with the {{ text::emphasize(text="{{ some_variable }}") }}
+ syntax.
+</p>
+
+
+{{ text::code_block(
+  header="jinja",
+  language="django",
+  code='{{ some_variable }}'
+) }}
+
+
+<h3 id="loop-controls">Loop Controls</h3>
+<p>
+  A {{ text::emphasize(text="for") }}
+ loop makes it possible for blocks of text to be repeated without having to copy and
+  paste them manually.
+</p>
+
+{{ text::code_block(
+  header="jinja",
+  language="django",
+  code='# example
+
+{% for stuff in things %}
+    {{ stuff }}
+{% endfor %} # note: for loops need to be ended
+'
+) }}
+
+
+<h3 id="conditionals">Conditionals</h3>
+<p>
+  Conditionals render content based on when a condition is either {{ text::emphasize(text="True") }}
+ for {{ text::emphasize(text="False") }}
+
+</p>
+
+
+{{ text::code_block(
+  header="jinja",
+  language="django",
+  code='# cisco
+
+{% if stuff in things %}
+    {{ stuff }}
+{% endif %} # note: if statements need to be ended
+
+
+{% if stuff not in things %}
+    no stuff here
+{% endif %} # note: if statements need to be ended
+'
+) }}
+
+<h3 id="usage">Usage</h3>
+<p>
+  The Jinja2 workflow has 3 main steps
+</p>
+<ul>
+  <li>Define variables</li>
+  <li>Define a template</li>
+  <li>Render the template with the defined varibales</li>
+</ul>
+
+<p>Lets start with a simple example. Define some {{ text::emphasize(text="interface") }}
+ variables as a python dictionary.</p>
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="# cisco
+
+interface = {
+    'name': 'gigabitethernet0/0',
+    'description': 'Uplink to WAN',
+    'ip_address': '10.10.10.1 255.255.255.0',
+}"
+) }}
+
+
+<p>
+  Create an {{ text::emphasize(text="interface_template") }}
+ defining variables that will be replaced with values from
+  the {{ text::emphasize(text="interface") }}
+ variable.
+</p>
+
+{{ text::code_block(
+  header="jinja",
+  language="django",
+  code="# cisco interface template
+
+interface_template = '''
+interface {{ interface.name }}
+ description {{ interface.description }}
+ ip address {{ interface.ip_address }}
+ no shutdown
+!
+'''"
+) }}
+
+<p>
+  Note: Jinja2 uses the {{ text::emphasize(text="'.'") }}
+ syntax to access a dictionaries keys. For example {{ text::emphasize(text="interface.name") }}
+
+  refers to the {{ text::emphasize(text="interface") }}
+ variable and the {{ text::emphasize(text="name") }}
+ key. It is also possible to use python
+  syntax to access the dictionary keys IE: {{ text::emphasize(text="interface['name']") }}
+. More info can be found in the
+  {{ link::e(path="https://jinja2.readthedocs.io/en/latest/templates.html#variables", description="docs") }}
+.
+</p>
+
+<p>
+  If we go ahead and render the {{ text::emphasize(text="interface_template") }}
+ you wil get the following result.
+</p>
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="from jinja2 import Template
+
+template = Template(interface_template)
+template.render(interface=interface)
+
+# output
+
+interface gigabitethernet0/0
+description Uplink to WAN
+ip address 10.10.10.1 255.255.255.0
+no shutdown
+!"
+) }}
+
+<p>
+  We managed to render a single interface configuration, not terribly exciting. Lets add more interfaces and
+  expand out our template with a {{ text::emphasize(text="for") }}
+ loop.
+</p>
+<p>
+  Because we are adding multiple interfaces create a {{ text::emphasize(text="list") }}
+ of {{ text::emphasize(text="dictionaries") }}
+ for each interface
+  to be configured.
+</p>
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="interfaces = [
+    {'description': 'Uplink to WAN',
+     'ip_address': '10.10.10.1 255.255.255.0',
+     'name': 'gigabitethernet0/0'},
+    {'description': 'Crosslink to R2',
+     'ip_address': '10.10.20.1 255.255.255.0',
+     'name': 'gigabitethernet0/1'}
+]"
+) }}
+
+<p>
+  Add a {{ text::emphasize(text="for") }}
+ loop to the previously configured template.
+</p>
+
+
+{{ text::code_block(
+  header="python",
+  language="django",
+  code="# cisco interface template
+interfaces_template = '''
+{% for interface in interfaces %}
+interface {{ interface.name }}
+ description {{ interface.description }}
+ ip address {{ interface.ip_address }}
+ no shutdown
+!
+{% endfor %}"
+) }}
+
+<p>
+  Lets render the template now and see how that looks.
+</p>
+
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="template = Template(interfaces_template)
+template.render(interfaces=interfaces)
+
+# output
+
+interface gigabitethernet0/0
+ description Uplink to WAN
+ ip address 10.10.10.1 255.255.255.0
+ no shutdown
+!
+interface gigabitethernet0/1
+ description Crosslink to R2
+ ip address 10.10.20.1 255.255.255.0
+ no shutdown
+!"
+) }}
+
+<p>
+  Lets say we swap the device out with a Juniper router. This is where the advantages of configuration templating really
+  show their value.
+</p>
+
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="# juniper interface template
+
+interfaces_template = '''
+interfaces {
+{% for interface in interfaces %}
+    {{ interface.name }} {
+    description {{ interface.description }};
+    unit 0 {
+        family inet {
+            address {{ interface.ip_address }};
+            }
+        }
+    }
+{% endfor %}
+}
+'''"
+) }}
+
+<p>
+  Juniper and Cisco have different interface naming standards so change the {{ text::emphasize(text="name") }}
+ and the
+  {{ text::emphasize(text="ip_address") }}
+ values.
+</p>
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="interfaces = [
+    {'description': 'Uplink to WAN',
+     'ip_address': '10.10.10.1/24',
+     'name': 'ge-0/0/0'},
+    {'description': 'Crosslink to R2',
+     'ip_address': '10.10.20.1/24',
+     'name': 'ge-0/0/1'}
+]"
+) }}
+
+<p>
+  Now render the interface template.
+</p>
+
+
+{{ text::code_block(
+  header="python",
+  language="python",
+  code="template = Template(interfaces_template)
+template.render(interfaces=interfaces)
+
+# output
+
+interfaces {
+    ge-0/0/0 {
+    description Uplink to WAN;
+    unit 0 {
+        family inet {
+            address 10.10.10.1/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+    description Crosslink to R2;
+    unit 0 {
+        family inet {
+            address 10.10.20.1/24;
+            }
+        }
+    }
+}"
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Jinja2 is a powerful tool that allows you to build repeatable configuration templates. I have just scratched the surface
+  in this post, Jinja2 has many features that make it an excellent tool for creating device configuration templates.
+</p>
+
+{% endblock page_content %}

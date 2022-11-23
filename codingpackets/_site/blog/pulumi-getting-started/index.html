@@ -1,0 +1,882 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Pulumi Getting Started</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 30th of September 2021
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Pulumi is an infrastructure as code 
+  tool that helps you build and manage 
+  environments such as AWS, Azure and GCP 
+  with the programming languages you already know.
+</p>
+<p>
+  In this post, I will show you how to get 
+  up and running with Pulumi.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Pulumi - v3.13.2</li>
+  <li>NodeJS - v16.0.0</li>
+  <li>Ubuntu - 20.04</li>
+</ul>
+
+<h3 id="pre-requisites">Pre-Requisites</h3>
+<h4>Language Runtime</h4>
+<p>
+  Pulumi allows you to build infrastructure 
+  with the programming languages you know. 
+  Unlike other tools that have a DSL, Pulumi 
+  instructions are written in a choice of supported 
+  programming 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/docs/intro/languages/" target=_blank>languages</a>. 
+  Which, at the time of writing are as follows:
+</p>
+<ul>
+  <li>Node.js</li>
+  <li>Python</li>
+  <li>Go</li>
+  <li>.Net</li>
+</ul>
+<p>
+  Ensure that you have a supported runtime installed.
+  For this post, I will be using Node.js with Typescript.
+  Instructions to install Node.js on Ubuntu 2004 can be 
+  found <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/node-js-and-yarn-install-ubuntu-2004/">here</a>.
+</p>
+
+<h4>Environment Credentials</h4>
+<p>
+  Pulumi requires access to credentials with sufficient 
+  permissions to make changes to your infrastructure. 
+  I will be using AWS for this post. For instructions on 
+  installing the AWS CLI and setting up your credentials 
+  see this 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/aws-cli-installation-and-setup/">post</a>.
+</p>
+
+<h3 id="pulumi-account">Pulumi Account</h3>
+<h4>Create Account</h4>
+<p>
+  Head <a class="text-sky-600 no-underline hover:text-sky-800" href="https://app.pulumi.com/signup" target=_blank>here</a> to create a Pulumi account. 
+  The account is free to use for indiviuals and is used as a storage backend for 
+  your Pulumi projects state data.
+</p>
+
+<h4>Access Token</h4>
+<p>
+  An access token is required to login and use your Pulumi account.
+  Create a token <a class="text-sky-600 no-underline hover:text-sky-800" href="https://app.pulumi.com/bwks/settings/tokens" target=_blank>here</a>.
+</p>
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Save the token in your password manager or similar. Once you navigate away 
+    from the page, you will no longer be able to view the token.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="install-pulumi">Install Pulumi</h3>
+<p>
+  The Pulumi application is installed in your 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">$PATH</i>
+ via 
+  an installer script. 
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -fsSL https://get.pulumi.com | sh
+  
+# Output
+=== Installing Pulumi v3.13.2 ===
++ Downloading https://get.pulumi.com/releases/sdk/pulumi-v3.13.2-linux-x64.tar.gz...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 61.0M  100 61.0M    0     0  5308k      0  0:00:11  0:00:11 --:--:-- 5597k
++ Extracting to /home/bradmin/.pulumi/bin
++ Adding $HOME/.pulumi/bin to $PATH in /home/bradmin/.zshrc
+
+=== Pulumi is now installed! 🍹 ===
++ Please restart your shell or add /home/bradmin/.pulumi/bin to your $PATH
++ Get started with Pulumi: https://www.pulumi.com/docs/quickstart</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once Pulumi is installed, restart your shell environment 
+  and confirm you have access to the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi</i>
+ 
+  command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># In a new shell
+pulumi version
+
+# Output
+v3.13.2</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="pulumi-project">Pulumi Project</h3>
+<h4>Account Login</h4>
+<p>
+  Create a new directory for your project and use the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi login</i>
+ command to login to your Pulumi account.
+  You will need to enter the access token created in the previous step.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir testing123 && cd testing123
+pulumi login
+
+# Output
+Manage your Pulumi stacks by logging in.
+Run `pulumi login --help` for alternative login options.
+Enter your access token from https://app.pulumi.com/account/tokens
+    or hit <ENTER> to log in using your browser                   :</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Create Project</h4>
+<p>
+  Initialise a new AWS project that uses the Typescript language 
+  with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi new aws-typescript</i>
+ command and 
+  follow the prompts.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pulumi new aws-typescript
+
+# Output
+This command will walk you through creating a new Pulumi project.
+
+Enter a value or leave blank to accept the (default), and press <ENTER>.
+Press ^C at any time to quit.
+
+project name: (testing123)
+project description: (A minimal AWS TypeScript Pulumi program)
+Created project 'testing123'
+
+Please enter your desired stack name.
+To create a stack in an organization, use the format <org-name>/<stack-name> (e.g. `acmecorp/dev`).
+stack name: (dev)
+Created stack 'dev'
+
+aws:region: The AWS region to deploy into: (us-east-1)
+Saved config
+
+Installing dependencies...
+
+
+added 125 packages, and audited 126 packages in 26s
+
+31 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Finished installing dependencies
+
+Your new project is ready to go!
+
+To perform an initial deployment, run 'pulumi up'</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This will create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Stack</i>
+ which 
+  is an isolated, independently configurable instance of a Pulumi program. 
+  This stack belongs to the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">dev</i>
+ environment.
+</p>
+
+<p>
+  The following files and folders were created which gets a minimal 
+  config setup with the required dependencies. 
+</p>
+
+<ul>
+  <li>index.ts</li>
+  <li>node_modules</li>
+  <li>package.json</li>
+  <li>package-lock.json</li>
+  <li>Pulumi.dev.yaml</li>
+  <li>Pulumi.yaml</li>
+  <li>tsconfig.json</li>
+</ul>
+
+<p>
+  Looking at the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">index.ts</i>
+ file 
+  you can see that it is setup to create an S3 bucket named 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">my-bucket</i>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-typescript hljs px-5 dark:opacity-80 rounded-b">// index.ts
+import * as pulumi from "@pulumi/pulumi";
+import * as aws from "@pulumi/aws";
+import * as awsx from "@pulumi/awsx";
+
+// Create an AWS resource (S3 Bucket)
+const bucket = new aws.s3.Bucket("my-bucket");
+
+// Export the name of the bucket
+export const bucketName = bucket.id;</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="deploy-project">Deploy Project</h3>
+<p>
+  With this minimal config we can deploy the project with 
+  the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi up</i>
+ command and create an S3 bucket.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pulumi up
+  
+# Output
+Previewing update (dev)
+
+View Live: https://app.pulumi.com/bwks/testing123/dev/previews/8c12d94d-1c88-43c6-b989-a0ebd2b4c9db
+
+     Type                 Name            Plan
+ +   pulumi:pulumi:Stack  testing123-dev  create
+ +   └─ aws:s3:Bucket     my-bucket       create
+
+Resources:
+    + 2 to create
+
+Do you want to perform this update? yes
+Updating (dev)
+
+View Live: https://app.pulumi.com/bwks/testing123/dev/updates/1
+
+     Type                 Name            Status
+ +   pulumi:pulumi:Stack  testing123-dev  created
+ +   └─ aws:s3:Bucket     my-bucket       created
+
+Outputs:
+    bucketName: "my-bucket-c9ab4c7"
+
+Resources:
+    + 2 created
+
+Duration: 20s</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Confirm the bucket was created with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">aws s3 ls</i>
+ command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">aws s3 ls
+
+# Output
+2021-10-02 20:46:30 my-bucket-c9ab4c7</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="destroy-project">Destroy Project</h3>
+<p>
+  To remove all the resources in this project that are managed 
+  by pulumi, use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi destroy</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pulumi destroy
+
+# Output
+Previewing destroy (dev)
+
+View Live: https://app.pulumi.com/bwks/testing123/dev/previews/1ab42c39-a78f-4d6a-a68d-6ed6d66e1d5e
+
+     Type                 Name            Plan
+ -   pulumi:pulumi:Stack  testing123-dev  delete
+ -   └─ aws:s3:Bucket     my-bucket       delete
+
+Outputs:
+  - bucketName: "my-bucket-c9ab4c7"
+
+Resources:
+    - 2 to delete
+
+Do you want to perform this destroy? yes
+Destroying (dev)
+
+View Live: https://app.pulumi.com/bwks/testing123/dev/updates/2
+
+     Type                 Name            Status
+ -   pulumi:pulumi:Stack  testing123-dev  deleted
+ -   └─ aws:s3:Bucket     my-bucket       deleted
+
+Outputs:
+  - bucketName: "my-bucket-c9ab4c7"
+
+Resources:
+    - 2 deleted
+
+Duration: 6s
+
+The resources in the stack have been deleted, but the history and configuration associated with the stack are still maintained.
+
+If you want to remove the stack completely, run 'pulumi stack rm dev'.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  This deletes the AWS resouces, but it does not remove the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Stack</i>
+ from being managed 
+  by pulumi. To delete the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">Stack</i>
+ 
+  use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi stack rm</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pulumi stack rm
+
+# Output
+This will permanently remove the 'dev' stack!
+Please confirm that this is what you'd like to do by typing ("dev"): dev
+Stack 'dev' has been removed!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  You can confirm that the stack is removed with the 
+  <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-emerald-400 dark:text-emerald-700">pulumi stack ls</i>
+ command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pulumi stack ls
+
+# Output
+NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, we installed and configured Pulumi to manage our AWS environemnt 
+  using the Typescript provider. We created a stack which was used to deploy an 
+  S3 bucket to our AWS account. Finally, we destroyed the AWS resources and removed
+  the stack from Pulumi management.
+</p>
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/" target=_blank>https://www.pulumi.com/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/docs/get-started/aws/begin/" target=_blank>https://www.pulumi.com/docs/get-started/aws/begin/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/docs/get-started/aws/create-project/" target=_blank>https://www.pulumi.com/docs/get-started/aws/create-project/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/docs/intro/concepts/stack/" target=_blank>https://www.pulumi.com/docs/intro/concepts/stack/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#pulumi" class="text-xl">pulumi</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#devops" class="text-xl">devops</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
+            Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pre-requisites">
+            Pre-Requisites
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pulumi-account">
+            Pulumi Account
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#install-pulumi">
+            Install Pulumi
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#pulumi-project">
+            Pulumi Project
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#deploy-project">
+            Deploy Project
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#destroy-project">
+            Destroy Project
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

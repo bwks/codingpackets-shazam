@@ -84,15 +84,25 @@
   
     
 <!-- PAGE HEADER START -->
-<div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-  <h1 class="pb-1 sm:pb-2">Ansible For Networking Part 1</h1>
-  <div class="">
-    
-    
-      <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
-        published: 12th of March 2017
-      </p>
-    
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Ansible For Networking Part 1</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 12th of March 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
   </div>
 </div>
 <!-- PAGE HEADER END -->
@@ -175,7 +185,7 @@
 
 <h3 id="directory-structure">Directory Structure</h3>
 <p>
-  Create the following directory structure under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible</i>
+  Create the following directory structure under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible</i>
    directory
 </p>
 
@@ -208,11 +218,11 @@
 <h3 id="inventory">Inventory</h3>
 
 <p>
-  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">inventory</i>
-   file under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible</i>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i>
+   file under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible</i>
    directory and define the managed nodes.
   To prevent having to run a DNS server and still be able use host names instead of IP addresses
-  for OOB management, I added host entries for the managed nodes under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">/etc/hosts</i>
+  for OOB management, I added host entries for the managed nodes under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/etc/hosts</i>
    file
   on the control node.
 </p>
@@ -251,16 +261,16 @@ remote_user=cumulus</code></pre>
 
 
 <p>
-  A user variable has been applied to the network group with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">[network:vars]</i>
+  A user variable has been applied to the network group with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">[network:vars]</i>
   
-  tag. This stops us having to specify a username with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-u</i>
+  tag. This stops us having to specify a username with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-u</i>
    flag when running a playbook.
 </p>
 
 <h3 id="configuration">Configuration</h3>
 <p>
-  Create an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible.cfg</i>
-   file under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible</i>
+  Create an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i>
+   file under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible</i>
    directory.
 </p>
 
@@ -294,14 +304,14 @@ become_ask_pass=True</code></pre>
   There are a few more variables here than previously seen so lets go through them.
 </p>
 <ul>
-  <li><b>ask_pass=True</b> Prevents having to use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-k</i>
+  <li><b>ask_pass=True</b> Prevents having to use the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-k</i>
    flag when running a playbook</li>
   <li><b>gather_facts=False</b> Stops the implicit <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/setup_module.html" target=_blank>setup</a>
     module from running at playbook execution.
   </li>
   <li><b>become=True</b> Specifies to become a privileged user</li>
   <li><b>become_method=sudo</b> Defines the way to become a privileged user</li>
-  <li><b>become_ask_pass=True</b> Prevents having to use the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">-K</i>
+  <li><b>become_ask_pass=True</b> Prevents having to use the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">-K</i>
    flag when running a playbook</li>
 </ul>
 
@@ -325,10 +335,10 @@ become_ask_pass=True</code></pre>
 <h3 id="getting-started">Getting Started</h3>
 
 <p>
-  Now that we have our directory structure built and an <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible.cfg</i>
-   and <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">inventory</i>
+  Now that we have our directory structure built and an <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible.cfg</i>
+   and <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">inventory</i>
   
-  file configured we can run a connectivity test with the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">ansible</i>
+  file configured we can run a connectivity test with the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">ansible</i>
    ad-hoc command.
 </p>
 
@@ -368,14 +378,14 @@ lab-leaf-02 | SUCCESS => {
 
 
 <p>
-  If everything is setup correctly you will get a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">SUCCESS</i>
+  If everything is setup correctly you will get a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">SUCCESS</i>
    message for each managed node.
 </p>
 
 
 <h3 id="host-variables">Host Variables</h3>
 <p>
-  Next up create the host variable files under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible/host_vars/</i>
+  Next up create the host variable files under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible/host_vars/</i>
    directory.
   The variables defined in these files will be used when the playbook is executed. It is important
   to name the variable files with the same name as the host defined in the inventory file as
@@ -538,8 +548,8 @@ ospf_networks:
 <p>
   Ansible uses <a class="text-sky-600 no-underline hover:text-sky-800" href="http://jinja.pocoo.org/docs/2.9/" target=_blank>Jinja2</a> as its templating engine.
   Cumulus uses <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/CumulusNetworks/quagga" target=_blank>Quagga</a> for its routing daemons.
-  Create a <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">quagga.conf.j2</i>
-   file under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible/templates/</i>
+  Create a <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">quagga.conf.j2</i>
+   file under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible/templates/</i>
    directory
   which will be used to configure Quagga on the managed nodes.
 </p>
@@ -584,7 +594,7 @@ line vty
 
 
 <p>
-  There is a couple of <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">{% for %}</i>
+  There is a couple of <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">{% for %}</i>
    loops defined in the template. This
   allows us to reduce duplication by following the DRY (Dont Repeat Yourself) principal of programming.
   Nothing to be afraid of thought, if you get stuck the Jinja2 documentation is very friendly.
@@ -605,8 +615,8 @@ line vty
 </ul>
 
 <p>
-  Create a playbook named <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">configure-devices.yml</i>
-   under the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">~/ansible/</i>
+  Create a playbook named <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">configure-devices.yml</i>
+   under the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">~/ansible/</i>
   
   directory.
 </p>
@@ -704,7 +714,7 @@ state=restarted</code></pre>
 
 
 <p>
-  Its worth noting that the <i class="px-2 py-0.5 font-mono font-semibold rounded bg-zinc-900 text-neutral-50 border border-zinc-900 dark:text-neutral-400 dark:border-neutral-400">cl_interface</i>
+  Its worth noting that the <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">cl_interface</i>
    module has been depreciated as of Ansible
   version 2.3 and the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.ansible.com/ansible/nclu_module.html" target=_blank>nclu</a> module
   should be used instead.

@@ -1,0 +1,812 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Proxmox Hook Script Port Mirror</h1>
+      <div class="">
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            updated: 27th of November 2021
+          </p>
+        
+        
+          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+            published: 26th of November 2021
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  In a previous 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-enable-port-mirror/">post</a>
+  I showed you how to configure a port mirror in Proxmox. 
+  In that post, I used a bit of a dirty hack (bash scripts and crontab)
+  to ensure the port mirror is activated if the host or the VM 
+  reboots. 
+</p>
+<p>
+  Luckily for me, I have some really smart colleagues who mentioned 
+  that in libvirt, there is a hook mechanism that can be used to 
+  trigger scripts based on VM state. A quick 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://duckduckgo.com/" target=_blank>duck hunt</a> revealed that 
+  Proxmox has implemented this feature as well 🥳 
+</p>
+<p>
+  In this post I will show you how to use Hook Scripts with 
+  Proxmox to enable/disable a port mirror depending on the 
+  VMs <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">execution phase</i>
+.
+</p>
+<p>
+  As an added bonus, I will also show you how to duplicate a 
+  port mirror source, to multiple destinations within Proxmox.
+</p>
+
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li><b>Proxmox</b> - 7.0-11</li>
+</ul>
+
+<h3 id="lab-network">Lab Network</h3>
+<p>
+  The following diagram show the lab setup outlined 
+  in this post. The goal, is to have traffic port mirrored 
+  from the Juniper switch to both the eda01 and eta01 VMs.
+  Both the eda01 and eta01 VMs need a dedicated feed 
+  therefore, port mirror traffic will be duplicated on 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmbr1</i>
+
+</p>
+
+<p>
+  
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/proxmox-hook-script-port-mirror/port-mirror-lab.png" alt="blog/proxmox-hook-script-port-mirror/port-mirror-lab.png">
+</div>
+<!-- IMAGE END -->
+
+</p>
+<p>
+  The following points summarise the diagram.
+</p>
+<ul>
+  <li>fw01 is a PaloAlto firewall and is the default gateway for all networks.</li>
+  <li>sw01 is a Juniper switch and is used to connect LAN devices.</li>
+  <li>pmx01 is a Proxmox host and has two physical interfaces:</li>
+  <ul>
+    <li>eno1 is configured as a trunk port and carries multiple VLANs.</li>
+    <li>enp1s0 is configured as an access port.</li>
+  </ul>
+  <li>pmx01 has the following virtual network components:</li>
+  <ul>
+    <li>vmbr0 and vmbr1 are virtual switches.</li>
+    <li>A tap* interface is created for each vNIC interface on a VM automatically.</li>
+    <li>Tap interfaces have the naming format; <i>tap&lt;vm-id&gt;i&lt;interface-number&gt;</i>.</li>
+  </ul>
+  <li>eda01, exa01 and eta01 are VM guests hosted on the Proxmox host.</li>
+  <li>Port mirror sources are denoted in yellow.</li>
+  <li>Port mirror destinations are denoted in green.</li>
+</ul>
+
+<h3 id="hook-scripts">Hook Scripts</h3>
+<p>
+  As previously mentioned, 
+  <a href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hook_scripts">
+  hook scripts</a> allow you to run a script based on a 
+  VMs <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">execution phase</i>
+.
+</p>
+<p>
+  This feature is not extensively documented (that I could find).
+  From what I can gather the supported phases are:
+</p>
+<ul>
+  <li>pre-start</li>
+  <li>post-start</li>
+  <li>pre-stop</li>
+  <li>post-stop</li>
+</ul>
+
+<p>
+  An example hook script can be found in the onboard docs at the 
+  following location:
+</p>
+<p>
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/usr/share/pve-docs/examples/guest-example-hookscript.pl</i>
+
+</p>
+<p>
+  For all you Perl loving heathons, that should be right up your 
+  alley. For everyone else, it looks like you can run a script in 
+  any language that has a runtime installed.
+</p>
+
+<p>
+  For my purposes, I will be using the bash script from the previous 
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-enable-port-mirror/">post</a>
+  with a couple of alterations to make it more portable and useable 
+  for multiple guests.
+</p>
+<h4>Hook Script Location</h4>
+<p>
+  Hook scripts need to be stored in a 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">snippets/</i>
+
+  directory on a storage pool that Proxmox 
+  knows about. I will place my scripts in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/var/lib/vz/</i>
+
+  directory that maps to the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">local</i>
+
+  storage pool.
+</p>
+
+<h4>Hook Script</h4>
+<p>
+  Create a file named 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">extrahop-port-mirror.sh</i>
+ 
+  in the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">/var/lib/vz/snippets/</i>
+ 
+  directory with the following contents.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#! /usr/bin/env bash
+# /var/lib/vz/snippets/extrahop-port-mirror.sh
+VM_ID=$1;
+EXECUTION_PHASE=$2
+SOURCE_PORT="enp1s0";
+VM_BRIDGE="vmbr1";
+LOGGING=/root/scripts/extrahop-port-mirror.log;
+
+function create_mirror {
+
+  /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Creating mirror on $VM_BRIDGE for $VM_ID"... >> $LOGGING;
+
+  /usr/bin/ovs-vsctl \\
+    -- --id=@"$SOURCE_PORT" get Port "$SOURCE_PORT" \\
+    -- --id=@tap"$VM_ID"i1 get Port tap"$VM_ID"i1 \\
+    -- --id=@"$VM_ID"m create \\
+           Mirror name="$VM_ID"-mirror \\
+           select-dst-port=@"$SOURCE_PORT" \\
+           select-src-port=@"$SOURCE_PORT" \\
+           output-port=@tap"$VM_ID"i1 \\
+    -- add Bridge "$VM_BRIDGE" mirrors @"$VM_ID"m; >> $LOGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+function clear_mirror {
+
+   /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Clearing mirror on $VM_BRIDGE for $VM_ID..." >> $LOGGING;
+
+  /usr/bin/ovs-vsctl \\
+    -- --id=@"$VM_ID"m get Mirror "$VM_ID"-mirror \\
+    -- remove Bridge "$VM_BRIDGE" mirrors @"$VM_ID"m; >> $LOGGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+function show_mirrors {
+
+  /usr/bin/date >> $LOGGING;
+
+  /usr/bin/echo "Show existing mirrors..." >> $LOGGING;
+
+  /usr/bin/ovs-vsctl list Mirror >> $LOGGING;
+
+  /usr/bin/echo "####################" >> $LOGGING;
+
+}
+
+if [[ "$EXECUTION_PHASE" == "post-start" ]]; then
+
+  clear_mirror;
+
+  create_mirror;
+
+  show_mirrors;
+
+elif [[ "$EXECUTION_PHASE" == "pre-stop" ]]; then
+
+  clear_mirror;
+
+  show_mirrors;
+
+fi</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  When Proxmox executes this script, it does so with 2 
+  arguments.
+</p>
+<ul>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VM_ID</i>
+</li>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">EXECUTION_PHASE</i>
+</li>
+</ul>
+<p>
+  These arguments can be mapped to variables in the script.
+  In my case I am mapping them as follows.
+</p>
+<ul>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VM_ID=$1</i>
+</li>
+  <li><i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">EXECUTION_PHASE=$2</i>
+</li>
+</ul>
+<p>
+  The other variables: 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">SOURCE_PORT</i>
+,
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">VM_BRIDGE</i>
+ and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">LOGGING</i>
+ should 
+  be confirgured to match your setup.
+</p>
+
+<p>
+  This script allows you to add and remove multiple port mirror 
+  destinations by using the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">add</i>
+ 
+  and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">remove</i>
+ commands 
+  rather than the 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">set</i>
+ and 
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">clear</i>
+ commands from 
+  the previous post.
+</p>
+
+<p>
+  The other thing that is required, is to make the script 
+  executable.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod +x /var/lib/vz/snippets/extrahop-port-mirror.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Connect Hook Script</h4>
+<p>
+  Now that the hook script is created, we need to connect it to 
+  a VM. Connect the hookscript to both the eda01 and eta01 VMs 
+  with the following command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm set 201 --hookscript local:snippets/extrahop-port-mirror.sh
+qm set 204 --hookscript local:snippets/extrahop-port-mirror.sh
+
+# Output
+update VM 201: -hookscript local:snippets/extrahop-port-mirror.sh
+update VM 204: -hookscript local:snippets/extrahop-port-mirror.sh</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  That's it! Now when the VM or host shuts down or restarts, the port 
+  mirror will be automagically activated/deactivated. Additionally,
+  <i class="shadow-md px-2 py-0.5 font-mono font-semibold rounded bg-neutral-200 dark:bg-zinc-900 dark:text-neutral-400">vmbr1</i>
+ is sending a duplicate 
+  data feed to both the eda01 and eta01.
+</p>
+
+<h4>How to Disconnect Hook a Script</h4>
+<p>
+  If for some reason you want to disconnect a hook script from a VM, 
+  use the following command.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm set 201 --delete hookscript
+
+# Output
+update VM 201: -delete hookscript</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Example Log File</h4>
+<p>
+  Below is an example of the log file that is generated.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">####################
+Sat Nov 27 06:24:50 AEST 2021
+Clearing mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:24:50 AEST 2021
+Show existing mirrors...
+_uuid               : 89c4a723-130d-4871-a84d-d143e165ec7d
+external_ids        : {}
+name                : "201-mirror"
+output_port         : a9e16d6a-2010-484e-a924-cb4f1a46195f
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {tx_bytes=82504527671, tx_packets=82870736}
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Clearing mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Creating mirror on vmbr1 for 204...
+####################
+Sat Nov 27 06:25:03 AEST 2021
+Show existing mirrors...
+_uuid               : 7c33f30a-2bdf-44d2-8ce2-8d7d92d5cc7f
+external_ids        : {}
+name                : "204-mirror"
+output_port         : e36be586-eda1-44e1-b6d0-45b802b16ecf
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {}
+
+_uuid               : 89c4a723-130d-4871-a84d-d143e165ec7d
+external_ids        : {}
+name                : "201-mirror"
+output_port         : a9e16d6a-2010-484e-a924-cb4f1a46195f
+output_vlan         : []
+select_all          : false
+select_dst_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_src_port     : [dbd6b1f0-2cf0-453c-881e-a888f655e83a]
+select_vlan         : []
+snaplen             : []
+statistics          : {tx_bytes=82511889277, tx_packets=82881722}
+####################</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how use a Proxmox hook script to 
+  automagically start/stop a port mirror destined for multiple 
+  VMs connected to the same virtual bridge. I believe this method 
+  is a nice improvement over my  
+  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/proxmox-enable-port-mirror/">previous</a>
+  attempt and I hope you find it useful.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/" target=_blank>https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts" target=_blank>https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/ayufan/pve-helpers" target=_blank>https://github.com/ayufan/pve-helpers</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/" target=_blank>https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/</a>
+        </p>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/" target=_blank>https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#proxmox" class="text-xl">proxmox</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#open-vswitch" class="text-xl">open-vswitch</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#extrahop" class="text-xl">extrahop</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#linux" class="text-xl">linux</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-network">
+            Lab Network
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#hook-scripts">
+            Hook Scripts
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>
