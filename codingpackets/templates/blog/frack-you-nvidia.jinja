@@ -1,0 +1,68 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="why">Why?</h3>
+<p>
+  I am currently using Ubuntu 1604 as the OS on my laptop. It generally works well apart from one
+  thing ... The <b>FRACKING NVIDIA DRIVERS</b>.
+</p>
+<p>
+  Nvidia you can go and die in a pit fire. At least 3 or 4 times in the last 6 months the driver update
+  has stopped the system from booting. It gets to a black screen after the bios and never makes it to
+  X-Window.
+</p>
+<p>
+  Since I have to google every time on how to fix this I am documenting it here. I will not be installing
+  the Nvidia drivers again.
+</p>
+
+
+<h3 id="process">Process</h3>
+<p>
+  Press {{ text::kbd(text="Esc") }}
+ or {{ text::kbd(text="space") }}
+ after the bios to access the GRUB menu.
+</p>
+
+<p>
+  Navigate to <b>></b> (Some Kernel) Recovery mode <b>></b> Advanced Options for Ubuntu
+  <b>></b> root terminal
+</p>
+
+<p>
+  Mount drive as read-write
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mount --options remount,rw /`
+) }}
+
+
+
+<p>
+  Remove Nvidia Drivers
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`apt purge nvidia*`
+) }}
+
+
+<p>
+  Reboot
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`reboot now`
+) }}
+
+
+<p>
+  Hopefully Ubuntu will now boot into the X-Window normally.
+</p>
+
+{% endblock page_content %}

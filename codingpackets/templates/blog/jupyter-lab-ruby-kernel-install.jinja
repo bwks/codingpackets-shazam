@@ -1,0 +1,127 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://jupyterlab.readthedocs.io/en/stable/", description="Jupyter Lab") }}
+
+  is the next-generation web-based user interface for
+  {{ link::e(path="https://jupyter.org/", description="Jupyter") }}
+ project. I first encountered
+  The Jupyter project back when it was know as IPython notebooks and used it
+  for hacking on python projects.
+</p>
+<p>
+  I was pleasantly surprised to learn that the Jupyter project also supports
+  {{ link::e(path="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels", description="kernels") }}
+
+  other than Python with Ruby being one of them.
+  This post covers installing the
+  {{ link::e(path="https://github.com/SciRuby/iruby", description="iRuby") }}
+ kernel for use with
+  Jupyter Notebooks.
+</p>
+
+<p>
+  This post assumes that rbenv and ruby 2.6.0 is already installed.
+  You can follow
+  {{ link::i(path="/blog/rbenv-install-ubuntu1804", description="post") }}
+
+  post to get them installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Python</b> - 3.6.7</li>
+  <li><b>Jupyter Lab</b> - 4.4.0</li>
+  <li><b>rbenv</b> - 1.1.1-39-g59785f6</li>
+  <li><b>Ruby</b> - 2.6.0</li>
+  <li><b>iRuby</b> - 0.3</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  Install the required dependencies.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install libzmq3-dev libczmq-dev`
+) }}
+
+
+<h3 id="jupyter-lab-install">Jupyter Lab Install</h3>
+<p>
+  Create a virtual environment and Install Jupyter Lab.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p /home/bradmin/Documents/code/python/jupyter-lab
+cd /home/bradmin/Documents/code/python/jupyter-lab
+source .venv/bin/activate
+pip install jupyterlab`
+) }}
+
+
+<h3 id="install-iruby">Install iRuby</h3>
+<p>
+  Create a ruby environment and install iRuby and its dependencies.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p /home/bradmin/Documents/code/python/jupyter-lab/ruby
+cd /home/bradmin/Documents/code/python/jupyter-lab/ruby
+rbenv local 2.6.0
+gem install bundler cztop iruby`
+) }}
+
+
+<p>
+  Now register the Ruby kernel with Jupyter Lab.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`iruby register --force`
+) }}
+
+
+<h3 id="testing-testing-123">Testing Testing 123..</h3>
+<p>
+  Start Jupyter lab.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`jupyter-lab`
+) }}
+
+
+<p>
+  Your browser will open, select the Ruby Kernel notebook.
+</p>
+
+{{ image::boxed(path="blog/jupyter-lab-ruby-kernel-install/jupyter-lab.png", width="900px") }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  Ruby does not have a nice interactive terminal, it has IRB which is
+  very bare bones and does not have a great user experience. Using Jupyter
+  Lab with a Ruby kernel is a nice way to hack on a Ruby project with
+  a user friendly interface.
+</p>
+<p>
+  Update: Ruby does have {{ link::e(path="http://pryrepl.org/", description="pry") }}
+ which is
+  very nice alternative to IRB.
+</p>
+
+{% endblock page_content %}

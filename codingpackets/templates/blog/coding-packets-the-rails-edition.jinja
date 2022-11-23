@@ -1,0 +1,175 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  One of my 2019 goals was to migrate {{ link::e(path="https://codingpackets.com", description="codingpackets.com") }}
+
+  from the python web framework {{ link::e(path="https://www.djangoproject.com/", description="Django") }}
+ to the ruby
+  web framework {{ link::e(path="https://rubyonrails.org/", description="Rails") }}
+. Well it's done and this is
+  the story of how and why I did it.
+</p>
+
+<h3 id="ruby-on-rails">Ruby on Rails</h3>
+<p>
+  {{ link::e(path="https://rubyonrails.org/", description="Rails") }}
+ is a really nice to work with web
+  framework which is "Optimizing for programmer happiness with Convention over Configuration"
+  This means it's very opinionated about how you need to do things. For example you
+  need to name your files a certain way and organise your folders in a specific layout.
+  This might be a bit of an irk for some, but for me I found it nice to be able to
+  focus on the content rather that spending a lot of time working on boilerplate.
+</p>
+
+<h3 id="why-though">Why Though?</h3>
+<p>
+  In a lot of ways Django and Rails are pretty similar in that they are both successful
+  open source projects with plenty of community support. They are both opinionated
+  MVC frameworks that come with a ton of batteries included. I originally launched
+  {{ link::e(path="https://codingpackets.com", description="codingpackets.com") }}
+ two years ago using Django 1.9,
+  Django has continued to move along nicely as a project and I was very happy with it
+  but I wanted to explore other alternatives.
+  Essentially {{ link::e(path="https://codingpackets.com", description="codingpackets.com") }}
+ is
+  a static site, I do not run any database so there are a lot of options out there.
+  I toyed with {{ link::e(path="http://flask.pocoo.org/", description="Flask") }}
+ and considered
+  {{ link::e(path="https://gohugo.io", description="Hugo") }}
+ but in the end, I landed on Rails minus
+  {{ text::emphasize(text="ActiveRecord") }}
+ which is the database ORM.
+</p>
+<p>
+  In my $JOB I work with a couple of Ruby based projects and although I am not any
+  sort of gun Rubyist I have really come to like the language and want to use it more.
+  Someone much smarter than me once said:
+</p>
+
+{{ text::quote_block(attribution="Dennis Ritchie", text="
+The only way to learn a new programming language is by writing programs in it.
+") }}
+
+<p>
+  Thinking back to when I was learning Python, this is the same reason I started using
+  Django. At the time, I was using PHP as the front end component of a project when I
+  found out about Django. If a Python based framework could free me from the shackles
+  of PHP it was worth a shot. I also figured writing more python could not hurt and I
+  did not regret my choice. Django has served me well over the last 6 or 7 years.
+</p>
+
+<h3 id="whats-inside">Whats Inside</h3>
+<p>
+  Besides Rails 5, I am only using a couple of other projects but they do a lot of work.
+  I also used these same projects with the previous Django site, albeit different versions.
+</p>
+<h4>Bootstrap</h4>
+<p>
+  {{ link::e(path="https://getbootstrap.com/", description="Bootstrap") }}
+  (version 4.3 at the time
+  of writing). It is a NIGHTMARE to try and build a site without a CSS framework like
+  bootstrap. There are so many considerations around browser vendors/versions and
+  desktop/tablet/mobile sites. For those out there that do this for a living, I salute
+  you. Bootstrap gives you a nice out of the box experience but it is also pretty
+  painless to customize.
+</p>
+
+<h4>Font Awesome</h4>
+<p>
+  {{ link::e(path="https://fontawesome.com/", description="Font Awesome") }}
+ (version 5.8 at the time
+  of writing) provides really nice icons. There is a free and a pro version, I am
+  just using the free icons of which there are a lot to choose from. The icons at the
+  page footer are from Font Awesome.
+</p>
+
+<h4>Highlight.js</h4>
+<p>
+  {{ link::e(path="https://highlightjs.org", description="highlight.js") }}
+ (version 9.15 at the time
+  of writing) provides the syntax highlighting for the code blocks on the site.
+  This is a really awesome project, it supports highlighting for 185 languages
+  in 89 styles. I am currently using the {{ text::emphasize(text="xt256") }}
+
+  style.
+</p>
+
+<h3 id="house-keeping">House Keeping</h3>
+<p>
+  I originally built {{ link::e(path="https://codingpackets.com", description="codingpackets.com") }}
+
+  as a place to keep my notes instead of using Evernote when I became unhappy
+  with that product. In the beginning I did not have a blog, it was just a
+  collection of my notes and dead links that I had not yet (and still not)
+  populated. I took the opportunity to clean up all the dead links and half
+  completed articles which has made the site look a lot cleaner and pleasant
+  to navigate.
+</p>
+
+<h3 id="hosting">Hosting</h3>
+<p>
+  I am hosting the site on a Digital Ocean droplet. Since moving to Rails I
+  have actually been able to halve the size of the droplet I use and it now
+  only costs me $5 a month instead of $10. I like to use a Droplet instead of
+  an App stack as it gives me the freedom to pick and choose the versions of
+  code I use. I also like the droplet based firewall that DO has which prevents
+  a lot of the junk traffic hitting the VM and eating up resources (Another reason
+  I was able to reduce the VM size).
+</p>
+
+<h3 id="learning-rails">Learning Rails</h3>
+<p>
+  I used a couple of resources to learn Rails and I found them very helpful so I
+  would like to give them a shout out.
+</p>
+<h4>Professional Ruby on Rails Developer with Rails 5</h4>
+<p>
+  This is a nice introductory course. It is said that "Rails if full of magic".
+  It has a lot of helper generators to build out boiler plate for you. This is one
+  of the reason it is really fast to get things done with Rails. This course makes a
+  point of not using the magic but showing you how the magic works behind the curtain.
+</p>
+<p>
+  <a href="https://www.udemy.com/pro-ruby-on-rails-rails5/">
+    https://www.udemy.com/pro-ruby-on-rails-rails5/
+  </a>
+
+</p>
+
+<h4>Dissecting Ruby on Rails 5 - Become a Professional Developer</h4>
+<p>
+  I would say this course is not for Rails beginners. But! It is a great follow on
+  course. It really digs into how things work in rails in a very practical way. As
+  you go through the course building out a project the topics build on one another
+  and the rabbit hole just goes down and down and down. I have another project in
+  mind that will require full app stack and I will definitely be coming back to
+  this course to review some of the topics.
+</p>
+<p>
+  <a href="https://www.udemy.com/pro-ruby-on-rails-rails5/">
+    https://www.udemy.com/pro-ruby-on-rails-rails5/
+  </a>
+
+</p>
+
+<h4>Other</h4>
+<p>
+  Of course there was a lot of trawling through StackOverflow questions and answers as
+  well as reading over the Rails docs (which are very good) and various fantastic blog
+  posts. I will write about some of the more specific hurdles I faced in dedicated blog
+  posts in the future.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Ruby on rails is awesome, working with it is actually enjoyable. The community is
+  vibrant and there is an abundant ecosystem of battle tested well supported libraries.
+  With the rise of Javascript based frameworks such as Angular, React
+  and Vue, MVC frameworks such as Rails and Django are currently on the decline. That
+  does not mean they are going the way of the dinosaur. Im guessing as web socket support
+  becomes more wide spread MVC frameworks will rise in popularity again.
+</p>
+{% endblock page_content %}

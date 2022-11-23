@@ -1,7 +1,7 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/rails-generators-cheat-sheet.jinja \
+codingpackets/templates/blog/ruby-quick-reference.jinja \
 "
 
 for FILENAME in $files; do
