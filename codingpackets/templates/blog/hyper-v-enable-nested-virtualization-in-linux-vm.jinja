@@ -1,0 +1,161 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I really like {{ link::e(path="https://www.vagrantup.com/", description="Vagrant") }}
+ for 
+  developement and testing. The Vagrant team maintains a 
+  {{ link::e(path="https://www.vagrantup.com/docs/providers/hyperv", description="Hyper-V") }}
+
+  provider for use with Windows but it has some 
+  {{ link::e(path="https://www.vagrantup.com/docs/providers/hyperv/limitations", description="limitations") }}
+. 
+  A very big one being limited networking support. For example: You 
+  cannot create additional networks so are stuck using the "Default Network" :/
+</p>
+<p>
+  I discovered that in newer versions of Hyper-V you can run nested 
+  virtualization with Linux VMs. This presents some interesting opportunities 
+  to run KVM/QEMU on a Linux VM nested on Hyper-V. This in theory would 
+  allow you to run Vagrant or even EVE-NG under Hyper-V albeit in a nested 
+  Linux VM. This post outlines how to enable nested virtualization on 
+  an Ubuntu 1804 VM on Hyper-V.
+</p>
+
+{{ text::note_block(text='
+<p>
+  This post focuses on Ubuntu 1804 but should work on most Linux distros on 
+  the $1 list.
+')
+  | replace(from="$1", to=link::e(path="https://docs.microsoft.com/en-us/windows-server/virtualization/hyper-v/supported-linux-and-freebsd-virtual-machines-for-hyper-v-on-windows", description="Suported Distros"))
+}}
+
+
+<h4>Software Used in this Post</h4>
+<ul>
+  <li>Windows 10 Pro - 19041.388</li>
+  <li>Ubuntu - 1804</li>
+</ul>
+
+<h3 id="pre-flight">Pre-Flight</h3>
+<p>
+  This post assumes that you already have Hyper-V enabled and an Ubuntu 
+  1804 VM installed. Follow along with {{ link::e(path="", description="this") }}
+ post 
+  to install an Ubuntu 1804 VM. 
+  {{ link::e(path="https://techcommunity.microsoft.com/t5/itops-talk-blog/step-by-step-enabling-hyper-v-for-use-on-windows-10/ba-p/267945", description="This") }}
+ 
+  is a pretty decent post on enabling Hyper-V.
+</p>
+
+<p>
+  The VM/Host must also adhere to the following paramaters.
+</p>
+<ul>
+  <li>A VM configuration version 8.0 or greater</li>
+  <li>The VM must be of the type Generation 2</li>
+  <li>The VM cannot use Dynamic Memory</li>
+  <li>Disable Secure Boot on the VM</li>
+  <li>The host must have an Intel processor with VT-x and EPT technology</li>
+</ul>
+
+{{ text::note_block(text='
+<p>
+  To enable nested virtualization the VM must first be powered off.
+</p>')
+}}
+
+{{ text::note_block(text='
+<p>
+  Open a Powershell window as administrator to execute the following commands.
+</p>
+')
+}}
+
+<p>
+  With all that out of the way. Lets get to it.
+</p>
+
+<h4>Windows Hyper-V Host</h4>
+<p>
+  Get a list of the Hyper-V VMs. The VM I will be altering is called 
+  {{ text::emphasize(text="vagrant") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='Get-VM
+
+# output
+
+Name    State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----    ----- ----------- ----------------- ------   ------             -------
+vagrant Off   0           0                 00:00:00 Operating normally 9.0'
+) }}
+
+
+<p>
+  Enable nested virtualization on the required VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='Set-VMProcessor -VMName vagrant -ExposeVirtualizationExtensions $true'
+) }}
+
+
+<p>
+  Confirm nested virtualization is enabled on the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='(Get-VMProcessor -VMName vagrant).ExposeVirtualizationExtensions
+
+# output
+
+True'
+) }}
+
+<h4>Ubuntu 1804 VM</h4>
+<p>
+  Power on the VM and install the 
+  {{ text::emphasize(text="cpu-checker") }}
+ utility.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='sudo apt install -y cpu-checker'
+) }}
+
+<p>
+  Confirm that KVM acceleration can be used with the {{ text::code(text="kvm-ok") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='kvm-ok
+
+# output
+
+INFO: /dev/kvm exists
+KVM acceleration can be used'
+) }}
+
+<p>
+  And .... that's it!!!!
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post we enabled nested virtualization on a Linux VM hosted on 
+  Microsoft Hyper-V. My intention is to use this VM to run Vagrant labs 
+  with the libvirt provider. Whatever your intention is, may the swartz 
+  be with you.
+</p>
+{% endblock page_content %}

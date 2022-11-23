@@ -1,0 +1,81 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I have an annoying issue. After my laptop goes to sleep, 
+  the network adapters for my VMware virtual machines stop working.
+  In this post i'll show you how to use PowerShell to kick 
+  them in the guts and get them going again.
+</p>
+
+<h3 id="how">How?</h3>
+<p>
+  Open up a PowerShell window as Administrator and run the 
+  {{ text::code(text="Get-NetAdapter") }}
+ command to list all of your 
+  network adapters.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='Get-NetAdapter
+
+Name                      InterfaceDescription                    ifIndex Status       MacAddress             LinkSpeed
+----                      --------------------                    ------- ------       ----------             ---------
+Ethernet                  Realtek PCIe GbE Family Controller           24 Disconnected 8C-8C-AA-C7-F2-C6          0 bps
+Ethernet 2                Realtek PCIe GbE Family Controller #2        21 Disconnected 8C-8C-AA-C7-F2-C5          0 bps
+ZeroTier One [1d719394... ZeroTier Virtual Port                        20 Up           B2-2C-B9-B7-CD-F3       100 Mbps
+Wi-Fi                     Intel(R) Wi-Fi 6 AX200 160MHz                16 Up           64-BC-58-E3-4F-C7       270 Mbps
+VMware Network Adapte...8 VMware Virtual Ethernet Adapter for ...      11 Up           00-50-56-C0-00-08       100 Mbps
+VMware Network Adapte...1 VMware Virtual Ethernet Adapter for ...       6 Up           00-50-56-C0-00-01       100 Mbps
+Ethernet 3                Lenovo USB Ethernet                           4 Disconnected 48-2A-E3-AE-62-FD          0 bps
+Bluetooth Network Conn... Bluetooth Device (Personal Area Netw...       3 Disconnected 64-BC-58-E3-4F-CB         3 Mbps'
+) }}
+
+<p>
+  Now run the {{ text::code(text="Restart-NetAdapter") }}
+ command, 
+  specifying the {{ text::emphasize(text="Name") }}
+ of 
+  the adapter from the previous command.
+</p>
+
+{{ text::note_block(text='
+    You can use wildcards such as 
+    {{ text::emphasize(text="(*)") }}
+
+    to perform multiple matches and or save on typing.
+') }}
+
+<p>
+  With the below command I am targetting the
+  {{ text::emphasize(text="VMware Network Adapter 1") }}
+
+  adapter.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='Restart-NetAdapter -Name "VMw*1"'
+) }}
+
+<p>
+  Silicon gods willing, the VMs will now have functioning 
+  network adapters again.
+</p>
+
+{{ text::note_block(text='
+    It may take multiple kicks in the guts to get the 
+    adapters functioning again.
+') }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I showed you how to use PowerShell to kick 
+  a network adapter while it is down. Whoever said never 
+  kick something while they are down didn't have to deal with 
+  VMware shenanigans.
+</p>
+{% endblock page_content %}

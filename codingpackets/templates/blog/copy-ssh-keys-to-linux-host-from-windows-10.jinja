@@ -1,0 +1,60 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  A short post, documenting the process of 
+  copying your SSH keys from Windows 10 to 
+  linux host.
+</p>
+<p>
+  This will save future Brad having to go 
+  on a {{ link::e(path="duckduckgo.com", description="duck hunt") }}
+  to find this information for the 10 billionth time.
+</p>
+
+<h3 id="requirements">Requirements</h3>
+<p>
+  In recent versions of Windows 10 you can 
+  enable both an SSH client and server.  
+  This post assumes that you have the SSH client 
+  enabled and you have generated SSH keys.
+</p>
+<p>
+  You can generate SSH keys with the 
+  {{ text::code(text="ssh-keygen.exe") }}
+ command.
+</p>
+
+<h3 id="make-it-so">Make It So</h3>
+<p>
+  Once you have your SSH keys generated, the following 
+  command will copy them to the target host. 
+  It will also create the  
+  {{ text::emphasize(text="~/.ssh/") }}
+
+  directory and the 
+  {{ text::emphasize(text="authorized_keys") }}
+ 
+  file if they do not exist.
+</p>
+<p>
+  Run this oneliner from a powershell prompt.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cat ~/.ssh/id_rsa.pub | ssh &lt;user&gt;@&lt;host&gt; "mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys"'
+) }}
+<p>
+  Credit for this magic goes to 
+{{ link::e(path="https://serverfault.com/a/583659", description="this") }}
+
+serverfault answer.  
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  And done. Future Brad, your welcome
+</p>
+{% endblock page_content %}

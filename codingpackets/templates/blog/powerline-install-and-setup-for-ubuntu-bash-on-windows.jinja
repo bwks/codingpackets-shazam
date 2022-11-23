@@ -1,0 +1,267 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I am currently using a Windows 10 laptop as my main OS. IMHO Microsoft has
+  really turned it around as a company in recent years and I no longer think of
+  them as M$ Virus Corp!! I still live in a terminal session for a lot of my day
+  and I am not ready give up on Bash just yet. The ability to run Bash on Windows
+  was one of the reasons I was willing to move back to Windows as my primary laptop OS.
+</p>
+<p>
+  In this post I will run through setting up the
+  {{ link::e(path="https://powerline.readthedocs.io/en/latest/", description="Powerline") }}
+ status
+  plugin for Bash on Windows. This post assumes you already have Ubuntu
+  for Windows 10 app installed. For instruction on how to do that check out
+  the documentation
+  {{ link::e(path="https://docs.microsoft.com/en-us/windows/wsl/install-win10", description="here") }}
+.
+</p>
+
+<p>
+  The following software versions were used / installed in this post.
+</p>
+
+<ul>
+  <li><b>Microsoft Windows 10</b> - 1809</li>
+  <li><b>Ubuntu for Windows</b> - 1804</li>
+  <li><b>Powerline</b> - 2.7</li>
+</ul>
+
+<h3 id="update-ubuntu">Update Ubuntu</h3>
+<p>
+  If you have just installed the Ubuntu app, perform an update.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt update -y && sudo apt upgrade -y`
+) }}
+
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  Powerline requires patched fonts to correctly display icons, symbols and
+  nice text.
+</p>
+<ul>
+  <li>Download the patched font from {{ link::e(path="https://github.com/powerline/fonts/archive/master.zip", description="here") }}
+</li>
+  <li>Extract the files and browse to the extracted directory</li>
+  <li>Find a file named {{ text::emphasize(text="install.ps1") }}
+</li>
+  <li>Run the file in Powershell to install the fonts into the system</li>
+</ul>
+
+<p>
+  Install and update Python PIP
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install -y python3-pip
+
+sudo pip3 install -U pip`
+) }}
+
+
+<h3 id="installation">Installation</h3>
+<p>
+  Install Powerline.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo pip3 install powerline-status`
+) }}
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Find the install location for powerline.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`pip3 show powerline-status
+
+# output
+
+Name: powerline-status
+Version: 2.7
+Summary: The ultimate statusline/prompt utility.
+Home-page: https://github.com/powerline/powerline
+Author: Kim Silkebaekken
+Author-email: kim.silkebaekken+vim@gmail.com
+License: MIT
+Location: /usr/local/lib/python3.6/dist-packages
+Requires:
+Required-by:`
+) }}
+
+<p>
+  From the output above you can see Powerline is installed in the
+  {{ text::emphasize(text="/usr/local/lib/python3.6/dist-packages") }}
+
+  directory.
+</p>
+
+<p>
+  Add the following configuration to your
+  {{ text::emphasize(text="~/.bashrc") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code=`PY3_REPO_ROOT=/usr/local/lib/python3.6/dist-packages
+
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+source $PY3_REPO_ROOT/powerline/bindings/bash/powerline.sh`
+) }}
+
+
+<p>
+  Source your {{ text::emphasize(text="~/.bashrc") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`source ~/.bashrc`
+) }}
+
+<p>
+  At this point Powerline is installed and setup, but the symbols will be all
+  messed up and you will need to select one of the patched fonts that where
+  installed earlier.
+</p>
+<p>
+  In the Ubuntu app follow the below sequence to change the font.
+</p>
+<ul>
+  <li>Select the Ubuntu icon > Properties</li>
+  <li>Select the Font tab</li>
+  <li>Choose one of the Powerline fonts</li>
+</ul>
+
+<h3 id="customise-powerline-display">Customise Powerline Display</h3>
+<p>
+  Powerline is highly customisable, configs to alter the appearance are
+  stored in the {{ text::emphasize(text="~/.config/powerline/themes/shell/default.json") }}
+
+  file. This is my custom powerline config file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "segments": {
+    "above": [
+      {
+        "left": [
+          {
+            "function": "powerline.segments.shell.mode"
+          },
+          {
+            "function": "powerline.segments.common.net.hostname",
+            "priority": 10
+          },
+          {
+            "function": "powerline.segments.common.env.user",
+            "priority": 30
+          },
+          {
+            "function": "powerline.segments.common.env.virtualenv",
+            "priority": 50
+          },
+          {
+            "function": "powerline.segments.shell.cwd",
+            "priority": 10,
+            "args": {
+              "use_path_separator": true
+            }
+          },
+          {
+            "function": "powerline.segments.common.time.date"
+          },
+          {
+            "function": "powerline.segments.common.time.date",
+            "name": "time",
+            "args": {
+              "format": "%H:%M:%S %A",
+              "istime": true
+            }
+          },
+          {
+            "function": "powerline.segments.common.vcs.branch",
+            "priority": 40
+          },
+          {
+            "function": "powerline.segments.shell.jobnum",
+            "priority": 20
+          }
+        ],
+        "right": [
+        ]
+      },
+      {
+      }
+    ],
+    "left": [
+      {
+        "function": "powerline.segments.shell.mode"
+      },
+      {
+        "function": "powerline.segments.common.time.date",
+        "args": {
+          "format": "$"
+        }
+      }
+    ],
+    "right": [
+    ]
+  }
+}`
+) }}
+
+
+<h3 id="vim-bindings">VIM Bindings</h3>
+<p>
+  To use the VIM bindings add the following config
+  to your {{ text::emphasize(text="~/.vimrc") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code=`set rtp+=/usr/local/lib/python3.6/dist-packages/powerline/bindings/vim
+set laststatus=2
+set t_Co=256`
+) }}
+
+
+<h3 id="tmux-bindings">TMUX Bindings</h3>
+<p>
+  To use the TMUX bindings add the following config to your
+  {{ text::emphasize(text="~/.tmux.conf") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="bash",
+  code=`source "/usr/local/lib/python3.6/dist-packages/powerline/bindings/tmux/powerline.conf"`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Having the option to run Bash on Windows is a very nice feature. I really like
+  the aesthetics of the Powerline plugin so I am happy to be able to install then
+  on the Ubuntu Bash app.
+</p>
+{% endblock page_content %}

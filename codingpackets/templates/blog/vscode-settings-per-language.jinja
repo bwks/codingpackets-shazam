@@ -1,0 +1,100 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is just a quick post to share something that I found 
+  which is a really nice quality of life tip for VSCode.
+</p>
+<p>
+  In this post, I will show you how to configure per-language settings 
+  in VSCode so that, in Python files you can set to 
+  indent with 4 spaces and in Javascript you can set to indent with 2 spaces.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+
+<ul>
+  <li>VSCode - 1.65.2</li>
+</ul>
+
+<h3 id="how">How?</h3>
+<p>
+  Open the command pallete with the {{ text::kbd(text="CMD") }}
+ + {{ text::kbd(text="SHIFT") }}
+ + {{ text::kbd(text="p") }}
+ keyboard 
+  combination and type {{ text::emphasize(text="Preferences: Open Settings (JSON)") }}
+ 
+  and hit {{ text::kbd(text="ENTER") }}
+.
+</p>
+<p>
+  For each language, add a stanza in the format {{ text::code(text='"[language]": {}') }}
+. For example:
+</p>
+{{ text::code_block(
+header="settings.json",
+language="javascript",
+code='"[rust]": {
+    "editor.tabSize": 4,
+},
+"[python]": {
+    "editor.tabSize": 4,
+},
+"[njk]": {
+    "editor.formatOnSave": false
+},'
+) }}
+
+
+<p>
+  My entire config loooks like the below.
+</p>
+{{ text::code_block(
+header="settings.json",
+language="javascript",
+code=`{
+    "editor.fontFamily": "'FiraCode NF','FiraCode Nerd Font Mono',Consolas, 'Courier New', monospace",
+    "files.associations": {
+        "*.njk": "njk"
+    },
+    "emmet.includeLanguages": {
+        "njk": "html"
+    },
+    "remote.SSH.remotePlatform": {
+        "dev01": "linux"
+    },
+    "terminal.integrated.fontFamily": "'FiraCode NF','FiraCode Nerd Font Mono',Consolas, 'Courier New', monospace",
+    "editor.suggestSelection": "first",
+    "workbench.colorTheme": "Material Deep Ocean",
+    "workbench.startupEditor": "none",
+    "remote.SSH.remoteServerListenOnSocket": true,
+    "terminal.integrated.fontSize": 14,
+    "editor.fontSize": 14,
+    "editor.accessibilitySupport": "off",
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.wordWrapColumn": 100,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "[rust]": {
+        "editor.tabSize": 4,
+    },
+    "[python]": {
+        "editor.tabSize": 4,
+    },
+    "[njk]": {
+        "editor.formatOnSave": false
+    },
+}`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  And that's it! Go forth and conquer my friends.
+</p>
+{% endblock page_content %}
