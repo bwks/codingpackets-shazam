@@ -1,0 +1,207 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  I discovered a nice little trick to make working with Vagrant VMs
+  a little easier by utilizing the openssh config file to define
+  the SSH connection parameters for Vagrant VMs. This post will walk
+  you through getting it setup.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>openssh</b> - 7.6p1</li>
+  <li><b>Vagrant</b> - 2.2.3</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  In order to utilize this method you will need to have openssh version
+  {{ text::emphasize(text="7.3p1") }}
+ or greater. If you are not
+  sure what an SSH config file is or does, go on a quick
+  {{ link::e(path="https://duckduckgo.com/", description="duck hunt") }}
+ there
+  are a plethora for resources out there.
+</p>
+
+{{ text::note_block(text='
+    If you are running an openssh version < 7.3p1 there is an alternate
+    method at the bottom of this post.
+') }}
+
+<h3 id="ssh-the-vagrant-way">SSH The Vagrant Way</h3>
+<p>
+  Usually when working with Vagrant you access a VM by using the command
+  {{ text::code(text="vagrant ssh &lt;vm-name&gt;") }}
+. This is fine, but things
+  start to get messy when you want to use Ansible or Puppet Bolt etc.. to
+  apply config to the VMs. You either need to use Vagrants config to apply
+  your inventory groupings or twiddle around with your inventory files.
+</p>
+<p>
+  Vagrant has a command {{ text::code(text="vagrant ssh-config") }}
+ that will spit out
+  a valid openssh config file. This file can be used with openssh to define
+  ssh connection parameters for your Vagrant VMs.
+</p>
+
+<h3 id="prepare-host">Prepare Host</h3>
+<p>
+  First up be sure you have at least openssh version
+  {{ text::emphasize(text="7.3p1") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh -V
+
+# output
+
+OpenSSH_7.6p1 Ubuntu-4ubuntu0.1, OpenSSL 1.0.2n  7 Dec 2017`
+) }}
+
+
+<p>
+  Next up create a directory for your vagrant SSH config.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/.ssh/vagrant.d/`
+) }}
+
+
+<p>
+  The {{ text::emphasize(text="Include") }}
+ parameter was added to
+  openssh in version {{ text::emphasize(text="7.3p1") }}
+.
+  Add the following to your {{ text::emphasize(text="~/.ssh/config") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Include vagrant.d/sshconfig`
+) }}
+
+
+<p>
+  Now navigate to the directory where your Vagrant lab is configured
+  and run the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant ssh-config > ~/.ssh/vagrant.d/sshconfig`
+) }}
+
+<p>
+  This will take the Vagrant SSH config and add it to your home
+  directory SSH config.
+</p>
+
+<h3 id="test">Test</h3>
+<p>
+  Now instead of using the {{ text::code(text="vagrant ssh &lt;vm-name&gt;") }}
+
+  command to access your VMs you can just use {{ text::code(text="ssh &lt;vm-name&gt;") }}
+.
+  Not only will this be alot faster than using the {{ text::code(text="vagrant ssh") }}
+
+  you wont have to mess around with {{ text::emphasize(text="/etc/hosts") }}
+
+  file or do funny tricks with your configuration management inventory files.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh lab-spine01
+
+# output
+
+Welcome to Cumulus VX (TM)
+
+Cumulus VX (TM) is a community supported virtual appliance designed for
+experiencing, testing and prototyping Cumulus Networks' latest technology.
+For any questions or technical support, visit our community site at:
+http://community.cumulusnetworks.com
+
+The registered trademark Linux (R) is used pursuant to a sublicense from LMI,
+the exclusive licensee of Linus Torvalds, owner of the mark on a world-wide
+basis.
+vagrant@cumulus:~$`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cat ~/.ssh/vagrant.d/sshconfig
+
+# output
+
+Host lab-spine01
+  HostName 192.168.121.114
+  User vagrant
+  Port 22
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /home/bradmin/.vagrant.d/insecure_private_key
+  IdentitiesOnly yes
+  LogLevel FATAL`
+) }}
+
+
+<h3 id="alternate-method">Alternate Method</h3>
+<p>
+  There is an alternate method which is not as seamless but is available
+  if you are running {{ text::emphasize(text="openssh < 7.3p1") }}
+
+  or prefer not to alter your user ssh config.
+</p>
+<p>
+  This method involves redirecting the {{ text::code(text="vagrant ssh-config") }}
+
+  command output to a local directory file
+  ({{ text::emphasize(text=".sshconfig") }}
+ in the below example).
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant ssh-config > .sshconfig`
+) }}
+
+
+<p>
+  Then use the {{ text::emphasize(text="-F") }}
+ flag to
+  specify the ssh config file for the ssh connection.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh -F .sshconfig lab-spine01`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  SSH config is a nice way to manage your SSH connections. In
+  my $JOB I rely on my ssh config to navigate around the network
+  through a multitude of jump boxes. Using an SSH config to manage
+  the Vagrant lab I am working on is a nice little hack and I am
+  kicking myself I did not think of it sooner.
+</p>
+{% endblock page_content %}

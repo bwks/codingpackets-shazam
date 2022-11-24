@@ -1,0 +1,761 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will install a Viptela vManage appliance for use with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider.
+</p>
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>Viptela vManage</b> - 16.3.2</li>
+  <li><b>Vagrant</b> - Vagrant 2.0.1</li>
+  <li><b>vagrant-libvirt</b> - 0.4.0</li>
+  <li><b>Ubuntu</b> - 1604</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Viptela does not host any boxes on Vagrant cloud so we will need to build one.
+  Go to {{ link::e(path="https://docs.viptela.com/Downloads", description="https://docs.viptela.com/Downloads") }}
+ and dowload the
+  {{ link::e(path="https://viptela.force.com/Customers/ViptelaSoftwareConfirmationPage?DownloadURL=16.3.2%2Fviptela-vmanage-genericx86-64.qcow2", description="16.3.2") }}
+ vManage {{ text::emphasize(text="KVM") }}
+ image for new deployments.
+</p>
+
+{{ image::boxed(path="blog/viptela-vmanage-vagrant-libvirt-box-install/viptela-vmanage-download.png", width="600px") }}
+
+{{ text::note_block(text='
+    You will either need be an existing customer/partner or speak to your Cisco/Viptela account manager
+    to gain access to the Viptela support portal.
+') }}
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into directory for vManage files. I like to keep my custom vagrant boxes under
+  {{ text::emphasize(text="~/vagrant/boxes/") }}
+.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/viptela
+cd ~/vagrant/boxes/viptela`
+) }}
+
+
+<p>
+  Copy the {{ text::emphasize(text=".qcow2") }}
+ file downloaded earlier to the
+  {{ text::emphasize(text="~/vagrant/boxes/viptela") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp ~/Downloads/viptela-vmanage-genericx86-64.qcow2 .`
+) }}
+
+
+<p>
+  The vManage requires two volumes; The one that you downloaded is used for the vManage software and
+  a second storage volume which is used for the database. Create a 100 Gig
+  volume with the {{ text::code(text="qemu-img") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`qemu-img create -f qcow2 vmanage-disk2-base.qcow2 100G
+
+# output
+
+Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off refcount_bits=16`
+) }}
+
+
+{{ text::note_block(text='
+    The volume will be <i>"thin provisioned"</i> and not actually use 100 Gig of space.
+') }}
+
+<p>
+  Use the below {{ text::code(text="virt-install") }}
+ command to build the vManage VM. Assign 2 CPU's and 8 Gig of
+  RAM otherwise the VM will take forever to boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virt-install \
+    --name vmanage-base \
+    --os-type linux \
+    --os-variant ubuntu14.04 \
+    --cpu host \
+    --vcpus=2 \
+    --hvm \
+    --arch=x86_64 \
+    --ram 8192 \
+    --disk path=viptela-vmanage-genericx86-64.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --disk path=vmanage-disk2-base.qcow2,size=16,device=disk,bus=ide,format=qcow2 \
+    --network=network:vagrant-libvirt,model=virtio \
+    --graphics none \
+    --import`
+) }}
+
+
+<p>
+  A virtual console will be connected to the VM and you will see the below. It will take a minunte or
+  so for the VM to boot, once it does login with the username: {{ text::emphasize(text="admin") }}
+ and
+  password: {{ text::emphasize(text="admin") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Starting install...
+Creating domain...                                                                                                                                                                          |    0 B  00:00:01
+Connected to domain vmanage-base
+Escape character is ^]
+viptela 16.3.2
+vmanage login:`
+) }}
+
+
+<p>
+  Once logged in, select the 100Gig disk you built earlier to install the database. You should only
+  see one option: {{ text::emphasize(text="hdb") }}
+. Select {{ text::emphasize(text="1") }}
+
+  for {{ text::emphasize(text="hdb") }}
+ and {{ text::emphasize(text="y") }}
+ for the next two
+  prompts.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Welcome to Viptela CLI
+admin connected from 127.0.0.1 using console on vmanage
+Available storage devices:
+hdb	100GB
+<span class="hljs-string">1) hdb</span>
+
+
+Select storage device to use: <span class="hljs-string">1</span>
+
+Would you like to format hdb? (y/n): <span class="hljs-string">y</span>
+
+kernel.hung_task_panic = 0
+mke2fs 1.42.9 (28-Dec-2013)
+/dev/hdb is entire device, not just one partition!
+Proceed anyway? (y,n) <span class="hljs-string">y</span>`
+) }}
+
+
+<p>
+  When the database install is complete the vManage will reboot. A sample output of the database
+  install is below.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+6553600 inodes, 26214400 blocks
+1310720 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=4294967296
+800 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+  32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+  4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+vmanage# The system is going down for reboot NOW!`
+) }}
+
+
+
+<p>
+  Once the vManage has rebooted, login with the username/password {{ text::emphasize(text="admin") }}
+
+  and apply the following bootstrap configuration.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`config
+system
+ aaa
+  user vagrant
+   password $6$yW1ez6tP1rqv15nA$2uA0TXEIuCuGnPa4bUVCSN4o5b.wU/WMzBa4kjYvBz4B/EbbJY3he9CMaY0UWPi0joUqUxYC.F6xbYHQQcq2o/
+   group    netadmin
+   !
+  !
+  vpn 0
+   no int eth0
+   !
+  vpn 512
+   int eth0
+    ip dhcp-client
+    no shutdown
+  !
+  commit and-quit
+!`
+) }}
+
+
+<p>
+  The bootstrap config will create the {{ text::emphasize(text="vagrant") }}
+ user with the password
+  {{ text::emphasize(text="vagrant") }}
+ but we still need to load the vagrant ssh key.
+</p>
+
+<p>
+  Login to the {{ text::emphasize(text="vshell") }}
+ with the {{ text::code(text="vshell") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# viptela_cli
+
+vmanage# vshell
+
+# Now in vshell
+
+vmanage:~$`
+) }}
+
+
+<p>
+  Switch to the {{ text::emphasize(text="vagrant") }}
+ user.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`su vagrant
+password: &lt;vagrant&gt;
+
+# log back into vshell
+
+vmanage# vshell`
+) }}
+
+
+<p>
+  Create the {{ text::emphasize(text=".ssh") }}
+ directory.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir /home/vagrant/.ssh && cd /home/vagrant/.ssh`
+) }}
+
+
+<p>
+  Use vim to add the vagrant {{ link::e(path="https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub", description="public key") }}
+
+  to the {{ text::emphasize(text="authorized_keys") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`/home/vagrant/.ssh/authorized_keys
+
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key`
+) }}
+
+
+
+<p>
+  Exit back to the {{ text::emphasize(text="viptela_cli") }}
+ and use the {{ text::code(text="show int | tab") }}
+
+  command to get the IP address assigned to the  {{ text::emphasize(text="eth0") }}
+ interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vshell
+
+vsmart:/home/vagrant/.ssh$ exit
+
+viptela_cli
+
+#vmanage show int | tab
+
+# output
+
+                                         IF      IF                                                          TCP
+                AF                       ADMIN   OPER    ENCAP  PORT                          SPEED          MSS             RX       TX
+VPN  INTERFACE  TYPE  IP ADDRESS         STATUS  STATUS  TYPE   TYPE  MTU  HWADDR             MBPS   DUPLEX  ADJUST  UPTIME  PACKETS  PACKETS
+-----------------------------------------------------------------------------------------------------------------------------------------------
+512  eth0       ipv4  192.168.121.55/24  Up      Up      null   mgmt  -    52:54:00:4b:b8:a4  -      -       -       -       447      102`
+) }}
+
+
+
+<p>
+  From another terminal, confirm that you can ssh to the vManage with the Vagrant
+  {{ text::emphasize(text="insecure_private_key") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ssh vagrant@192.168.121.55 -i ~/.vagrant.d/insecure_private_key
+
+# Success
+
+Welcome to Viptela CLI
+vagrant connected from 192.168.121.1 using ssh on vmanage
+vmanage#`
+) }}
+
+
+<p>
+  If you successfully connected, poweroff the vManage in preparation for the Vagrant box creation.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vmanage# poweroff
+Are you sure you want to power off the system? [yes,NO] <span class="hljs-string">yes</span>`
+) }}
+
+
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+
+<h3 id="box-creation">Box Creation</h3>
+<p>
+  The maintainers of the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin have a script
+  that can be used to convert {{ text::emphasize(text=".qcow2") }}
+ images to a vagrant box.
+  Download the libvirt conversion script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh`
+) }}
+
+
+<p>
+  Create a {{ text::emphasize(text="metadata.json") }}
+ file.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`echo '{"provider":"libvirt","format":"qcow2","virtual_size":16}' > metadata.json`
+) }}
+
+
+<p>
+  Use the {{ text::emphasize(text="create_box.sh") }}
+ script to make a Vagrant box from the
+  {{ text::emphasize(text="qcow2") }}
+ image.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh viptela-vmanage-genericx86-64.qcow2
+
+# output
+
+{19}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 1005465600 (959MiB, 38MiB/s)
+==> viptela-vmanage-genericx86-64.box created
+==> You can now add the box:
+==>   'vagrant box add viptela-vmanage-genericx86-64.box --name viptela-vmanage-genericx86-64'`
+) }}
+
+
+{{ text::note_block(text='
+    Currently the $1 provider only supports the packaging
+    of one storage devices as  described in $2
+    github issue. This leads to a caveat when working with the vManage image. I will go into how to work around this
+    later on in the post.
+') 
+  | replace(from="$1", to=text::emphasize(text="vagrant-libvirt"))
+  | replace(from="$2", to=link::e(path="https://github.com/vagrant-libvirt/vagrant-libvirt/issues/602", description="this"))
+}}
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="vmanage.json") }}
+ so that the box is added
+  with the correct version number.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "viptela/vmanage",
+  "description": "Viptela vManage",
+  "versions": [
+    {
+      "version": "16.3.2",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/viptela/viptela-vmanage-genericx86-64.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+<p>
+  Add the box to Vagrant using the {{ text::emphasize(text="vmanage.json") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add vmanage.json
+
+# output
+
+==> box: Loading metadata for box 'vmanage.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/viptela/vmanage.json
+==> box: Adding box 'viptela/vmanage' (v16.3.2) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/viptela/viptela-vmanage-genericx86-64.box
+==> box: Successfully added box 'viptela/vmanage' (v16.3.2) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the vManage box was added successfully.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.1)
+.
+. &lt;snip&gt;
+.
+<span class="hljs-string">viptela/vmanage                      (libvirt, 16.3.2)</span>
+
+vyos/current                         (libvirt, 999.201712301253)`
+) }}
+
+
+<h3 id="storage-pool">Storage Pool</h3>
+<p>
+  To work around the limitation of packaging one HDD with the Vagrant box, we will
+  need to create a storage pool for the database volume.
+</p>
+<p>
+  The caveat and it's a pretty big one, is that we will need to copy the database volume to the
+  pool <b>EACH</b> time we want to build the vmanage to ensure we have a fresh base volume. Additionally
+  the volume will also need to be deleted manually once the vManage vagrant box is destroyed.
+</p>
+<p>
+  There may be a better way to do this but I have not yet found it. If I do I will update this post,
+  if you have a better way please feel free to reach out to me on twitter.
+</p>
+<p>
+  Ok got all that, good, now let's create a directory to use for the storage pool. I will create a pool named
+  {{ text::emphasize(text="viptela-storage") }}
+ in
+  the {{ text::emphasize(text="~/vagrant/boxes/viptela/storage") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/vagrant/boxes/viptela/storage`
+) }}
+
+
+<p>
+  Create an {{ text::emphasize(text="XML") }}
+ file with the following contents that defines the
+  storage pool details. Note: You will need to adjust the directory to your specific location.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="xml",
+  code=`&lt;pool type='dir'&gt;
+  &lt;name&gt;viptela-storage&lt;/name&gt;
+  &lt;capacity unit='bytes'&gt;950504235008&lt;/capacity&gt;
+  &lt;allocation unit='bytes'&gt;680520564736&lt;/allocation&gt;
+  &lt;available unit='bytes'&gt;269983670272&lt;/available&gt;
+  &lt;source&gt;
+  &lt;/source&gt;
+  &lt;target&gt;
+    &lt;path&gt;/home/bradmin/vagrant/boxes/viptela/storage&lt;/path&gt;
+    &lt;permissions&gt;
+      &lt;mode&gt;0775&lt;/mode&gt;
+      &lt;owner&gt;1000&lt;/owner&gt;
+      &lt;group&gt;1000&lt;/group&gt;
+    &lt;/permissions&gt;
+  &lt;/target&gt;
+&lt;/pool&gt;`
+) }}
+
+
+<p>
+  Use the {{ text::code(text="virsh pool-create") }}
+ command to create the storage pool.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh pool-create viptela-storage.xml
+
+# output
+
+Pool viptela-storage created from viptela-storage.xml`
+) }}
+
+
+
+<h3 id="vagrantfile">Vagrantfile</h3>
+<p>Use this {{ text::emphasize(text="Vagrantfile") }}
+ to test out the new vManage Vagrant box.</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "viptela/vmanage"
+
+  # Turn off shared folders
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+  # Do not try to insert new SSH key
+  config.ssh.insert_key = false
+
+  # Give VM time to boot
+  config.vm.boot_timeout = 180
+
+  # Provider-specific configuration
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 8192
+    domain.cpus = 2
+
+    domain.storage :file, :size => "100G", :path => "vmanage-disk2.qcow2", :allow_existing => true, :type => "qcow2", :bus => "ide", :device => "hdb"
+    domain.storage_pool_name = "viptela-storage"
+
+  end
+
+  # Additional Interfaces
+  config.vm.network "private_network", ip: "169.254.1.11", auto_config: false
+  config.vm.network "private_network", ip: "169.254.1.12", auto_config: false
+
+end`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Prior to building the box copy the database volume to the
+  {{ text::emphasize(text="viptela-storage") }}
+ pool.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp vmanage-disk2-base.qcow2 storage/vmanage-disk2.qcow2`
+) }}
+
+
+<p>
+  Once the volume is copied to the storage pool directory you need to {{ text::emphasize(text="refresh") }}
+ the pool. This
+  just does a re-read of the directory to discover the existing contents but it is a required step.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh pool-refresh viptela-storage
+
+# output
+
+Pool viptela-storage refreshed`
+) }}
+
+
+
+<p>
+  Lets {{ text::code(text="vagrant up") }}
+ and make sure we can connect to the vManage.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'default' up with 'libvirt' provider...
+==> default: Creating image (snapshot of base box volume).
+==> default: Creating domain with the following settings...
+==> default:  -- Name:              viptela_default
+==> default:  -- Domain type:       kvm
+==> default:  -- Cpus:              2
+==> default:  -- Feature:           acpi
+==> default:  -- Feature:           apic
+==> default:  -- Feature:           pae
+==> default:  -- Memory:            8192M
+==> default:  -- Management MAC:
+==> default:  -- Loader:
+==> default:  -- Base box:          viptela/vmanage
+==> default:  -- Storage pool:      viptela-storage
+==> default:  -- Image:             /home/bradmin/vagrant/boxes/viptela/storage/viptela_default.img (19G)
+==> default:  -- Volume Cache:      default
+==> default:  -- Kernel:
+==> default:  -- Initrd:
+==> default:  -- Graphics Type:     vnc
+==> default:  -- Graphics Port:     5900
+==> default:  -- Graphics IP:       127.0.0.1
+==> default:  -- Graphics Password: Not defined
+==> default:  -- Video Type:        cirrus
+==> default:  -- Video VRAM:        9216
+==> default:  -- Sound Type:
+==> default:  -- Keymap:            en-us
+==> default:  -- TPM Path:
+==> default:  -- Disks:         hdb(qcow2,100G)
+==> default:  -- Disk(hdb):     /home/bradmin/vagrant/boxes/viptela/storage/vmanage-disk2.qcow2 (Remove only manually) Not created - using existed.
+==> default:  -- INPUT:             type=mouse, bus=ps2
+==> default: Creating shared folders metadata...
+==> default: Starting domain.
+==> default: Waiting for domain to get an IP address...
+==> default: Waiting for SSH to become available...
+==> default: Configuring and enabling network interfaces...
+
+<span class="hljs-section">The guest operating system of the machine could not be detected!
+Vagrant requires this knowledge to perform specific tasks such
+as mounting shared folders and configuring networks. Please add
+the ability to detect this guest operating system to Vagrant
+by creating a plugin or reporting a bug.</span>`
+) }}
+
+
+
+{{ text::note_block(text='
+    The error above relates to guest OS detection. The box built correctly and you can login and
+    use the box as normal however, Vagrant could not detect the type of OS the box uses. Vagrant needs
+    to know the OS type for provisioning purposes and since we are not doing any provisioning with Vagrant
+    we can ignore it. I could not find a way to disable the guest detection
+    and previous methods I have used with the $1
+    $2 parameter proved fruitless. I suppose this
+    is a good reason to knuckle down with Ruby and build a $3.
+') 
+  | replace(from="$1", to=text::emphasize(text="config.vm.guest"))
+  | replace(from="$2", to=text::emphasize(text=" Vagrantfile"))
+  | replace(from="$3", to=link::e(path="https://www.vagrantup.com/docs/plugins/guests.html", description="guest plugin"))
+}}
+
+<p>
+  Now with that out of the way, lets test SSH to vManage.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# from host shell
+
+vagrant ssh
+
+# now in vManage shell
+
+Welcome to Viptela CLI
+vagrant connected from 192.168.121.1 using ssh on vmanage
+vmanage# show version
+16.3.2`
+) }}
+
+
+<p>
+  Awesome, we are able to connect now lets clean up the box.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# from host shell
+
+vagrant destroy -f
+
+# output
+
+==> default: Removing domain...`
+) }}
+
+
+
+<p>
+  Dont forget to delete the database volume. Use the {{ text::code(text="virsh vol-delete") }}
+ command to do this.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh vol-delete vmanage-disk2.qcow2 --pool viptela-storage
+
+# output
+
+Vol vmanage-disk2.qcow2 deleted`
+) }}
+
+
+<p>
+  You can delete the storage pool with the {{ text::code(text="virsh pool-destroy") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh pool-destroy viptela-storage
+
+# output
+
+Pool viptela-storage destroyed`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Cisco/Viptela SD-WAN solution is an excellent product. Now you a have disposable vManage Vagrant box
+  for all your testing and lab purposes.
+</p>
+{% endblock page_content %}

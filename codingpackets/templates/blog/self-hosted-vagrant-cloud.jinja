@@ -1,0 +1,301 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  It is possible to host your own Vagrant "cloud" on premises. You might
+  want to do this to align with your companies security policy and or
+  to host your custom Vagrant boxes.
+</p>
+<p>
+  There are a number of methods to serve your Vagrant boxes, in this post
+  I will show you how to build a web server to host Vagrant
+  boxes rather than consume them from the real
+  {{ link::e(path="https://app.vagrantup.com", description="Vagrant cloud") }}.
+</p>
+<p>
+  I will borrow a pre-built Cumulus-VX box from the real Vagrant cloud and serve
+  it from my web server host so my internal lab users can consume it.
+</p>
+<p>
+  The following software will be used as part of this post.
+</p>
+<ul>
+  <li><b>CentOS</b> - 7</li>
+  <li><b>Apache</b> - 2.4.6-88</li>
+  <li><b>Vagrant</b> - 2.2.4</li>
+  <li><b>Cumulus-VX</b> - 3.7.6</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+<p>
+  I am using the Apache web server for this lab, in RHEL land,
+  The Apache package is called {{ text::emphasize(text="httpd") }}.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo yum install httpd`
+) }}
+
+
+<p>
+  Start and enable Apache.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start httpd
+sudo systemctl enable httpd`
+) }}
+
+
+<h3 id="configuration">Configuration</h3>
+<p>
+  Create a virtual host file named {{ text::emphasize(text="vhost.conf") }}
+
+  in the {{ text::emphasize(text="/etc/httpd/conf.d/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="file",
+  language="apache",
+  code=`NameVirtualHost *:80
+
+&lt;VirtualHost *:80&gt;
+    ServerAdmin bradmin@lab.local
+    ServerName util01.lab.local
+    ServerAlias www.util01.lab.local
+    DocumentRoot /var/www/html
+    &lt;Directory "/var/www/html"&gt;
+        Options All Indexes FollowSymLinks
+        Order allow,deny
+        Allow from all
+  &lt;/Directory&gt;
+  ErrorLog /var/log/httpd/repo/error.log
+  CustomLog /var/log/httpd/repo/access.log combined
+&lt;/VirtualHost&gt;`
+) }}
+
+
+<p>
+  Create the necessary directories.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mkdir -p /var/www/html/repo/vagrant/cumulus/vx
+sudo mkdir /var/log/httpd/repo`
+) }}
+
+
+<p>
+  Add the Cumulus-VX Vagrant box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo wget -O /var/www/html/repo/vagrant/cumulus/vx/cumulus-vx-3.7.6.box https://vagrantcloud.com/CumulusCommunity/boxes/cumulus-vx/versions/3.7.6/providers/libvirt.box`
+) }}
+
+
+<p>
+  Create a metadata file named {{ text::emphasize(text="cumulus-vx.json") }}
+
+  in the {{ text::emphasize(text="/var/www/html/repo/vagrant/") }}
+
+  directory.
+</p>
+<p>
+  The metadata file defines the parameters about a box such as the version number
+  and box location.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "cumulus/vx",
+  "description": "Cumulus VX",
+  "versions": [
+    {
+      "version": "3.7.6",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "http://util01.lab.local/repo/vagrant/cumulus/vx/cumulus-vx-3.7.6.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+<p>
+  Change directory ownership to the apache user.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo chown -R apache:apache /var/www`
+) }}
+
+
+<p>
+  Restart the Apache service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl restart httpd.service`
+) }}
+
+
+
+<p>
+  Reconfigure directories to permit SELinux access to the file system
+  from the web server.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo restorecon -r /var/www/html/repo/*`
+) }}
+
+
+<p>
+  Permit HTTP traffic through the firewall
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo firewall-cmd --zone=public --permanent --add-service=http
+sudo firewall-cmd --reload`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  On your laptop or shared host that you are running vagrant
+  create and change into a directory for the test environment.
+</p>
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`mkdir -p ~/vagrant/cumulus-test/ && cd ~/vagrant/cumulus-test/`
+) }}
+
+
+<p>
+  Create a {{ text::emphasize(text="Vagrantfile") }}
+ with the following
+  contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`Vagrant.configure("2") do |config|
+  config.vm.box = "cumulus/vx"
+  config.vm.box_url = "http://util01.lab.local/repo/vagrant/cumulus-vx.json"
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+end`
+) }}
+
+
+{{ text::note_block(text=`
+    I am disabling synced folders as the base repos on the Cumulus image dont
+    have access to the nfs packages that Vagrant tries to install.`
+) }}
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+ and confirm the Vagrant box is downloaded and
+  installed from the local web server.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'default' up with 'libvirt' provider...
+==> default: Box 'cumulus/vx' could not be found. Attempting to find and install...
+default: Box Provider: libvirt
+default: Box Version: >= 0
+<span class="hljs-string">==> default: Loading metadata for box 'http://util01.lab.local/repo/vagrant/cumulus-vx.json'
+default: URL: http://util01.lab.local/repo/vagrant/cumulus-vx.json
+==> default: Adding box 'cumulus/vx' (v3.7.6) for provider: libvirt
+default: Downloading: http://util01.lab.local/repo/vagrant/cumulus/vx/cumulus-vx-3.7.6.box
+==> default: Successfully added box 'cumulus/vx' (v3.7.6) for 'libvirt'!</span>
+
+==> default: Uploading base box image as volume into libvirt storage...
+==> default: Creating image (snapshot of base box volume).
+==> default: Creating domain with the following settings...
+==> default:  -- Name:              cumulus-test_default
+==> default:  -- Domain type:       kvm
+==> default:  -- Cpus:              1
+==> default:  -- Feature:           acpi
+==> default:  -- Feature:           apic
+==> default:  -- Feature:           pae
+==> default:  -- Memory:            512M
+==> default:  -- Management MAC:
+==> default:  -- Loader:
+==> default:  -- Nvram:
+==> default:  -- Base box:          cumulus/vx
+==> default:  -- Storage pool:      default
+==> default:  -- Image:             /var/lib/libvirt/images/cumulus-test_default.img (6G)
+==> default:  -- Volume Cache:      default
+==> default:  -- Kernel:
+==> default:  -- Initrd:
+==> default:  -- Graphics Type:     vnc
+==> default:  -- Graphics Port:     -1
+==> default:  -- Graphics IP:       127.0.0.1
+==> default:  -- Graphics Password: Not defined
+==> default:  -- Video Type:        cirrus
+==> default:  -- Video VRAM:        9216
+==> default:  -- Sound Type:
+==> default:  -- Keymap:            en-us
+==> default:  -- TPM Path:
+==> default:  -- INPUT:             type=mouse, bus=ps2
+==> default: Creating shared folders metadata...
+==> default: Starting domain.
+==> default: Waiting for domain to get an IP address...
+==> default: Waiting for SSH to become available...
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Configuring and enabling network interfaces...`
+) }}
+
+<p>
+  As you can see from the output above the Cumulus-VX box was downloaded
+  and installed from the local web server.
+</p>
+
+<p>
+  Finally, confirm the box is installed locally on your laptop or shared host.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+cumulus/vx (libvirt, 3.7.6)`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Hosting your own Vagrant box store is a nice way to serve up custom
+  Vagrant boxes as well as boxes from the real Vagrant cloud that your
+  users may not be able to access due to corporate policies.
+</p>
+{% endblock page_content %}

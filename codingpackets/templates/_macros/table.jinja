@@ -1,33 +1,39 @@
 {% macro default(header, rows) %}
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         {% for column in header %}
-          <th class="pt-1 pb-2 px-2">{{ column }}</th>
+          {% if loop.last %}
+            <th class="py-1 px-2 border-b-2 border-zinc-800">{{ column }}</th>
+          {% else %}
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">{{ column }}</th>
+          {% endif %}
         {% endfor %}
         </tr>
       </thead>
+      <tbody>
       {% for row in rows %}
         {% set columns = row | split(pat="|") %}
         {% if loop.last %}
           <tr class="">
         {% else %}
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         {% endif %}
           {% for column in columns %}
             {% if loop.first %}
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">{{ column }}</td>
             {% elif loop.last %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800">{{ column }}</td>
             {% else %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800">{{ column }}</td>
             {% endif %}
           {% endfor %}
         </tr>
       {% endfor %}
+      </tbody>
     </table>
   </div>
 </div>

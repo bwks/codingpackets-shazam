@@ -1,0 +1,289 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Libvirt is a set of software tools to manage virtual machine components such as network and storage. Libvirt provdies
+  an abstraction layer hiding the differences across hypervisors such as KVM, Xen, VMWare ESXi, etc.. to avoid having
+  to worry about the intricacies of each hypervisors management tool.
+</p>
+
+<p>
+  Using the {{ link::e(path="https://github.com/vagrant-libvirt/vagrant-libvirt", description="vagrant-libvirt") }}
+ provider with vagrant has some
+  advantages over the {{ text::emphasize(text="Virtualbox") }}
+ provider. For example:
+</p>
+<ul>
+  <li>Parallel spin up of virtual machines, reducing lab creation time.</li>
+  <li>The ability to create UDP tunnels between host interfaces so VLAN tags are not stripped.</li>
+  <li>Predictably control the IP address the guest VM receives on the management interface.</li>
+</ul>
+
+<p>
+  This post will cover installing {{ text::emphasize(text="libvirt") }}
+ and the {{ text::emphasize(text="libvirt-vagrant") }}
+ plugin on ubuntu 1604
+  and assumes you already have a working install of Vagrant.
+</p>
+
+<h3 id="install">Install</h3>
+<p>Install dependancy packages with {{ text::emphasize(text="apt") }}
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install -y qemu-kvm libvirt-bin
+sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev`
+) }}
+
+
+<p>Add yourself to the {{ text::emphasize(text="libvirtd") }}
+ group.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo adduser $USER libvirtd`
+) }}
+
+
+<p>Install {{ text::emphasize(text="virtinst") }}
+ package.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install -y virtinst`
+) }}
+
+
+<p>Install the {{ text::emphasize(text="vagrant-libvirt") }}
+ vagrant plugin</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant plugin install vagrant-libvirt`
+) }}
+
+
+<p>
+  We need to create a virtual network that will be used by Vagrant for the management interfaces.
+  Create a file named {{ text::emphasize(text="vagrant-libvirt-net.xml") }}
+ that describes the {{ text::emphasize(text="vagrant-libvirt") }}
+
+  network with the below contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="xml",
+  code=`&lt;network connections='1'&gt;
+  &lt;name&gt;vagrant-libvirt&lt;/name&gt;
+  &lt;forward mode='nat'&gt;
+    &lt;nat&gt;
+      &lt;port start='1024' end='65535'/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;bridge name='virbr1' stp='on' delay='0'/&gt;
+  &lt;ip address='192.168.121.1' netmask='255.255.255.0'&gt;
+    &lt;dhcp&gt;
+      &lt;range start='192.168.121.2' end='192.168.121.254'/&gt;
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;`
+) }}
+
+
+
+<p>Now add the {{ text::emphasize(text="vagrant-libvirt") }}
+ virtual network.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-define vagrant-libvirt-net.xml`
+) }}
+
+
+<p>
+  The {{ text::emphasize(text="vagrant-libvirt") }}
+ network was added but is not yet active and will not autostart on boot.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-list
+
+# output
+
+Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ default             active     yes           yes
+ vagrant-libvirt     <span class="hljs-string">inactive</span>
+   <span class="hljs-string">no</span>
+            yes`
+) }}
+
+
+<p>Start and enable {{ text::emphasize(text="vagrant-libvirt") }}
+ network.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-start vagrant-libvirt
+virsh net-autostart vagrant-libvirt`
+) }}
+
+
+<p>Confirm {{ text::emphasize(text="vagrant-libvirt") }}
+ network is active and will autostart on boot.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-list
+
+# output
+
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ default              active     yes           yes
+ vagrant-libvirt      <span class="hljs-string">active</span>
+     <span class="hljs-string">yes</span>
+           yes`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that {{ text::emphasize(text="libvirt") }}
+ and the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin are installed lets fire up a vagrant
+  virtual machine.
+</p>
+
+<p>Create a test directory.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/cumulus-libvirt-test
+cd ~/cumulus-libvirt-test`
+) }}
+
+
+<p>Add a {{ text::emphasize(text="Vagrantfile") }}
+ to the test directory.</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "CumulusCommunity/cumulus-vx"
+end`
+) }}
+
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+. Note: If you have not previously downloaded the {{ text::emphasize(text="CumulusCommunity/cumulus-vx") }}
+ base box
+  it will be downloaded.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up --provider=libvirt
+
+# output
+
+Bringing machine 'default' up with 'libvirt' provider...
+==> default: Creating image (snapshot of base box volume).
+==> default: Creating domain with the following settings...
+==> default:  -- Name:              cumulus-libvirt-test_default
+==> default:  -- Domain type:       kvm
+==> default:  -- Cpus:              1
+==> default:  -- Feature:           acpi
+==> default:  -- Feature:           apic
+==> default:  -- Feature:           pae
+==> default:  -- Memory:            512M
+==> default:  -- Management MAC:
+==> default:  -- Loader:
+==> default:  -- Base box:          CumulusCommunity/cumulus-vx
+==> default:  -- Storage pool:      default
+==> default:  -- Image:             /var/lib/libvirt/images/cumulus-libvirt-test_default.img (4G)
+==> default:  -- Volume Cache:      default
+==> default:  -- Kernel:
+==> default:  -- Initrd:
+==> default:  -- Graphics Type:     vnc
+==> default:  -- Graphics Port:     5900
+==> default:  -- Graphics IP:       127.0.0.1
+==> default:  -- Graphics Password: Not defined
+==> default:  -- Video Type:        cirrus
+==> default:  -- Video VRAM:        9216
+==> default:  -- Sound Type:
+==> default:  -- Keymap:            en-us
+==> default:  -- TPM Path:
+==> default:  -- INPUT:             type=mouse, bus=ps2
+==> default: Creating shared folders metadata...
+==> default: Starting domain.
+==> default: Waiting for domain to get an IP address...
+==> default: Waiting for SSH to become available...
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Configuring and enabling network interfaces...
+==> default: Installing rsync to the VM...
+==> default: Rsyncing folder: /home/bradmin/cumulus-libvirt-test/ => /vagrant`
+) }}
+
+
+<p>Confirm you can login to the box.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Host shell
+
+vagrant ssh
+
+# Now in vagrant box shell
+
+Welcome to Cumulus VX (TM)
+
+Cumulus VX (TM) is a community supported virtual appliance designed for
+experiencing, testing and prototyping Cumulus Networks' latest technology.
+For any questions or technical support, visit our community site at:
+http://community.cumulusnetworks.com
+
+The registered trademark Linux (R) is used pursuant to a sublicense from LMI,
+the exclusive licensee of Linus Torvalds, owner of the mark on a world-wide
+basis.
+vagrant@cumulus:~$`
+) }}
+
+
+<p>Lastly a bit of cleanup.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> default: Removing domain...`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Libvirt provider for Vagrant is a great way to manage guests as it provides more flexibility and control than the Virtualbox
+  provider. In a future blog I will show you how to create UDP tunnels for guest point to point interfaces and control the IP address
+  that is assigned to the management interface by Vagrant.
+</p>
+
+
+{% endblock page_content %}

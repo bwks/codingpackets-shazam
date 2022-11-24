@@ -1,0 +1,141 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  This blog covers how to install Arista boxes for use with Vagrant. Although Arista does not provide Vagrant boxes
+  on Vagrant cloud they do provide boxes that can be downloaded from the arista.com website. This post assumes that
+  you already have a working vagrant install.
+</p>
+
+<h3 id="download">Download</h3>
+<p>
+  Go to the Arista {{ link::e(path="https://www.arista.com/en/support/software-download", description="software downloads") }}
+ page.
+  (Requires signing up for a free account) and download any of the {{ text::emphasize(text=".box") }}
+ files.
+</p>
+{{ image::boxed(path="blog/arista-vagrant-box-install/arista-vagrant-box-download.png", width="600px") }}
+
+<p>
+  I prefer to keep these type of boxes <i>(Custom and/or not downloaded from Vagrant Cloud)</i> in my home
+  folder under {{ text::emphasize(text="~/vagrant/boxes/") }}
+
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/arista/
+mv ~/Downloads/vEOS-lab-4.18.1F-virtualbox.box ~/vagrant/boxes/arista/vEOS-lab-4.18.1F-virtualbox.box`
+) }}
+
+
+
+<h3 id="box-install">Box Install</h3>
+<p>
+  Create a {{ text::emphasize(text=".json") }}
+ file that describes the Arista Vagrant box. This file will add meta-data attributes
+  to the Vagrant box, making it easier to work with multiple versions of Arista boxes.
+</p>
+
+<b>Example: </b>{{ text::emphasize(text="~/vagrant/boxes/arista/vEOS-4.18.1F.json") }}
+
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "arista/veos",
+  "description": "Arista vEOS",
+  "versions": [
+    {
+      "version": "4.18.1F",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "file:///home/brad/vagrant/boxes/arista/vEOS-lab-4.18.1F-virtualbox.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+{{ text::note_block(text="
+  <p>
+    Use the absolute path for the url value.
+  </p>
+")
+}}
+
+
+<p>
+  Use the {{ text::code(text="vagrant box add") }}
+ command specifying the {{ text::emphasize(text=".json") }}
+ file location to add the box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add ~/vagrant/boxes/arista/vEOS-4.18.1F.json
+
+# output
+
+==> box: Loading metadata for box '/home/brad/vagrant/boxes/arista/vEOS-4.18.1F.json'
+    box: URL: file:///home/brad/vagrant/boxes/arista/vEOS-4.18.1F.json
+==> box: Adding box 'arista/veos' (v4.18.1F) for provider: virtualbox
+    box: Unpacking necessary files from: file:///home/brad/vagrant/boxes/arista/vEOS-lab-4.18.1F-virtualbox.box
+==> box: Successfully added box 'arista/veos' (v4.18.1F) for 'virtualbox'!`
+) }}
+
+
+<p>
+  Confirm that box was added with the {{ text::code(text="vagrant box list") }}
+ command. You can see below that the
+  {{ text::emphasize(text="arista/veos") }}
+ box is listed along with the box type and version number {{ text::emphasize(text="(virtualbox, 4.18.1F)") }}
+
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (virtualbox, 3.3.2)
+<span class="hljs-string">arista/veos                          (virtualbox, 4.18.1F)</span>
+
+centos/7                             (virtualbox, 1705.02)
+juniper/ffp-12.1X47-D15.4            (virtualbox, 0.5.0)
+juniper/ffp-12.1X47-D15.4-packetmode (virtualbox, 0.5.0)
+juniper/vqfx10k-pfe                  (virtualbox, 0.1.0)
+juniper/vqfx10k-re                   (virtualbox, 0.2.0)`
+) }}
+
+
+<h3 id="sample-vagrant-file">Sample Vagrant File</h3>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "arista/veos"
+
+  # Turn off shared folders
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+end`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Although Arista do not provide boxes on Vagrant cloud, its not to much effort to get and start using them.
+  Its great to see network vendors embracing devops tools. Check the sample {{ text::emphasize(text="Vagrantfile") }}
+ above to
+  get started with Arista Vagrant boxes.
+</p>
+{% endblock page_content %}

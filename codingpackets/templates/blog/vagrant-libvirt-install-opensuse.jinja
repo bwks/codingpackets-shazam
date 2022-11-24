@@ -1,0 +1,267 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I have recently started using openSUSE as my server platform of choice. This post will go
+  over installing qemu-kvm and libvirt for use with Vagrant and the vagrant-libirt provider
+  on openSUSE.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>openSUSE</b> - 15</li>
+  <li><b>Vagrant</b> - 2.1.2</li>
+  <li><b>Vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="dependencies">Dependencies</h3>
+<p>
+  Update the system.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo zypper refresh && sudo zypper update`
+) }}
+
+
+<p>
+  Install {{ text::emphasize(text="qemu-kvm") }}
+, {{ text::emphasize(text="libvirt") }}
+
+  and the dependencies.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo zypper install qemu-kvm
+sudo zypper install libvirt libvirt-daemon libvirt-client libvirt-devel ruby-devel gcc`
+) }}
+
+
+<p>
+  Install Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.rpm
+sudo zypper install vagrant_2.1.2_x86_64.rpm`
+) }}
+
+
+<h3 id="configure-libvirt">Configure Libvirt</h3>
+<p>
+  Start and enable the {{ text::emphasize(text="libvirtd") }}
+ service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo systemctl start libvirtd.service
+sudo systemctl enable libvirtd.service`
+) }}
+
+
+<p>
+  Add your user to the {{ text::emphasize(text="libvirt") }}
+ group.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo usermod -aG libvirt $USER`
+) }}
+
+
+<p>
+  Set an environment variable for the default libvirt uri as
+  {{ text::emphasize(text="qemu:///system") }}
+. Without this
+  virsh commands point to the users {{ text::emphasize(text="qemu:///session") }}
+ uri
+  which does not have privileges to add/view system wide networks.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo sh -c 'echo LIBVIRT_DEFAULT_URI=qemu:///system >> /etc/environment'
+source /etc/environment`
+) }}
+
+
+<p>
+  Create a {{ text::emphasize(text="vagrant-libvirt") }}
+ network using an xml file
+  with the below contents.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="xml",
+  code=`&lt;network connections='1'&gt;
+  &lt;name&gt;vagrant-libvirt&lt;/name&gt;
+  &lt;forward mode='nat'&gt;
+    &lt;nat&gt;
+      &lt;port start='1024' end='65535'/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;bridge name='virbr1' stp='on' delay='0'/&gt;
+  &lt;ip address='192.168.121.1' netmask='255.255.255.0'&gt;
+    &lt;dhcp&gt;
+      &lt;range start='192.168.121.2' end='192.168.121.254'/&gt;
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;`
+) }}
+
+
+<p>
+  Define and start the network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-define vagrant-libvirt.xml
+virsh net-start vagrant-libvirt
+virsh net-autostart vagrant-libvirt`
+) }}
+
+
+<h3 id="plugin-install">Plugin Install</h3>
+
+<p>
+  There is a problem with some of the file linkages when trying to install the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+
+  plugin. When initially trying to install the plugin I got the following error.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="Installing the 'vagrant-libvirt' plugin. This can take a few minutes...
+Fetching: excon-0.62.0.gem (100%)
+Fetching: formatador-0.2.5.gem (100%)
+Fetching: fog-core-1.43.0.gem (100%)
+Fetching: fog-json-1.2.0.gem (100%)
+Fetching: mini_portile2-2.3.0.gem (100%)
+Fetching: nokogiri-1.8.4.gem (100%)
+Building native extensions.  This could take a while...
+Bundler, the underlying system Vagrant uses to install plugins,
+reported an error. The error is shown below. These errors are usually
+caused by misconfigured plugin installations or transient network
+issues. The error from Bundler is:
+
+ERROR: Failed to build gem native extension.
+
+    current directory: /home/bradmin/.vagrant.d/gems/2.4.4/gems/nokogiri-1.8.4/ext/nokogiri
+/opt/vagrant/embedded/bin/ruby -r ./siteconf20180807-6441-sx07te.rb extconf.rb
+checking if the C compiler accepts ... *** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+
+Provided configuration options:
+	--with-opt-dir
+	--with-opt-include
+	--without-opt-include=${opt-dir}/include
+	--with-opt-lib
+	--without-opt-lib=${opt-dir}/lib
+	--with-make-prog
+	--without-make-prog
+	--srcdir=.
+	--curdir
+	--ruby=/opt/vagrant/embedded/bin/$(RUBY_BASE_NAME)
+	--help
+	--clean
+/opt/vagrant/embedded/lib/ruby/2.4.0/mkmf.rb:457:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+You have to install development tools first.
+	from /opt/vagrant/embedded/lib/ruby/2.4.0/mkmf.rb:572:in `block in try_compile'
+	from /opt/vagrant/embedded/lib/ruby/2.4.0/mkmf.rb:523:in `with_werror'
+	from /opt/vagrant/embedded/lib/ruby/2.4.0/mkmf.rb:572:in `try_compile'
+	from extconf.rb:138:in `nokogiri_try_compile'
+	from extconf.rb:162:in `block in add_cflags'
+	from /opt/vagrant/embedded/lib/ruby/2.4.0/mkmf.rb:630:in `with_cflags'
+	from extconf.rb:161:in `add_cflags'
+	from extconf.rb:410:in `&lt;main&gt;'
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/bradmin/.vagrant.d/gems/2.4.4/extensions/x86_64-linux/2.4.0/nokogiri-1.8.4/mkmf.log
+
+extconf failed, exit code 1
+
+Gem files will remain installed in /home/bradmin/.vagrant.d/gems/2.4.4/gems/nokogiri-1.8.4 for inspection.
+Results logged to /home/bradmin/.vagrant.d/gems/2.4.4/extensions/x86_64-linux/2.4.0/nokogiri-1.8.4/gem_make.out"
+) }}
+
+
+<p>
+  The makefile log points to an issue with the {{ text::emphasize(text="libreadline.so.7") }}
+
+  file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`"gcc -o conftest -I/opt/vagrant/embedded/include/ruby-2.4.0/x86_64-linux -I/opt/vagrant/embedded/include/ruby-2.4.0/ruby/backward -I/opt/vagrant/embedded/include/ruby-2.4.0 -I.  -I/opt/vagrant/embedded/include   -I/opt/vagrant/embedded/include -I/vagrant-substrate/cache/ruby-2.4.4/include -O3 -fPIC  conftest.c  -L. -L/opt/vagrant/embedded/lib -Wl,-rpath,/opt/vagrant/embedded/lib -L/opt/vagrant/embedded/lib -Wl,-rpath,/opt/vagrant/embedded/lib -L. -L/opt/vagrant/embedded/lib -Wl,-rpath=XORIGIN/../lib:/opt/vagrant/embedded/lib -fstack-protector -rdynamic -Wl,-export-dynamic -L/opt/vagrant/embedded/lib  -Wl,-rpath,/opt/vagrant/embedded/lib     -Wl,-rpath,'/../lib' -Wl,-rpath,'/../lib' -lruby  -lpthread -lrt -lgmp -ldl -lcrypt -lm   -lc "
+sh: /opt/vagrant/embedded/lib/libreadline.so.7: no version information available (required by sh)
+sh: symbol lookup error: /opt/vagrant/embedded/lib/libreadline.so.7: undefined symbol: PC
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2:
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */`
+) }}
+
+
+<p>
+  The answer to the riddle was found in the vagrant-libvirt issues log
+  {{ link::e(path="https://github.com/hashicorp/vagrant/issues/10019", description="here") }}
+ and
+  {{ link::e(path="https://github.com/hashicorp/vagrant/issues/8986", description="here") }}
+. By simply renaming
+  the offending file with the {{ text::emphasize(text=".disabled") }}
+ extension
+  installing the plugin now succeeds.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mv /opt/vagrant/embedded/lib/libreadline.so.7 /opt/vagrant/embedded/lib/libreadline.so.7.disabled`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant plugin install vagrant-libvirt
+
+# output
+
+Installing the 'vagrant-libvirt' plugin. This can take a few minutes...
+Building native extensions.  This could take a while...
+Fetching: ruby-libvirt-0.7.1.gem (100%)
+Building native extensions.  This could take a while...
+Fetching: fog-xml-0.1.3.gem (100%)
+Fetching: fog-libvirt-0.5.0.gem (100%)
+Fetching: vagrant-libvirt-0.0.43.gem (100%)
+Installed the plugin 'vagrant-libvirt (0.0.43)'!`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  And that it, with the Vagrant and the vagrant-libvirt plugin installed I can successfully
+  build Vagrant boxes.
+</p>
+{% endblock page_content %}

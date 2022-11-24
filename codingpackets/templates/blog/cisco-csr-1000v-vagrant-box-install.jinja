@@ -1,0 +1,511 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This blog covers how to install Cisco csr1000v boxes for use with Vagrant. Cisco does not provide a csr1000v
+  Vagrant box so similar to my other
+  {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+
+  on creating a Vagrant box from the ASAv ova, I will show you how to create a csr1000v
+  Vagrant box. This post assumes that you already have a working Vagrant install.
+</p>
+
+<b>Code versions used</b>
+<ul>
+  <li><b>csr1000v</b> - 3.15.00.S.155-2.S</li>
+  <li><b>Virtual Box</b> - 5.1.26 r117224</li>
+  <li><b>Vagrant</b> - 1.9.6</li>
+  <li><b>Ubuntu</b> - 1604</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Go to the Cisco {{ link::e(path="https://software.cisco.com/download/navigator.html", description="software") }}
+ download
+  section and search for csr1000v. When you get to the product page download the {{ text::emphasize(text=".ova") }}
+ file.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/cisco-csr1000v-download.png", width="800px") }}
+
+{{ text::note_block(text='
+    A valid service contract is not required to download this image, but you will need
+    a CCO account.
+') }}
+
+<h3 id="import-ova">Import OVA</h3>
+<p>
+  Browse to the location of the {{ text::emphasize(text=".ova") }}
+ file and extract it.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# lcreate directory and extract ova file
+
+mkdir csr1000v
+tar -xvf csr1000v-universalk9.03.15.00.S.155-2.S-std.ova -C csr1000v
+
+# output
+
+csr1000v-universalk9.03.15.00.S.155-2.S-std.ovf
+csr1000v-universalk9.03.15.00.S.155-2.S-std.mf
+csr1000v_harddisk.vmdk
+bdeo.sh
+README-OVF.txt
+README-BDEO.txt
+cot.tgz
+csr1000v-universalk9.03.15.00.S.155-2.S-std.iso`
+) }}
+
+
+<p>
+  Remove the {{ text::emphasize(text=".mf") }}
+ files or the VM will fail to boot in Virtualbox.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Remove .mf files
+
+cd csr1000v
+rm -f *.mf`
+) }}
+
+
+<p>
+  In Virutalbox go to: {{ text::emphasize(text="File > Import Appliance...") }}
+ and
+  browse to the folder from the previous step and import the
+  {{ text::emphasize(text="csr1000v-universalk9.03.15.00.S.155-2.S-std.ovf") }}
+ file.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr1.png", width="600px") }}
+
+<b>Edit VM properties</b>
+<ul>
+  <li>CPUs - 2</li>
+  <li>RAM - 4096 MB</li>
+  <li>Network Adapters - 1</li>
+</ul>
+<p>
+  Keep the network adapter type as <i>Intel PRO/1000 MT Desktop (82540EM)</i> and select the tick box to
+  reinitialize the MAC addresses.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr2.png", width="600px") }}
+
+{{ text::note_block(text='
+    It is possible to boot the VM with 1 CPU and 2GB of RAM but it will take alot longer to boot.
+') }}
+
+<p>
+  Once imported, open the virtual machines settings.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr3.png", width="600px") }}
+
+<p>
+  For adapter 1 attach the adapter to a network type that will get an IP address you can SSH to.
+  A bridged adapter will get an IP address from my wireless network so I am using that for simplicity.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr4.png", width="600px") }}
+
+
+{{ text::important_block(text='
+    Keep the Virtualbox adapter type as
+    $1 otherwise the interface order in the
+    VM will not match the Adapter order in Virtualbox.
+') 
+  | replace(from="$1", to=text::emphasize(text="Intel PRO/1000 MT Desktop (82540EM)"))
+}}
+
+<p>
+  Add a serial port but leave it as disconnected.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr5.png", width="600px") }}
+
+<p>
+  Connect the ISO image as a CD drive.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr6.png", width="600px") }}
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr7.png", width="400px") }}
+
+<p>
+  Browse to the location of the extracted {{ text::emphasize(text=".ova") }}
+ and select the ISO image.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr8.png", width="600px") }}
+
+<p>
+  When attached it looks like this.
+</p>
+
+{{ image::boxed(path="blog/cisco-csr-vagrant-box-install/import-csr9.png", width="600px") }}
+
+<h3 id="bootstrap-configuration">Bootstrap Configuration</h3>
+<p>
+  Boot up the CSR and apply the bootstrap configuration.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Bootstrap config
+
+en
+conf t
+hostname csr
+ip domain-name lab.local
+!
+crypto key generate rsa modulus 2048
+ip ssh version 2
+!
+aaa new-model
+!
+aaa authentication login default local
+aaa authorization exec default local
+!
+username vagrant privilege 15 secret vagrant
+!
+interface GigabitEthernet1
+ description vagrant-management
+ ip address dhcp
+ no shutdown
+!
+end`
+) }}
+
+
+<p>
+  Find the IP address assigned via DHCP.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ip int brie
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       10.1.1.152      YES DHCP   up                    up`
+) }}
+
+
+<p>
+  Login with SSH to configure the vagrant insecure ssh key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# from bash
+
+ssh vagrant@10.1.1.152
+password:`
+) }}
+
+<p>
+  Configure the vagrant insecure ssh key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# vagrant ssh key config
+
+conf t
+ip ssh pubkey-chain
+  username vagrant
+   key-hash ssh-rsa DD3BB82E850406E9ABFFA80AC0046ED6
+!
+end
+wr mem
+exit`
+) }}
+
+
+<p>
+  Confirm you can successfully SSH to the device with the Vagrant SSH key.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# from bash
+
+ssh vagrant@10.1.1.152 -i ~/.vagrant.d/insecure_private_key`
+) }}
+
+<p>If you can successfully SSH to the device with the SSH key, its time to create the Vagrant box.</p>
+
+
+<h3 id="box-install">Box Install</h3>
+<p>
+  Poweroff the CSR in Virtualbox and create a Vagrant base box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant package --base csr1000v
+
+# output
+
+==> csr1000v: Exporting VM...
+==> csr1000v: Compressing package to: /home/bradmin/vagrant/boxes/cisco/package.box
+
+# move to base box folder
+
+mv package.box ~/vagrant/boxes/cisco/csr1000v-03.15.00-virtualbox.box
+cd ~/vagrant/boxes/cisco/`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="csr1000v-03.15.00.json") }}
+ with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "cisco/csr1000v",
+  "description": "Cisco CSR1000v",
+  "versions": [
+    {
+      "version": "03.15.00",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "file:///home/bradmin/vagrant/boxes/cisco/csr1000v-03.15.00-virtualbox.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+<p>
+  Add the newly created base box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add csr1000v-03.15.00.json
+
+# output
+
+==> box: Loading metadata for box 'csr1000v-03.15.00.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/cisco/csr1000v-03.15.00.json
+==> box: Adding box 'cisco/csr1000v' (v03.15.00) for provider: virtualbox
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/cisco/csr1000v-03.15.00-virtualbox.box
+==> box: Successfully added box 'cisco/csr1000v' (v03.15.00) for 'virtualbox'!`
+) }}
+
+
+<p>
+  Confirm Vagrant can see the box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (virtualbox, 3.3.2)
+arista/veos                          (virtualbox, 4.18.1F)
+centos/7                             (virtualbox, 1705.02)
+cisco/asav                           (virtualbox, 9.8.1)
+<span class="hljs-string">cisco/csr1000v                       (virtualbox, 03.15.00)</span>
+
+debian/jessie64                      (virtualbox, 8.8.1)
+juniper/ffp-12.1X47-D15.4            (virtualbox, 0.5.0)
+juniper/ffp-12.1X47-D15.4-packetmode (virtualbox, 0.5.0)
+juniper/vqfx10k-pfe                  (virtualbox, 0.1.0)
+juniper/vqfx10k-re                   (virtualbox, 0.2.0)
+ubuntu/xenial64                      (virtualbox, 20170728.0.0)`
+) }}
+
+
+{{ text::note_block(text='
+   The original Virtual Machine can now be deleted.
+') }}
+
+<p>
+  Create a directory for testing the Vagrant environment.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/vagrant/csr-test; cd ~/vagrant/csr-test/`
+) }}
+
+
+<p>
+  Use this sample Vagrantfile.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "cisco/csr1000v"
+
+  # Turn off shared folders
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+
+  # Do not try to insert new SSH key
+  config.ssh.insert_key = false
+
+  # Give the VM time to boot as Vagrant cannot tell when it is booted
+  config.vm.boot_timeout = 400
+
+  # Additional interfaces
+  config.vm.network "private_network", ip: "169.254.1.11", auto_config: false
+  config.vm.network "private_network", ip: "169.254.1.12", auto_config: false
+
+end`
+) }}
+
+
+<h3 id="testing-vagrant-box">Testing Vagrant Box</h3>
+<p>
+  Lets get building, {{ text::code(text="vagrant up") }}
+ and confirm the CSR box builds correctly.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'cisco/csr1000v'...
+==> default: Matching MAC address for NAT networking...
+==> default: Checking if box 'cisco/csr1000v' is up to date...
+==> default: Setting the name of the VM: cisco-test_default_1502597160552_57639
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+    default: Adapter 2: hostonly
+    default: Adapter 3: hostonly
+==> default: Forwarding ports...
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+    default: No guest additions were detected on the base box for this VM! Guest
+    default: additions are required for forwarded ports, shared folders, host only
+    default: networking, and more. If SSH fails on this machine, please install
+    default: the guest additions and repackage the box to continue.
+    default:
+    default: This is not an error message; everything may continue to work properly,
+    default: in which case you may ignore this message.`
+) }}
+
+
+
+<p>
+  Login to device and test.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant ssh
+
+# output
+
+csr#show version
+Cisco IOS XE Software, Version 03.15.00.S - Standard Support Release
+Cisco IOS Software, CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 15.5(2)S, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Sun 22-Mar-15 01:36 by mcpre
+
+
+Cisco IOS-XE software, Copyright (c) 2005-2015 by cisco Systems, Inc.
+All rights reserved.  Certain components of Cisco IOS-XE software are
+licensed under the GNU General Public License ("GPL") Version 2.0.  The
+software code licensed under GPL Version 2.0 is free software that comes
+with ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such
+GPL code under the terms of GPL Version 2.0.  For more details, see the
+documentation or "License Notice" file accompanying the IOS-XE software,
+or the applicable URL provided on the flyer accompanying the IOS-XE
+software.
+
+
+ROM: IOS-XE ROMMON
+
+csr uptime is 6 minutes
+Uptime for this control processor is 7 minutes
+System returned to ROM by reload
+System image file is "bootflash:packages.conf"
+Last reload reason: &lt;NULL&gt;
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+License Level: ax
+License Type: Default. No valid license found.
+Next reload license Level: ax
+
+cisco CSR1000V (VXE) processor (revision VXE) with 2067410K/6147K bytes of memory.
+Processor board ID 9Q31KM6V7WI
+3 Gigabit Ethernet interfaces
+32768K bytes of non-volatile configuration memory.
+3988236K bytes of physical memory.
+7774207K bytes of virtual hard disk at bootflash:.
+
+Configuration register is 0x2102
+
+csr#`
+) }}
+
+
+<p>
+  When you are done, destroy the box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=` vagrant destroy -f
+
+# output
+
+==> default: Forcing shutdown of VM...
+==> default: Destroying VM and associated drives...`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  If you followed along you should have a shinny csr1000v Vagrant box for labbing and testing.
+  Although Cisco didn't make it easy we did it any way.
+</p>
+
+{% endblock page_content %}

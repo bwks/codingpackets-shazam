@@ -127,8 +127,8 @@
   This is part one of a series on Anisble for network engineers. The series will concentrate
   on Ansible as a configuration management tool for networking and is aimed at those with a basic
   understanding of Ansible. If you are just starting out with Ansible, see my quick start guide
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/ansible-from-the-start-to-the-beginning">here</a>
-  and ansible cliff notes <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/ansible-overview">here</a>. A CCNA level of
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/ansible-from-the-start-to-the-beginning">here</a>
+  and ansible cliff notes <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/ansible-overview">here</a>. A CCNA level of
   network engineering knowledge will be assumed but not necessary to follow along. It is also
   assumed that Ansible is already installed and if using a virtual env, the env is activated.
 </p>
@@ -136,7 +136,7 @@
 <h3 id="network-modules">Network Modules</h3>
 <p>
   Starting with Ansible 2.1 there were a number of
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/list_of_network_modules.html" target=_blank>network modules</a>
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="http://docs.ansible.com/ansible/list_of_network_modules.html" target=_blank>network modules</a>
   introduced as part of Ansible core. Along with the core modules there are also a number of
   community supported network modules that make using Ansible to work with network device possible.
   As part of this series we will use both the core and community modules to configure Cisco,
@@ -146,8 +146,8 @@
 
 <h3 id="lab-topology">Lab Topology</h3>
 <p>
-  In this part of the series we will use <a class="text-sky-600 no-underline hover:text-sky-800" href="https://cumulusnetworks.com/" target=_blank>Cumulus</a>
-  Linux hosts as our managed nodes and a <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.centos.org/" target=_blank>Centos</a>
+  In this part of the series we will use <a class="text-sky-600 no-underline hover:text-sky-900" href="https://cumulusnetworks.com/" target=_blank>Cumulus</a>
+  Linux hosts as our managed nodes and a <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.centos.org/" target=_blank>Centos</a>
   host as our control node. The following topology including all IP addressing and OSPF routing
   domain will be configured via an Ansible playbook.
 </p>
@@ -306,7 +306,7 @@ become_ask_pass=True</code></pre>
 <ul>
   <li><b>ask_pass=True</b> Prevents having to use the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-k</span>
    flag when running a playbook</li>
-  <li><b>gather_facts=False</b> Stops the implicit <a class="text-sky-600 no-underline hover:text-sky-800" href="http://docs.ansible.com/ansible/setup_module.html" target=_blank>setup</a>
+  <li><b>gather_facts=False</b> Stops the implicit <a class="text-sky-600 no-underline hover:text-sky-900" href="http://docs.ansible.com/ansible/setup_module.html" target=_blank>setup</a>
     module from running at playbook execution.
   </li>
   <li><b>become=True</b> Specifies to become a privileged user</li>
@@ -546,8 +546,8 @@ ospf_networks:
 
 <h3 id="template">Template</h3>
 <p>
-  Ansible uses <a class="text-sky-600 no-underline hover:text-sky-800" href="http://jinja.pocoo.org/docs/2.9/" target=_blank>Jinja2</a> as its templating engine.
-  Cumulus uses <a class="text-sky-600 no-underline hover:text-sky-800" href="https://github.com/CumulusNetworks/quagga" target=_blank>Quagga</a> for its routing daemons.
+  Ansible uses <a class="text-sky-600 no-underline hover:text-sky-900" href="http://jinja.pocoo.org/docs/2.9/" target=_blank>Jinja2</a> as its templating engine.
+  Cumulus uses <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/CumulusNetworks/quagga" target=_blank>Quagga</a> for its routing daemons.
   Create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">quagga.conf.j2</span>
    file under the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/ansible/templates/</span>
    directory
@@ -716,7 +716,7 @@ state=restarted</code></pre>
 <p>
   Its worth noting that the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cl_interface</span>
    module has been depreciated as of Ansible
-  version 2.3 and the <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.ansible.com/ansible/nclu_module.html" target=_blank>nclu</a> module
+  version 2.3 and the <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.ansible.com/ansible/nclu_module.html" target=_blank>nclu</a> module
   should be used instead.
 </p>
 

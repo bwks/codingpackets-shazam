@@ -1,0 +1,743 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Pseudo-wires With Vagrant and Libvirt</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
+            published: 23rd of November 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Libvirt has the ability to create a pseudo-wire between virtual guest interfaces using either TCP or UDP.
+  The advantage of using pseud-wires is that you do not need to create virtual switches to attach your
+  guest VM interfaces to.
+</p>
+<p>
+  Virtualbox has an annoying trait of stripping vlan tags on interfaces which are
+  not of the type <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virtio</span>
+. Since some network device Vagrant boxes do not support
+  virtio interfaces you are not able to test alot of switching related technologies.
+</p>
+<p>
+  This post will cover how to define a UDP connection between nodes in a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
+.
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>CumulusCommunity/cumulus-vx</b> - 3.4.3 (Vagrant box)</li>
+  <li><b>Vagrant</b> - Vagrant 1.9.6</li>
+  <li><b>vagrant-libvirt</b> - 0.4.0</li>
+</ul>
+
+<h3 id="lab-topology">LAB Topology</h3>
+<p>The following topology will be created as part of this lab.</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="600px" 
+    src="/img/blog/pseudo-wires-with-vagrant-and-libvirt/vagrant-udp-tunnels.svg" alt="blog/pseudo-wires-with-vagrant-and-libvirt/vagrant-udp-tunnels.svg">
+</div>
+<!-- IMAGE END -->
+
+
+<h3 id="configuration-items">Configuration Items</h3>
+<p>
+  Tunnels are created by mapping IPv4 addresses and port numbers to create a logical endpoint that is
+  tied to a switchport. A little planning never goes astray, especially when you are building larger
+  topologies. This table of configuration items describes our point to point connections between hosts.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Hostname</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">MAC Address</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Local VM Loopback IP</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Local Tunnel Port</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Remote VM Loopback IP</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Remote Tunnel Port</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Interface Description</th>
+          
+        
+        </tr>
+      </thead>
+      <tbody>
+      
+        
+        
+          <tr class="border-b-2 border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">spine01 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 28:b7:ad:00:00:01 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 127.1.1.1 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 10001 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 127.1.1.2 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 10001 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> swp1</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">spine02 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 28:b7:ad:00:00:02 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 127.1.1.2 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 10001 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 127.1.1.1 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> 10001 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> swp1</td>
+            
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<p>
+  Tunnel interfaces are defined in a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagranfile</span>
+ under the network type <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">private_network</span>.
+  There are a number of configuration parameters that need to be configured, let go through them.
+</p>
+<ul>
+  <li><b>mac</b> - MAC Address that will be assigned to the interface</li>
+  <li><b>tunnel_type</b> - UDP or TCP</li>
+  <li><b>tunnel_local_ip</b> - Local VM loopback IP</li>
+  <li><b>tunnel_local_port</b> - Local VM port</li>
+  <li><b>tunnel_ip</b> - Remote VM loopback IP</li>
+  <li><b>tunnel_port</b> - Remote VM port</li>
+  <li><b>iface_name</b> - Interface description (optional)</li>
+</ul>
+
+<h3 id="vagrantfile">Vagrantfile</h3>
+<p>Use this <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
+ to build the above topology.</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = &lt;&lt;SCRIPT
+sudo net add hostname $1
+sudo net add int swp1 ip address $2
+sudo net commit
+SCRIPT
+
+Vagrant.configure("2") do |config|
+
+  ##########################
+  #        spine01         #
+  ##########################
+
+  config.vm.define "spine01" do |node|
+    node.vm.hostname = "spine01"
+    node.vm.box = "CumulusCommunity/cumulus-vx"
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+    node.ssh.insert_key = false
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 52
+    end
+
+    node.vm.network :private_network,
+      :mac => "28:b7:ad:00:00:01",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.1.1.1",
+      :libvirt__tunnel_local_port => "10001",
+      :libvirt__tunnel_ip => "127.1.1.2",
+      :libvirt__tunnel_port => "10001",
+      :libvirt__iface_name => "swp1",
+      auto_config: false
+
+    node.vm.provision "shell", inline: $script, :args => ["spine01", "10.1.1.1/30"]
+
+    end
+
+  ##########################
+  #        spine02         #
+  ##########################
+
+  config.vm.define "spine02" do |node|
+    node.vm.box = "CumulusCommunity/cumulus-vx"
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+    node.vm.hostname = "spine02"
+    node.ssh.insert_key = false
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 52
+    end
+
+    node.vm.network :private_network,
+      :mac => "28:b7:ad:00:00:02",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.1.1.2",
+      :libvirt__tunnel_local_port => "10001",
+      :libvirt__tunnel_ip => "127.1.1.1",
+      :libvirt__tunnel_port => "10001",
+      :libvirt__iface_name => "swp1",
+      auto_config: false
+
+    node.vm.provision "shell", inline: $script, :args => ["spine02", "10.1.1.2/30"]
+
+  end
+
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Ok <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
+ and ssh into spine01 so we can test that the interface has
+  connectivity between spine01 and spine02 over the swp1 interfaces we created.
+</p>
+<p>
+  First lest check the interface is up and has an IP address.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo net show int
+
+# output
+
+    Name    Master    Speed      MTU  Mode          Remote Host    Remote Port    Summary
+--  ------  --------  -------  -----  ------------  -------------  -------------  ---------------------------
+UP  lo      None      N/A      65536  Loopback                                    IP: 127.0.0.1/8, ::1/128
+UP  eth0    None      1G        1500  Mgmt                                        IP: 192.168.121.68/24(DHCP)
+<span class="hljs-string">UP  swp1    None      1G        1500  Interface/L3  cumulus        swp1           IP: 10.1.1.1/30</span></code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Great the interface is up, now lets test that we can ping the other side.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ping 10.1.1.2 -c 2
+
+# output
+
+PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
+64 bytes from 10.1.1.2: icmp_seq=1 ttl=64 time=0.365 ms
+64 bytes from 10.1.1.2: icmp_seq=2 ttl=64 time=0.480 ms
+
+--- 10.1.1.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.365/0.422/0.480/0.061 ms
+vagrant@spine01:~$</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Awesome, we can ping, as a final check, lets confirm the MAC address that was configured on
+  the other side is learned via ARP.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ip neighbor
+
+# output
+
+192.168.121.1 dev eth0 lladdr fe:54:00:6e:2e:bd REACHABLE
+<span class="hljs-string">10.1.1.2 dev swp1 lladdr 28:b7:ad:00:00:02 DELAY</span>
+
+fe80::fc54:ff:fe6e:2ebd dev eth0 lladdr fe:54:00:6e:2e:bd STALE
+vagrant@spine01:~$</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Good stuff we are learning the correct MAC address over the UDP tunnel. Dont forget to
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant destroy -f</span>
+ to clean up the lab.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Using UDP tunneling to create pseudo-wires between host interfaces in Vagrant is a great way to get
+  around having to build multiple virtual switches. It also has the added advantage of passing all
+  traffic between host interfaces and not stripping out things like VLAN tags.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/vagrant-libvirt/vagrant-libvirt" target=_blank>https://github.com/vagrant-libvirt/vagrant-libvirt</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#vagrant" class="text-xl">vagrant</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#libvirt" class="text-xl">libvirt</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#lab-topology">
+            LAB Topology
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#configuration-items">
+            Configuration Items
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#vagrantfile">
+            Vagrantfile
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing">
+            Testing
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

@@ -1,0 +1,641 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Cisco IOSXRv Vagrant box for use with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider as well as enabling the netconf API.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  already installed. You can follow this
+  {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+  to get the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>IOSXRv</b> - 6.1.3</li>
+  <li><b>Vagrant</b> - 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Navigate to the Cisco software
+  {{ link::e(path="https://software.cisco.com/download/home/286290254/type/286290305/release/IOS%20XRv", description="download") }}
+
+  page and download the {{ text::emphasize(text="iosxrv-k9-demo-6.1.3.qcow2") }}
+ image.
+</p>
+
+{{ text::note_block(text='
+    I am using the image available for download as part of my VIRL subscription
+') }}
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into directory for IOSXRv files. I like to keep my custom vagrant boxes under
+  {{ text::emphasize(text="~/vagrant/boxes/") }}
+.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/cisco/iosxrv
+cd ~/vagrant/boxes/cisco/iosxrv`
+) }}
+
+
+<p>
+  Copy the IOSXRv files downloaded earlier to the
+  {{ text::emphasize(text="~/vagrant/boxes/cisco/iosxrv/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp ~/Downloads/iosxrv-k9-demo-6.1.3.qcow2 .`
+) }}
+
+
+<p>
+  The good folks who maintain the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  have a script can be used to convert {{ text::emphasize(text="qcow2") }}
+ images to a
+  vagrant box. Download the libvirt convertsion script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh`
+) }}
+
+
+<p>
+  Use a text editor to create a two bootstrap config files named
+  {{ text::emphasize(text="iosxr_config_admin.txt") }}
+ and
+  {{ text::emphasize(text="iosxr_config.txt") }}
+
+  with the below contents that will be applied to the IOSXRv on first boot.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# iosxr_config_admin.txt
+
+username netadmin
+ group root-system
+ secret 5 $1$e1b8$ui278OB/l4zjSy.DGekD31
+!`
+) }}
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# iosxr_config.txt
+
+hostname xrv
+domain name lab.local
+!
+username vagrant
+ group root-system
+ secret 5 $1$XGy4$JJtunYtdSVtT9/lcGe6K1.
+!
+aaa authorization exec default local
+aaa authentication login default local
+!
+ssh server v2
+ssh server netconf
+ssh server logging
+!
+netconf agent tty
+ session timeout 5
+!
+netconf-yang agent
+ ssh
+!
+interface MgmtEth0/0/CPU0/0
+ ipv4 address dhcp
+ no shutdown
+!`
+) }}
+
+
+<p>
+  Create an ISO named {{ text::emphasize(text="xrconfig.iso") }}
+ with the {{ text::code(text="mkisofs") }}
+
+  command that contains the {{ text::emphasize(text="iosxr_config_admin.txt") }}
+ and
+  {{ text::emphasize(text="iosxr_config.txt") }}
+ files created earlier. The ISO will
+  be mounted on boot and the bootstrap configuration will be applied.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkisofs -o xrconfig.iso -l --iso-level 2 iosxr_config.txt iosxr_config_admin.txt
+
+# output
+
+I: -input-charset not specified, using utf-8 (detected in locale settings)
+Total translation table size: 0
+Total rockridge attributes bytes: 0
+Total directory bytes: 0
+Path table size(bytes): 10
+Max brk space used 0
+176 extents written (0 MB)`
+) }}
+
+
+
+<p>
+  Launch the Cisco IOSXRv VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virt-install \
+    --connect=qemu:///system \
+    --name=ios-xrv \
+    --cpu host \
+    --arch=x86_64 \
+    --vcpus=1 \
+    --ram=4096 \
+    --virt-type=kvm \
+    --disk path=iosxrv-k9-demo-6.1.3.qcow2,device=disk,size=3,bus=ide \
+    --disk path=xrconfig.iso,format=iso,device=cdrom \
+    --network network=vagrant-libvirt,model=e1000 \
+    --graphics none \
+    --import`
+) }}
+
+
+<p>
+  You will be automatically connected to the virtual console.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# output
+
+                             GNU GRUB  version 2.00
+
+ +--------------------------------------------------------------------------+
+ |IOS XRv                                                                   |
+ |                                                                          |
+  Booting `IOS XRv'
+.
+.
+&lt;snip&gt;
+.
+.
+RP/0/0/CPU0:Jun  9 22:00:33.580 : cvac[171]: %MGBL-CVAC-4-CONFIG_DONE : Configuration was applied from file /cd0/iosxr_config_admin.txt. See /disk0:/cvac.log for more details.
+RP/0/0/CPU0:Jun  9 22:00:34.700 : ifmgr[228]: %PKT_INFRA-LINK-3-UPDOWN : Interface MgmtEth0/0/CPU0/0, changed state to Down
+RP/0/0/CPU0:Jun  9 22:00:34.730 : ifmgr[228]: %PKT_INFRA-LINK-3-UPDOWN : Interface MgmtEth0/0/CPU0/0, changed state to Up
+RP/0/0/CPU0:Jun  9 22:00:38.779 : cvac[171]: %MGBL-CVAC-4-CONFIG_DONE : Configuration was applied from file /cd0/iosxr_config.txt. See /disk0:/cvac.log for more details.
+.
+.
+&lt;snip&gt;
+.
+.
+
+Please login with any configured user/password, or cisco/cisco
+
+
+User Access Verification
+
+Username:"
+) }}
+
+
+<p>
+  Login with the username / password {{ text::emphasize(text="netadmin") }}
+ and
+  generate ssh keys.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`crypto key generate rsa
+
+# output
+
+Sat Jun  9 21:39:01.202 UTC
+The name for the keys will be: the_default
+  Choose the size of the key modulus in the range of 512 to 4096 for your General Purpose Keypair. Choosing a key modulus greater than 512 may take a few minutes.
+
+How many bits in the modulus [2048]:
+Generating RSA keys ...
+Done w/ crypto generate keypair
+[OK]
+
+RP/0/0/CPU0:xrv#`
+) }}
+
+
+<p>
+  Now check the IP address assigned to the management interface.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show int ip brie
+
+# output
+
+RP/0/0/CPU0:xrv#show ip int brie
+Sat Jun  9 06:56:27.884 UTC
+
+Interface                      IP-Address      Status          Protocol Vrf-Name
+MgmtEth0/0/CPU0/0              192.168.121.212 Up              Up       default`
+) }}
+
+
+<p>
+  From your host terminal confirm you can SSH to the IOSXRv VM with the username / password
+  {{ text::emphasize(text="vagrant") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# host terminal
+
+ssh vagrant@192.168.121.89
+
+# now in IOSXRv VM
+
+IMPORTANT:  READ CAREFULLY
+Welcome to the Demo Version of Cisco IOS XRv (the "Software").
+The Software is subject to and governed by the terms and conditions
+of the End User License Agreement and the Supplemental End User
+License Agreement accompanying the product, made available at the
+time of your order, or posted on the Cisco website at
+www.cisco.com/go/terms (collectively, the "Agreement").
+As set forth more fully in the Agreement, use of the Software is
+strictly limited to internal use in a non-production environment
+solely for demonstration and evaluation purposes.  Downloading,
+installing, or using the Software constitutes acceptance of the
+Agreement, and you are binding yourself and the business entity
+that you represent to the Agreement.  If you do not agree to all
+of the terms of the Agreement, then Cisco is unwilling to license
+the Software to you and (a) you may not download, install or use the
+Software, and (b) you may return the Software as more fully set forth
+in the Agreement.
+
+
+Please login with any configured user/password, or cisco/cisco
+
+
+vagrant@192.168.121.212's password: &lt;vagrant&gt;`
+) }}
+
+
+{{ text::important_block(text='
+    I was unable to successfully enable ssh-key based authentication, if I discover how to
+    enable it I will update this post. If you have any details on enabling ssh-key based
+    authentication on the IOSXRv demo image please feel free to reach out to me.
+') }}
+
+
+<p>
+  If you successfully connected, exit and power off the VM.
+</p>
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<p>
+  Now power off the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh destroy ios-xrv
+
+# output
+
+Domain ios-xrv destroyed`
+) }}
+
+
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{"provider":"libvirt","format":"qcow2","virtual_size":4}`
+) }}
+
+
+<p>
+  Use the previously downloaded script {{ text::emphasize(text="create_box.sh") }}
+ to
+  create a vagrant box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh iosxrv-k9-demo-6.1.3.qcow2
+
+# output
+
+{4}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 431267840 (412MiB, 27MiB/s)
+==> iosxrv-k9-demo-6.1.3.box created
+==> You can now add the box:
+==>   'vagrant box add iosxrv-k9-demo-6.1.3.box --name iosxrv-k9-demo-6.1.3'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="xrv.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "cisco/xrv",
+  "description": "Cisco IOSXRv",
+  "versions": [
+    {
+      "version": "6.1.3",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/cisco/xrv/iosxrv-k9-demo-6.1.3.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+
+<p>
+  Add the box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add xrv.json
+
+# output
+
+==> box: Loading metadata for box 'xrv.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/cisco/xrv/xrv.json
+==> box: Adding box 'cisco/xrv' (v6.1.3) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/cisco/xrv/iosxrv-k9-demo-6.1.3.box
+==> box: Successfully added box 'cisco/xrv' (v6.1.3) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+cisco/asav                           (libvirt, 9.9.2)
+cisco/csr1000v                       (libvirt, 03.15.00.S-155-2-S)
+cisco/iosv                           (libvirt, 15.6-1-T)
+<span class="hljs-string">cisco/xrv                            (libvirt, 6.1.3)</span>`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that we have the box installed lets create a {{ text::emphasize(text="Vagrantfile") }}
+
+  and confirm we can build VM's with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/xrv-test
+cd ~/xrv-test`
+) }}
+
+
+<p>
+  Add a {{ text::emphasize(text="Vagrantfile") }}
+ to the test directory with the
+  following contents
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "r01" do |node|
+    node.vm.box = "cisco/xrv"
+
+    # Turn off shared folders
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # Do not try to insert new SSH key
+    node.ssh.insert_key = false
+
+    ## ssh key auth not working, need to use password
+    node.ssh.password = "vagrant"
+
+    # Give VM time to boot
+    node.vm.boot_timeout = 180
+
+    # Set guest type to prevent guest type detection
+    node.vm.guest = :freebsd
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.memory = 4096
+      domain.cpus = 1
+      domain.disk_bus = "ide"
+      domain.driver = "kvm"
+      domain.nic_model_type = "e1000"
+    end
+  end
+end`
+) }}
+
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+ and confirm you can login.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'r01' up with 'libvirt' provider...
+==> r01: Checking if box 'cisco/xrv' is up to date...
+==> r01: Creating image (snapshot of base box volume).
+==> r01: Creating domain with the following settings...
+==> r01:  -- Name:              xrv_r01
+==> r01:  -- Domain type:       kvm
+==> r01:  -- Cpus:              1
+==> r01:
+==> r01:  -- Feature:           acpi
+==> r01:  -- Feature:           apic
+==> r01:  -- Feature:           pae
+==> r01:  -- Memory:            4096M
+==> r01:  -- Management MAC:
+==> r01:  -- Loader:
+==> r01:  -- Base box:          cisco/xrv
+==> r01:  -- Storage pool:      default
+==> r01:  -- Image:             /var/lib/libvirt/images/xrv_r01.img (4G)
+==> r01:  -- Volume Cache:      default
+==> r01:  -- Kernel:
+==> r01:  -- Initrd:
+==> r01:  -- Graphics Type:     vnc
+==> r01:  -- Graphics Port:     -1
+==> r01:  -- Graphics IP:       127.0.0.1
+==> r01:  -- Graphics Password: Not defined
+==> r01:  -- Video Type:        cirrus
+==> r01:  -- Video VRAM:        9216
+==> r01:  -- Sound Type:
+==> r01:  -- Keymap:            en-us
+==> r01:  -- TPM Path:
+==> r01:  -- INPUT:             type=mouse, bus=ps2
+==> r01: Creating shared folders metadata...
+==> r01: Starting domain.
+==> r01: Waiting for domain to get an IP address...
+==> r01: Waiting for SSH to become available...
+==> r01: Configuring and enabling network interfaces...
+<span class="hljs-string">Guest-specific operations were attempted on a machine that is not
+ready for guest communication. This should not happen and a bug
+should be reported.</span>`
+) }}
+
+
+{{ text::note_block(text='
+    The above error does not affect the operation of the Vagrant box and it is still perfectly
+    usable. I will raise a bug in relation to this error with the Vagrant team.
+') }}
+
+<p>
+  Confirm you can login to the box with the password {{ text::emphasize(text="vagrant") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Host terminal
+
+vagrant ssh r01<span class="hljs-section">
+==> r01: The machine you're attempting to SSH into is configured to use
+==> r01: password-based authentication. Vagrant can't script entering the
+==> r01: password for you. If you're prompted for a password, please enter
+==> r01: the same password you have configured in the Vagrantfile.</span>
+
+vagrant@192.168.121.211's password: &lt;vagrant&gt;
+
+# Now in vagrant box terminal
+
+RP/0/0/CPU0:xrv#show version
+Sat Jun  9 23:10:59.172 UTC
+
+Cisco IOS XR Software, Version 6.1.3[Default]
+Copyright (c) 2017 by Cisco Systems, Inc.
+
+ROM: GRUB, Version 1.99(0), DEV RELEASE
+
+xrv uptime is 4 minutes
+System image file is "bootflash:disk0/xrvr-os-mbi-6.1.3/mbixrvr-rp.vm"
+
+cisco IOS XRv Series (Intel 686 F6M13S2) processor with 4193791K bytes of memory.
+Intel 686 F6M13S2 processor at 2814MHz, Revision 2.174
+IOS XRv Chassis
+
+1 Management Ethernet
+97070k bytes of non-volatile configuration memory.
+866M bytes of hard disk.
+2321392k bytes of disk0: (Sector size 512 bytes).
+
+Configuration register on node 0/0/CPU0 is 0x2102
+Boot device on node 0/0/CPU0 is disk0:
+Package active on node 0/0/CPU0:
+iosxr-infra, V 6.1.3[Default], Cisco Systems, at disk0:iosxr-infra-6.1.3
+    Built on Mon Feb 13 15:01:56 UTC 2017
+    By iox-lnx-005 in /auto/srcarchive14/production/6.1.3/xrvr/workspace for pie
+.
+.
+&lt;snip&gt;
+.
+.
+RP/0/0/CPU0:xrv#`
+) }}
+
+
+<p>
+  We can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> r01: Removing domain...`
+) }}
+
+
+<p>Remove the original KVM image.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rm -f iosxrv-k9-demo-6.1.3.qcow2
+virsh undefine ios-xrv
+
+# output
+
+Domain ios-xrv has been undefined`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Cisco IOSXRv qemu image was successfully converted to a Vagrant libvirt box, it is a bit
+  quirky having to use a password to login to the box, I will endeavour to find a solution
+  and update the post in the future. I suspect it has something to do with the demo image as
+  the method for enabling ssh-key based authentication according to the documentation does not work.
+</p>
+{% endblock page_content %}

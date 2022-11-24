@@ -133,7 +133,7 @@
   <p>
     A VLAN is a logically segmented group of physical switchports
     that reduces the broadcast domain of the physical ports to the ports within the VLAN.
-    VLANs are defined in the <a class="text-sky-600 no-underline hover:text-sky-800" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>IEEE802.1Q</a>
+    VLANs are defined in the <a class="text-sky-600 no-underline hover:text-sky-900" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>IEEE802.1Q</a>
     standard. VLANs are identified via an ID which is a number between 1 and 4094.
   </p>
   <p>
@@ -181,60 +181,65 @@
 
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
-          <th class="pt-1 pb-2 px-2">Field</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Field</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Purpose</th>
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Purpose</th>
+          
         
         </tr>
       </thead>
+      <tbody>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">TPID </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">TPID </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Contains the HEX value 0x8100 which signals the receiver the presence of an 802.1Q tag in the frame header.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Contains the HEX value 0x8100 which signals the receiver the presence of an 802.1Q tag in the frame header.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">User Priority </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">User Priority </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Defined in the 802.1p standard to align with CoS marking used in upper layers such as IP Precedence and MPLS EXP.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Defined in the 802.1p standard to align with CoS marking used in upper layers such as IP Precedence and MPLS EXP.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Canonical Format Indicator </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Canonical Format Indicator </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Used to associate the VLAN ID field with either ethernet (0) or token ring (1). Should always be set to 0 for ethernet.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Used to associate the VLAN ID field with either ethernet (0) or token ring (1). Should always be set to 0 for ethernet.</td>
             
           
         </tr>
@@ -245,15 +250,16 @@
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">VLAN ID </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">VLAN ID </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> A VLAN ID between 1 and 4094.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> A VLAN ID between 1 and 4094.</td>
             
           
         </tr>
       
+      </tbody>
     </table>
   </div>
 </div>
@@ -262,7 +268,7 @@
 
   <h3 id="private-vlan">Private VLAN</h3>
   <p>
-    Defined in <a class="text-sky-600 no-underline hover:text-sky-800" href="https://tools.ietf.org/html/rfc5517" target=_blank>RFC5517</a> private VLANs allow
+    Defined in <a class="text-sky-600 no-underline hover:text-sky-900" href="https://tools.ietf.org/html/rfc5517" target=_blank>RFC5517</a> private VLANs allow
     a switch to treat a port as a if it belongs to a VLAN while using a single subnet across
     multiple private VLAN ports.
   </p>
@@ -276,60 +282,65 @@
 
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
-          <th class="pt-1 pb-2 px-2">Item</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Item</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Description</th>
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Description</th>
+          
         
         </tr>
       </thead>
+      <tbody>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Primary VLAN </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Primary VLAN </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> A primary VLAN contains one or more community VLANs and promiscuous ports. A primary VLAN can contain only ONE isolated VLAN.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> A primary VLAN contains one or more community VLANs and promiscuous ports. A primary VLAN can contain only ONE isolated VLAN.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Community VLAN </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Community VLAN </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Ports in the same community VLAN can communicate directly and with promiscuous ports in the same primary VLAN.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Ports in the same community VLAN can communicate directly and with promiscuous ports in the same primary VLAN.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Isolated VLAN </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Isolated VLAN </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Can only communicate with promiscuous ports in the same primary VLAN.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Can only communicate with promiscuous ports in the same primary VLAN.</td>
             
           
         </tr>
@@ -340,15 +351,16 @@
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Promiscuous Port </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Promiscuous Port </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Can communicate with all promiscuous ports and secondary VLANs within the same primary VLAN.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Can communicate with all promiscuous ports and secondary VLANs within the same primary VLAN.</td>
             
           
         </tr>
       
+      </tbody>
     </table>
   </div>
 </div>
@@ -369,7 +381,7 @@
   <h3 id="packet-captures">Packet Captures</h3>
   <p>
     Various VLAN PCAPs can be found
-    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.dropbox.com/sh/rrh1oi5sse5ugdv/AADl_pS9OpZRPMjJ61hAfTR0a?dl=0" target=_blank>here</a>.
+    <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.dropbox.com/sh/rrh1oi5sse5ugdv/AADl_pS9OpZRPMjJ61hAfTR0a?dl=0" target=_blank>here</a>.
   </p>
 
 
@@ -406,19 +418,19 @@
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>http://www.ieee802.org/1/pages/802.1Q.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>http://www.ieee802.org/1/pages/802.1Q.html</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://tools.ietf.org/html/rfc5517" target=_blank>https://tools.ietf.org/html/rfc5517</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://tools.ietf.org/html/rfc5517" target=_blank>https://tools.ietf.org/html/rfc5517</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://wiki.wireshark.org/VLAN" target=_blank>https://wiki.wireshark.org/VLAN</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://wiki.wireshark.org/VLAN" target=_blank>https://wiki.wireshark.org/VLAN</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/layer-2-networking-ethernet-frame-forwarding-802-1q-vlan-tag-mx-solutions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/layer-2-networking-ethernet-frame-forwarding-802-1q-vlan-tag-mx-solutions.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/layer-2-networking-ethernet-frame-forwarding-802-1q-vlan-tag-mx-solutions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/layer-2-networking-ethernet-frame-forwarding-802-1q-vlan-tag-mx-solutions.html</a>
         </p>
       
   </div>

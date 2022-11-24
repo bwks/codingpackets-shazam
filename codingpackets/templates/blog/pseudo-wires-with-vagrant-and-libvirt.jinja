@@ -1,0 +1,229 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Libvirt has the ability to create a pseudo-wire between virtual guest interfaces using either TCP or UDP.
+  The advantage of using pseud-wires is that you do not need to create virtual switches to attach your
+  guest VM interfaces to.
+</p>
+<p>
+  Virtualbox has an annoying trait of stripping vlan tags on interfaces which are
+  not of the type {{ text::emphasize(text="virtio") }}
+. Since some network device Vagrant boxes do not support
+  virtio interfaces you are not able to test alot of switching related technologies.
+</p>
+<p>
+  This post will cover how to define a UDP connection between nodes in a {{ text::emphasize(text="Vagrantfile") }}
+.
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>CumulusCommunity/cumulus-vx</b> - 3.4.3 (Vagrant box)</li>
+  <li><b>Vagrant</b> - Vagrant 1.9.6</li>
+  <li><b>vagrant-libvirt</b> - 0.4.0</li>
+</ul>
+
+<h3 id="lab-topology">LAB Topology</h3>
+<p>The following topology will be created as part of this lab.</p>
+
+{{ image::boxed(path="blog/pseudo-wires-with-vagrant-and-libvirt/vagrant-udp-tunnels.svg", width="600px") }}
+
+<h3 id="configuration-items">Configuration Items</h3>
+<p>
+  Tunnels are created by mapping IPv4 addresses and port numbers to create a logical endpoint that is
+  tied to a switchport. A little planning never goes astray, especially when you are building larger
+  topologies. This table of configuration items describes our point to point connections between hosts.
+</p>
+
+{{ table::default(
+  header=["Hostname",
+"MAC Address",
+"Local VM Loopback IP",
+"Local Tunnel Port",
+"Remote VM Loopback IP",
+"Remote Tunnel Port",
+"Interface Description",
+  ],
+  rows=[
+  "spine01 | 28:b7:ad:00:00:01 | 127.1.1.1 | 10001 | 127.1.1.2 | 10001 | swp1",
+  "spine02 | 28:b7:ad:00:00:02 | 127.1.1.2 | 10001 | 127.1.1.1 | 10001 | swp1",
+  ],
+) }}
+
+
+<p>
+  Tunnel interfaces are defined in a {{ text::emphasize(text="Vagranfile") }}
+ under the network type {{ text::emphasize(text="private_network") }}.
+  There are a number of configuration parameters that need to be configured, let go through them.
+</p>
+<ul>
+  <li><b>mac</b> - MAC Address that will be assigned to the interface</li>
+  <li><b>tunnel_type</b> - UDP or TCP</li>
+  <li><b>tunnel_local_ip</b> - Local VM loopback IP</li>
+  <li><b>tunnel_local_port</b> - Local VM port</li>
+  <li><b>tunnel_ip</b> - Remote VM loopback IP</li>
+  <li><b>tunnel_port</b> - Remote VM port</li>
+  <li><b>iface_name</b> - Interface description (optional)</li>
+</ul>
+
+<h3 id="vagrantfile">Vagrantfile</h3>
+<p>Use this {{ text::emphasize(text="Vagrantfile") }}
+ to build the above topology.</p>
+
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = &lt;&lt;SCRIPT
+sudo net add hostname $1
+sudo net add int swp1 ip address $2
+sudo net commit
+SCRIPT
+
+Vagrant.configure("2") do |config|
+
+  ##########################
+  #        spine01         #
+  ##########################
+
+  config.vm.define "spine01" do |node|
+    node.vm.hostname = "spine01"
+    node.vm.box = "CumulusCommunity/cumulus-vx"
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+    node.ssh.insert_key = false
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 52
+    end
+
+    node.vm.network :private_network,
+      :mac => "28:b7:ad:00:00:01",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.1.1.1",
+      :libvirt__tunnel_local_port => "10001",
+      :libvirt__tunnel_ip => "127.1.1.2",
+      :libvirt__tunnel_port => "10001",
+      :libvirt__iface_name => "swp1",
+      auto_config: false
+
+    node.vm.provision "shell", inline: $script, :args => ["spine01", "10.1.1.1/30"]
+
+    end
+
+  ##########################
+  #        spine02         #
+  ##########################
+
+  config.vm.define "spine02" do |node|
+    node.vm.box = "CumulusCommunity/cumulus-vx"
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+    node.vm.hostname = "spine02"
+    node.ssh.insert_key = false
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 52
+    end
+
+    node.vm.network :private_network,
+      :mac => "28:b7:ad:00:00:02",
+      :libvirt__tunnel_type => "udp",
+      :libvirt__tunnel_local_ip => "127.1.1.2",
+      :libvirt__tunnel_local_port => "10001",
+      :libvirt__tunnel_ip => "127.1.1.1",
+      :libvirt__tunnel_port => "10001",
+      :libvirt__iface_name => "swp1",
+      auto_config: false
+
+    node.vm.provision "shell", inline: $script, :args => ["spine02", "10.1.1.2/30"]
+
+  end
+
+end`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Ok {{ text::code(text="vagrant up") }}
+ and ssh into spine01 so we can test that the interface has
+  connectivity between spine01 and spine02 over the swp1 interfaces we created.
+</p>
+<p>
+  First lest check the interface is up and has an IP address.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo net show int
+
+# output
+
+    Name    Master    Speed      MTU  Mode          Remote Host    Remote Port    Summary
+--  ------  --------  -------  -----  ------------  -------------  -------------  ---------------------------
+UP  lo      None      N/A      65536  Loopback                                    IP: 127.0.0.1/8, ::1/128
+UP  eth0    None      1G        1500  Mgmt                                        IP: 192.168.121.68/24(DHCP)
+<span class="hljs-string">UP  swp1    None      1G        1500  Interface/L3  cumulus        swp1           IP: 10.1.1.1/30</span>`
+) }}
+
+
+<p>
+  Great the interface is up, now lets test that we can ping the other side.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ping 10.1.1.2 -c 2
+
+# output
+
+PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
+64 bytes from 10.1.1.2: icmp_seq=1 ttl=64 time=0.365 ms
+64 bytes from 10.1.1.2: icmp_seq=2 ttl=64 time=0.480 ms
+
+--- 10.1.1.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.365/0.422/0.480/0.061 ms
+vagrant@spine01:~$`
+) }}
+
+
+<p>
+  Awesome, we can ping, as a final check, lets confirm the MAC address that was configured on
+  the other side is learned via ARP.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip neighbor
+
+# output
+
+192.168.121.1 dev eth0 lladdr fe:54:00:6e:2e:bd REACHABLE
+<span class="hljs-string">10.1.1.2 dev swp1 lladdr 28:b7:ad:00:00:02 DELAY</span>
+
+fe80::fc54:ff:fe6e:2ebd dev eth0 lladdr fe:54:00:6e:2e:bd STALE
+vagrant@spine01:~$`
+) }}
+
+
+<p>
+  Good stuff we are learning the correct MAC address over the UDP tunnel. Dont forget to
+  {{ text::code(text="vagrant destroy -f") }}
+ to clean up the lab.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Using UDP tunneling to create pseudo-wires between host interfaces in Vagrant is a great way to get
+  around having to build multiple virtual switches. It also has the added advantage of passing all
+  traffic between host interfaces and not stripping out things like VLAN tags.
+</p>
+
+{% endblock page_content %}

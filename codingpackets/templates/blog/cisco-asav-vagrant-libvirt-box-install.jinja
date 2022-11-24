@@ -1,0 +1,600 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  In this post I will cover how to create a Cisco ASAv Vagrant box for use with the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider as well as enabling the REST API.
+</p>
+<p>
+  This post assumes a working installation of Vagrant with the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  already installed. You can follow this
+  {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+  to get the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin installed.
+</p>
+
+<p>
+  For reference the following software will be used in this post.
+</p>
+<ul>
+  <li><b>ASAv</b> - asav992.qcow2</li>
+  <li><b>Vagrant</b> - Vagrant 2.1.0</li>
+  <li><b>vagrant-libvirt</b> - 0.0.43</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Navigate to the Cisco software
+  {{ link::e(path="https://software.cisco.com/download/home/286119613/type/280775065/release/9.9.2", description="download") }}
+  page and download the {{ text::emphasize(text="asav992.qcow2") }}
+ image. This image
+  also contains the REST API plugin so there is no need to download that separately.
+</p>
+
+{{ text::note_block(text='
+    A valid support contract may be required to download the ASAv image. It is
+    possible to download an ASAv image as part of a $1
+    subscription. At the time of writing $2 is
+    the latest VIRL version.
+') 
+  | replace(from="$1", to=link::e(path="http://virl.cisco.com/", description="VIRL"))
+  | replace(from="$2", to=text::emphasize(text="asav971.qcow2"))
+}}
+
+
+<h3 id="install">Install</h3>
+<p>
+  Create and change into directory for ASAv files. I like to keep my custom vagrant boxes under
+  {{ text::emphasize(text="~/vagrant/boxes/") }}.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir -p ~/vagrant/boxes/cisco/asav
+cd ~/vagrant/boxes/cisco/asav`
+) }}
+
+
+<p>
+  Copy the ASAv files downloaded earlier to the
+  {{ text::emphasize(text="~/vagrant/boxes/cisco/asav/") }}
+ directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`cp ~/Downloads/asav992.qcow2 .`
+) }}
+
+
+<p>
+  The good folks who maintain the {{ text::emphasize(text="vagrant-libvirt") }}
+ plugin
+  have a script can be used to convert {{ text::emphasize(text="qcow2") }}
+ images to a
+  vagrant box. Download the libvirt convertsion script.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh`
+) }}
+
+
+<p>
+  Use a text editor to create a bootstrap config named {{ text::emphasize(text="day0-config") }}
+
+  with the below contents that will be applied to the ASAv on first boot.
+</p>
+
+{{ text::code_block(
+  header="file",
+  language="text",
+  code=`# day0-config
+
+!
+console serial
+!
+interface Management0/0
+ nameif management
+ security-level 0
+ ip address dhcp
+ no shutdown
+!
+hostname asav
+!
+username enable_1 privilege 15
+username vagrant password vagrant privilege 15
+aaa authentication ssh console LOCAL
+aaa authentication http console LOCAL
+aaa authorization exec LOCAL auto-enable
+ssh version 2
+crypto key generate rsa modulus 2048
+ssh 0.0.0.0 0.0.0.0 management
+ssh key-exchange group dh-group14-sha1
+http server enable
+http 0.0.0.0 0.0.0.0 management
+domain-name lab.local
+!
+username vagrant attributes
+  service-type admin
+  ssh authentication publickey AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==
+!
+rest-api image boot:/asa-restapi-132300-lfbff-k8.SPA
+rest-api agent
+!`
+) }}
+
+
+<p>
+  Create an ISO named {{ text::emphasize(text="day0.iso") }}
+ with the {{ text::code(text="genisoimage") }}
+
+  command that contains the {{ text::emphasize(text="day0-config") }}
+ file created
+  earlier. This ISO will be mounted on boot and the bootstrap configuration will be applied
+  automagically.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`genisoimage -r -o day0.iso day0-config
+
+# output
+
+I: -input-charset not specified, using utf-8 (detected in locale settings)
+Total translation table size: 0
+Total rockridge attributes bytes: 252
+Total directory bytes: 0
+Path table size(bytes): 10
+Max brk space used 0
+176 extents written (0 MB`
+) }}
+
+
+
+<p>
+  Launch the Cisco ASAv VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virt-install \
+    --connect=qemu:///system \
+    --network network=vagrant-libvirt,model=virtio \
+    --name=asav \
+    --cpu host \
+    --arch=x86_64 \
+    --machine=pc-1.0 \
+    --vcpus=1 \
+    --ram=2048 \
+    --os-type=linux \
+    --noacpi \
+    --virt-type=kvm \
+    --watchdog i6300esb,action=reset \
+    --disk path=asav992.qcow2,format=qcow2,device=disk,bus=virtio,cache=writethrough \
+    --disk path=day0.iso,format=iso,device=cdrom \
+    --graphics none \
+    --import`
+) }}
+
+
+<p>
+  You will be automatically connected to the console.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# output
+
+WARNING  CDROM media does not print to the text console by default, so you likely will not see text install output. You might want to use --location. See the man page for examples of using --location with CDROM media
+
+Starting install...
+Creating domain...                                                                                                                                                           |    0 B  00:00:03
+Connected to domain asav
+Escape character is ^]
+loader: Platform type set to default
+Platform ASAv
+.
+.
+&lt;snip&gt;
+.
+.
+Trustpoint CA certificate accepted.
+User enable_1 logged in to asa
+Logins over the last 1 days: 1.
+Failed logins since the last login: 0.
+Type help or '?' for a list of available commands.
+asav>`
+) }}
+
+
+<p>
+  Check the IP address assigned via DHCP.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show int ip brie
+
+# output
+
+Interface                  IP-Address      OK? Method Status                Protocol
+Management0/0              192.168.121.89  YES DHCP   up                    up`
+) }}
+
+
+<p>
+  From your host terminal confirm you can SSH to the ASAv with the vagrant SSH key.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# host terminal
+
+ssh vagrant@192.168.121.89 -i ~/.vagrant.d/insecure_private_key
+
+# now in ASAv VM
+
+User vagrant logged in to asav
+Logins over the last 1 days: 1.
+Failed logins since the last login: 0.
+Type help or '?' for a list of available commands.
+asav# exit`
+) }}
+
+
+<p>
+  Now confirm you can access the ASAv via the REST API.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# host terminal
+
+curl -k https://vagrant:vagrant@192.168.121.89/api/objects/networkobjects
+
+# output
+
+{"selfLink":"https://192.168.121.89/api/objects/networkobjects","rangeInfo":{"offset":0,"limit":0,"total":0},"items":[]}`
+) }}
+
+
+
+<p>
+  If you successfully connected, exit and power off the VM.
+</p>
+{% include "_includes/libvirt-console-exit.jinja" %}
+
+<p>
+  Now power off the VM.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh destroy asav
+
+# output
+
+Domain asav destroyed`
+) }}
+
+
+<p>
+  Create a file called {{ text::emphasize(text="metadata.json") }}
+ with the following contents.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{"provider":"libvirt","format":"qcow2","virtual_size":9}`
+) }}
+
+
+<p>
+  Use the previously downloaded script {{ text::emphasize(text="create_box.sh") }}
+ to
+  create a vagrant box.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`bash create_box.sh asav992.qcow2
+
+# output
+
+{9}
+==> Creating box, tarring and gzipping
+./metadata.json
+./Vagrantfile
+./box.img
+Total bytes written: 226959360 (217MiB, 21MiB/s)
+==> asav992.box created
+==> You can now add the box:
+==>   'vagrant box add asav992.box --name asav992'`
+) }}
+
+
+<p>
+  Create a metadata file called {{ text::emphasize(text="asav.json") }}
+ so that the
+  box is added with the correct version number.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code=`{
+  "name": "cisco/asav",
+  "description": "Cisco ASAv",
+  "versions": [
+    {
+      "version": "9.9.2",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": "file:///home/bradmin/vagrant/boxes/cisco/asav/asav992.box"
+        }
+      ]
+    }
+  ]
+}`
+) }}
+
+
+
+<p>
+  Add the box to Vagrant.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add asav.json
+
+# output
+
+==> box: Loading metadata for box 'asav.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/cisco/asav/asav.json
+==> box: Adding box 'cisco/asav' (v9.9.2) for provider: libvirt
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/cisco/asav/asav992.box
+==> box: Successfully added box 'cisco/asav' (v9.9.2) for 'libvirt'!`
+) }}
+
+
+<p>
+  Confirm the box was added successfully
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (libvirt, 3.4.2)
+arista/veos                          (libvirt, 4.20.1F)
+<span class="hljs-string">cisco/asav                           (libvirt, 9.9.2)</span>
+
+cisco/csr1000v                       (libvirt, 03.15.00.S-155-2-S)
+cisco/iosv                           (libvirt, 15.6-1-T)`
+) }}
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Now that we have the box installed lets create a {{ text::emphasize(text="Vagrantfile") }}
+
+  and confirm we can build VM's with Vagrant.
+</p>
+
+<p>
+  Create a test directory.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`mkdir ~/asav-test
+cd ~/asav-test`
+) }}
+
+
+<p>
+  Add a {{ text::emphasize(text="Vagrantfile") }}
+ to the test directory with the
+  following contents
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "fw01" do |node|
+    node.vm.box = "cisco/asav"
+
+    # Turn off shared folders
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # Do not try to insert new SSH key
+    node.ssh.insert_key = false
+
+    # Give VM time to boot
+    node.vm.boot_timeout = 180
+
+    # Set guest type to prevent guest type detection
+    node.vm.guest = :freebsd
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.nic_adapter_count = 8
+      domain.memory = 2048
+      domain.cpus = 1
+      domain.driver = "kvm"
+    end
+  end
+end`
+) }}
+
+
+<p>
+  Now {{ text::code(text="vagrant up") }}
+ and confirm you can login.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up
+
+# output
+
+Bringing machine 'fw01' up with 'libvirt' provider...
+==> fw01: Checking if box 'cisco/asav' is up to date...
+==> fw01: Creating image (snapshot of base box volume).
+==> fw01: Creating domain with the following settings...
+==> fw01:  -- Name:              asav_fw01
+==> fw01:  -- Domain type:       kvm
+==> fw01:  -- Cpus:              1
+==> fw01:
+==> fw01:  -- Feature:           acpi
+==> fw01:  -- Feature:           apic
+==> fw01:  -- Feature:           pae
+==> fw01:  -- Memory:            2048M
+==> fw01:  -- Management MAC:
+==> fw01:  -- Loader:
+==> fw01:  -- Base box:          cisco/asav
+==> fw01:  -- Storage pool:      default
+==> fw01:  -- Image:             /var/lib/libvirt/images/asav_fw01.img (9G)
+==> fw01:  -- Volume Cache:      default
+==> fw01:  -- Kernel:
+==> fw01:  -- Initrd:
+==> fw01:  -- Graphics Type:     vnc
+==> fw01:  -- Graphics Port:     -1
+==> fw01:  -- Graphics IP:       127.0.0.1
+==> fw01:  -- Graphics Password: Not defined
+==> fw01:  -- Video Type:        cirrus
+==> fw01:  -- Video VRAM:        9216
+==> fw01:  -- Sound Type:
+==> fw01:  -- Keymap:            en-us
+==> fw01:  -- TPM Path:
+==> fw01:  -- INPUT:             type=mouse, bus=ps2
+==> fw01: Creating shared folders metadata...
+==> fw01: Starting domain.
+==> fw01: Waiting for domain to get an IP address...
+==> fw01: Waiting for SSH to become available...
+==> fw01: Configuring and enabling network interfaces...`
+) }}
+
+
+<p>Confirm you can login to the box.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Host terminal
+
+vagrant ssh
+
+# Now in vagrant box terminal
+
+User vagrant logged in to asav
+Logins over the last 1 days: 7.  Last login: 10:16:37 UTC May 7 2018 from 192.168.121.1
+Failed logins since the last login: 0.
+Type help or '?' for a list of available commands.
+asav# show version
+
+Cisco Adaptive Security Appliance Software Version 9.9(2)
+Firepower Extensible Operating System Version 2.3(1.84)
+Device Manager Version 7.9(2)
+
+Compiled on Sun 25-Mar-18 17:32 PDT by builders
+System image file is "boot:/asa992-smp-k8.bin"
+Config file at boot was "startup-config"
+
+asav up 1 min 37 secs
+
+Hardware:   ASAv, 2048 MB RAM, CPU Xeon 5600 series 2393 MHz,
+Model Id:   ASAv10
+Internal ATA Compact Flash, 8192MB
+Slot 1: ATA Compact Flash, 8192MB
+BIOS Flash Firmware Hub @ 0x0, 0KB
+
+
+ 0: Ext: Management0/0       : address is 5254.0017.5463, irq 10
+
+License mode: Smart Licensing
+ASAv Platform License State: Unlicensed
+No active entitlement: no feature tier and no throughput level configured
+*Memory resource allocation is more than the permitted limit.
+
+Licensed features for this platform:
+Maximum VLANs                     : 50
+Inside Hosts                      : Unlimited
+Failover                          : Active/Standby
+Encryption-DES                    : Enabled
+Encryption-3DES-AES               : Enabled
+Security Contexts                 : 0
+Carrier                           : Disabled
+AnyConnect Premium Peers          : 2
+AnyConnect Essentials             : Disabled
+Other VPN Peers                   : 250
+Total VPN Peers                   : 250
+AnyConnect for Mobile             : Disabled
+AnyConnect for Cisco VPN Phone    : Disabled
+Advanced Endpoint Assessment      : Disabled
+Shared License                    : Disabled
+Total TLS Proxy Sessions          : 2
+Botnet Traffic Filter             : Enabled
+Cluster                           : Disabled
+
+Serial Number: 9A73HB13VFB
+
+Image type          : Release
+Key version         : A
+
+Configuration has not been modified since last system restart.
+asav#`
+) }}
+
+
+<p>
+  We can build and login to the box with Vagrant. Lastly, let clean up a bit.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# back in host shell
+
+vagrant destroy -f
+
+# output
+
+==> fw01: Removing domain...`
+) }}
+
+
+<p>Remove the original KVM image.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`rm -f asav.qcow2
+virsh undefine asav
+
+# output
+
+Domain asav has been undefined`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  The Cisco ASAv qemu image was successfully converted to a Vagrant libvirt box with the REST
+  API enabled. Without a license what you can do is limited, but there is still enough
+  functionality to get value from the platform. If you have a licensing contract, more
+  power to you. Now go out there and automate the stuffing out of it.
+</p>
+{% endblock page_content %}

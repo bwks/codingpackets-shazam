@@ -1,7 +1,9 @@
 #! /bin/bash
 
+
+
 files="\
-codingpackets/templates/blog/vagrant-libvirt-install-ubuntu-1804.jinja \
+codingpackets/templates/blog/vagrant-from-the-start-to-the-beginning.jinja \
 "
 
 for FILENAME in $files; do

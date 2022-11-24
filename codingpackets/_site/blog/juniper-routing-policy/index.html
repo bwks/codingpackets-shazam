@@ -402,7 +402,7 @@
   <h3 id="radix-tree">Radix Tree</h3>
   <p>
     A radix tree is used to match prefixes based on the route filter conditions.
-    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-800" href="#references-1">[1]</a></sup> is a sample radix tree.
+    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-900" href="#references-1">[1]</a></sup> is a sample radix tree.
   </p>
   
 <!-- IMAGE START -->
@@ -415,7 +415,7 @@
 
 
   <p>
-    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-800" href="#references-2">[2]</a></sup>
+    The below diagram<sup><a class="text-sky-600 no-underline hover:text-sky-900" href="#references-2">[2]</a></sup>
     illustrates how route filters affect the selection
     of prefixes in the radix tree.
   </p>
@@ -438,74 +438,81 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
-          <th class="pt-1 pb-2 px-2">Protocol</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Protocol</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Import</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Import</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Export</th>
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Export</th>
+          
         
         </tr>
       </thead>
+      <tbody>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">BGP </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">BGP </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> Accept all received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">OSPF/v3 </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">OSPF/v3 </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. OSPF uses flooding to advertise local and learned routes.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Reject everything. OSPF uses flooding to advertise local and learned routes.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">IS-IS </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">IS-IS </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. IS-IS uses flooding to advertise local and learned routes.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Reject everything. IS-IS uses flooding to advertise local and learned routes.</td>
             
           
         </tr>
@@ -516,19 +523,20 @@
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">RIP/ng </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">RIP/ng </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Reject everything. An export policy is required to export RIP/ng routes.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Reject everything. An export policy is required to export RIP/ng routes.</td>
             
           
         </tr>
       
+      </tbody>
     </table>
   </div>
 </div>
@@ -588,15 +596,15 @@
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html</a>
         </p>
       
   </div>

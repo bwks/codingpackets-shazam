@@ -1,0 +1,806 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Cisco Nexus 9000v Vagrant Box Install</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
+            published: 19th of August 2017
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  This blog covers how to install Cisco Nexus 9K boxes for use with Vagrant. Great news.. if you have followed my other
+  posts around creating Vagrant boxes from Cisco
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/cisco-asav-vagrant-box-install">post</a>
+
+
+  and
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/cisco-csr-1000v-vagrant-box-install">post</a>
+
+
+  images, this will not be quite as involved.
+  Cisco has provided a Nexus vagrant box for download from cisco.com
+</p>
+
+
+<b>Code versions used</b>
+<ul>
+  <li><b>nexus9kv</b> - 7.0.3.I6.1</li>
+  <li><b>Virtual Box</b> - 5.1.26 r117224</li>
+  <li><b>Vagrant</b> - 1.9.6</li>
+  <li><b>Ubuntu</b> - 1604</li>
+</ul>
+
+<h3 id="download">Download</h3>
+<p>
+  Go to the Cisco <a class="text-sky-600 no-underline hover:text-sky-900" href="https://software.cisco.com/download/navigator.html" target=_blank>software</a>
+ download
+  section and search for <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">nexus 9000v</span>
+. When you get to the product page download the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.box</span>
+ file.
+</p>
+
+
+<!-- IMAGE START -->
+<div class="pt-4 pb-6 flex justify-center">
+  <img class="bg-white rounded-lg shadow-md shadow-zinc-400 dark:opacity-80 dark:shadow-none" 
+    width="800px" 
+    src="/img/blog/cisco-nexus-vagrant-box-install/cisco-n9kv-download.png" alt="blog/cisco-nexus-vagrant-box-install/cisco-n9kv-download.png">
+</div>
+<!-- IMAGE END -->
+
+
+<p>
+  Extract the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.box</span>
+ file as we need the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.iso</span>
+ disk to attach to the Vagrant box.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd ~/Downloads; mkdir n9kv
+tar -xvf nxosv-final.7.0.3.I6.1.box -C n9kv
+mv n9kv/nxosv_config.iso ~/vagrant/boxes/cisco/</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  I prefer to keep these type of boxes <i>(Custom and/or not downloaded from Vagrant Cloud)</i> in my home
+  folder under <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</span>
+
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/cisco/
+mv ~/Downloads/nxosv-final.7.0.3.I6.1.box ~/vagrant/boxes/cisco/nxosv-final.7.0.3.I6.1.box</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="box-install">Box Install</h3>
+<p>
+  Create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.json</span>
+ file that describes the Nexus Vagrant box. This file will add meta-data attributes
+  to the Vagrant box, making it easier to work with multiple versions of Cisco Nexus 9K boxes.
+</p>
+
+<b>Example: </b><span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/cisco/n9kv-7.0.3.I6.1.json</span>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
+  "name": "cisco/n9kv",
+  "description": "Cisco Nexus9kv",
+  "versions": [
+    {
+      "version": "7.0.3.I6.1",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "file:///home/bradmin/vagrant/boxes/cisco/nxosv-final.7.0.3.I6.1.box"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Use the absolute path for the url value.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Use the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant box add</span>
+ command specifying the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.json</span>
+ file location to add the box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add ~/vagrant/boxes/cisco/n9kv-7.0.3.I6.1.json
+
+# output
+
+==> box: Loading metadata for box '../boxes/cisco/n9kv-7.0.3.I6.1.json'
+    box: URL: file:///home/bradmin/vagrant/boxes/cisco/n9kv-7.0.3.I6.1.json
+==> box: Adding box 'cisco/n9kv' (v7.0.3.I6.1) for provider: virtualbox
+    box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/cisco/nxosv-final.7.0.3.I6.1.box
+==> box: Successfully added box 'cisco/n9kv' (v7.0.3.I6.1) for 'virtualbox'!</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  Confirm that box was added with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant box list</span>
+ command. You can see below that the
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco/n9kv</span>
+ box is listed along with the box type and version number <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">(virtualbox, 7.0.3.I6.1)</span>
+
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx          (virtualbox, 3.3.2)
+arista/veos                          (virtualbox, 4.18.1F)
+centos/7                             (virtualbox, 1705.02)
+cisco/asav                           (virtualbox, 9.8.1)
+cisco/csr1000v                       (virtualbox, 03.15.00)
+<span class="hljs-string">cisco/n9kv                           (virtualbox, 7.0.3.I6.1)</span>
+
+debian/jessie64                      (virtualbox, 8.8.1)
+juniper/ffp-12.1X47-D15.4            (virtualbox, 0.5.0)
+juniper/ffp-12.1X47-D15.4-packetmode (virtualbox, 0.5.0)
+juniper/vqfx10k-pfe                  (virtualbox, 0.1.0)
+juniper/vqfx10k-re                   (virtualbox, 0.2.0)
+ubuntu/xenial64                      (virtualbox, 20170728.0.0)</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="sample-vagrant-file">Sample Vagrant File</h3>
+<p>Cisco provided us a nice sample <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
+ to use.</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">file</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
+
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.define "n9kv1" do |n9kv1|
+
+    n9kv1.vm.box = "cisco/n9kv"
+
+    # Dont try to change the insecure public key
+    n9kv1.ssh.insert_key = false
+
+    # Give the VM time to boot as Vagrant cannot tell when it is booted
+    n9kv1.vm.boot_timeout = 180
+
+    # Disable default host to guest synced folder
+    n9kv1.vm.synced_folder '.', '/vagrant', disabled: true
+
+    # Additional interfaces
+    n9kv1.vm.network "private_network", ip: "192.168.1.2", auto_config: false, virtualbox__intnet: "nxosv_network1"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network2"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network3"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network4"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network5"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network6"
+    n9kv1.vm.network "private_network", auto_config: false, virtualbox__intnet: "nxosv_network7"
+
+    # Make the interfaces promiscuous
+    n9kv1.vm.provider :virtualbox do |vb|
+            vb.customize ['modifyvm',:id,'--nicpromisc2','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc3','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc4','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc5','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc6','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc7','allow-all']
+            vb.customize ['modifyvm',:id,'--nicpromisc8','allow-all']
+
+            # Attach the .iso we extracted earlier
+            vb.customize "pre-boot", [
+                    "storageattach", :id,
+                    "--storagectl", "SATA",
+                    "--port", "1",
+                    "--device", "0",
+                    "--type", "dvddrive",
+                    "--medium", "/home/bradmin/vagrant/boxes/cisco/nxosv_config.iso",
+            ]
+
+      end
+  end
+end</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+    Use the absolute path to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">nxosv_config.iso</span> file.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<h3 id="testing-vagrant-box">Testing Vagrant Box</h3>
+<p>
+  Lets <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
+ and confirm the Nexus box builds correctly.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
+
+# output
+
+Bringing machine 'n9kv1' up with 'virtualbox' provider...
+==> n9kv1: Checking if box 'cisco/n9kv' is up to date...
+==> n9kv1: Clearing any previously set forwarded ports...
+==> n9kv1: Clearing any previously set network interfaces...
+==> n9kv1: Preparing network interfaces based on configuration...
+    n9kv1: Adapter 1: nat
+    n9kv1: Adapter 2: intnet
+    n9kv1: Adapter 3: intnet
+    n9kv1: Adapter 4: intnet
+    n9kv1: Adapter 5: intnet
+    n9kv1: Adapter 6: intnet
+    n9kv1: Adapter 7: intnet
+    n9kv1: Adapter 8: intnet
+==> n9kv1: Forwarding ports...
+    n9kv1: 22 (guest) => 2222 (host) (adapter 1)
+==> n9kv1: Running 'pre-boot' VM customizations...
+==> n9kv1: Booting VM...
+==> n9kv1: Waiting for machine to boot. This may take a few minutes...
+    n9kv1: SSH address: 127.0.0.1:2222
+    n9kv1: SSH username: vagrant
+    n9kv1: SSH auth method: private key
+==> n9kv1: Machine booted and ready!
+==> n9kv1: Checking for guest additions in VM...
+    n9kv1: No guest additions were detected on the base box for this VM! Guest
+    n9kv1: additions are required for forwarded ports, shared folders, host only
+    n9kv1: networking, and more. If SSH fails on this machine, please install
+    n9kv1: the guest additions and repackage the box to continue.
+    n9kv1:
+    n9kv1: This is not an error message; everything may continue to work properly,
+    n9kv1: in which case you may ignore this message.</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+
+<p>
+  Login to device and test with username and password: <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant ssh
+
+# output
+
+-bash-4.2$ su admin
+Password: &lt;admin&gt;
+
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Permission denied
+mesg: /dev/pts/2: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Permission denied
+Cisco NX-OS Software
+Copyright (c) 2002-2017, Cisco Systems, Inc. All rights reserved.
+NX-OSv9K software ("NX-OSv9K Software") and related documentation,
+files or other reference materials ("Documentation") are
+the proprietary property and confidential information of Cisco
+Systems, Inc. ("Cisco") and are protected, without limitation,
+pursuant to United States and International copyright and trademark
+laws in the applicable jurisdiction which provide civil and criminal
+penalties for copying or distribution without Cisco's authorization.
+
+Any use or disclosure, in whole or in part, of the NX-OSv9K Software
+or Documentation to any third party for any purposes is expressly
+prohibited except as otherwise authorized by Cisco in writing.
+The copyrights to certain works contained herein are owned by other
+third parties and are used and distributed under license. Some parts
+of this software may be covered under the GNU Public License or the
+GNU Lesser General Public License. A copy of each such license is
+available at
+http://www.gnu.org/licenses/gpl.html and
+http://www.gnu.org/licenses/lgpl.html
+***************************************************************************
+*  NX-OSv9K is strictly limited to use for evaluation, demonstration      *
+*  and NX-OS education. Any use or disclosure, in whole or in part of     *
+*  the NX-OSv9K Software or Documentation to any third party for any      *
+*  purposes is expressly prohibited except as otherwise authorized by     *
+*  Cisco in writing.                                                      *
+***************************************************************************
+nxosv#</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<p>
+  When you are done, destroy the box.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">cmd</span>
+    </div>
+    <div class="font-mono">
+      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"> vagrant destroy -f
+
+# output
+
+==> default: Forcing shutdown of VM...
+==> default: Destroying VM and associated drives...</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Its Great to see Cisco releasing pre-configured Vagrant boxes for use by the community. Hopefully this is the start of
+  an avalance of Cisco supported Vagrant boxes :) So... What are you waiting for get some Nexus Vagrant in your life !
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/7-x/nx-osv/configuration/guide/b_NX-OSv_9000/b_NX-OSv_chapter_01.html" target=_blank>https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/7-x/nx-osv/configuration/guide/b_NX-OSv_9000/b_NX-OSv_chapter_01.html</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#vagrant" class="text-xl">vagrant</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#cisco" class="text-xl">cisco</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#download">
+            Download
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#box-install">
+            Box Install
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#sample-vagrant-file">
+            Sample Vagrant File
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#testing-vagrant-box">
+            Testing Vagrant Box
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

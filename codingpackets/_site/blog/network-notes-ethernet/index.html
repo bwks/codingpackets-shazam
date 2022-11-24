@@ -129,7 +129,7 @@
     being named "Ethernet (DIX)". The ethernet specification has been through a number of
     updates over the years beginning with the IEEE standard in the early 1980's and going
     through many revisions. Ethernet standards are covered by the IEEE working group
-    <a class="text-sky-600 no-underline hover:text-sky-800" href="http://www.ieee802.org/3/" target=_blank>here</a>.
+    <a class="text-sky-600 no-underline hover:text-sky-900" href="http://www.ieee802.org/3/" target=_blank>here</a>.
   </p>
 
   <h3 id="frame-format">Frame Format</h3>
@@ -186,135 +186,140 @@
 
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
-          <th class="pt-1 pb-2 px-2">Field</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Field</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Purpose</th>
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Purpose</th>
+          
         
         </tr>
       </thead>
+      <tbody>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Preamble </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Preamble </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Provides clocking synchronization for the transmitted signal.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Provides clocking synchronization for the transmitted signal.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Start of Frame Delimiter (SFD) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Start of Frame Delimiter (SFD) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Same use as in the 8 byte preamble, it is simply moved into its own 1 byte field with the preamble being shortened to 7 bytes.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Same use as in the 8 byte preamble, it is simply moved into its own 1 byte field with the preamble being shortened to 7 bytes.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Destination MAC </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Destination MAC </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Destination MAC address of the ethernet frame.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Destination MAC address of the ethernet frame.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Source MAC </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Source MAC </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Source MAC address of the ethernet frame.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Source MAC address of the ethernet frame.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Type (DIX) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Type (DIX) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Inform the receiver of the upper layer protocol type that follows the ethernet header. Examples are 0x800 - IPv4 or 0x8100 - 802.1Q.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Inform the receiver of the upper layer protocol type that follows the ethernet header. Examples are 0x800 - IPv4 or 0x8100 - 802.1Q.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Length </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Length </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> The length in bytes of the data payload.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> The length in bytes of the data payload.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Control </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Control </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Provides a mechanism for both connection-orientated and connectionless operations.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Provides a mechanism for both connection-orientated and connectionless operations.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Organizationally Unique Identifier (SNAP) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Organizationally Unique Identifier (SNAP) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Allows for the advertisement of the NICs device manufacturer OUI.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Allows for the advertisement of the NICs device manufacturer OUI.</td>
             
           
         </tr>
@@ -325,15 +330,16 @@
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">Type (SNAP) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">Type (SNAP) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Same function as the DIX type field. Overcomes the size limitation of the DSAP field.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Same function as the DIX type field. Overcomes the size limitation of the DSAP field.</td>
             
           
         </tr>
       
+      </tbody>
     </table>
   </div>
 </div>
@@ -343,7 +349,7 @@
   <h3 id="packet-captures">Packet Captures</h3>
   <p>
     The ethernet frame format can be referenced in PCAPs found
-    <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.dropbox.com/sh/wxbqycu8cxfv5fl/AAChwMFWq2VDv7cmzCNrmmcOa?dl=0" target=_blank>here</a>.
+    <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.dropbox.com/sh/wxbqycu8cxfv5fl/AAChwMFWq2VDv7cmzCNrmmcOa?dl=0" target=_blank>here</a>.
   </p>
 
 
@@ -379,11 +385,11 @@
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://ieeexplore.ieee.org/document/7428776/" target=_blank>https://ieeexplore.ieee.org/document/7428776/</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://ieeexplore.ieee.org/document/7428776/" target=_blank>https://ieeexplore.ieee.org/document/7428776/</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://lostintransit.se/2012/06/06/the-history-of-ethernet-dix-vs-802-3/" target=_blank>https://lostintransit.se/2012/06/06/the-history-of-ethernet-dix-vs-802-3/</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://lostintransit.se/2012/06/06/the-history-of-ethernet-dix-vs-802-3/" target=_blank>https://lostintransit.se/2012/06/06/the-history-of-ethernet-dix-vs-802-3/</a>
         </p>
       
   </div>

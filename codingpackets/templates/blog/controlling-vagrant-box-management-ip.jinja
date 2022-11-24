@@ -1,0 +1,307 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  One of the quirks of Vagrants Virtualbox provider is you cannot configure the IP address of the
+  management interface. It's a core design principal of the project that the management interface
+  IP of a box is configured via DHCP. The Virtualbox provider uses port forwarding with a NAT network to
+  communicate between the Host and the guest box, this behaviour cannot be changed.
+</p>
+
+<p>
+  In a previous {{ link::i(path="/blog/using-the-libvirt-provider-with-vagrant", description="post") }}
+
+  I installed the {{ text::emphasize(text="vagrant-libvirt") }}
+ provider for use with Vagrant. In this post I will cover
+  how to control the IP address assigned to the Vagrant box management interface when using the
+  {{ text::emphasize(text="vagrant-libvirt") }}
+ provider.
+</p>
+
+<p>
+  You might ask why you would want to do this. Great question.
+  Having a method to predictably assign an IP address to a Vagrant box is useful for a number of
+  scenarios. I find this most relevant when using provisioning tools such as Ansible and Salt to
+  configure VM's once Vagrant has deployed them. This allows me to use the same inventory files I
+  would normally use and not have to monkey around with the Vagrant provisioner config.
+</p>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+
+<p>
+  Libvirt comes with a command line tool {{ text::code(text="virsh") }}
+, we can use this tool to interact and control
+  a hypervisors network, storage etc...
+</p>
+<p>
+  Firstly lets confirm that the {{ text::emphasize(text="vagrant-libvirt") }}
+ network is configured. This is the
+  network that Vagrant VMs will use for their management interfaces.
+</p>
+
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`virsh net-list --all
+
+# output
+
+Name                 State      Autostart     Persistent
+---------------------------------------------------------
+default              active     yes           yes
+<span class="hljs-string">vagrant-libvirt      active     yes           yes</span>`
+) }}
+
+
+<p>
+  Libvirt network configurations are {{ text::emphasize(text="xml") }}
+ files stored in the
+  {{ text::emphasize(text="/etc/libvirt/&lt;hypervisor&gt;/networks/") }}
+ directory. Before we make any
+  modifications lets check the current config of the {{ text::emphasize(text="vagrant-libvirt") }}
+ network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virsh net-dumpxml vagrant-libvirt
+
+# output
+
+&lt;network ipv6='yes'&gt;
+  &lt;name&gt;vagrant-libvirt&lt;/name&gt;
+  &lt;uuid&gt;589814cf-fdf7-45c8-87bc-707314b9254d&lt;/uuid&gt;
+  &lt;forward mode='nat'&gt;
+    &lt;nat&gt;
+      &lt;port start='1024' end='65535'/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;bridge name='virbr1' stp='on' delay='0'/&gt;
+  &lt;mac address='52:54:00:0e:6d:db'/&gt;
+  &lt;ip address='192.168.121.1' netmask='255.255.255.0'&gt;
+    &lt;dhcp&gt;
+      &lt;range start='192.168.121.1' end='192.168.121.254'/&gt;
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;`
+) }}
+
+
+<p>
+  You can see above that the IP range for the {{ text::emphasize(text="vagrant-libvirt") }}
+ network is
+  {{ text::emphasize(text="192.168.121.0/24") }}
+ and the DHCP range is {{ text::emphasize(text="192.168.121.1 - 254") }}
+.
+  This network is mapped to a virtual interface on the host machine called {{ text::emphasize(text="virbr1") }}
+.
+</p>
+
+<p>
+  It is part of the core design of Vagrant that the management interface of a box gets an IP
+  address via DHCP. This means we cannot directly assign an IP address to the management interface,
+  we can however use some tried and true techniques to ensure a box gets the IP address we intend.
+</p>
+
+<p>
+  Enter the world of DHCP reservations. We can control the MAC address assigned to a Vagrant box's
+  management interface, then use the same MAC address to reserve an IP address in the DHCP Configuration
+  of the {{ text::emphasize(text="vagrant-libvirt") }}
+ network.
+</p>
+
+<p>
+  Coming up next I will reserve the IP address; {{ text::emphasize(text="192.168.121.111") }}
+ for the MAC address;
+  {{ text::emphasize(text="52:54:00:00:01:01") }}
+ in the {{ text::emphasize(text="vagrant-libvirt") }}
+ network.
+</p>
+
+<h3 id="define-box-mac-address">Define Box MAC Address</h3>
+<p>
+  In the {{ text::emphasize(text="Vagrantfile") }}
+ define the MAC address for the box's management network with the
+  {{ text::emphasize(text="management_network_mac") }}
+ parameter under the libvirt domain specific configuration.
+</p>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "spine01" do |node|
+    node.vm.hostname = "spine01"
+    node.vm.box = "CumulusCommunity/cumulus-vx"
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # Provider-specific configuration
+    node.vm.provider :libvirt do |domain|
+      domain.management_network_mac = "52:54:00:00:01:01" # Management interface MAC
+
+    end
+  end
+end`
+) }}
+
+
+<h3 id="configure-management-ip-dhcp-reservation">Configure Management IP DHCP Reservation</h3>
+<p>
+  Use the {{ text::code(text="virsh") }}
+ tool to add a DHCP reservation to the {{ text::emphasize(text="vagrant-libvirt") }}
+ network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virsh net-update vagrant-libvirt add-last ip-dhcp-host \
+      '&lt;host mac="52:54:00:00:01:01" ip="192.168.121.111"/&gt;' \
+      --live --config --parent-index 0
+
+# output
+
+Updated network vagrant-libvirt persistent config and live state`
+) }}
+
+
+
+<p>
+  Confirm that the DHCP reservation was added to the {{ text::emphasize(text="vagrant-libvirt") }}
+ network.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virsh net-dumpxml vagrant-libvirt
+
+# output
+
+&lt;network ipv6='yes'&gt;
+  &lt;name&gt;vagrant-libvirt&lt;/name&gt;
+  &lt;uuid&gt;589814cf-fdf7-45c8-87bc-707314b9254d&lt;/uuid&gt;
+  &lt;forward mode='nat'&gt;
+    &lt;nat&gt;
+      &lt;port start='1024' end='65535'/&gt;
+    &lt;/nat&gt;
+  &lt;/forward&gt;
+  &lt;bridge name='virbr1' stp='on' delay='0'/&gt;
+  &lt;mac address='52:54:00:0e:6d:db'/&gt;
+  &lt;ip address='192.168.121.1' netmask='255.255.255.0'&gt;
+    &lt;dhcp&gt;
+      &lt;range start='192.168.121.1' end='192.168.121.254'/&gt;
+      &lt;host mac='52:54:00:00:01:01' ip='192.168.121.111'/&gt; # New DHCP reservation
+
+    &lt;/dhcp&gt;
+  &lt;/ip&gt;
+&lt;/network&gt;`
+) }}
+
+
+
+<h3 id="testing">Testing</h3>
+<p>
+  Use the above {{ text::emphasize(text="Vagrantfile") }}
+ to build a test VM and confirm the intended IP address
+  was assigned.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant up --provider=libvirt
+
+# output
+
+Bringing machine 'spine01' up with 'libvirt' provider...
+==> spine01: Creating image (snapshot of base box volume).
+==> spine01: Creating domain with the following settings...
+..
+&lt;snip&gt;
+..
+==> spine01: Setting hostname...
+==> spine01: Configuring and enabling network interfaces...`
+) }}
+
+
+<p>Login to the box and confirm the intended IP address was assigned to the management interface.</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant@spine01:~$ sudo net show int eth0
+
+# output
+
+Name    MAC                Speed    MTU    Mode
+--  ------  -----------------  -------  -----  ------
+UP  eth0    <span class="hljs-string">52:54:00:00:01:01</span>
+  1G       1500   Mgmt
+
+IP Details
+-------------------------  ------------------
+IP:                        <span class="hljs-string">192.168.121.111/24</span>
+
+IP Neighbor(ARP) Entries:  1`
+) }}
+
+
+<p>
+  From the host shell we can also see the DHCP reservation in the
+  {{ text::emphasize(text="/var/lib/libvirt/dnsmasq/virbr1.status") }}
+ file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="json",
+  code=`cat /var/lib/libvirt/dnsmasq/virbr1.status
+
+# output
+
+[
+  {
+      "ip-address": "192.168.121.111",
+      "mac-address": "52:54:00:00:01:01",
+      "hostname": "spine01",
+      "expiry-time": 1508917500
+  }
+]`
+) }}
+
+
+<p>
+  There you have it, The Vagrant box received the IP address we intended and all is right with the force.
+</p>
+
+<h3 id="delete-dhcp-reservations">Delete DHCP Reservations</h3>
+<p>
+  The {{ text::code(text="virsh") }}
+ tool can also be used to delete a DHCP reservation.
+  Generally I dont do this and re-use the same reservations across many Vagrant environments.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="xml",
+  code=`virsh net-update vagrant-libvirt delete ip-dhcp-host \
+      '&lt;host mac="52:54:00:00:01:01" ip="192.168.121.111"/&gt;' \
+      --live --config --parent-index 0
+
+# output
+
+Updated network vagrant-libvirt persistent config and live state`
+) }}
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  Using the {{ text::emphasize(text="libvirt-vagrant") }}
+ provider allows us to predictibly define a box's
+  management IP address. Vagrant is a great tool and using Libvert makes it even greater.
+</p>
+
+
+{% endblock page_content %}

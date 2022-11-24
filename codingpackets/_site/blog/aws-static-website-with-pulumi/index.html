@@ -128,7 +128,7 @@
   the AWS console to build out your AWS services? 
   Me too! Fear not my lovely adventurers, in this post I 
   will show you how to use the fantastic Infrastructure as Code (IaC) tool 
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/" target=_blank>Pulumi</a>. With its magic, we will build the necessary AWS infrastructure to host 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.pulumi.com/" target=_blank>Pulumi</a>. With its magic, we will build the necessary AWS infrastructure to host 
   a static website in a far away place called <i>"CloudLandia"</i>. 
 </p>
 
@@ -158,14 +158,14 @@
 </ul>
 <p>
   Checkout my previous 
-    <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/aws-and-pulumi-with-go-getting-started/" target=_blank>post</a> on getting the environment setup.
+    <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/aws-and-pulumi-with-go-getting-started/" target=_blank>post</a> on getting the environment setup.
 </p>
 
 <h4>Domain Name</h4>
 <p>
   You will also need to register a domain-name in Route 53. The process 
   to register a domain can be found in the the docs 
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html" target=_blank>here</a>. I have previously registered 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html" target=_blank>here</a>. I have previously registered 
   <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stratuslabs.net</span> 
   and will use that domain for this demo. 
 </p>
@@ -206,112 +206,119 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
-    <table class="border-4 border-zinc-900 table-auto w-full">
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
       <thead class="text-center">
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
-          <th class="pt-1 pb-2 px-2">Type</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Type</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Record</th>
+          
+            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">Record</th>
+          
         
-          <th class="pt-1 pb-2 px-2">Description</th>
+          
+            <th class="py-1 px-2 border-b-2 border-zinc-800">Description</th>
+          
         
         </tr>
       </thead>
+      <tbody>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">SOA </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">SOA </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Start of Authority domain record which has information about the domain, including the domain administrator, server refresh time, etc..</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Start of Authority domain record which has information about the domain, including the domain administrator, server refresh time, etc..</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">NS </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">NS </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Points to the authoratative name servers for the domain.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Points to the authoratative name servers for the domain.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">A / AAAA - (Alias) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">A / AAAA - (Alias) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> www.stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> www.stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Alias record that points to the CloudFront distribution.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Alias record that points to the CloudFront distribution.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">A / AAAA - (Alias) </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">A / AAAA - (Alias) </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Alias record that points to the CloudFront distribution.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Alias record that points to the CloudFront distribution.</td>
             
           
         </tr>
       
         
         
-          <tr class="border-b-2 border-zinc-900">
+          <tr class="border-b-2 border-zinc-800">
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">CNAME </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">CNAME </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> _&lt;id-string&gt;.www.stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> _&lt;id-string&gt;.www.stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Canonical name used to validate domain ownership for HTTPS certificates generated by Certificate Manager.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Canonical name used to validate domain ownership for HTTPS certificates generated by Certificate Manager.</td>
             
           
         </tr>
@@ -322,19 +329,20 @@
         
           
             
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-900">CNAME </td>
+              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">CNAME </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-900"> _&lt;id-string&gt;.stratuslabs.net </td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800"> _&lt;id-string&gt;.stratuslabs.net </td>
             
           
             
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-900"> Canonical name used to validate domain ownership for HTTPS certificates generated by Certificate Manager.</td>
+              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800"> Canonical name used to validate domain ownership for HTTPS certificates generated by Certificate Manager.</td>
             
           
         </tr>
       
+      </tbody>
     </table>
   </div>
 </div>
@@ -885,7 +893,7 @@ Duration: 4m23s</code></pre>
 <p>
   After a few minutes you will have a website that you can browse to. Check 
   out this one at
-  <a class="text-sky-600 no-underline hover:text-sky-800" href="https://stratuslabs.net/" target=_blank>https://stratuslabs.net/</a>
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://stratuslabs.net/" target=_blank>https://stratuslabs.net/</a>
 
 </p>
 
@@ -914,19 +922,19 @@ Duration: 4m23s</code></pre>
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html" target=_blank>https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html" target=_blank>https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.pulumi.com/registry/packages/aws/api-docs/" target=_blank>https://www.pulumi.com/registry/packages/aws/api-docs/</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.pulumi.com/registry/packages/aws/api-docs/" target=_blank>https://www.pulumi.com/registry/packages/aws/api-docs/</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html" target=_blank>https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html" target=_blank>https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html</a>
         </p>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html" target=_blank>https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html" target=_blank>https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html</a>
         </p>
       
   </div>

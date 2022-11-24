@@ -1,0 +1,524 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  {{ link::e(path="https://www.vagrantup.com/", description="Vagrant") }}
+ by Hashi Corp is an extremely useful tool for building and
+  configuring reproducible development environments. Vagrant enables this with the sharing of
+  configuration files that are used to build exactly the same environment every time. This allows
+  for collaborative development with less instances of <i>"it worked on my &lt;insert dev machine&gt;"</i>
+  bugs making it into production.
+</p>
+
+<h3 id="architecture">Architecture</h3>
+
+{{ image::boxed(path="blog/vagrant-from-the-start-to-the-beginning/architecture.svg", width="600px") }}
+
+<p>
+  Vagrant runs on your local machine and works in conjunction with Virtualbox, VMware Fusion or
+  VMware Workstation. The following components make up the Vagrant architecture:
+</p>
+<ul>
+  <li><b>Atlas</b> Hashicorp's hosted box repository</li>
+  <li><b>Vagrant</b> Manages build environments</li>
+  <li><b>Vagrantfile</b> Describes build environment</li>
+  <li><b>Hypervisor</b> Host virtual machines</li>
+</ul>
+
+<h3 id="boxes">Boxes</h3>
+<p>
+  Virtual machines in a Vagrant environment are called boxes. Hashicorp has an online repository
+  for box hosting at {{ link::e(path="https://atlas.hashicorp.com/boxes/", description="https://atlas.hashicorp.com/boxes/") }}
+.
+  No account is needed to search for and download boxes which can be accessed at
+  {{ link::e(path="https://atlas.hashicorp.com/boxes/search", description="https://atlas.hashicorp.com/boxes/search") }}
+.
+</p>
+<p>
+  {{ text::emphasize(text="centos/7") }}
+ and {{ text::emphasize(text="ubuntu/trusty64") }}
+ are examples of boxes available on Atlas.
+</p>
+
+{{ text::note_block(text='
+    It is also possible to host a private box repository on premise or in your own cloud.
+') }}
+
+<h3 id="vagrantfile">Vagrantfile</h3>
+<p>
+  A {{ text::emphasize(text="Vagrantfile") }}
+ is the mechanism used to define a build environment. When vagrant is instructed
+  to start a build it will look for a file called {{ text::emphasize(text="Vagrantfile") }}
+ in the directory the build
+  was initiated from.
+</p>
+
+<h3 id="vagrant">Vagrant</h3>
+<p>
+  The piece that ties it all together is Vagrant. You could say Vagrant is an orchastration
+  engine for building development evironments. With <b>only two</b> commands you can have a box or boxes
+  downloaded from Atlas and an entire environment provisioned in your hypervisor of choice.
+</p>
+
+<h3 id="installation">Installation</h3>
+<p>
+  Both Vagrant and Virtualbox can be installed on Windows, Mac and Linux. The installation process
+  is very straight forward and outlined below.
+</p>
+
+<b>Vagrant</b><br>
+<p>
+  Go over to <a href="https://www.vagrantup.com/docs/installation/">
+  https://www.vagrantup.com/docs/installation/</a>
+ and download the installer for your operating
+  system. I am using a Mac and the installation processs was as simple as opening the {{ text::emphasize(text=".dmg") }}
+
+  and following the prompts.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# check vagrant version
+
+vagrant --version
+
+# output
+
+Vagrant 1.8.6`
+) }}
+
+
+<b>Virtualbox</b><br>
+<p>
+  Next head to <a href="https://www.virtualbox.org/wiki/Downloads">
+  https://www.virtualbox.org/wiki/Downloads</a>
+ and download the installer for your operating
+  system. Similar to the Vagrant install, open the {{ text::emphasize(text=".dmg") }}
+ and follow the prompts.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# check virtualbox version
+
+vboxmanage --version
+
+# output
+
+5.1.18r114002`
+) }}
+
+
+<h3 id="vagrant-command">Vagrant Command</h3>
+<p>
+  Once Vagrant is installed all Vagrant related commands start with {{ text::code(text="vagrant") }}
+.
+  To see a list of all available commands issue the {{ text::code(text="vagrant list-commands") }}
+ command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant list-commands
+
+# output
+
+Below is a listing of all available Vagrant commands and a brief
+description of what they do.
+
+box             manages boxes: installation, removal, etc.
+cap             checks and executes capability
+connect         connect to a remotely shared Vagrant environment
+destroy         stops and deletes all traces of the vagrant machine
+docker-exec     attach to an already-running docker container
+docker-logs     outputs the logs from the Docker container
+docker-run      run a one-off command in the context of a container
+global-status   outputs status Vagrant environments for this user
+halt            stops the vagrant machine
+help            shows the help for a subcommand
+init            initializes a new Vagrant environment by creating a Vagrantfile
+list-commands   outputs all available Vagrant subcommands, even non-primary ones
+login           log in to HashiCorps Atlas
+package         packages a running vagrant environment into a box
+plugin          manages plugins: install, uninstall, update, etc.
+port            displays information about guest port mappings
+powershell      connects to machine via powershell remoting
+provider        show provider for this environment
+provision       provisions the vagrant machine
+push            deploys code in this environment to a configured destination
+rdp             connects to machine via RDP
+reload          restarts vagrant machine, loads new Vagrantfile configuration
+resume          resume a suspended vagrant machine
+rsync           syncs rsync synced folders to remote machine
+rsync-auto      syncs rsync synced folders automatically when files change
+share           share your Vagrant environment with anyone in the world
+snapshot        manages snapshots: saving, restoring, etc.
+ssh             connects to machine via SSH
+ssh-config      outputs OpenSSH valid configuration to connect to the machine
+status          outputs status of the vagrant machine
+suspend         suspends the machine
+up              starts and provisions the vagrant environment
+version         prints current and latest Vagrant version`
+) }}
+
+
+<h3 id="getting-boxes">Getting Boxes</h3>
+<p>
+  It is possible to get a vagrant box prior to initialising a build and
+  also at build initialisation.
+</p>
+
+<b>Prior To Initialisation</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box add centos/7 --provider virtualbox`
+) }}
+
+<p>
+  Downloading boxes prior to initialisation is useful if you want to build an environment
+  in places you don't have any internet access. In the above example {{ text::emphasize(text="centos/7") }}
+ is
+  the box OS and {{ text::emphasize(text="virtualbox") }}
+ is the type of virtual machine.
+</p>
+
+<b>At Initialisation</b><br>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant init centos/7; vagrant up --provider virtualbox`
+) }}
+
+<p>
+  This will download the latest {{ text::emphasize(text="centos/7") }}
+ box if not already downloaded.
+  If the box was previously downloaded and still exists then it will not be downloaded again.
+  Again, the virtual machine will be of the {{ text::emphasize(text="virtualbox") }}
+ type.
+  These commands also initialise and bring up a build environment, there will be more on this later.
+</p>
+
+<p>
+  Once boxes are downloaded they are stored in {{ text::emphasize(text="~/.vagrant.d/boxes/") }}
+.
+  To list all boxes issue the {{ text::code(text="vagrant box list") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant box list
+
+# output
+
+CumulusCommunity/cumulus-vx (virtualbox, 3.2.1)
+arista-vEOS                 (virtualbox, 4.15.9)
+arista-vEOS                 (virtualbox, 4.18.0)
+centos/7                    (virtualbox, 1608.01)
+centos/7                    (virtualbox, 1702.01)
+centos/7                    (vmware_fusion, 1702.01)
+hashicorp/precise64         (virtualbox, 1.1.0)
+juniper/vqfx10k-pfe         (virtualbox, 0.1.0)
+juniper/vqfx10k-re          (virtualbox, 0.1.0)`
+) }}
+
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  In this lab we will use Vagrant to download, build and delete an environment with
+  a Centos host. I will be running this lab on my Macbook pro laptop and use Virtualbox as
+  the hypervisor. This should be repeatable on either Linux or Windows with little to
+  no modifications required.
+</p>
+
+{{ image::boxed(path="blog/vagrant-from-the-start-to-the-beginning/vagrant-build-1.svg", width="400px") }}
+
+<h3 id="code-versions-used-for-this-lab">Code versions used for this lab</h3>
+<ul>
+  <li><b>OSX El Capitan</b> - 10.11.6</li>
+  <li><b>Vagrant</b> - 1.8.6</li>
+  <li><b>Virtualbox</b> - 5.1.18</li>
+  <li><b>Centos/7</b> - 1702.01</li>
+</ul>
+
+<h3 id="environment-build">Environment Build</h3>
+<p>
+  At this point you should have Vagrant and Virtualbox installed, if not scroll back up and go
+  through the installation process for both. You may or may not already
+  have a {{ text::emphasize(text="centos/7") }}
+ box installed. If not that is fine, we will download one as part
+  of the build process.
+</p>
+<p>
+  Execute the following to start the build process.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Make and change to build directory
+
+mkdir -p ~/vagrant/test-build; cd ~/vagrant/test-build
+
+# Initialise build environment
+
+vagrant init centos/7; vagrant up --provider virtualbox`
+) }}
+
+<p>
+  This will build a Centos 7 VM in virtual box and the output be similar to the below.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="# output
+
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'centos/7'...
+==> default: Matching MAC address for NAT networking...
+==> default: Checking if box 'centos/7' is up to date...
+==> default: Setting the name of the VM: test-build_default_1490407027239_29074
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+==> default: Forwarding ports...
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+    default: No guest additions were detected on the base box for this VM! Guest
+    default: additions are required for forwarded ports, shared folders, host only
+    default: networking, and more. If SSH fails on this machine, please install
+    default: the guest additions and repackage the box to continue.
+    default:
+    default: This is not an error message; everything may continue to work properly,
+    default: in which case you may ignore this message.
+==> default: Rsyncing folder: /Users/brad/vagrant/test-build/ => /vagrant"
+) }}
+
+<p>
+  .... and that is it, incredible right! So what exactly happened as part of this build?
+  Lets have a closer look.
+</p>
+
+<h3 id="vagrant-init">Vagrant Init</h3>
+<p>
+  {{ text::code(text="vagrant init centos/7") }}
+ creates a {{ text::emphasize(text="Vagrantfile") }}
+
+  which is the configuration file describing the build environment.
+</p>
+
+<b>Vagrantfile</b><br>
+{{ text::code_block(
+  header="file",
+  language="ruby",
+  code=`# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please dont change it unless you know what
+# youre doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = "centos/7"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # 'vagrant box outdated'. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
+  # such as FTP and Heroku are also available. See the documentation at
+  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
+  # config.push.define "atlas" do |push|
+  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
+  # end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end`
+) }}
+
+<p>
+  As you can see most of the configuration is commented {{ text::emphasize(text="(#)") }}
+ out. When the
+  {{ text::code(text="vagrant init") }}
+ command is executed, Vagrant creates a default {{ text::emphasize(text="Vagrantfile") }}
+
+  in the current directory. The {{ text::emphasize(text="Vagranfile") }}
+ contains the most common settings, but the only
+  configuration that will be executed is {{ text::emphasize(text="config.vm.box = 'centos/7'") }}.
+</p>
+
+<h3 id="vagrant-up">Vagrant Up</h3>
+<p>
+  {{ text::code(text="vagrant up --provider virtualbox") }}
+ starts the build process specifying {{ text::emphasize(text="virtualbox") }}
+
+  as the hypervisor. If the VM(s) specified in the {{ text::emphasize(text="Vagrantfile") }}
+ do not already exist on the local
+  machine, they will be downloaded prior the the environment build.
+</p>
+<p>
+  As part of the machine build Vagrant also does the following:
+</p>
+<ul>
+  <li>Creates a port forward between the host machine and the VM for the SSH port 22.
+  <li>Adds an SSH key to the VM to enable password less login.</li>
+  <li>Sets up a shared folder between the VM and the host machines local directory for easy file sharing.</li>
+</ul>
+
+<h3 id="accessing-hosts">Accessing Hosts</h3>
+<p>
+  Accessing hosts is as simple as executing the {{ text::code(text="vagrant ssh") }}
+ command.
+  This will ssh from the host machine to the VM using the vagrant user.
+  If you have more than one host configured in your {{ text::emphasize(text="Vagrantfile") }}
+
+  then also specify the hostname like so {{ text::code(text="vagrant ssh &lt;hostname&gt;") }}
+.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant ssh
+
+# You are now in the VM
+
+[vagrant@localhost ~]$
+[vagrant@localhost ~]$ whoami
+vagrant`
+) }}
+
+
+
+<h3 id="stopping-an-environment">Stopping an Environment</h3>
+<p>
+  If you want to stop and environment and come back to it later without having to go through
+  the build process again issue the {{ text::code(text="vagrant halt") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant halt
+
+# output
+
+==> default: Attempting graceful shutdown of VM...`
+) }}
+
+
+<h3 id="environment-status">Environment Status</h3>
+<p>
+  To check the status of the environment issue the {{ text::code(text="vagrant status") }}
+ command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code="vagrant status
+
+# output
+
+Current machine states:
+
+default                   poweroff (virtualbox)
+
+The VM is powered off. To restart the VM, simply run `vagrant up`"
+) }}
+
+
+
+<h3 id="deleting-an-environment">Deleting an Environment</h3>
+<p>
+  When you are finished with the environment issue the {{ text::code(text="vagrant destroy") }}
+ command.
+  This will halt and delete the VMs but the Vagrantfile will still be available.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`vagrant destroy
+
+# output
+
+    default: Are you sure you want to destroy the 'default' VM? [y/N] y
+==> default: Forcing shutdown of VM...
+==> default: Destroying VM and associated drives...`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  So that's it, as part of this lab we downloaded and installed Vagrant and Virtualbox, used
+  Vagrant to download virtual machines from Atlas, initialise and build an environment, access
+  the VM from the host and delete the environment.
+</p>
+
+{% include "_includes/from-the-start-to-the-beginning.jinja" %}
+{% endblock page_content %}
