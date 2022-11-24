@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -93,12 +93,12 @@
       <h1 class="pb-1 sm:pb-2">Pushing to Multiple Git Remotes</h1>
       <div class="">
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             updated: 14th of September 2020
           </p>
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 31st of August 2020
           </p>
         
@@ -124,7 +124,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -151,10 +151,10 @@
 <p>
   When authenticating to Github and Bitbucket I have to use 
   two different authentication methods. For Github I am 
-  using <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">SSH</i>
+  using <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">SSH</span>
  key based 
   authentication and for Bitbucket I am using 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HTTP</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HTTP</span>
  based authentication.
 </p>
 
@@ -178,9 +178,9 @@
 </p>
 
 <p>
-  Use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">git config</i>
+  Use the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">git config</span>
  command to enable the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">credential store</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">credential store</span>
 .
 </p>
 
@@ -200,11 +200,11 @@
 
 <h3 id="git-remotes">Git Remotes</h3>
 <p>
-  Enable the required <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">remotes</i>
+  Enable the required <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">remotes</span>
  
   in the local config. I am first cloning down the repo from Github. 
   This sets up the Github repo as the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">origin</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">origin</span>
  remote.
 </p>
 
@@ -225,7 +225,7 @@ clone git@github.com git@github.com:&lt;user-name&gt;/&lt;repo-name&gt;.git</cod
 
 
 <p>
-  Next up add the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bitbucket</i>
+  Next up add the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bitbucket</span>
  remote.
 </p>
 
@@ -297,7 +297,7 @@ bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git
     <div class="px-4 pb-4 dark:text-zinc-900">
   The first time you connect a remote git will ask you for 
   your credentials. The credentials will be stored in the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/.git-credentials</i> file 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/.git-credentials</span> file 
   and the permissions will be set to 0600 so only you have 
   rw access.</div>
   </div>
@@ -307,10 +307,10 @@ bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git
 
 <h3 id="git-alias">Git Alias</h3>
 <p>
-  Now for the magic<i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">git alias</i>
+  Now for the magic<span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">git alias</span>
  
   incantation. Create a git alias named 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pushall</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pushall</span>
  that will 
   cycle through the remotes pushing changes to all of them.
 </p>
@@ -330,7 +330,7 @@ bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git
 
 
 <p>
-  When you want to push to the remotes you use the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">git pushall</i>
+  When you want to push to the remotes you use the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">git pushall</span>
  
   command and voila! Git will connect to each one pushing the changes to 
   them.
@@ -525,7 +525,7 @@ bitbucket     https://bitbucket.org/scm/~&lt;user-name&gt;/&lt;repo-name&gt;.git
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

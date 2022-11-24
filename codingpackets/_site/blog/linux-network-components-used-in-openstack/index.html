@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 8th of November 2017
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -139,8 +139,8 @@
 
 <h3 id="linux-network-components">Linux Network Components</h3>
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bridge-utils</i>
+  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bridge-utils</span>
  packages are used to
   build the following four components that are used in openstack networking.
 </p>
@@ -155,14 +155,14 @@
 <p>
   Virtual ethernet (veth) pairs are created by "directly" connecting two virtual
   nics via a virtual patch cable similar to a pseudo-wire.
-  veth pairs are managed with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip link</i>
+  veth pairs are managed with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip link</span>
  command.
 </p>
 
 <h4><b>Linux Bridges</b></h4>
 <p>
   Linux bridges are the software equivalent of a physical unmanaged switch.
-  Linux bridges are managed with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">brctl</i>
+  Linux bridges are managed with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">brctl</span>
  command.
 </p>
 
@@ -176,7 +176,7 @@
   <li>IP addresses</li>
   <li>IP routing table</li>
   <li>port numbers</li>
-  <li><i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/proc/net</i>
+  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/proc/net</span>
  directory</li>
 </ul>
 
@@ -191,7 +191,7 @@
 
 
 <p>
-  Network namespaces are managed with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip netns</i>
+  Network namespaces are managed with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip netns</span>
  command.
 </p>
 
@@ -199,7 +199,7 @@
 <p>
   VXLAN is a method of encapsulating an ethernet frame in a UDP packet to acheive
   layer 2 agacency and multi-tenancy across a layer 3 boundary.
-  VXLAN tunnel endpoints (VTEP)s are managed with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip link</i>
+  VXLAN tunnel endpoints (VTEP)s are managed with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip link</span>
 
   command.
 </p>
@@ -207,9 +207,9 @@
 
 <h3 id="lab-setup">Lab Setup</h3>
 <p>
-  To build this lab, I will be using <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant</i>
+  To build this lab, I will be using <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant</span>
  with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  provider. For reference the code versions are as follows.
 </p>
 <ul>
@@ -238,14 +238,14 @@
 
 <h3 id="requirements">Requirements</h3>
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</i>
+  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</span>
  package will be the default in "most" modern linux
   distributions out of the box.
 </p>
 <p>
-  Linux bridges are created using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">brctl</i>
+  Linux bridges are created using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">brctl</span>
  command which is available in
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bridge-utils</i>
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bridge-utils</span>
  package. Ubuntu does not have it installed by default.
 </p>
 
@@ -430,13 +430,13 @@ sudo ip link set dev aapl-vxl-20 up</code></pre>
 <h3 id="verification">Verification</h3>
 <p>
   Now that the networks are built lets confirm they are working as expected.
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip netns exec</i>
+  The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ip netns exec</span>
  command can be used to run commands from within
   the context of a network namespace.
 </p>
 
 <p>
-  From the namespaces on node01 we can <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ping</i>
+  From the namespaces on node01 we can <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ping</span>
  to the
   namespaces on node02 to confirm we have IP reachability.
 </p>
@@ -491,7 +491,7 @@ rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
 <h3 id="helpful-commands">Helpful Commands</h3>
 
 <p>
-  Get detailed information about a VTEP with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-d</i>
+  Get detailed information about a VTEP with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-d</span>
  flag.
 </p>
 
@@ -518,7 +518,7 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 
 
 <p>
-  Use the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-i</i>
+  Use the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-i</span>
  flag with tcpdump when capturing within a namespace to
   prevent buffering of the capture and have sent to stdout.
 </p>
@@ -540,8 +540,8 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 
 <h3 id="outro">Outro</h3>
 <p>
-  Networking in linux has come a long way, with <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">brctl</i>
+  Networking in linux has come a long way, with <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">iproute2</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">brctl</span>
 
   we learned how to configure multi-tenant network stacks that are used by Openstack Neutron.
 </p>
@@ -692,7 +692,7 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

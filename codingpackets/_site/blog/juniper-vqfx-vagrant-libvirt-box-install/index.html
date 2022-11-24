@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 8th of September 2018
           </p>
         
@@ -120,13 +120,13 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
 <p>
   In this post I will cover how to create a Juniper vQFX Vagrant box for use with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  provider.
 </p>
 <p>
@@ -138,10 +138,10 @@
 </p>
 <p>
   This post assumes a working installation of Vagrant with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin already installed. You can follow this
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
-  to get the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  to get the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin installed.
 </p>
 
@@ -188,12 +188,12 @@
 <p>
   Navigate to the Juniper software
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vqfxeval#sw" target=_blank>download</a>
-  page and download the PFE <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K PFE)</i>
+  page and download the PFE <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K PFE)</span>
 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74232.html" target=_blank>box</a>.
 </p>
 <p>
-  For the RE download the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">VQFX10K RE Disk Image</i>
+  For the RE download the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">VQFX10K RE Disk Image</span>
 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://webdownload.juniper.net/swdl/dl/secure/site/1/record/74230.html" target=_blank>.img</a>
 </p>
@@ -217,7 +217,7 @@
 <h3 id="install">Install</h3>
 <p>
   Create and change into a directory for vQFX files. I like to keep my custom vagrant boxes under
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</span>
 .
 </p>
 
@@ -238,10 +238,10 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 
 <p>
-  Copy the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">RE</i>
+  Copy the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">RE</span>
 
-  files downloaded earlier to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vqfx/</i>
+  files downloaded earlier to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vqfx/</span>
 
   directory.
 </p>
@@ -264,7 +264,7 @@ cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .</code></pre>
 
 <h4><b>PFE Install</b></h4>
 <p>
-  Extract the HDD from the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</i>
+  Extract the HDD from the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</span>
  Vagrant box.
 </p>
 
@@ -305,9 +305,9 @@ cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .</code></pre>
 
 
 <p>
-  The good folks who maintain the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  The good folks who maintain the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin
-  have a script can be used to convert <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
+  have a script can be used to convert <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</span>
  images to a
   vagrant box. Download the libvirt conversion script.
 </p>
@@ -328,7 +328,7 @@ cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .</code></pre>
 
 
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the PFE box.
 </p>
@@ -349,7 +349,7 @@ cd ~/Downloads/jinstall-vqfx-10-f-17.4R1.16.img .</code></pre>
 
 
 <p>
-  Create a PFE vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create a PFE vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -381,7 +381,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pfe.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pfe.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -475,9 +475,9 @@ juniper/vmx-vfp               (libvirt, 18.2R1.9)
 
 <h4><b>RE Install</b></h4>
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">jinstall-vqfx-10-f-17.4R1.16.img</i>
+  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">jinstall-vqfx-10-f-17.4R1.16.img</span>
  is actually
-  a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
+  a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</span>
  file so just rename it.
 </p>
 
@@ -530,7 +530,7 @@ juniper/vmx-vfp               (libvirt, 18.2R1.9)
 
 <h4><b>RE Configuration</b></h4>
 <p>
-  Login to the RE with the username <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</i>
+  Login to the RE with the username <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</span>
  there is no
   password.
 </p>
@@ -559,7 +559,7 @@ root> configure</code></pre>
 
 <p>
   Paste in the initial bootstrap configuration to allow SSH and set the
-  root password to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</i>
+  root password to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</span>
 .
 </p>
 
@@ -587,7 +587,7 @@ commit and-quit</code></pre>
 
 <p>
   There is a limit to how many characters can be pasted into the terminal over the console so
-  grab the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">em0</i>
+  grab the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">em0</span>
  ip address and SSH to the guest to finish
   the configuration.
 </p>
@@ -639,7 +639,7 @@ root@vqfx:RE:0% cli</code></pre>
 </p>
 
 <p>
-  From the root shell create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bootup.sh</i>
+  From the root shell create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bootup.sh</span>
  script and
   make it executable.
 </p>
@@ -672,7 +672,7 @@ chmod +x bootup.sh</code></pre>
 
 
 <p>
-  Edit the crontab with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">crontab -e</i>
+  Edit the crontab with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">crontab -e</span>
  command and add the following line.
 </p>
 
@@ -746,7 +746,7 @@ commit and-quit</code></pre>
 
 <p>
   Exit out and confirm you can SSH in with the vagrant user and the vagrant
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</span>
  key.
 </p>
 
@@ -795,9 +795,9 @@ request system power-off</code></pre>
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <p>
@@ -805,7 +805,7 @@ request system power-off</code></pre>
 </p>
 
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the RE box.
 </p>
@@ -826,7 +826,7 @@ request system power-off</code></pre>
 
 
 <p>
-  Create an RE vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create an RE vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -858,7 +858,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">re.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">re.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -954,7 +954,7 @@ juniper/vqfx-pfe              (libvirt, 17.4R1.16)
 
 <h3 id="testing">Testing</h3>
 <p>
-  Now that the boxes are installed create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Now that the boxes are installed create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
 
   and confirm you can build VMs with Vagrant.
 </p>
@@ -979,7 +979,7 @@ juniper/vqfx-pfe              (libvirt, 17.4R1.16)
 
 
 <p>
-  Add a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Add a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
  to the test directory with the
   following contents.
 </p>
@@ -1082,7 +1082,7 @@ end</code></pre>
 
 
 <p>
-  Now <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+  Now <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
  and confirm you can login to the RE.
 </p>
 
@@ -1498,7 +1498,7 @@ wildcard range delete interfaces xe-0/0/[0-71]:[0-3]</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

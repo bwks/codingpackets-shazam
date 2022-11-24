@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 23rd of February 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 
@@ -152,7 +152,7 @@
   </ul>
   <p>
     The use of a routing policy alters a routers
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">view</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">view</span>
  of the network
     topology. If you apply a policy inbound it will alter the local routers
     perception of the network topology. Applying a policy outbound will
@@ -176,29 +176,29 @@
   <h3 id="policy-processing">Policy Processing</h3>
   <ul>
     <li>
-      Routing policy is only evaluated against <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">active</i>
+      Routing policy is only evaluated against <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">active</span>
 
       routes in the routing table.
     </li>
     <li>
       Policies are evaluated in a daisy-chain order known as a
-      <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">policy-chain</i>
+      <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">policy-chain</span>
 .
     </li>
     <li>
       Evaluation is halted once a policy match is found and the policy
       contains a
-      <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">terminating action</i>
+      <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">terminating action</span>
 .
     </li>
     <li>
       If no match is found evaluation will continue to the
-      <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">next policy</i>
+      <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">next policy</span>
 .
     </li>
     <li>
       If no match is found in any policy the
-      <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">default policy</i>
+      <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">default policy</span>
  will
       be evaluated.
     </li>
@@ -208,9 +208,9 @@
   <h3 id="terminating-action">Terminating Action</h3>
   <p>
     Terminating actions define how a route match is utilised.
-    The options are <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">accept</i>
+    The options are <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">accept</span>
 
-    and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">reject</i>
+    and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">reject</span>
 . Their usage
     is as follows.
   </p>
@@ -245,9 +245,9 @@
   <h3 id="policy-configuration">Policy Configuration</h3>
   <p>
     There are two methods to define a routing policy.
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term based</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term based</span>
  and
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">non-term based</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">non-term based</span>
 .
   </p>
 
@@ -285,7 +285,7 @@
   <p>
     Term based policies allow for more than one set
     of match/action statements using a
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</span>
  block.
   </p>
 
@@ -329,7 +329,7 @@
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-      If a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</i> does not contain a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</i> the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">next-term</i> is evaluated.
+      If a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</span> does not contain a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">term</span> the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">next-term</span> is evaluated.
   </div>
   </div>
 </div>
@@ -347,7 +347,7 @@
   <h4>exact</h4>
   <ul>
     <li>The exact prefix</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16</span>
 
 
 
@@ -357,7 +357,7 @@
   <h4>longer</h4>
   <ul>
     <li>Prefixes more specific than the defined prefix</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 longer</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 longer</span>
 
 
 
@@ -367,7 +367,7 @@
   <h4>orlonger</h4>
   <ul>
     <li>Defined prefix plus more specific prefixes</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 orlonger</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 orlonger</span>
 
 
 
@@ -377,7 +377,7 @@
   <h4>upto</h4>
   <ul>
     <li>Defined prefix and prefixes up to a defined prefix length</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 upto /18</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 upto /18</span>
 
 
 
@@ -387,14 +387,14 @@
   <h4>prefix-length-range</h4>
   <ul>
     <li>Defined prefix and routes between a defined prefix length start and end</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 prefix-length-range /17-/18</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 prefix-length-range /17-/18</span>
 </li>
   </ul>
 
   <h4>through</h4>
   <ul>
     <li>Defined prefixes and any prefixes in between</li>
-    <li><i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 through 192.168.0.0/19</i>
+    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">192.168.0.0/16 through 192.168.0.0/19</span>
 
   </li>
   </ul>
@@ -438,11 +438,11 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl">
+<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
   <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
     <table class="border-4 border-zinc-900 table-auto w-full">
       <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
           <th class="pt-1 pb-2 px-2">Protocol</th>
         
@@ -720,7 +720,7 @@
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

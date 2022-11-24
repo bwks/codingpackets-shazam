@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 6th of January 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id="intro">Intro</h3>
 <p>
@@ -168,13 +168,13 @@
 </p>
 <p>
   I did encounter an issue with the puppet install that was related to
-  the permissions of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant</i>
+  the permissions of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant</span>
 
   file, so more an issue with the way the vagrant box
   was built rather than an issue with the puppet installer.
   Thankfully I received the following very helpful error message so was able to
   find a solutions pretty quickly.
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant: bad permissions, should be mode 0440</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sudoers.d/vagrant: bad permissions, should be mode 0440</span>
 
 </p>
 <p>
@@ -212,12 +212,12 @@ fi
   In this post I will focus on the CLI.
 </p>
 <p>
-  The main CLI commands start with <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</i>
+  The main CLI commands start with <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</span>
 .
-  Built in help for both commands can be viewed by using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-h</i>
+  Built in help for both commands can be viewed by using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-h</span>
  or
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--help</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--help</span>
  flags.
 </p>
 
@@ -451,9 +451,9 @@ Installation may take a while for packs with many items.
   specifies the connection and authentication parameters for each device.
 </p>
 <p>
-  Create a file named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">napalm.yaml</i>
+  Create a file named <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">napalm.yaml</span>
  under the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/stackstorm/config/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/stackstorm/config/</span>
  directory.
 </p>
 
@@ -531,7 +531,7 @@ EOF</code></pre>
     <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     When a configuration file is added or updated the
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">st2ctl</span>
  command must be used to
     load the configuration into memory so they take effect.
 </div>
@@ -610,12 +610,12 @@ EOF</code></pre>
 
 
 <p>
-  Now run the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">get_facts</i>
+  Now run the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">get_facts</span>
  action to get
   information about R1. The syntax for running an action is as follows.
 </p>
 <p>
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo st2 run &lt;pack&gt;.&lt;action&gt; &lt;parameters&gt;</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo st2 run &lt;pack&gt;.&lt;action&gt; &lt;parameters&gt;</span>
 
 </p>
 
@@ -1048,7 +1048,7 @@ result:
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

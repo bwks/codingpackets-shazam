@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -93,12 +93,12 @@
       <h1 class="pb-1 sm:pb-2">Ansible Tips and Tricks</h1>
       <div class="">
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             updated: 12th of June 2019
           </p>
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 11th of June 2018
           </p>
         
@@ -124,7 +124,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id="overview">Overview</h3>
 <p>
@@ -134,10 +134,10 @@
 
 <h3 id="callbacks">Callbacks</h3>
 <p>
-  Convert the output of a playbook run to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">json</i>. Either
-  set the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stdout_callback = json</i> setting in the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</i> or alternatively set the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ANSIBLE_STDOUT_CALLBACK=json</i> variable at the CLI on playbook execution.
+  Convert the output of a playbook run to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">json</span>. Either
+  set the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stdout_callback = json</span> setting in the
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible.cfg</span> or alternatively set the
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ANSIBLE_STDOUT_CALLBACK=json</span> variable at the CLI on playbook execution.
 </p>
 
   
@@ -157,9 +157,9 @@
 
 <h3 id="inventory">Inventory</h3>
   <p>
-    create an ad-hoc inventory using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-i</i> or <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--inventory</i>
-    flags. An ad-hoc inventory allows you to run <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible</i> or
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible-playbook</i> against a node (or list of nodes) without creating
+    create an ad-hoc inventory using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-i</span> or <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--inventory</span>
+    flags. An ad-hoc inventory allows you to run <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible</span> or
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible-playbook</span> against a node (or list of nodes) without creating
     an inventory file.
   </p>
 
@@ -186,8 +186,8 @@
 <h3 id="roles">Roles</h3>
   <p>
     There is a fair bit of boilerplate involved in creating a role. There is an
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible-galaxy</i> command to aid in the process of building a role. Optionaly
-    add the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--offline</i> flag if the role is not intended for Ansible galaxy.
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ansible-galaxy</span> command to aid in the process of building a role. Optionaly
+    add the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">--offline</span> flag if the role is not intended for Ansible galaxy.
   </p>
 
   
@@ -464,7 +464,7 @@ leaf01 | SUCCESS => {
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

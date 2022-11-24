@@ -1,0 +1,364 @@
+{% extends "_layouts/blog.jinja" %}
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Readers of my blog will probably have noticed that I like 
+  to use Vagrant for development and testing. I recently switched 
+  to using Windows and found the Hyper-V provider for Vagrant to be 
+  a bit limited. In this post I will install an Ubuntu 1804 VM on Hyper-V 
+  for use as a Vagrant server so that I can maintain my usual development/testing 
+  workflow.
+</p>
+
+<h4>Software Used In This Post</h4>
+<ul>
+  <li>Windows 10 Pro - 19041.388</li>
+  <li>Ubuntu - 1804.05</li>
+  <li>Vagrant - 2.2.9</li>
+  <li>Vagrant-libvirt - 0.1.2</li>
+</ul>
+
+<h3 id="pre-flight-check">Pre-Flight Check</h3>
+<p>
+  This post assumes that you already have Hyper-V enabled and ready to use.
+  The host must also have an Intel processor with VT-x and EPT technology 
+  enabled in the BIOS.
+</p>
+<p>
+  Additionally have an installer ISO from Ubuntu downloaded and ready to use. 
+  You can find the version used in this post 
+  {{ link::e(path="http://releases.ubuntu.com/18.04/ubuntu-18.04.5-live-server-amd64.iso", description="here") }}
+.
+</p>
+
+<h3 id="create-v-switch">Create V-Switch</h3>
+<p>
+  In this setup I will be creating a v-switch that is bridged to my physical 
+  network adapter. This will allow me to access the VM as if it was connected 
+  to my phyical LAN.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Hyper-V Manager",
+"&lt;host-name&gt;",
+"Virtual Switch Manager",
+]) }}
+
+<p>
+  I am naming the v-switch {{ text::emphasize(text="vagrant") }}
+. Select 
+  {{ text::emphasize(text="External Network") }}
+ and choose the desired 
+  adapter from the list. Also tick the box to 
+  {{ text::emphasize(text="Allow management operating system to share this network adapter.") }}
+ 
+  Then click {{ text::emphasize(text="OK") }}
+
+</p>
+
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vagrant-vswitch.png", width="600px") }}
+
+
+<h3 id="create-ubuntu-1804-vm">Create Ubuntu 1804 VM</h3>
+<p>
+  Next up we can create an Ubuntu 1804 VM. In order to use a Linux VM with nested 
+  virtualization the VM must be configured according to the following parameters
+</p>
+<ul>
+  <li>VM configuration version 8.0 or greater</li>
+  <li>The VM must be of the type Generation 2</li>
+  <li>The VM cannot use Dynamic Memory</li>
+  <li>Disable Secure Boot on the VM</li>
+</ul>
+
+<h4>Create VM Parameters</h4>
+<p>
+  Specify the VM name and click {{ text::emphasize(text="Next >") }}
+
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-1.png", width="600px") }}
+
+<p>
+  Ensure that you select {{ text::emphasize(text="Generation 2") }}
+ and 
+  click {{ text::emphasize(text="Next >") }}
+
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-2.png", width="600px") }}
+
+<p>
+  Assign the amount of Memory required for the VM. Ensure that you un-tick the box 
+  to {{ text::emphasize(text="Use Dynamic Memory for this virtual machine") }}
+ 
+  and click {{ text::emphasize(text="Next >") }}
+
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-3.png", width="600px") }}
+
+<p>
+  Select the previously created {{ text::emphasize(text="vagrant") }}
+ network and 
+  click {{ text::emphasize(text="Next >") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-4.png", width="600px") }}
+
+<p>
+  Create a virtual hard disk, specifying the size of the disk and click 
+  {{ text::emphasize(text="Next >") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-5.png", width="600px") }}
+
+<p>
+  Select the {{ text::emphasize(text="Install an operating system from a bootable image file") }}
+
+  option and browse to where you downloaded the ISO and click {{ text::emphasize(text="Next >") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-6.png", width="600px") }}
+
+<p>
+  Assuming that you are happy with everything click {{ text::emphasize(text="Finish") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-7.png", width="600px") }}
+
+<h4>Disable Secure Boot</h4>
+<p>Browse to the VM and disable secure boot.</p>
+
+{{ text::breadcrumbs(items=[
+"Hyper-V Manager",
+"&lt;host-name&gt;",
+"&lt;vm-name&gt;",
+"Settings...",
+]) }}
+
+<p>
+  Un-tick the {{ text::emphasize(text="Enable Secure Boot") }}
+ check box and 
+  click {{ text::emphasize(text="OK") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/secure-boot.png", width="600px") }}
+
+<h4>Install Ubuntu 1804</h4>
+<p>
+  I wont cover the whole installation process as it is pretty straight forward. 
+  When you get to the network connections section set a static IP according 
+  to your LAN settings. The below screen shot is an example.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/network-settings.png", width="600px") }}
+
+<h4>Edit Boot Order</h4>
+<p>
+  Once the installation is complete, power off the VM and edit the boot order
+  moving the hard drive above the DVD Drive and 
+  click {{ text::emphasize(text="OK") }}.
+</p>
+
+{{ text::breadcrumbs(items=[
+"Hyper-V Manager",
+"&lt;host-name&gt;",
+"&lt;vm-name&gt;",
+"Settings...",
+]) }}
+
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/boot-order.png", width="600px") }}
+
+<h4>Eject ISO</h4>
+{{ text::breadcrumbs(items=[
+"Hyper-V Manager",
+"&lt;host-name&gt;",
+"&lt;vm-name&gt;",
+"Settings...",
+]) }}
+<p>
+  Under click {{ text::emphasize(text="Media") }}
+ select 
+  the {{ text::emphasize(text="None") }}
+ option and 
+  click {{ text::emphasize(text="OK") }}
+.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vm-install-8.png", width="600px") }}
+
+<p>
+  OK, with that step completed we have an Ubuntu 1804 VM installed 
+  on Hyper-V. Next up we need to enable nested virtualization.
+</p>
+
+<h3 id="enable-nested-virtualization">Enable Nested Virtualization</h3>
+<p>
+  In order to run a hypervisor on the Ubuntu VM we need to enable nested virtualization 
+  for the VM. The process to do that is covered in detail in 
+  {{ link::i(path="/blog/hyper-v-enable-nested-virtualization-in-linux-vm/", description="this") }}
+ blog post.
+</p>
+
+<p>
+  <b>TL/DR</b>; While the VM is powered off, open a powershell terminal as 
+  Administrator and run the following command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="powershell",
+  code='Set-VMProcessor -VMName vagrant -ExposeVirtualizationExtensions $true'
+) }}
+
+{{ text::important_block(text='
+<p>
+  Enable nested virtualization before proceeding.
+</p>')
+}}
+<h3 id="install-vagrant">Install Vagrant</h3>
+<p>
+  The process to install Vagrant is kind of long so I wont repeat it in this post. 
+  Please follow along with 
+  {{ link::i(path="/blog/vagrant-libvirt-install-ubuntu-1804/", description="this") }}
+
+  post to install Vagrant with the Libvirt provider on Ubuntu 1804.
+</p>
+
+<h3 id="windows-terminal-integration">Windows Terminal Integration</h3>
+<p>
+  For bonus points we will configure a connection profile for windows terminal so 
+  we can very easily connect to our Vagrant VM.
+</p>
+
+{{ text::note_block(text='
+  The following assumes that you already have 
+  $1 and $2 installed and configured.
+')
+  | replace(from="$1", to=text::emphasize(text="Windows Terminal"))
+  | replace(from="$2", to=text::emphasize(text="WSL2"))
+}}
+
+<p>
+  We will be using the WSL2 instance as a jump host to get to our 
+  Vagrant VM. Firstly we need to setup WSL2 so you can SSH to the 
+  Vagrant VM without having to use a password.
+</p>
+<p>
+  Create RSA keys on your WSL2 instance with the {{ text::code(text="ssh-keygen") }}
+
+  command.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# WSL2 Instance
+  
+ssh-keygen
+
+# output
+  
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bradmin/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/bradmin/.ssh/id_rsa.
+Your public key has been saved in /home/bradmin/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:aW4/dChrxpo6GPSF5UWWpTdXhIn8SY5TuvSdkex0B7M bradmin@vagrant
+The keys randomart image is:
++---[RSA 2048]----+
+|       .o+.. +o  |
+|      ..o.o =.o  |
+|     + .. oB.o = |
+|  . . o  o=o+ E o|
+| . . .  S. = + +.|
+|  . .  o. + o +  |
+|   o   .o+ .     |
+|  . .  o=..      |
+|    .oo+  ..     |
++----[SHA256]-----+'
+) }}
+
+
+<p>
+  Now we copy our SSH keys to the Vagrant VM with the
+  {{ text::code(text="ssh-copy-id") }}
+ command.
+</p>
+
+{{ text::note_block(text='
+  The below two steps assume that you use the same username 
+  for your WSL to instance and your Vagrant VM. If not use 
+  $1.
+')
+  | replace(from="$1", to=text::emphasize(text="username@ip-address"))
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='# WSL2 Instance
+  
+ssh-copy-id 192.168.144.144
+
+# output
+  
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/bradmin/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+bradmin@192.168.144.144s password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 192.168.144.144"
+and check to make sure that only the key(s) you wanted were added.'
+) }}
+
+<p>
+  Next up, in the Windows Terminal settings under the 
+  {{ text::emphasize(text="profiles") }}
+ 
+  section key add the following stanza to create a connection profile.
+</p>
+{{ text::code_block(
+  header="file",
+  language="json",
+  code='{
+  "name":  "Vagrant VM",
+  "tabTitle": "Vagrant VM",
+  "commandline": "wsl.exe ssh 192.168.144.144",
+  // Optionally add an icon.
+  "icon": "C:/Users/bradl/Pictures/vagrant.png"
+},'
+) }}
+
+<p>
+  The {{ text::emphasize(text="commandline") }}
+
+  parameter tells Windows Terminal to open a 
+   {{ text::emphasize(text="WSL shell") }}
+ 
+   and {{ text::emphasize(text="SSH to 192.168.144.144") }}
+
+</p>
+<p>
+  Optionally you can also add a picture for the VM using the 
+  {{ text::emphasize(text="icon") }}
+ parameter.
+  The result will look like the below screenshot.
+</p>
+
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/windows-terminal-1.png", width="300px") }}
+
+<p>
+  Now to access the VM you just select it from the dropdown and you will be dropped
+  into the Vagrant VM shell.
+</p>
+{{ image::boxed(path="blog/install-an-ubuntu-1804-vm-on-hyper-v-as-a-vagrant-server/vagrant-terminal.gif", width="800px") }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I show you how to install an Ubuntu 1804 VM on Hyper-V 
+  for use as a Vagrant server and add a connection profile to Windows 
+  terminal for our Vagrant VM.
+</p>
+
+{% endblock page_content %}

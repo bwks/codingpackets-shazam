@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 1st of September 2019
           </p>
         
@@ -120,12 +120,12 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id="intro">Intro</h3>
 <p>
   In this post I will cover how to create a Juniper vQFX Vagrant box 18.4R1.8 for use with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  provider. This is an update to a previous post
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/juniper-vqfx-vagrant-libvirt-box-install">post</a>
   . Thankfully
@@ -141,10 +141,10 @@
 </p>
 <p>
   This post assumes a working installation of Vagrant with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin already installed. You can follow this
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
-  to get the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  to get the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin installed.
 </p>
 
@@ -191,11 +191,11 @@
 <p>
   Navigate to the Juniper software
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://support.juniper.net/support/downloads/?p=vqfxeval#sw" target=_blank>download</a>
-  page and under the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Application Package</i>
+  page and under the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Application Package</span>
  section
-  download both the PFE: <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K PFE)</i>
+  download both the PFE: <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K PFE)</span>
 
-  and RE: <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K Routing Engine)</i>
+  and RE: <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrant Package for Virtualbox (VQFX10K Routing Engine)</span>
  boxes.
 </p>
 
@@ -216,7 +216,7 @@
 <h3 id="install">Install</h3>
 <p>
   Create and change into a directory for vQFX files. I like to keep my custom vagrant boxes under
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</span>
 .
 </p>
 
@@ -237,10 +237,10 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 
 <p>
-  Copy the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">RE</i>
+  Copy the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">RE</span>
 
-  files downloaded earlier to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vqfx/</i>
+  files downloaded earlier to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vqfx/</span>
 
   directory.
 </p>
@@ -281,7 +281,7 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 <h4><b>PFE Install</b></h4>
 <p>
-  Extract the HDD from the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</i>
+  Extract the HDD from the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">PFE</span>
  Vagrant box.
 </p>
 
@@ -321,9 +321,9 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 
 <p>
-  The good folks who maintain the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  The good folks who maintain the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin
-  have a script can be used to convert <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
+  have a script can be used to convert <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</span>
  images to a
   vagrant box. Download the libvirt conversion script.
 </p>
@@ -344,7 +344,7 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the PFE box.
 </p>
@@ -365,7 +365,7 @@ cd ~/vagrant/boxes/juniper/vqfx</code></pre>
 
 
 <p>
-  Create a PFE vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create a PFE vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -397,7 +397,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pfe.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pfe.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -511,7 +511,7 @@ juniper/vmx-vfp               (libvirt, 19.1R1.6)
 
 
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the RE box.
 </p>
@@ -532,7 +532,7 @@ juniper/vmx-vfp               (libvirt, 19.1R1.6)
 
 
 <p>
-  Create an RE vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create an RE vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -564,7 +564,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">re.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">re.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -660,7 +660,7 @@ juniper/vqfx-pfe              (libvirt, 18.4R1.8)
 
 <h3 id="testing">Testing</h3>
 <p>
-  Now that the boxes are installed create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Now that the boxes are installed create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
 
   and confirm you can build VMs with Vagrant.
 </p>
@@ -685,7 +685,7 @@ juniper/vqfx-pfe              (libvirt, 18.4R1.8)
 
 
 <p>
-  Add a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Add a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
  to the test directory with the
   following contents.
 </p>
@@ -913,7 +913,7 @@ end</code></pre>
 
 
 <p>
-  Now <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+  Now <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
  and confirm you can login to the RE.
 </p>
 
@@ -1396,7 +1396,7 @@ wildcard range delete interfaces xe-0/0/[0-71]:[0-3]</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

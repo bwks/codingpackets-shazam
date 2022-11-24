@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 31st of May 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -128,7 +128,7 @@
   I recently had to migrate authentication for a service from FIPA to Active Directory.
   It was a bit of fluffing around because the directory structure in FIPA did not exactly
   align with the directory structure in AD. In this post I will demonstrate how to use
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</span>
  command to search an Active Directory LDAP tree.
 </p>
 
@@ -164,15 +164,15 @@ UserPrincipalName : some_user@example.com</code></pre>
 
 
 <p>
-  The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">DistinguishedName</i>
+  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">DistinguishedName</span>
  parameter or
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">UserPrincipalName</i>
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">UserPrincipalName</span>
  can be used
   as the bind account parameter to search LDAP.
 </p>
 
 <p>
-  We can now use this information to search AD/LDAP via the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  We can now use this information to search AD/LDAP via the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</span>
 
   command from a linux host.
 </p>
@@ -198,7 +198,7 @@ UserPrincipalName : some_user@example.com</code></pre>
 <p>
   If you are unable to import the certificates and trust the server is legitimate
   you can ignore self signed certs by adding the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">LDAPTLS_REQCERT=never</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">LDAPTLS_REQCERT=never</span>
  parameter to the
   query.
 </p>
@@ -257,7 +257,7 @@ memberOf: CN=automation,OU=some,OU=group,DC=example,DC=com</code></pre>
 <h3 id="outro">Outro</h3>
 <p>
   That's it. Just a quick post with some examples on how to search an
-  Active Directory LDAP service using the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</i>
+  Active Directory LDAP service using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ldapsearch</span>
  linux
   command line utility.
 </p>
@@ -414,7 +414,7 @@ memberOf: CN=automation,OU=some,OU=group,DC=example,DC=com</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

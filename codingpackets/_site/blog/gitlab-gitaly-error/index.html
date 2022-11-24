@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 23rd of June 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -148,21 +148,21 @@
 
 <h3 id="the-problem">The Problem</h3>
 <p>
-  Looking at the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/gitlab/gitlab-rails/production.log</i>
+  Looking at the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/gitlab/gitlab-rails/production.log</span>
 
   I could see errors related to the 404 and 503 errors I was getting in the web interface.
   Initially I thought the repos may have either been wiped or the database was
   corrupted.
 </p>
 <p>
-  Looking in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/opt/gitlab/git-data/repositories/</i>
+  Looking in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/opt/gitlab/git-data/repositories/</span>
 
   directory I could see all my repos still in tact <i>phew</i>!
 </p>
 <p>
-  Ok time to check the status of the Gitlab services. Running the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">gitlab-rake gitlab:check</i>
+  Ok time to check the status of the Gitlab services. Running the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">gitlab-rake gitlab:check</span>
 
-  command revealed that there was an error with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Gitaly</i>
+  command revealed that there was an error with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Gitaly</span>
 
   service.
 </p>
@@ -241,7 +241,7 @@ Checking Sidekiq ...
 <h3 id="the-fix">The Fix</h3>
 <p>
   More <a class="text-sky-600 no-underline hover:text-sky-800" href="https://duckduckgo.com/" target=_blank>duck hunting</a> for the error
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Gitaly: ... default ... FAIL: 14:Connect Failed</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Gitaly: ... default ... FAIL: 14:Connect Failed</span>
 
   lead me to this
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://forum.gitlab.com/t/gitaly-fail-14-connect-failed/26137" target=_blank>page</a>
@@ -249,7 +249,7 @@ Checking Sidekiq ...
 </p>
 
 <p>
-  Sure enough, looking at the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/gitlab/gitaly/current</i>
+  Sure enough, looking at the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/gitlab/gitaly/current</span>
 
   directory revealed the same errors as the issue linked above.
 </p>
@@ -276,13 +276,13 @@ Checking Sidekiq ...
 
 
 <p>
-  After checking the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/opt/gitlab/gitaly/gitaly.pid</i>
+  After checking the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/opt/gitlab/gitaly/gitaly.pid</span>
 
-  I found that it was empty so I <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">rm</i>
+  I found that it was empty so I <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">rm</span>
  the file and restarted the Gitlab
-  services with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo gitlab-ctl restart</i>
+  services with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo gitlab-ctl restart</span>
  command. After that the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">gitlab-rake gitlab:check</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">gitlab-rake gitlab:check</span>
  came back all green.
 </p>
 
@@ -446,7 +446,7 @@ Checking Sidekiq ...
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

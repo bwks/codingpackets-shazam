@@ -9,12 +9,12 @@
       <h1 class="pb-1 sm:pb-2">{{ heading }}</h1>
       <div class="">
         {% if updated_date %}
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             updated: {{ updated_date | human_date }}
           </p>
         {% endif %}
         {% if published_date %}
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: {{ published_date | human_date }}
           </p>
         {% endif %}
@@ -75,7 +75,7 @@
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       {% for item in items %}
         <li class="text-sky-600 dark:text-sky-800">{{ item }}</li>
         {% if not loop.last %}
@@ -88,11 +88,11 @@
 <!-- BREADCRUMBS END -->
 {% endmacro %}
 
-{% macro emphasize(text) %}<i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ text }}</i>{% endmacro %}
+{% macro emphasize(text) %}<span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ text }}</span>{% endmacro %}
 
-{% macro code(text) %}<i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">{{ text }}</i>{% endmacro %}
+{% macro code(text) %}<span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">{{ text }}</span>{% endmacro %}
 
-{% macro kbd(text) %}<i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">{{ text }}</i>{% endmacro %}
+{% macro kbd(text) %}<kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">{{ text }}</kbd>{% endmacro %}
 
 {% macro note_block(text) %}
 <!-- NOTE BLOCK START -->

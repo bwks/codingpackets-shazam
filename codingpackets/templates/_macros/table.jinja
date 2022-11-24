@@ -1,10 +1,10 @@
 {% macro default(header, rows) %}
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl">
+<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
   <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
     <table class="border-4 border-zinc-900 table-auto w-full">
       <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         {% for column in header %}
           <th class="pt-1 pb-2 px-2">{{ column }}</th>
         {% endfor %}
@@ -39,7 +39,7 @@
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">{{ header }}</i>
+    <h5 class="">{{ header }}</h5>
   </div>
   <div class="">
     {% for row in rows %}

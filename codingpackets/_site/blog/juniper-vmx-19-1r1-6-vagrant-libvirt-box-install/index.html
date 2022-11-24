@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 31st of August 2019
           </p>
         
@@ -120,12 +120,12 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id="intro">Intro</h3>
 <p>
   In this post I will cover how to create a Juniper vMX 19.1R1.6 Vagrant box for use with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  provider. This post is an update
   to a previous post
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/juniper-vmx-vagrant-libvirt-box-install">post</a>
@@ -139,10 +139,10 @@
 </p>
 <p>
   This post assumes a working installation of Vagrant with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin already installed. You can follow this
   <a class="text-sky-600 no-underline hover:text-sky-800" href="/blog/using-the-libvirt-provider-with-vagrant">post</a>
-  to get the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  to get the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin installed.
 </p>
 
@@ -182,7 +182,7 @@
 <p>
   Navigate to the Juniper software
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.juniper.net/support/downloads/?p=vmx" target=_blank>download</a>
-  page and download the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">kvm</i>
+  page and download the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">kvm</span>
  image.
 </p>
 
@@ -204,7 +204,7 @@
 <h3 id="install">Install</h3>
 <p>
   Create and change into a directory for vMX files. I like to keep my custom vagrant boxes under
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/</span>
 .
 </p>
 
@@ -226,9 +226,9 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 
 
 <p>
-  Copy the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-bundle-19.1R1.6.tgz</i>
+  Copy the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-bundle-19.1R1.6.tgz</span>
  file downloaded
-  earlier to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</i>
+  earlier to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</span>
  directory.
 </p>
 
@@ -248,7 +248,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 
 
 <p>
-  Extract the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-bundle-19.1R1.6.tgz</i>
+  Extract the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-bundle-19.1R1.6.tgz</span>
  file.
 </p>
 
@@ -270,7 +270,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
 <p>
   The vMX requires two VMs. One for the control plane and one for the forwarding plane. Copy
   the required files from the extracted directory to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</span>
  directory.
 </p>
 
@@ -294,7 +294,7 @@ cp vmx/images/vFPC-20190315.img vfp-hda.img</code></pre>
 
 <p>
   Create a network for the link between the two VMs. Create a file called
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</span>
  with the following contents.
 </p>
 
@@ -318,7 +318,7 @@ cp vmx/images/vFPC-20190315.img vfp-hda.img</code></pre>
 
 
 <p>
-  Now add and start the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</i>
+  Now add and start the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</span>
  network.
 </p>
 
@@ -339,7 +339,7 @@ virsh net-start vmx-int</code></pre>
 
 <p>
   Open two terminal windows (be sure the navigate to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/vagrant/boxes/juniper/vmx/</span>
  directory)
   and launch both of the vMX vms.
 </p>
@@ -413,7 +413,7 @@ virt-install \
 
 <h4><b>VCP Configuration</b></h4>
 <p>
-  Login to the VCP with the username <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</i>
+  Login to the VCP with the username <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</span>
  there is no
   password.
 </p>
@@ -445,7 +445,7 @@ root> configure</code></pre>
 
 <p>
   Paste in the initial bootstrap configuration to allow SSH and set the
-  root password to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</i>
+  root password to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</span>
 .
 </p>
 
@@ -475,7 +475,7 @@ commit and-quit</code></pre>
 
 <p>
   There is a limit to how many characters can be pasted into the terminal over the console so
-  grab the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">fxp0</i>
+  grab the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">fxp0</span>
  ip address and SSH to the guest to finish
   the configuration.
 </p>
@@ -557,7 +557,7 @@ commit and-quit</code></pre>
 
 <p>
   Exit out and confirm you can SSH in with the vagrant user and the vagrant
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</span>
  key.
 </p>
 
@@ -644,14 +644,14 @@ Power Off the system ? [yes,no] (no) yes</code></pre>
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <h4><b>VFP Configuration</b></h4>
 <p>
-  Login to the VFP with the username / password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</i>
+  Login to the VFP with the username / password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">root</span>
  and
   prepare the VM for use with Vagrant.
 </p>
@@ -681,7 +681,7 @@ service sshd restart</code></pre>
 
 
 <p>
-  Set the root password to <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</i>.
+  Set the root password to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Juniper</span>.
 </p>
 
 <!-- CODE BLOCK START -->
@@ -704,7 +704,7 @@ Retype new password:  &lt;Juniper&gt;</code></pre>
 
 <p>
   Again due to the character limit when connected to the console grab the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ext</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ext</span>
  IP address and SSH to the guest.
 </p>
 
@@ -750,12 +750,12 @@ root@localhost:~#</code></pre>
 <p>
   The VFP uses the Windriver linux OS and most of the file system is read only. I could not
   figure out how to add users so I will utilize the root user to login to this host with Vagrant.
-  I also could not write to the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/root</i>
+  I also could not write to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/root</span>
  directory which is
   the root users default home directory so I will change that to
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/root</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/root</span>
 . I will also utilize the Vagrant
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</span>
  with the root user.
 </p>
 
@@ -824,9 +824,9 @@ crontab -e
 
 <p>
   Exit out and confirm you can SSH in with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant</span>
  user and the vagrant
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">insecure_private_key</span>
  key.
 </p>
 
@@ -876,17 +876,17 @@ root@localhost:~#</code></pre>
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <h4><b>VCP Box Creation</b></h4>
 
 <p>
-  The good folks who maintain the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  The good folks who maintain the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  plugin
-  have a script can be used to convert <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
+  have a script can be used to convert <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</span>
  images to a
   vagrant box. Download the libvirt conversion script.
 </p>
@@ -907,7 +907,7 @@ root@localhost:~#</code></pre>
 
 
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the VCP box.
 </p>
@@ -948,7 +948,7 @@ root@localhost:~#</code></pre>
 
 
   <p>
-    Copy the original HDA disk: <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">junos-vmx-x86-64-19.1R1.6.qcow2</i>
+    Copy the original HDA disk: <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">junos-vmx-x86-64-19.1R1.6.qcow2</span>
  overwriting
     the existing HDA disk.
   </p>
@@ -970,7 +970,7 @@ root@localhost:~#</code></pre>
 
 
 <p>
-  Create a VCP vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create a VCP vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -1003,7 +1003,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vcp.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vcp.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -1094,11 +1094,11 @@ extreme/xos                   (libvirt, 22.4.1.4)
 
 
 <p>
-  The VCP also requires the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDB</i>
+  The VCP also requires the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDB</span>
  and
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDC</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDC</span>
  drives from the initial VCP build. There is a
-  limitation of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</i>
+  limitation of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vagrant-libvirt</span>
  provider where it
   can only package in one storage volume with the box. Create a directory to store these
   volumes and they will be copied by Vagrant prior to building a box using the
@@ -1128,7 +1128,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 <h4><b>VFP Box Creation</b></h4>
 <p>
-  Create a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</i>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">metadata.json</span>
  with the following
   contents for the VCP box.
 </p>
@@ -1149,9 +1149,9 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 
 <p>
-  Convert <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vfp-hda.img</i>
+  Convert <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vfp-hda.img</span>
  to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">qcow2</span>
  format.
 </p>
 
@@ -1171,7 +1171,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-19.1R1.6-base.img</code></pre>
 
 
 <p>
-  Create a VFP vagrant box with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</i>
+  Create a VFP vagrant box with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create_box.sh</span>
  script.
 </p>
 
@@ -1203,7 +1203,7 @@ Total bytes written: 333250560 (318MiB, 17MiB/s)
 
 
 <p>
-  Create a metadata file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vfp.json</i>
+  Create a metadata file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vfp.json</span>
  so that the
   box is added with the correct version number.
 </p>
@@ -1295,7 +1295,7 @@ juniper/vmx-vcp               (libvirt, 19.1R1.6)
 
 <h3 id="testing">Testing</h3>
 <p>
-  Now that the boxes are installed create a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Now that the boxes are installed create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
 
   and confirm you can build VMs with Vagrant.
 </p>
@@ -1320,7 +1320,7 @@ juniper/vmx-vcp               (libvirt, 19.1R1.6)
 
 
 <p>
-  Add a <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  Add a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
  to the test directory with the
   following contents
 </p>
@@ -1565,17 +1565,17 @@ end</code></pre>
 
 
 <p>
-  The two triggers in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</i>
+  The two triggers in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
  are used to copy
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDB</i>
- and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDC</i>
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDB</span>
+ and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">HDC</span>
 
   base storage volumes that are required by the VCP prior to build. They also delete to
   storage volumes when the VCP is destroyed.
 </p>
 
 <p>
-  Now <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</i>
+  Now <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
  and confirm you can login to the VCP.
 </p>
 
@@ -1953,7 +1953,7 @@ Domain vmx-vfp has been undefined</code></pre>
 
 
 <p>
-  Remove the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</i>
+  Remove the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmx-int</span>
  network.
 </p>
 
@@ -2131,7 +2131,7 @@ virsh net-undefine vmx-int</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -93,12 +93,12 @@
       <h1 class="pb-1 sm:pb-2">Crystal Notes: Methods</h1>
       <div class="">
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             updated: 3rd of August 2021
           </p>
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 29th of July 2021
           </p>
         
@@ -124,7 +124,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -168,7 +168,7 @@ do_stuff(what: "Say hello", how: "speak")</code></pre>
 <h3 id="overloading">Overloading</h3>
 <p>
   Methods in Crystal can be
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">overloaded</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">overloaded</span>
 .
   This means that methods with the same name but 
   different signatures are treated as different 
@@ -230,7 +230,7 @@ do_stuff(1)</code></pre>
 
 <h3 id="splat">Splat</h3>
 <p>
-  A <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">splat</i>
+  A <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">splat</span>
 
   parameter is defined by prefixing a parameter 
   with an asterix (*). A splat takes a variadic 
@@ -268,7 +268,7 @@ do_stuff(*stuff_and_things)</code></pre>
 
 <h3 id="double-splat">Double Splat</h3>
 <p>
-  A <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">double splat</i>
+  A <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">double splat</span>
 
   parameter is defined by prefixing a parameter 
   with 2 asterixes (**). A double splat takes a 
@@ -361,7 +361,7 @@ stuff_and_things.map(&.upcase)</code></pre>
   A Proc, also know as a lambda or an anonymous 
   function in other languages is a nameless function 
   with a call method. Anonymous functions are defined 
-  with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-></i>
+  with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-></span>
  
   operator.
 </p>
@@ -387,14 +387,14 @@ fn.call("my stuff", "my things") # => my stuff - my things</code></pre>
 
 <h3 id="considerations">Considerations</h3>
 <ul>
-  <li>Methods are defined in <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">snake_case</i>
+  <li>Methods are defined in <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">snake_case</span>
  by convention.</li>
   <li>A splat/double splat can appear only once in any position.</li>
   <li>The splat only accepts a tuple.</li>
   <li>The double splat only accepts a named tuple.</li>
   <li>Methods automatically return the value of the last 
   expression. There is no need to declare the 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">return</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">return</span>
  statement.</li>
   <li>Type annotations are required for Procs.</li>
   <li>The return type of a Proc is inferred by the compiler.</li>
@@ -549,7 +549,7 @@ fn.call("my stuff", "my things") # => my stuff - my things</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

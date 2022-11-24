@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 20th of February 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
   <h3 id="overview">Overview</h3>
   <p>
@@ -131,13 +131,13 @@
   <p>
     When tracing is enabled the results are stored in
     a trace file in the
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/</span>
  directory
     or sent to a remote syslog server.
   </p>
   <p>
     Remote logging is configured under the
-    <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">system > tracing</i>
+    <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">system > tracing</span>
 
     configuration hierarchy.
   </p>
@@ -148,9 +148,9 @@
   </p>
   <p>
     Tracing can be enabled at various levels of the configuration
-    hierarchy such as the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">protocols</i>
+    hierarchy such as the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">protocols</span>
 
-    and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</i>
+    and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</span>
  levels.
   </p>
   
@@ -210,35 +210,35 @@
 
   <h3 id="view-trace-files">View Trace Files</h3>
   <p>
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show log &lt;FILENAME&gt;</i>
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show log &lt;FILENAME&gt;</span>
  command is used to
     view a tracefile.
   </p>
   <p>
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">monitor start &lt;FILENAME&gt;</i>
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">monitor start &lt;FILENAME&gt;</span>
  command starts
     real-time monitoring of the file.
   </p>
   <p>
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">monitor stop &lt;FILENAME&gt;</i>
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">monitor stop &lt;FILENAME&gt;</span>
  command stops
     real-time monitoring of the file.
   </p>
   <p>
-    The <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">ESC</i>
- + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">q</i>
+    The <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">ESC</kbd>
+ + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">q</kbd>
  key combination starts/stops
     syslog output to the screen.
   </p>
 
   <h3 id="cleanup-trace-files">Cleanup Trace Files</h3>
   <p>
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">clear log &lt;FILENAME&gt;</i>
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">clear log &lt;FILENAME&gt;</span>
  command is used to
     delete the contents of a trace file.
   </p>
   <p>
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">file delete &lt;FILENAME&gt;</i>
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">file delete &lt;FILENAME&gt;</span>
  command is used
     to delete a trace file.
   </p>
@@ -388,7 +388,7 @@
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

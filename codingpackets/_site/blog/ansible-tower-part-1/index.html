@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 26th of March 2017
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id=intro>Intro</h3>
 <p>
@@ -151,7 +151,7 @@
 <h3 id=get-ansible-tower>Get Ansible Tower</h3>
 <p>
   Go to <a class="text-sky-600 no-underline hover:text-sky-800" href="https://www.ansible.com/tower-trial" target=_blank>https://www.ansible.com/tower-trial</a> and enter
-  your details to download the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.tar</i> installation file. There are a number of methods to
+  your details to download the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.tar</span> installation file. There are a number of methods to
   start a trial with Ansible, we will use the tower for linux method.
 </p>
 
@@ -171,7 +171,7 @@
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">The file will be named <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible-tower-setup-latest.tar.gz</i>.</div>
+    <div class="px-4 pb-4 dark:text-zinc-900">The file will be named <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ansible-tower-setup-latest.tar.gz</span>.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -241,7 +241,7 @@ cd ansible-tower-setup-3.1.1</code></pre>
 
 
 <p>
-  Edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file and add the required passwords.
+  Edit the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</span> file and add the required passwords.
 </p>
 <ul>
   <li>admin_password</li>
@@ -249,7 +249,7 @@ cd ansible-tower-setup-3.1.1</code></pre>
   <li>rabbitmq_password</li>
 </ul>
 <p>
-  I have used <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">redhat</i> for all three.
+  I have used <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">redhat</span> for all three.
 </p>
 
 
@@ -292,7 +292,7 @@ rabbitmq_use_long_name=false</code></pre>
 
 
 <p>
-  Edit the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ansible/ansible.cfg</i> file and uncomment <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ask_sudo_pass = True</i>.
+  Edit the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/ansible/ansible.cfg</span> file and uncomment <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ask_sudo_pass = True</span>.
 </p>
 
 
@@ -325,8 +325,8 @@ ask_sudo_pass = True
 
 
 <p>
-  To install Tower, execute the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">setup.sh</i> as a sudo user. This will kickoff the playbook
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">install.yml</i>.
+  To install Tower, execute the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">setup.sh</span> as a sudo user. This will kickoff the playbook
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">install.yml</span>.
 </p>
 
 
@@ -380,8 +380,8 @@ Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
 
 
 <p>
-  Browse to the tower url <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;tower-hostname-or-ip&gt;</i> and login with the username
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i> and the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin_password</i> previously set in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</i> file.
+  Browse to the tower url <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;tower-hostname-or-ip&gt;</span> and login with the username
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span> and the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin_password</span> previously set in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">inventory</span> file.
 </p>
 
 
@@ -396,7 +396,7 @@ Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
 
 <p>
   Remember the license file we requested earlier? By now it should have been emailed to you.
-  Upload it via the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">browse</i> button.
+  Upload it via the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">browse</span> button.
 </p>
 
 
@@ -595,7 +595,7 @@ Setup log saved to /var/log/tower/setup-2017-03-11-17:45:09.log</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

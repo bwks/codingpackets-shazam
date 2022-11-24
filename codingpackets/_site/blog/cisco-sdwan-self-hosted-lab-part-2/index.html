@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 3rd of June 2019
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -153,14 +153,14 @@
 
 <h3 id="pre-requisites">Pre Requisites</h3>
 <p>
-  This post assumes that you have the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">KVM</i>
+  This post assumes that you have the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">KVM</span>
 
   hypervisor already installed along with the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libvirt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libvirt</span>
  management application. Additionally
-  you will need the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virt-install</i>
+  you will need the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virt-install</span>
  and
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-localds</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-localds</span>
  CLI tools.
 </p>
 <p>
@@ -191,7 +191,7 @@
 <p>
   Over on the build server, create a working directory and copy the VM image
   files to the directory. I will be working from the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/sdwan-testlab</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/sdwan-testlab</span>
  directory which contains
   the following files.
 </p>
@@ -227,9 +227,9 @@ sdwan-testlab
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    The <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</i> and the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</i> share the same image.
-    I copied the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</i> image twice
-    renaming it for the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</i>.
+    The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span> and the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> share the same image.
+    I copied the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> image twice
+    renaming it for the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>.
 </div>
   </div>
 </div>
@@ -294,9 +294,9 @@ Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536
 
 <p>
   This will start the VM and attach to a virtual console. Once you see the message
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
  login with the username/password
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 . You will then need to follow the prompts
   to initialize the database.
 </p>
@@ -370,9 +370,9 @@ commit and-quit
 
 <p>
   While here, generate the Root CA certificate. First login to the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
  which is a Unix
-  like shell. Login with the <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vshell</i>
+  like shell. Login with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vshell</span>
  command.
 </p>
 
@@ -441,15 +441,15 @@ e is 65537 (0x10001)</code></pre>
 
 <p>
   This will create a Root CA cert named
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</i>
- <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
+ <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
 
   the file contents so you can copy and paste them in an
   upcoming step.
 </p>
 
 <p>
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">exit</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">exit</span>
  back to the cli shell and find the IP address of the
   vpn512 interface.
 </p>
@@ -480,9 +480,9 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 <p>
   Once you have the IP address browse to the URL
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;ip-address&gt;</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;ip-address&gt;</span>
  and login with the
-  username/password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 .
 </p>
 
@@ -518,7 +518,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Administration</li>
         
@@ -536,7 +536,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Enter the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Organization Name</i>
+  Enter the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Organization Name</span>
  and click Save.
   This field must match what you used when creating the vBond profile.
 </p>
@@ -552,7 +552,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Enter the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</i>
+  Enter the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>
  IP Address and click Save.
 </p>
 
@@ -566,10 +566,10 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Change the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Controller Certificate Authorization</i>
+  Change the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Controller Certificate Authorization</span>
 
   to use Enterprise Root Certificate. Paste in the contents of the generated
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
  file from the previous step and
   click Import & Save.
 </p>
@@ -584,7 +584,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Keep the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">WAN Edge Cloud Certificate Authorization</i>
+  Keep the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">WAN Edge Cloud Certificate Authorization</span>
 
   method as Automated (vManage - signed Certificate). This way the vManage will automatically
   signed the cloud edge certs when they connect to the vManage.
@@ -607,7 +607,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -658,13 +658,13 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
   A window will popup with the CSR text. This can be ignored for the vManage.
 </p>
 <p>
-  Back in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</i>
+  Back in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
  there will be a file
-  called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage_csr</i>
+  called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage_csr</span>
 . Sign this file with
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.key</i>
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.key</span>
  and
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
 .
 </p>
 
@@ -691,15 +691,15 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This creates a file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</i>
+  This creates a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
  the file in order to copy and paste it into the
   web interface in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the certificate by
-  pasting the contents of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</i>
+  pasting the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
  file
   and click Install.
 </p>
@@ -707,7 +707,7 @@ Getting CA Private Key</code></pre>
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -762,9 +762,9 @@ Getting CA Private Key</code></pre>
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <p>
@@ -805,9 +805,9 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  Once you see the message <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</i>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -856,7 +856,7 @@ commit and-quit
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -921,7 +921,7 @@ commit and-quit
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -969,7 +969,7 @@ commit and-quit
 
 
 <p>
-  Copy the CSR text and go to the vManage <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</i>
+  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
 
   to generate the certificate.
 </p>
@@ -984,9 +984,9 @@ commit and-quit
 
 
 <p>
-  Use <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</i>
+  Use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
  to create a file called
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.csr</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.csr</span>
  with the contents of
   the vBond CSR from the previous step. Then sign the CSR with the Root
   CA certificate.
@@ -1017,16 +1017,16 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This will create a certificate file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</i>
+  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
 .
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</i>
- the contents of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+ the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
 
   file in order to copy and past the contents to the vManage in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the vBond certificate by
-  pasting in the contents of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</i>
+  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
  file
   and click Install.
 </p>
@@ -1035,7 +1035,7 @@ Getting CA Private Key</code></pre>
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1085,9 +1085,9 @@ Getting CA Private Key</code></pre>
 <!-- IMAGE END -->
 
 <p>
-  Finally activate the control plane <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</i>
+  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
 
-  on the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ge0/0</i>
+  on the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ge0/0</span>
  interface.
 </p>
 
@@ -1145,9 +1145,9 @@ INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP  
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <h3 id="vsmart">vSmart</h3>
@@ -1183,9 +1183,9 @@ INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP  
 
 
 <p>
-  Once you see the message <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</i>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -1233,7 +1233,7 @@ commit and-quit
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1296,7 +1296,7 @@ commit and-quit
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1345,7 +1345,7 @@ commit and-quit
 
 
 <p>
-  Copy the CSR text and go to the vManage <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</i>
+  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
 
   to generate the certificate.
 </p>
@@ -1360,9 +1360,9 @@ commit and-quit
 
 
 <p>
-  Use <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</i>
+  Use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
  to create a file called
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.csr</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.csr</span>
  with the contents of
   the vSmart CSR from the previous step. Then sign the CSR with the Root
   CA certificate.
@@ -1393,16 +1393,16 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This will create a certificate file called <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</i>
+  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
 .
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</i>
- the contents of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+ the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
 
   file in order to copy and past the contents to the vManage in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the vSmart certificate by
-  pasting in the contents of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</i>
+  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
  file
   and click Install.
 </p>
@@ -1411,7 +1411,7 @@ Getting CA Private Key</code></pre>
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1462,9 +1462,9 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  Finally activate the control plane <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</i>
+  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
 
-  on the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">eth1</i>
+  on the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">eth1</span>
  interface.
 </p>
 
@@ -1524,9 +1524,9 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
   To exit the console use one of these key combinations (Assuming English keyboard).
 </p>
 <ul>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
-  <li><i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> + <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</i></li>
-  <li>Press and hold <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</i> and <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</i> while pressing <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</i> then <i class="not-italic uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</i></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
+  <li><kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> + <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">5</kbd></li>
+  <li>Press and hold <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">CTRL</kbd> and <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">SHIFT</kbd> while pressing <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">6</kbd> then <kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">]</kbd></li>
 </ul>
 
 <p>
@@ -1549,7 +1549,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1613,7 +1613,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1662,7 +1662,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  For KVM select <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</i>
+  For KVM select <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
 . (VMWare uses Encoded String). Then
   click OK.
 </p>
@@ -1692,7 +1692,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 <p>
   On the host server, create and ISO image from the cloud-init file that can be mounted to
-  the vEdge on boot. I named the file <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vedge.cfg</i>
+  the vEdge on boot. I named the file <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vedge.cfg</span>
  and
   copied it to the working directory.
 </p>
@@ -1713,7 +1713,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  Boot the vEdge with the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">config.iso</i>
+  Boot the vEdge with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">config.iso</span>
  disk attached.
   This will ensure that the image boots with the correct chassis number.
 </p>
@@ -1747,9 +1747,9 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  Once you see the message <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</i>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -1909,7 +1909,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
   <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
-    <ol class="flex flex-wrap">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Configuration</li>
         
@@ -1957,7 +1957,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 
 
 <p>
-  For KVM select <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</i>
+  For KVM select <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
 . (VMWare uses Encoded String). Then
   click OK.
 </p>
@@ -1988,7 +1988,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 <p>
   Unlike the vEdge it does not look like you can mount a cloud-init ISO to set the
   initial boot parameters. The cloud-init config file will need to be named
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  and copied via SCP to the cEdge
   after it boots up.
 </p>
@@ -2026,14 +2026,14 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 
 <p>
   Once you see the VM is booted up
-  login with the username/password <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</i>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 .
 </p>
 
 <p>
-  Find the IP address of the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</i>
+  Find the IP address of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
  so
-  you can SCP the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</i>
+  you can SCP the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to the device.
 </p>
 
@@ -2059,7 +2059,7 @@ Loopback65528          192.168.1.1     YES other  up                    up</code
 
 
 <p>
-  From the host SCP the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</i>
+  From the host SCP the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to
   the cEdge.
 </p>
@@ -2086,7 +2086,7 @@ ciscosdwan.cfg                                                                  
 
 <p>
   Reset the SDWAN software in order for the chassis serial number from the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to be
   applied to the device.
 </p>
@@ -2108,7 +2108,7 @@ ciscosdwan.cfg                                                                  
 
 <p>
   Once the router is back online, login and confirm that the chassis number
-  is the same as the one from the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</i>
+  is the same as the one from the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
 
   config.
 </p>
@@ -2185,7 +2185,7 @@ end
 
 <p>
   Install the Root CA cert by SCPing it from the vManage via the
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</i>
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
  interface.
 </p>
 
@@ -2494,7 +2494,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

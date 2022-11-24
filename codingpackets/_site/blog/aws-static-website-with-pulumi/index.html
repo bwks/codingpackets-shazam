@@ -46,7 +46,7 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black leading-normal tracking-wide ">
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
@@ -94,7 +94,7 @@
       <div class="">
         
         
-          <p class="text-neutral-400 dark:text-neutral-600 text-lg italic p-0">
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
             published: 6th of September 2022
           </p>
         
@@ -120,7 +120,7 @@
 
         <!-- COLUMN 2 START -->
         <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 <h3 id="intro">Intro</h3>
 <p>
@@ -166,7 +166,7 @@
   You will also need to register a domain-name in Route 53. The process 
   to register a domain can be found in the the docs 
   <a class="text-sky-600 no-underline hover:text-sky-800" href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html" target=_blank>here</a>. I have previously registered 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stratuslabs.net</i> 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stratuslabs.net</span> 
   and will use that domain for this demo. 
 </p>
 
@@ -200,17 +200,17 @@
 <h4>Route 53</h4>
 <p>
   Route 53 is used to Register our domain 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stratuslabs.net</i>.
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stratuslabs.net</span>.
   Route 53 also hosts the following DNS records in a hosted zone.
 </p>
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="pt-2 pb-4 text-xl">
+<div id="table-default" class="pt-2 pb-4 text-xl font-mono tracking-normal">
   <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-none overflow-auto">
     <table class="border-4 border-zinc-900 table-auto w-full">
       <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-100 dark:text-neutral-400">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         
           <th class="pt-1 pb-2 px-2">Type</th>
         
@@ -356,8 +356,8 @@
     <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     The HTTPS certificate must be generated with Certificate 
-    Manager in the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">us-east-1</i> region. Although CloudFront is a Global service, 
-    it can only use certificates from the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">us-east-1</i> region.</div>
+    Manager in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">us-east-1</span> region. Although CloudFront is a Global service, 
+    it can only use certificates from the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">us-east-1</span> region.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -429,9 +429,9 @@
 <h4>Website Code</h4>
 <p>
   Within your Pulumi project directory create a directory tree 
-  of <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">www\_site</i> with 
-  the <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">index.html</i>
-  and <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">error.html</i> files.
+  of <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">www\_site</span> with 
+  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">index.html</span>
+  and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">error.html</span> files.
   These are the only files you need for a basic site. Check out the 
   code in the above GitHub link for some sample contents.
 </p>
@@ -465,7 +465,7 @@
 <p>
   This is it, the moment you have been waiting for. The code below describes 
   our AWS infrastructure. Place the following code in your 
-  <i class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">main.go</i> file.
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">main.go</span> file.
   The code is commented to explain what is happening to 
   build the infrastructure.
 </p>
@@ -1055,7 +1055,7 @@ Duration: 4m23s</code></pre>
 <!-- TABLE OF CONTENTS START -->
 <div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
   <div class="">
-    <i class="not-italic font-semibold text-xl dark:text-neutral-600">On this page</i>
+    <h5 class="">On this page</h5>
   </div>
   <div class="">
     

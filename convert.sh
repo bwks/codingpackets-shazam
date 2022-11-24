@@ -1,7 +1,7 @@
 #! /bin/bash
 
 files="\
-codingpackets/templates/blog/powerline-install-and-setup-for-ubuntu-bash-on-windows.jinja \
+codingpackets/templates/blog/vagrant-libvirt-install-ubuntu-1804.jinja \
 "
 
 for FILENAME in $files; do
