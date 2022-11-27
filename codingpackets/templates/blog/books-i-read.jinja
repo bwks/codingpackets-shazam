@@ -7,35 +7,10 @@
   Just a list of books I have read and/or listened to.
 </p>
  
-
 {{ table::book(
   header=["Title", "Author", "Date Finished"],
   rows=posts.data.books,
 ) }}
-
-{# {% for year, books in booksByYear | dictsort | reverse %}
-<h3>{{ year }} -  {{ books | length }} Books</h3>
-<table class="table table-bordered border-dark table-sm table-bordered border-dark">
-
-  <thead class="text-center thead-darkmode text-th-darkmode">
-  <tr class="table-dark">
-    <th width="60%">Title</th>
-    <th width="20%">Author(s)</th>
-    <th width="20%" style="text-align: center;">Date Finished</th>
-  </tr>
-  </thead>
-
-  {% for book in books | sort(true, false, "date_finished") %}
-    <tr>
-      <td><b>{{ book.title }}</b> <br> {{ book.description }}</td>
-      <td>{{ book.authors }}</td>
-      <td style="text-align: center;">{{ book.date_finished }}</td>
-    </tr>
-  {% endfor %}
-
-</table>
-{% endfor %} 
- #}
  
 {{ text::note_block(text="
   <p>
