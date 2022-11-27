@@ -6,6 +6,12 @@
 <p>
   Just a list of books I have read and/or listened to.
 </p>
+ 
+
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=posts.data.books,
+) }}
 
 {# {% for year, books in booksByYear | dictsort | reverse %}
 <h3>{{ year }} -  {{ books | length }} Books</h3>

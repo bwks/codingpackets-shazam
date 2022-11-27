@@ -7,9 +7,9 @@
         <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
         {% for column in header %}
           {% if loop.last %}
-            <th class="py-1 px-2 border-b-2 border-zinc-800">{{ column }}</th>
+            <th class="py-1 px-2 border-b border-zinc-800">{{ column }}</th>
           {% else %}
-            <th class="py-1 px-2 border-b-2 border-r-2 border-zinc-800">{{ column }}</th>
+            <th class="py-1 px-2 border-b border-r border-zinc-800">{{ column }}</th>
           {% endif %}
         {% endfor %}
         </tr>
@@ -20,15 +20,15 @@
         {% if loop.last %}
           <tr class="">
         {% else %}
-          <tr class="border-b-2 border-zinc-800">
+          <tr class="border-b border-zinc-800">
         {% endif %}
           {% for column in columns %}
             {% if loop.first %}
-              <td class="px-2 pt-1 pb-2 border-r-2 border-zinc-800">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">{{ column }}</td>
             {% elif loop.last %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-zinc-800">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800">{{ column }}</td>
             {% else %}
-              <td class="px-2 pt-1 pb-2 border-l-2 border-r-2 border-zinc-800">{{ column }}</td>
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800">{{ column }}</td>
             {% endif %}
           {% endfor %}
         </tr>
@@ -91,4 +91,35 @@
   </div>
 </div>
 <!-- TABLE BIBLIOGRAPHY END -->
+{% endmacro %}
+
+
+{% macro book(header, rows) %}
+<!-- TABLE BOOK START -->
+<div id="table-book" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+          <th class="py-1 px-2">{{ header[0] }}</th>
+          <th class="py-1 px-2 border-x border-zinc-800">{{ header[1] }}</th>
+          <th class="py-1 px-2">{{ header[2] }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in rows %}
+      <tr class="">
+        <td class="px-2 pt-1 pb-2 border-t border-zinc-800">
+          <h5>{{ row.title }}</h5>
+          {{ row.description }}
+        </td>
+        <td class="px-2 pt-1 pb-2 border-t border-l border-r border-zinc-800">{{ row.authors }}</td>
+        <td class="px-2 pt-1 pb-2 border-t border-zinc-800 text-center">{{ row.date_finished }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE BOOK END -->
 {% endmacro %}

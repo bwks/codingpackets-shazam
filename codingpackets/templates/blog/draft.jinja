@@ -9,7 +9,7 @@
 {% block page_content %}
   {% for post in posts.draft | sort(attribute="title") %}
     <div class="font-medium text-xl">
-      <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title_case }}</a>
+      <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title }}</a>
     </div>
   {% endfor %}
 {% endblock page_content %}
