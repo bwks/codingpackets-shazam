@@ -1,0 +1,505 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Coding Packets the Shazam Edition</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
+            published: 28th of November 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  Most recently I have been building this site using the 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.11ty.dev/" target=_blank>11ty</a>
+  Static Site Generator. 11ty is fantastic, I totally recommend 
+  checking it out.
+</p>
+<p>
+  I swore to myself I would never re-write this 
+  site in another framework after the last
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/coding-packets-the-11ty-edition/">rewrite</a>.
+  when I moved from Rails to 11ty.
+  Well, you know what they say about never saying never....
+</p>
+<p>
+  This year I have been learning (and loving) Rust. To put what I am learning 
+  to use, I decided to build a Static Site Generator named 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/bwks/codingpackets-shazam" target=_blank>Shazam</a>
+  and eat my own dogfood to build this site. This post documents that adventure.
+</p>
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  At this time, Shazam is in beta and not ready for human consumption.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  Before I go into the migration itself, here is an overview of the 
+  components I am using the build the site.
+</p>
+
+<h3 id="tera">Tera</h3>
+<p>
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://tera.netlify.app/docs/" target=_blank>Tera</a> is a 
+  templating engine similar to Jinja, which made the migration from 
+  the previous template engine I was using
+  (<a class="text-sky-600 no-underline hover:text-sky-900" href="https://mozilla.github.io/nunjucks/templating.html" target=_blank>Nunjucks</a>)
+  pretty straigh forward with a minimal learning curve.
+</p>
+
+<h3 id="tailwind-css">Tailwind CSS</h3>
+<p>
+  I have been using 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://getbootstrap.com/" target=_blank>Bootstrap CSS</a>
+  for the sites that I build for a long time. I have wanted to give 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://tailwindcss.com/" target=_blank>Tailwind CSS</a>
+  a try for a while and this seemed 
+  like the perfect opportunity. So, <a class="text-sky-600 no-underline hover:text-sky-900" href="/">codingpackets.com</a> 
+  is now styled with Tailwind CSS.
+</p>
+<p>
+  Tailwind has a different approach to Boostrap which takes a bit to get used to.
+  Once you get your head around it, it's pretty rad. I found the docs to be excellent 
+  and as long as you are using a reusable components feature it's plesent 
+  to work with.
+</p>
+<p>
+  I went through this awesome 
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://pragprog.com/titles/tailwind2/modern-css-with-tailwind-second-edition/" target=_blank>book</a>
+  which helped me ramp up pretty quickly. It's short and presented in a way that makes 
+  it easy to follow along and get familiar with the major pieces of the framework. 
+</p>
+
+<h3 id="highlight-js">Highlight JS</h3>
+<p>
+  I am continuing to use the fantastic  
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://highlightjs.org/" target=_blank>highlight.js</a>
+  for syntax highlighting of code blocks. 
+</p>
+
+<h3 id="font-awesome">Font Awesome</h3>
+<p>
+  I still use  
+  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://fontawesome.com/icons" target=_blank>Font Awesome</a>
+  icons for the few icons on the site. It has served me well for many years.
+</p>
+
+<h3 id="hosting">Hosting</h3>
+<p>
+  AWS using S3 and CloudFront is still my weapon of choice here.
+</p>
+
+<h3 id="migration">Migration</h3>
+<p>
+  I started by building out the site styling. I wanted it to look similar to 
+  the existing site, but also polish it up at the same time.
+  Since I moved from Bootstrap to Tailwind it took some time to get my head 
+  around things and setup to a point I was happy to start migrating the content. 
+  There was also lots of tweaking along the way and I am sure there will be more 
+  in the future.
+</p>
+<p>
+  At first, using Tailwind slowed me down alot, but once I became familiar it made 
+  things really easy. Layout, Element positioning, Dark mode, all seemed alot easier with 
+  Tailwind. Tailwind kind of forces you to use the reusable components features 
+  of your language of choice. I created components for EVERYTHING which 
+  payed off dividends as I moved through the migration and also into the future.
+</p>
+<p>
+  Migrating the content took some time. I am pushing close to 300 posts on the site, 
+  and it was a bit tedious to move them all across. It was mostly using 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">sed</span> and the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vscode</span> 
+  find and replace feature to get everything in the right format to 
+  play nicely with Tera macro's which have a bit different syntax to 11ty.
+</p>
+<p>
+  I also took the chance to add a content menu to all the posts, which is 
+  something I have wanted to do for ages.
+</p>
+<p>
+  So, how long did it take? I hear you ask.
+</p>
+<p>
+  I started building Shazam on the 19th of October 2022.
+  All in all, it took about a month to migrate the content over and I published 
+  the New New New site in the 29th of November. Not bad considering I 
+  am also operating Dadlife enterprises, working a full time job 
+  and renovating my house, so could only worked on this project in the gaps.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  That's it! I hope you enjoy the new site. Feel free to reach out if you 
+  have any questions about starting a blog using a Static Site Generator.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex flex-wrap justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#rust" class="text-xl">rust</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#shazam" class="text-xl">shazam</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#tera" class="text-xl">tera</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tera">
+            Tera
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tailwind-css">
+            Tailwind CSS
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#highlight-js">
+            Highlight JS
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#font-awesome">
+            Font Awesome
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#hosting">
+            Hosting
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#migration">
+            Migration
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>
