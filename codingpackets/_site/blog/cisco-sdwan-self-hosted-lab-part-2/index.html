@@ -202,7 +202,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tree sdwan-testlab
 
 # output
@@ -247,7 +247,7 @@ sdwan-testlab
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img create -f qcow2 vmanage-disk2.qcow2 100G
 
 # output
@@ -270,7 +270,7 @@ Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vmanage \
     --os-type linux \
@@ -307,7 +307,7 @@ Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Sun Jun  2 03:33:42 UTC 2019: System Ready
 
 
@@ -338,7 +338,7 @@ Would you like to format hdb? (y/n): y</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 system
  system-ip 1.1.1.1
@@ -382,7 +382,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# vshell
 vmanage:~$</code></pre>
     </div>
@@ -402,7 +402,7 @@ vmanage:~$</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl genrsa -out ROOTCA.key 2048
 
 # output
@@ -429,7 +429,7 @@ e is 65537 (0x10001)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 2000 \
     -subj "/C=AU/ST=NSW/L=NSW/O=sdwan-testlab/CN=vmanage.lab" \
     -out ROOTCA.pem</code></pre>
@@ -460,7 +460,7 @@ e is 65537 (0x10001)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# show int | tab
 
 # output
@@ -674,7 +674,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vmanage_csr \
     -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
     -out vmanage.crt -days 2000 -sha256
@@ -783,7 +783,7 @@ Getting CA Private Key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vbond \
     --os-type linux \
@@ -819,7 +819,7 @@ Getting CA Private Key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 system
  host-name vbond
@@ -1000,7 +1000,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vbond.csr \
     -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
     -out vbond.crt -days 2000 -sha256
@@ -1097,7 +1097,7 @@ Getting CA Private Key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 vpn 0
  interface ge0/0
@@ -1125,7 +1125,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show orchestrator connections
 
 # output
@@ -1161,7 +1161,7 @@ INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP  
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vsmart \
     --os-type linux \
@@ -1197,7 +1197,7 @@ INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP  
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 system
  system-ip 1.1.1.3
@@ -1376,7 +1376,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl x509 -req -in vsmart.csr \
     -CA ROOTCA.pem -CAkey ROOTCA.key -CAcreateserial \
     -out vsmart.crt -days 2000 -sha256
@@ -1474,7 +1474,7 @@ Getting CA Private Key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 vpn 0
  interface eth1
@@ -1501,7 +1501,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show orchestrator connections
 
 # output
@@ -1703,7 +1703,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cloud-localds config.iso vedge.cfg</code></pre>
     </div>
   </div>
@@ -1724,7 +1724,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vedge \
     --os-type linux \
@@ -1761,7 +1761,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 system
  system-ip 3.1.1.1
@@ -1800,7 +1800,7 @@ commit and-quit
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show certificate serial
 
 # output
@@ -1824,7 +1824,7 @@ Chassis number: 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX serial number:</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request root-cert-chain install vpn 512 scp://admin@192.168.122.129:/home/admin/ROOTCA.pem
 
 # output
@@ -1855,7 +1855,7 @@ Successfully installed the root certificate chain</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request vedge-cloud activate chassis-number 2d65e5a0-ffe4-ee4e-XXXX-XXXXXXXXXX token a38892fd6310f07c5XXXXXXXXXXXX</code></pre>
     </div>
   </div>
@@ -1875,7 +1875,7 @@ Successfully installed the root certificate chain</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show control connections
 
 # output
@@ -2003,7 +2003,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name=cedge \
     --os-type=linux \
@@ -2043,7 +2043,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show ip int brie
 
 # output
@@ -2070,7 +2070,7 @@ Loopback65528          192.168.1.1     YES other  up                    up</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">scp ciscosdwan.cfg admin@192.168.122.66:ciscosdwan.cfg
 
 # output
@@ -2097,7 +2097,7 @@ ciscosdwan.cfg                                                                  
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan software reset</code></pre>
     </div>
   </div>
@@ -2119,7 +2119,7 @@ ciscosdwan.cfg                                                                  
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show sdwan certificate serial
 
 # output
@@ -2143,7 +2143,7 @@ Chassis number: CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX serial number:</code></pr
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config-transaction
 !
 system
@@ -2195,7 +2195,7 @@ end
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">copy scp://admin@192.168.122.129 bootflash:
 
 # output
@@ -2228,7 +2228,7 @@ Password:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan root-cert-chain install bootflash:ROOTCA.pem
 
 # output
@@ -2256,7 +2256,7 @@ Successfully installed the root certificate chain</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request platform software sdwan vedge_cloud activate chassis-number CSR-A198293A-50EA-A18F-XXXX-XXXXXXXXXX token 14fe4d0f135f116cXXXXXXXXXXXX</code></pre>
     </div>
   </div>
@@ -2276,7 +2276,7 @@ Successfully installed the root certificate chain</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show sdwan control connections
 
 # output

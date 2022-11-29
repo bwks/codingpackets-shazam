@@ -156,7 +156,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /home/bradmin/salt-ssh && cd /home/bradmin/salt-ssh</code></pre>
     </div>
   </div>
@@ -183,7 +183,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pipenv install salt-ssh</code></pre>
     </div>
   </div>
@@ -203,7 +203,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pipenv shell</code></pre>
     </div>
   </div>
@@ -227,7 +227,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p {config,salt/{files,templates,states,pillar,formulas,pki/master,logs}}
 
 # Directory Structure
@@ -266,7 +266,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># salt-ssh/config/master
 
 file_roots:
@@ -299,7 +299,7 @@ pki_dir: "/home/bradmin/salt-ssh/salt/pki/master"</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># salt-ssh/config/roster
 
 minion:
@@ -329,7 +329,7 @@ minion:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># salt-ssh/Saltfile
 
 salt-ssh:
@@ -354,7 +354,7 @@ salt-ssh:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Directory Structure
 
 /home/bradmin/salt-ssh
@@ -395,7 +395,7 @@ salt-ssh:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">salt-ssh '*' test.ping
 
 # output
@@ -437,7 +437,7 @@ minion:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">salt-ssh '*' pkg.install cowsay --sudo
 
 # output
@@ -471,7 +471,7 @@ minion:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">salt-ssh '*' cmd.run 'cowsay im a salty moo cow'
 
 # output
@@ -507,7 +507,7 @@ minion:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">salt-ssh '*' cmd.run 'df -h' -l debug
 
 # output

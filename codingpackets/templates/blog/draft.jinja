@@ -8,9 +8,11 @@
 
 {% block page_content %}
   {% for post in posts.draft | sort(attribute="title") %}
+    {% if not post.category == "uncategorised" %}
     <div class="font-medium text-xl">
       <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title }}</a>
     </div>
+    {% endif %}
   {% endfor %}
 {% endblock page_content %}
 

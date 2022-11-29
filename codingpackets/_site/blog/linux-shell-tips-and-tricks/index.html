@@ -148,7 +148,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cat << EOF > /some/filename
 Some content
   indented content
@@ -175,7 +175,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "some content" > /some/filename</code></pre>
     </div>
   </div>
@@ -212,7 +212,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "some more content" >> /some/filename</code></pre>
     </div>
   </div>
@@ -234,7 +234,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "some content" | sudo tee /some/file</code></pre>
     </div>
   </div>
@@ -267,7 +267,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "some other content" | sudo tee --append /some/file</code></pre>
     </div>
   </div>
@@ -295,7 +295,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">egrep -v '(^#|^\s*$|^\s*\t*#)' /some/filename</code></pre>
     </div>
   </div>
@@ -322,7 +322,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">egrep string-to-match -C 5 /some/filename</code></pre>
     </div>
   </div>
@@ -344,7 +344,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">ping -i 1 -W1 -D -O 9.9.9.9 | while read row ; do awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row"; done
 
 ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, strftime("%Y-%m-%d %H:%M:%S",  substr($0,2,10))) }1' <<< "$row"; done</code></pre>
@@ -369,7 +369,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">bash</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">function tping () {
   ping -i 1 -W1 -D -O "$1" |
     while read row ; do
@@ -394,7 +394,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">bash</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">function tping6 () {
   ping6 -i 1 -W1 -D -O "$1" |
     while read row ; do
@@ -424,7 +424,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">bash</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">function mkcd() {
   dir="$*";
   mkdir -p "$dir" && cd "$dir";
@@ -455,7 +455,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">(reverse-i-search):</code></pre>
     </div>
   </div>
@@ -478,7 +478,7 @@ ping6 -i 1 -W1 -D -O 2620:fe::9 | while read row ; do awk '{ sub(/[0-9]{10}/, st
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tail -f /var/log/some/nested/log/file
 tail: cannot open ‘/var/log/some/nested/log/file’ for reading: Permission denied
 
@@ -510,7 +510,7 @@ sudo tail -f &lt;alt . expands&gt;
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># space at front omits command from history
 
  sudo rm -rf /some/directory</code></pre>
@@ -536,7 +536,7 @@ sudo tail -f &lt;alt . expands&gt;
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">history
 
 # output
@@ -567,7 +567,7 @@ sudo tail -f &lt;alt . expands&gt;
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">!! # last command was 'pwd'
 
 
@@ -597,7 +597,7 @@ pwd
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">!rails
 
 # output
@@ -626,7 +626,7 @@ Loading development environment (Rails 5.2.2.1)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">sudo tee /etc/yum.repos.d/nginx.repo > /dev/null << "EOF"
 [nginx-stable]
 name=nginx stable repo

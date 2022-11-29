@@ -216,7 +216,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm</code></pre>
     </div>
   </div>
@@ -235,7 +235,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum clean expire-cache</code></pre>
     </div>
   </div>
@@ -254,7 +254,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y salt-master salt-minion</code></pre>
     </div>
   </div>
@@ -298,7 +298,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/apt/sources.list
 
 deb http://ftp.us.debian.org/debian/ jessie main contrib non-free
@@ -320,7 +320,7 @@ deb http://repo.saltstack.com/apt/debian/8/amd64/latest jessie main</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">wget https://repo.saltstack.com/apt/debian/8/amd64/latest/SALTSTACK-GPG-KEY.pub
 sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     </div>
@@ -340,7 +340,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt-get update</code></pre>
     </div>
   </div>
@@ -359,7 +359,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt-get install -y salt-minion</code></pre>
     </div>
   </div>
@@ -400,7 +400,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">file_roots:
   base:
     - /srv/salt/
@@ -428,7 +428,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">pillar_roots:
   base:
     - /srv/salt/pillar</code></pre>
@@ -451,7 +451,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir -p /srv/salt/{states,templates,files,pillar}</code></pre>
     </div>
   </div>
@@ -480,7 +480,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">master: 192.168.121.201</code></pre>
     </div>
   </div>
@@ -502,7 +502,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">id: 192.168.121.201</code></pre>
     </div>
   </div>
@@ -524,7 +524,7 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart salt-master
 sudo systemctl restart salt-minion</code></pre>
     </div>
@@ -547,7 +547,7 @@ sudo systemctl restart salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl enable salt-master
 sudo systemctl enable salt-minion</code></pre>
     </div>
@@ -571,7 +571,7 @@ sudo systemctl enable salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl status salt-master
 systemctl status salt-minion</code></pre>
     </div>
@@ -615,7 +615,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">master: 192.168.121.201</code></pre>
     </div>
   </div>
@@ -637,7 +637,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">id: 192.168.121.202</code></pre>
     </div>
   </div>
@@ -657,7 +657,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart salt-minion</code></pre>
     </div>
   </div>
@@ -677,7 +677,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl enable salt-minion</code></pre>
     </div>
   </div>
@@ -702,7 +702,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl status salt-minion</code></pre>
     </div>
   </div>
@@ -730,7 +730,7 @@ systemctl status salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt-key -L
 
 # output
@@ -765,7 +765,7 @@ Rejected Keys:</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt-key -A --yes
 
 # output
@@ -798,7 +798,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '*' test.ping
 
 # output
@@ -887,7 +887,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '192.168.121.202' grains.items
 
 # output
@@ -922,7 +922,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '192.168.121.202' grains.item os_family
 
 # output
@@ -968,7 +968,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/pillar/master.sls
 
 data_centre: syd</code></pre>
@@ -986,7 +986,7 @@ data_centre: syd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/pillar/minion.sls
 
 data_centre: nyc</code></pre>
@@ -1045,7 +1045,7 @@ data_centre: nyc</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/pillar/top.sls
 
 base: # environment
@@ -1076,7 +1076,7 @@ base: # environment
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '*' pillar.items
 
 # output
@@ -1132,7 +1132,7 @@ base: # environment
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '*' saltutil.refresh_pillar
 
 # output
@@ -1182,7 +1182,7 @@ base: # environment
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/states/motd.sls
 
 /etc/motd:
@@ -1224,7 +1224,7 @@ base: # environment
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/templates/motd.j2
 
 ############### Salt Managed ###############
@@ -1264,7 +1264,7 @@ data center: {{ pillar['data_center'] }}
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/states/top.sls
 
 base: # environment
@@ -1292,7 +1292,7 @@ base: # environment
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '*' state.apply
 
 # output
@@ -1351,7 +1351,7 @@ Total run time:  44.262 ms
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># [vagrant@master ~]$ cat /etc/motd
 
 ############### Salt Managed ###############
@@ -1374,7 +1374,7 @@ data center: syd
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># vagrant@minion:~$ cat /etc/motd
 
 ############### Salt Managed ###############

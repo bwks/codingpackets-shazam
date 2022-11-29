@@ -152,7 +152,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum update -y && sudo yum upgrade -y</code></pre>
     </div>
   </div>
@@ -171,7 +171,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo setenforce permissive
 sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code></pre>
     </div>
@@ -192,7 +192,7 @@ sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y https://releases.hashicorp.com/vagrant/2.2.4/vagrant_2.2.4_x86_64.rpm</code></pre>
     </div>
   </div>
@@ -212,7 +212,7 @@ sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y qemu libvirt libvirt-devel ruby-devel gcc qemu-kvm rsync</code></pre>
     </div>
   </div>
@@ -233,7 +233,7 @@ sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant plugin install vagrant-libvirt</code></pre>
     </div>
   </div>
@@ -254,7 +254,7 @@ sudo sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start libvirtd.service
 sudo systemctl enable libvirtd.service</code></pre>
     </div>
@@ -275,7 +275,7 @@ sudo systemctl enable libvirtd.service</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo usermod -aG libvirt $USER</code></pre>
     </div>
   </div>
@@ -312,7 +312,7 @@ sudo systemctl enable libvirtd.service</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo tee --append /etc/environment > /dev/null << "EOF"
 LIBVIRT_DEFAULT_URI=qemu:///system
 EOF</code></pre>
@@ -335,7 +335,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">source /etc/environment</code></pre>
     </div>
   </div>
@@ -358,7 +358,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network connections='1'&gt;
   &lt;name&gt;vagrant-libvirt&lt;/name&gt;
   &lt;forward mode='nat'&gt;
@@ -390,7 +390,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vagrant-libvirt.xml
 virsh net-start vagrant-libvirt
 virsh net-autostart vagrant-libvirt</code></pre>
@@ -412,7 +412,7 @@ virsh net-autostart vagrant-libvirt</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/centos-test && cd ~/vagrant/centos-test
 vagrant init centos/7 && vagrant up
 

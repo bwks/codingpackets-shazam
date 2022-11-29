@@ -148,7 +148,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># tree ~/ansible
 ansible
 ├── ansible.cfg
@@ -203,7 +203,7 @@ ansible
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">&lt;role-name&gt;
 ├── defaults
 │   └── main.yml
@@ -240,7 +240,7 @@ ansible
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-galaxy init roles/base --offline
 ansible-galaxy init roles/interfaces --offline
 ansible-galaxy init roles/ospf --offline</code></pre>
@@ -268,7 +268,7 @@ ansible-galaxy init roles/ospf --offline</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/ansible.cfg
 [defaults]
 hostfile=inventory
@@ -316,7 +316,7 @@ become_ask_pass=True</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/group_vars/network
 ---
 ansible_user: cumulus</code></pre>
@@ -340,7 +340,7 @@ ansible_user: cumulus</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/inventory
 [server]
 lab-centos-01
@@ -387,7 +387,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/base/tasks/main.yml
 ---
 - name: Configure hostname in hosts file
@@ -418,7 +418,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/interface/tasks/main.yml
 ---
 - name: Configure front panel ports
@@ -458,7 +458,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/ospf/tasks/main.yml
 ---
 - name: Enable zebra and ospf
@@ -501,7 +501,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/interfaces/handlers/main.yml
 ---
 - name: reload_networking
@@ -524,7 +524,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/roles/ospf/handlers/main.yml
 ---
 - name: restart_quagga
@@ -550,7 +550,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/configure-devices.yml
 ---
 - name: Configure devices
@@ -576,7 +576,7 @@ leaf</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook configure-devices.yml
 SSH password:
 SUDO password[defaults to SSH password]:

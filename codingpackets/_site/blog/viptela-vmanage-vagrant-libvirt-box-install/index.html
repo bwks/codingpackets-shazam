@@ -187,7 +187,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/viptela
 cd ~/vagrant/boxes/viptela</code></pre>
     </div>
@@ -210,7 +210,7 @@ cd ~/vagrant/boxes/viptela</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/viptela-vmanage-genericx86-64.qcow2 .</code></pre>
     </div>
   </div>
@@ -232,7 +232,7 @@ cd ~/vagrant/boxes/viptela</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img create -f qcow2 vmanage-disk2-base.qcow2 100G
 
 # output
@@ -270,7 +270,7 @@ Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=of
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vmanage-base \
     --os-type linux \
@@ -306,7 +306,7 @@ Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=of
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Starting install...
 Creating domain...                                                                                                                                                                          |    0 B  00:00:01
 Connected to domain vmanage-base
@@ -337,7 +337,7 @@ vmanage login:</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Welcome to Viptela CLI
 admin connected from 127.0.0.1 using console on vmanage
 Available storage devices:
@@ -371,7 +371,7 @@ Proceed anyway? (y,n) <span class="hljs-string">y</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Filesystem label=
 OS type: Linux
 Block size=4096 (log=2)
@@ -414,7 +414,7 @@ vmanage# The system is going down for reboot NOW!</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">config
 system
  aaa
@@ -459,7 +459,7 @@ system
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># viptela_cli
 
 vmanage# vshell
@@ -485,7 +485,7 @@ vmanage:~$</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">su vagrant
 password: &lt;vagrant&gt;
 
@@ -511,7 +511,7 @@ vmanage# vshell</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /home/vagrant/.ssh && cd /home/vagrant/.ssh</code></pre>
     </div>
   </div>
@@ -533,7 +533,7 @@ vmanage# vshell</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">/home/vagrant/.ssh/authorized_keys
 
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key</code></pre>
@@ -559,7 +559,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vshell
 
 vsmart:/home/vagrant/.ssh$ exit
@@ -595,7 +595,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS         STATUS  STATUS  TYPE   TYPE  MTU  HWADD
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ssh vagrant@192.168.121.55 -i ~/.vagrant.d/insecure_private_key
 
 # Success
@@ -620,7 +620,7 @@ vmanage#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vmanage# poweroff
 Are you sure you want to power off the system? [yes,NO] <span class="hljs-string">yes</span></code></pre>
     </div>
@@ -655,7 +655,7 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
     </div>
   </div>
@@ -675,7 +675,7 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":16}' > metadata.json</code></pre>
     </div>
   </div>
@@ -697,7 +697,7 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh viptela-vmanage-genericx86-64.qcow2
 
 # output
@@ -746,7 +746,7 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
   "name": "viptela/vmanage",
   "description": "Viptela vManage",
@@ -780,7 +780,7 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vmanage.json
 
 # output
@@ -807,7 +807,7 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -854,7 +854,7 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/vagrant/boxes/viptela/storage</code></pre>
     </div>
   </div>
@@ -876,7 +876,7 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;pool type='dir'&gt;
   &lt;name&gt;viptela-storage&lt;/name&gt;
   &lt;capacity unit='bytes'&gt;950504235008&lt;/capacity&gt;
@@ -911,7 +911,7 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh pool-create viptela-storage.xml
 
 # output
@@ -935,7 +935,7 @@ Pool viptela-storage created from viptela-storage.xml</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -986,7 +986,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp vmanage-disk2-base.qcow2 storage/vmanage-disk2.qcow2</code></pre>
     </div>
   </div>
@@ -1007,7 +1007,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh pool-refresh viptela-storage
 
 # output
@@ -1032,7 +1032,7 @@ Pool viptela-storage refreshed</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -1115,7 +1115,7 @@ by creating a plugin or reporting a bug.</span></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
 
 vagrant ssh
@@ -1144,7 +1144,7 @@ vmanage# show version
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
 
 vagrant destroy -f
@@ -1171,7 +1171,7 @@ vagrant destroy -f
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh vol-delete vmanage-disk2.qcow2 --pool viptela-storage
 
 # output
@@ -1195,7 +1195,7 @@ Vol vmanage-disk2.qcow2 deleted</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh pool-destroy viptela-storage
 
 # output

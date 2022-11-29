@@ -186,7 +186,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/cisco/asav
 cd ~/vagrant/boxes/cisco/asav</code></pre>
     </div>
@@ -208,7 +208,7 @@ cd ~/vagrant/boxes/cisco/asav</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/asav992.qcow2 .</code></pre>
     </div>
   </div>
@@ -231,7 +231,7 @@ cd ~/vagrant/boxes/cisco/asav</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
     </div>
   </div>
@@ -253,7 +253,7 @@ cd ~/vagrant/boxes/cisco/asav</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># day0-config
 
 !
@@ -310,7 +310,7 @@ rest-api agent
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">genisoimage -r -o day0.iso day0-config
 
 # output
@@ -340,7 +340,7 @@ Max brk space used 0
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --connect=qemu:///system \
     --network network=vagrant-libvirt,model=virtio \
@@ -376,7 +376,7 @@ Max brk space used 0
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># output
 
 WARNING  CDROM media does not print to the text console by default, so you likely will not see text install output. You might want to use --location. See the man page for examples of using --location with CDROM media
@@ -415,7 +415,7 @@ asav></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show int ip brie
 
 # output
@@ -439,7 +439,7 @@ Management0/0              192.168.121.89  YES DHCP   up                    up</
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># host terminal
 
 ssh vagrant@192.168.121.89 -i ~/.vagrant.d/insecure_private_key
@@ -468,7 +468,7 @@ asav# exit</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># host terminal
 
 curl -k https://vagrant:vagrant@192.168.121.89/api/objects/networkobjects
@@ -506,7 +506,7 @@ curl -k https://vagrant:vagrant@192.168.121.89/api/objects/networkobjects
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh destroy asav
 
 # output
@@ -530,7 +530,7 @@ Domain asav destroyed</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{"provider":"libvirt","format":"qcow2","virtual_size":9}</code></pre>
     </div>
   </div>
@@ -551,7 +551,7 @@ Domain asav destroyed</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh asav992.qcow2
 
 # output
@@ -584,7 +584,7 @@ Total bytes written: 226959360 (217MiB, 21MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
   "name": "cisco/asav",
   "description": "Cisco ASAv",
@@ -618,7 +618,7 @@ Total bytes written: 226959360 (217MiB, 21MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add asav.json
 
 # output
@@ -645,7 +645,7 @@ Total bytes written: 226959360 (217MiB, 21MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -680,7 +680,7 @@ cisco/iosv                           (libvirt, 15.6-1-T)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/asav-test
 cd ~/asav-test</code></pre>
     </div>
@@ -702,7 +702,7 @@ cd ~/asav-test</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -749,7 +749,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -804,7 +804,7 @@ Bringing machine 'fw01' up with 'libvirt' provider...
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host terminal
 
 vagrant ssh
@@ -885,7 +885,7 @@ asav#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
 
 vagrant destroy -f
@@ -908,7 +908,7 @@ vagrant destroy -f
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f asav.qcow2
 virsh undefine asav
 

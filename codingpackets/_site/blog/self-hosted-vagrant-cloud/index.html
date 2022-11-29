@@ -161,7 +161,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install httpd</code></pre>
     </div>
   </div>
@@ -180,7 +180,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start httpd
 sudo systemctl enable httpd</code></pre>
     </div>
@@ -204,7 +204,7 @@ sudo systemctl enable httpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-apache hljs px-5 dark:opacity-80 rounded-b">NameVirtualHost *:80
 
 &lt;VirtualHost *:80&gt;
@@ -237,7 +237,7 @@ sudo systemctl enable httpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir -p /var/www/html/repo/vagrant/cumulus/vx
 sudo mkdir /var/log/httpd/repo</code></pre>
     </div>
@@ -257,7 +257,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo wget -O /var/www/html/repo/vagrant/cumulus/vx/cumulus-vx-3.7.6.box https://vagrantcloud.com/CumulusCommunity/boxes/cumulus-vx/versions/3.7.6/providers/libvirt.box</code></pre>
     </div>
   </div>
@@ -284,7 +284,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
   "name": "cumulus/vx",
   "description": "Cumulus VX",
@@ -317,7 +317,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chown -R apache:apache /var/www</code></pre>
     </div>
   </div>
@@ -336,7 +336,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart httpd.service</code></pre>
     </div>
   </div>
@@ -357,7 +357,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo restorecon -r /var/www/html/repo/*</code></pre>
     </div>
   </div>
@@ -376,7 +376,7 @@ sudo mkdir /var/log/httpd/repo</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo firewall-cmd --zone=public --permanent --add-service=http
 sudo firewall-cmd --reload</code></pre>
     </div>
@@ -398,7 +398,7 @@ sudo firewall-cmd --reload</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/cumulus-test/ && cd ~/vagrant/cumulus-test/</code></pre>
     </div>
   </div>
@@ -420,7 +420,7 @@ sudo firewall-cmd --reload</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b">Vagrant.configure("2") do |config|
   config.vm.box = "cumulus/vx"
   config.vm.box_url = "http://util01.lab.local/repo/vagrant/cumulus-vx.json"
@@ -458,7 +458,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -535,7 +535,7 @@ default: Downloading: http://util01.lab.local/repo/vagrant/cumulus/vx/cumulus-vx
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output

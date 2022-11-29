@@ -234,7 +234,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/juniper/vsrx/18.3R1-S1.4
 cd ~/vagrant/boxes/juniper/vsrx/18.3R1-S1.4</code></pre>
     </div>
@@ -271,7 +271,7 @@ cd ~/vagrant/boxes/juniper/vsrx/18.3R1-S1.4</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/junos-vsrx-x86-64-18.3R1-S1.4.ide.ova .</code></pre>
     </div>
   </div>
@@ -290,7 +290,7 @@ cd ~/vagrant/boxes/juniper/vsrx/18.3R1-S1.4</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tar xvf junos-vsrx-x86-64-18.3R1-S1.4.ide.ova
 
 # output
@@ -315,7 +315,7 @@ junos-vsrx-x86-64.ide-disk1.vmdk</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img convert -f vmdk -O qcow2 junos-vsrx-x86-64.ide-disk1.vmdk junos-vsrx-x86-64.ide-disk1.qcow2</code></pre>
     </div>
   </div>
@@ -336,7 +336,7 @@ junos-vsrx-x86-64.ide-disk1.vmdk</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir iso_dir</code></pre>
     </div>
   </div>
@@ -357,7 +357,7 @@ junos-vsrx-x86-64.ide-disk1.vmdk</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tee iso_dir/juniper.conf > /dev/null << "EOF"
 system {
     login {
@@ -441,7 +441,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkisofs -l -o bootstrap.iso iso_dir
 
 # output
@@ -489,7 +489,7 @@ Max brk space used 0
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --name vsrx \
     --cpu host \
@@ -527,7 +527,7 @@ Max brk space used 0
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">FreeBSD/amd64 (vsrx) (ttyu0)
 
 login: vagrant
@@ -558,7 +558,7 @@ fxp0.0                  up    up   inet     192.168.121.138/24</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
 
 ssh vagrant@192.168.121.138 -i ~/.vagrant.d/insecure_private_key
@@ -587,7 +587,7 @@ vagrant@vsrx></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">request system power-off
 
 # output
@@ -629,7 +629,7 @@ System going down IMMEDIATELY</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">tee metadata.json > /dev/null << "EOF"
 {"provider":"libvirt","format":"qcow2","virtual_size":19}
 EOF</code></pre>
@@ -654,7 +654,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
     </div>
   </div>
@@ -676,7 +676,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh junos-vsrx-x86-64.ide-disk1.qcow2
 
 # output
@@ -709,7 +709,7 @@ Total bytes written: 984268800 (939MiB, 21MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">tee vsrx.json > /dev/null << "EOF"
 {
   "name": "juniper/vsrx-packetmode",
@@ -745,7 +745,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vsrx.json
 
 # output
@@ -772,7 +772,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -802,7 +802,7 @@ juniper/vsrx                  (libvirt, 12.1X47-D15.4)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -872,7 +872,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -941,7 +941,7 @@ Bringing machine 'fw01' up with 'libvirt' provider...
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
 
 vagrant ssh
@@ -972,7 +972,7 @@ Junos: 18.3R1-S1.4</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># from host shell
 
 vagrant destroy -f
@@ -995,7 +995,7 @@ vagrant destroy -f
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f junos-vsrx-x86-64.ide-disk1.qcow2
 virsh undefine vsrx
 

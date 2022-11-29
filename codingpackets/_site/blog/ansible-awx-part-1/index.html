@@ -188,7 +188,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">yum install -y epel-release
 yum install -y git gettext docker nodejs npm gcc-c++ bzip2</code></pre>
     </div>
@@ -210,7 +210,7 @@ yum install -y git gettext docker nodejs npm gcc-c++ bzip2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pip2 install ansible docker</code></pre>
     </div>
   </div>
@@ -228,7 +228,7 @@ yum install -y git gettext docker nodejs npm gcc-c++ bzip2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl start docker
 systemctl enable docker</code></pre>
     </div>
@@ -248,7 +248,7 @@ systemctl enable docker</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 
@@ -272,7 +272,7 @@ firewall-cmd --reload</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">setenforce permissive</code></pre>
     </div>
   </div>
@@ -293,7 +293,7 @@ firewall-cmd --reload</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">SELINUX=permissive</code></pre>
     </div>
   </div>
@@ -314,7 +314,7 @@ firewall-cmd --reload</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /opt/ansible
 cd /opt/ansible
 
@@ -341,7 +341,7 @@ git clone https://github.com/ansible/awx.git</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">#/opt/ansible/awx/installer/inventory
 
 # old
@@ -364,7 +364,7 @@ localhost ansible_connection=local ansible_python_interpreter="/usr/local/bin/py
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd /opt/ansible/awx/installer/
 
 ansible-playbook -i inventory install.yml</code></pre>

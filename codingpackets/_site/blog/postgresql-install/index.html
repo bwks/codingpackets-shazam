@@ -155,7 +155,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Create the file repository configuration:
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
@@ -188,7 +188,7 @@ sudo apt -y install postgresql postgresql-contrib libpq-dev</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Install the repository RPM:
 sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
@@ -216,7 +216,7 @@ sudo dnf install -y postgresql13-server postgresql13-devel postgresql13-contrib 
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Ubuntu
 
 /usr/lib/postgresql/13/bin/postgres -V
@@ -249,7 +249,7 @@ postgres (PostgreSQL) 13.1</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl status postgresql.service
 
 # output 
@@ -287,7 +287,7 @@ Nov 20 22:59:44 devbox systemd[1]: Finished PostgreSQL RDBMS.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
 
 # output 
@@ -309,7 +309,7 @@ Initializing database ... OK</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start postgresql-13
 sudo systemctl enable postgresql-13
 
@@ -333,7 +333,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/postgresql-13.servic
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">systemctl status postgresql-13.service
 
 # output 
@@ -385,7 +385,7 @@ Nov 23 14:38:14 centos8.homelab.local systemd[1]: Started PostgreSQL 13 database
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ss -tunlap | grep 5432
 
 # output 
@@ -425,7 +425,7 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo -u postgres psql</code></pre>
     </div>
   </div>
@@ -447,7 +447,7 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">create database testing123_db template template1;</code></pre>
     </div>
   </div>
@@ -467,7 +467,7 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">create user user_name with encrypted password "mypassword";</code></pre>
     </div>
   </div>
@@ -489,7 +489,7 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">grant all privileges on database testing123_db to user_name;</code></pre>
     </div>
   </div>

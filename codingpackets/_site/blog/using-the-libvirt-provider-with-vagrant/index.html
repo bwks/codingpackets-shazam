@@ -164,7 +164,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install -y qemu-kvm libvirt-bin
 sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</code></pre>
     </div>
@@ -183,7 +183,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo adduser $USER libvirtd</code></pre>
     </div>
   </div>
@@ -201,7 +201,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install -y virtinst</code></pre>
     </div>
   </div>
@@ -219,7 +219,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant plugin install vagrant-libvirt</code></pre>
     </div>
   </div>
@@ -242,7 +242,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network connections='1'&gt;
   &lt;name&gt;vagrant-libvirt&lt;/name&gt;
   &lt;forward mode='nat'&gt;
@@ -274,7 +274,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vagrant-libvirt-net.xml</code></pre>
     </div>
   </div>
@@ -294,7 +294,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-list
 
 # output
@@ -321,7 +321,7 @@ Name                 State      Autostart     Persistent
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-start vagrant-libvirt
 virsh net-autostart vagrant-libvirt</code></pre>
     </div>
@@ -340,7 +340,7 @@ virsh net-autostart vagrant-libvirt</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-list
 
 # output
@@ -374,7 +374,7 @@ virsh net-autostart vagrant-libvirt</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/cumulus-libvirt-test
 cd ~/cumulus-libvirt-test</code></pre>
     </div>
@@ -393,7 +393,7 @@ cd ~/cumulus-libvirt-test</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -420,7 +420,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up --provider=libvirt
 
 # output
@@ -482,7 +482,7 @@ Bringing machine 'default' up with 'libvirt' provider...
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host shell
 
 vagrant ssh
@@ -515,7 +515,7 @@ vagrant@cumulus:~$</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
 
 vagrant destroy -f

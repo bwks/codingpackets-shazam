@@ -201,7 +201,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># RHEL/Centos</span>
 
 sudo yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm
@@ -222,7 +222,7 @@ sudo yum clean expire-cache</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Debian
 
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
@@ -246,7 +246,7 @@ sudo apt-get update</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># RHEL/Centos
 
 # Masters optionally have a salt-minion daemon
@@ -302,7 +302,7 @@ yum install -y salt-minion</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /etc/salt/master
 
 
@@ -338,7 +338,7 @@ pillar_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /etc/salt/minion
 
 
@@ -411,7 +411,7 @@ id: minion01</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/states/top.sls
 base:
   '*':
@@ -456,7 +456,7 @@ base:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '*' sys.doc network</code></pre>
     </div>
   </div>
@@ -535,7 +535,7 @@ base:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">output</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /srv/salt/states
 
 states/
@@ -588,7 +588,7 @@ states/
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /etc/salt/master
 
 file_roots:
@@ -627,7 +627,7 @@ file_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">{% set vim = salt.grains.filter_by({
     'Debian': {
         'pkg': 'vim',
@@ -660,7 +660,7 @@ file_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '&lt;target&gt;' grains.ls</code></pre>
     </div>
   </div>
@@ -680,7 +680,7 @@ file_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo salt '&lt;target&gt;' grains.items</code></pre>
     </div>
   </div>
@@ -727,7 +727,7 @@ file_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /etc/salt/master
 
 pillar_roots:
@@ -753,7 +753,7 @@ pillar_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">vim installed:
   pkg.installed:
     - name: {{ pillar['data_centre'] }}</code></pre>
@@ -792,7 +792,7 @@ pillar_roots:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># states/python/python.sls
 {% from 'python/map.jinja' import required_packages with context %}
 {% from 'python/map.jinja' import python_versions with context %}

@@ -210,7 +210,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install epel-release
 sudo yum install ansible</code></pre>
     </div>
@@ -232,7 +232,7 @@ sudo yum install ansible</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
 sudo apt-get update
@@ -257,7 +257,7 @@ sudo apt-get install ansible</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># root user or user with sudo privileges
 sudo yum install -y epel-release python-virtualenv gcc libffi-devel python-devel openssl-devel sshpass
 sudo yum group install -y "Development Tools"
@@ -294,7 +294,7 @@ cd ~/ansible</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/inventory
 [server]
 lab-centos-01
@@ -338,7 +338,7 @@ network</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/ansible.cfg
 [defaults]
 hostfile=inventory
@@ -366,7 +366,7 @@ retry_files_enabled=False</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># ~/ansible
 ansible
 ├── ansible.cfg
@@ -391,7 +391,7 @@ ansible
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">ansible lab-cumulus-01 -m ping -u cumulus -k
 SSH password:
 
@@ -444,7 +444,7 @@ lab-cumulus-01 | SUCCESS => {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible lab-cumulus-01 -m command -a "net show interface" -u cumulus -k
 SSH password:
 
@@ -481,7 +481,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">---
 # ~/ansible/show-interfaces.yml
 - hosts: network
@@ -537,7 +537,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook show-interfaces.yml -u cumulus -k
 SSH password:
 

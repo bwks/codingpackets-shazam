@@ -1,0 +1,232 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  I mainly use Visual Studio Code for my code editing and I have 
+  recently discovered how to create custom snippets which are a 
+  really hand feature. Snippets are shortcuts that generate code 
+  and help you save time. In this post, I will show you how you can 
+  create them too. 
+</p>
+
+<h3>Software Used</h3>
+<ul>
+  <li>VS Code 1.73.1</li>
+</ul>
+
+<h3 id="snippets-location">Snippets Location</h3>
+<p>
+  You create snippets based on the files language type.
+  The language type can be found in the bottom right of the VSCode window. 
+  In this example I am creating snippets for the 
+  {{ text::emphasize(text="Jinja HTML" )}} language. 
+</p>
+<p>
+  To create a snippet, browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "File",
+  "Preferences",
+  "Configure User Snippets",
+  "jinja-html",
+]
+) }}
+
+<p>
+  This will open up the {{ text::emphasize(text="jinja-html.json") }}
+  file.
+</p>
+
+<h3 id="snippets-creation">Snippets Creation</h3>
+<p>
+  Snippets are defined in {{ text::emphasize(text="json") }} documents
+  with the following schema.
+</p>
+{{ text::code_block(
+  header="json",
+  language="json",
+  code=`{
+  "&lt;snippet-name&gt;": {
+    "prefix": "&lt;snippet-key&gt;",
+    "body": [
+      "&lt;snippet-code&gt;"
+    ],
+    "description": "&lt;snippet-description&gt;"
+  }
+}`
+) }}
+
+<p>
+  To create a snippet you define the {{ text::emphasize(text="prefix") }} which is
+  used to invoke the snippet and the {{ text::emphasize(text="body") }} which is 
+  the code that is generated.
+</p>
+
+<p>
+  The below code block shows the snippets I have configured to aid 
+  me in writing blogs for this site.
+</p>
+{{ text::code_block(
+  header="jinja-html.json",
+  language="json",
+  code=`{
+  // Place your snippets for jinja here. Each snippet is defined under a snippet name and has a prefix, body and 
+  // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+  // same ids are connected.
+  // Example:
+  "New Blog": {
+    "prefix": "newblog",
+    "body": [
+      "{% extends \"_layouts/blog.jinja\" %}\n\n{% block page_content %}\n\n<h3 id=\"intro\">Intro</h3>\n<p>\n  \n</p>\n\n<h3 id=\"outro\">Outro</h3>\n<p>\n  \n</p>\n\n{% endblock page_content %}"
+    ],
+    "description": "New Blog"
+  },
+  "New Section": {
+    "prefix": "newsection",
+    "body": [
+      "<h3 id=\"$1\">$2</h3>\n<p>\n  $3\n</p>\n"
+    ],
+    "description": "New Section"
+  },
+  "Link Internal": {
+    "prefix": "linki",
+    "body": [
+      "{{ link::i(path=\"$1\", description=\"$2\") }}"
+    ],
+    "description": "Internal HTML link"
+  },
+  "Link External": {
+    "prefix": "linke",
+    "body": [
+      "{{ link::e(path=\"$1\", description=\"$2\") }}"
+    ],
+    "description": "External HTML link"
+  },
+  "Note Block": {
+    "prefix": "blocknote",
+    "body": [
+      "{{ text::note_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Note Block"
+  },
+  "Warning Block": {
+    "prefix": "blockwarn",
+    "body": [
+      "{{ text::warning_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Warning Block"
+  },
+  "Tip Block": {
+    "prefix": "blocktip",
+    "body": [
+      "{{ text::tip_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Tip Block"
+  },
+  "Important Block": {
+    "prefix": "blockimportant",
+    "body": [
+      "{{ text::important_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Important Block"
+  },
+  "Emphasize Text": {
+    "prefix": "emphasize",
+    "body": [
+      "{{ text::emphasize(text=\"$1\") }}"
+    ],
+    "description": "Emphasize Text"
+  },
+  "Keyboard": {
+    "prefix": "keyb",
+    "body": [
+      "{{ text::kbd(text=\"$1\") }}"
+    ],
+    "description": "Keyboard"
+  },
+  "Code": {
+    "prefix": "codeinline",
+    "body": [
+      "{{ text::code(text=\"$1\") }}"
+    ],
+    "description": "Code"
+  },
+  "Code Block": {
+    "prefix": "codeblock",
+    "body": [
+      "{{ text::code_block(\n  header=\"$1\",\n  language=\"$2\",\n  code=&#96;$3&#96;\n) }}"
+    ],
+    "description": "Code Block"
+  },
+  "Breadcrumbs": {
+    "prefix": "breadcrumbs",
+    "body": [
+      "{{ text::breadcrumbs(items=[\n  \"$1\",\n  \"$2\",\n]) }}"
+    ],
+    "description": "Breadcrumbs"
+  },
+  "Table Default": {
+    "prefix": "tabledefault",
+    "body": [
+      "{{ table::default(\n  header=[\"$1\"],\n  rows=[\"$2\"],\n) }}"
+    ],
+    "description": "Default table"
+  }
+}`
+) }}
+
+<h3 id="snippets-usage">Snippets Usage</h3>
+<p>
+  To use a snippet you start typing the {{ text::emphasize(text="prefix") }}
+  you definned and it will appear in the contet menu.
+</p>
+
+<p>
+  For example, to stub out a new blog I type 
+  {{ text::emphasize(text="newblog") }} which generates the 
+  following code.
+</p>
+
+
+{{ text::code_block(
+  header="jinja-html",
+  language="jinja",
+  code=`{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+&lt;h3 id="intro"&gt;Intro&lt;/h3&gt;
+&lt;p&gt;
+  
+&lt;/p&gt;
+
+&lt;h3 id="ontro"&gt;Outro&lt;/h3&gt;
+&lt;p&gt;
+  
+&lt;/p&gt;
+
+{% endblock page_content %}`
+) }}
+
+<p>
+  Or to hightlight some text I type {{ text::emphasize(text="emphasize") }}
+  to generate this:
+</p>
+
+{{ text::code_block(
+  header="html-jinja",
+  language="jinja",
+  code=`{{ text::emphasize(text="") }}`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  I have found that snippets are saving me time in writing blogs. 
+  I hope you have found this useful and can save some of your precious time as well.
+</p>
+
+{% endblock page_content %}
+

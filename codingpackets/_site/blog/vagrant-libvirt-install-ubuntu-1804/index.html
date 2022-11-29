@@ -153,7 +153,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt update -y && sudo apt upgrade -y</code></pre>
     </div>
   </div>
@@ -173,7 +173,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb
 
 # output
@@ -205,7 +205,7 @@ vagrant_2.2.9_x86_64.deb      100%[=============================================
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo dpkg -i vagrant_2.2.9_x86_64.deb
 
 # output
@@ -231,7 +231,7 @@ Setting up vagrant (1:2.2.9) ...</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">which vagrant
 # output
 
@@ -259,7 +259,7 @@ Vagrant 2.2.9</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt install -y qemu libvirt-bin ebtables dnsmasq-base
 sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</code></pre>
     </div>
@@ -280,7 +280,7 @@ sudo apt install -y libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev</cod
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant plugin install vagrant-libvirt
 
 # output
@@ -317,7 +317,7 @@ Installed the plugin 'vagrant-libvirt (0.1.2)'!</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo usermod -aG libvirt $USER</code></pre>
     </div>
   </div>
@@ -353,7 +353,7 @@ Installed the plugin 'vagrant-libvirt (0.1.2)'!</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network connections='1'&gt;
   &lt;name&gt;vagrant-libvirt&lt;/name&gt;
   &lt;forward mode='nat'&gt;
@@ -386,7 +386,7 @@ Installed the plugin 'vagrant-libvirt (0.1.2)'!</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vagrant-libvirt.xml
 virsh net-start vagrant-libvirt
 virsh net-autostart vagrant-libvirt</code></pre>
@@ -408,7 +408,7 @@ virsh net-autostart vagrant-libvirt</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/centos-test && cd ~/vagrant/centos-test && vagrant init centos/7
   
 # output
@@ -437,7 +437,7 @@ the comments in the Vagrantfile as well as documentation on
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># Comments removed for berevity.
 
 Vagrant.configure("2") do |config|
@@ -461,7 +461,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -537,7 +537,7 @@ Download redirected to host: cloud.centos.org
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant destroy -f
 
 # output
@@ -559,7 +559,7 @@ Download redirected to host: cloud.centos.org
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm ~/vagrant_2.2.9_x86_64.deb</code></pre>
     </div>
   </div>

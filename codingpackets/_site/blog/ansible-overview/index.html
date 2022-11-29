@@ -193,7 +193,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/envs
 virtualenv ~/envs/ansible-env
 source ~/envs/ansible-env/bin/activate
@@ -273,7 +273,7 @@ pip install ansible</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">test.lab.local
 
 [sydney]
@@ -312,7 +312,7 @@ melbourne</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">[user@control-node ~]$ ./inventoryscript --list
 {
   "sydney"  : [ "host1.lab.sydney", "host2.lab.sydney" ],
@@ -337,7 +337,7 @@ melbourne</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">[user@control-node ~]$ ./inventoryscript --host host1.lab.sydney
 {
     "ntp_server" : "ntp.lab.sydney",
@@ -413,7 +413,7 @@ melbourne</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">---
 - hosts: sydney
 
@@ -486,7 +486,7 @@ melbourne</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">tasks:
   - name: ensure openssh is at the latest version
     yum: name=openssh-server state=latest</code></pre>
@@ -579,7 +579,7 @@ melbourne</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">"ansible_all_ipv4_addresses": [
     "REDACTED IP ADDRESS"
 ],
@@ -658,7 +658,7 @@ long list of values
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b">This is a MOTD file for {{ inventory_hostname }}
 {% if ansible_all_ipv4_addresses %}
   {% for ip in ansible_all_ipv4_addresses %}
@@ -682,7 +682,7 @@ long list of values
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">tasks:
   - template: src=templates/motd.j2
               dest=/etc/motd
@@ -726,7 +726,7 @@ long list of values
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">output</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">roles/example_role/
 |-- README.md
 |-- defaults
@@ -771,7 +771,7 @@ long list of values
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-galaxy --help
 Usage: ansible-galaxy [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options] ...
 
@@ -813,7 +813,7 @@ Found 2 roles matching your search:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-vault --help
 Usage: ansible-vault [create|decrypt|edit|encrypt|rekey|view] [--help] [options] vaultfile.yml</code></pre>
     </div>

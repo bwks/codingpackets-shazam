@@ -184,7 +184,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/cisco/iosv
 cd ~/vagrant/boxes/cisco/iosv</code></pre>
     </div>
@@ -206,7 +206,7 @@ cd ~/vagrant/boxes/cisco/iosv</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/vios-adventerprisek9-m.vmdk.SPA.156-1.T .</code></pre>
     </div>
   </div>
@@ -229,7 +229,7 @@ cd ~/vagrant/boxes/cisco/iosv</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
     </div>
   </div>
@@ -252,7 +252,7 @@ cd ~/vagrant/boxes/cisco/iosv</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img convert -f vmdk -O qcow2 vios-adventerprisek9-m.vmdk.SPA.156-1.T iosv.qcow2</code></pre>
     </div>
   </div>
@@ -272,7 +272,7 @@ cd ~/vagrant/boxes/cisco/iosv</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">virt-install \
     --connect=qemu:///system \
     --network network=vagrant-libvirt,model=e1000 \
@@ -309,7 +309,7 @@ cd ~/vagrant/boxes/cisco/iosv</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># output
 
                              GNU GRUB  version 2.00
@@ -356,7 +356,7 @@ Router></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">!
 en
 conf t
@@ -449,7 +449,7 @@ wr mem
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">show ip int brie
 
 # output
@@ -473,7 +473,7 @@ GigabitEthernet0/0         192.168.121.63  YES DHCP   up                    up</
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># host terminal
 
 ssh vagrant@192.168.121.63 -i ~/.vagrant.d/insecure_private_key
@@ -530,7 +530,7 @@ Connection to 192.168.121.63 closed.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh destroy iosv
 
 # output
@@ -554,7 +554,7 @@ Domain iosv destroyed</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{"provider":"libvirt","format":"qcow2","virtual_size":2}</code></pre>
     </div>
   </div>
@@ -575,7 +575,7 @@ Domain iosv destroyed</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh iosv.qcow2
 
 # output
@@ -608,7 +608,7 @@ Total bytes written: 123637760 (118MiB, 15MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
   "name": "cisco/iosv",
   "description": "Cisco IOSv",
@@ -642,7 +642,7 @@ Total bytes written: 123637760 (118MiB, 15MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add iosv.json
 
 # output
@@ -669,7 +669,7 @@ Total bytes written: 123637760 (118MiB, 15MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -703,7 +703,7 @@ cisco/csr1000v                       (libvirt, 03.15.00.S-155-2-S)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/iosv-test
 cd ~/iosv-test</code></pre>
     </div>
@@ -725,7 +725,7 @@ cd ~/iosv-test</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -774,7 +774,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -829,7 +829,7 @@ Bringing machine 'rt01' up with 'libvirt' provider...
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host terminal
 
 vagrant ssh
@@ -908,7 +908,7 @@ iosv#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
 
 vagrant destroy -f
@@ -931,7 +931,7 @@ vagrant destroy -f
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f iosv.qcow2
 virsh undefine iosv
 

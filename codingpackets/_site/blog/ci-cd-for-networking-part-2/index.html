@@ -146,7 +146,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y dnsmasq</code></pre>
     </div>
   </div>
@@ -167,7 +167,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo groupadd -r dnsmasq
 sudo useradd -r -g dnsmasq dnsmasq</code></pre>
     </div>
@@ -188,7 +188,7 @@ sudo useradd -r -g dnsmasq dnsmasq</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.old</code></pre>
     </div>
   </div>
@@ -208,7 +208,7 @@ sudo useradd -r -g dnsmasq dnsmasq</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># /etc/dnsmasq.conf
 
 listen-address=127.0.0.1,192.168.121.120
@@ -246,7 +246,7 @@ no-poll</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/resolv.dnsmasq
 
 nameserver 8.8.8.8
@@ -271,7 +271,7 @@ nameserver 8.8.4.4</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/resolv.conf
 
 nameserver 127.0.0.1</code></pre>
@@ -294,7 +294,7 @@ nameserver 127.0.0.1</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/hosts
 
 192.168.121.120 util
@@ -339,7 +339,7 @@ nameserver 127.0.0.1</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo dnsmasq --test
 
 # output
@@ -363,7 +363,7 @@ dnsmasq: syntax check OK.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start dnsmasq
 sudo systemctl enable dnsmasq</code></pre>
     </div>
@@ -387,7 +387,7 @@ sudo systemctl enable dnsmasq</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">DEVICE="eth0"
 BOOTPROTO="dhcp"
 ONBOOT="yes"
@@ -416,7 +416,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart network</code></pre>
     </div>
   </div>
@@ -438,7 +438,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y ntp</code></pre>
     </div>
   </div>
@@ -458,7 +458,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /etc/ntp.conf /etc/ntp.conf.old</code></pre>
     </div>
   </div>
@@ -478,7 +478,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># /etc/ntp.conf
 
 # For more information about this file, see the man pages
@@ -552,7 +552,7 @@ disable monitor</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start ntpd
 sudo systemctl enable ntpd</code></pre>
     </div>
@@ -573,7 +573,7 @@ sudo systemctl enable ntpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ntpq -p
 
 # output
@@ -625,7 +625,7 @@ sudo systemctl enable ntpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl genrsa -out ROOTCA.key 2048</code></pre>
     </div>
   </div>
@@ -644,7 +644,7 @@ sudo systemctl enable ntpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">openssl req -x509 -new -nodes -key ROOTCA.key -sha256 -days 1024 \
     -subj "/C=AU/ST=NSW/L=NSW/O=LAB/CN=util.lab.local" \
     -out ROOTCA.pem</code></pre>
@@ -668,7 +668,7 @@ sudo systemctl enable ntpd</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv ROOTCA.* /etc/ssl/certs/ ; cd /etc/ssl/certs/
 sudo chown root:root ROOTCA.*
 sudo chmod 0644 ROOTCA.pem

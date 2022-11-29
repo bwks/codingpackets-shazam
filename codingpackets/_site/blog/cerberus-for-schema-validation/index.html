@@ -161,7 +161,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/cerberus && cd ~/cerberus</code></pre>
     </div>
   </div>
@@ -177,7 +177,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">pipenv install cerberus pyyaml && pipenv shell</code></pre>
     </div>
   </div>
@@ -201,7 +201,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">schema = {
   "hostname": {
     "type": "string",
@@ -249,7 +249,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">data = {
   "hostname": "rt01"
 }</code></pre>
@@ -271,7 +271,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># import the Validator class.
 
 from cerberus import Validator
@@ -317,7 +317,7 @@ True</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">data = {}
 
 v.validate(data, schema)
@@ -360,7 +360,7 @@ v.errors
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">schema = {
   "hostname": {
     "type": "string",
@@ -424,7 +424,7 @@ v.errors
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">yaml</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">---
 hostname:
   type: "string"
@@ -477,7 +477,7 @@ interfaces:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">json</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">data = {
   "hostname": "rt01",
   "system_mac": "00:11:22:aa:bb:cc",
@@ -522,7 +522,7 @@ interfaces:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">yaml</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b">---
 hostname: "rt01"
 
@@ -584,7 +584,7 @@ interfaces:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">import re
 
 from ipaddress import ip_address
@@ -658,7 +658,7 @@ class CustomValidator(Validator):
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">v = CustomValidator()
 
 v.validate(data, schema)
@@ -685,7 +685,7 @@ True</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">def mac_address(field, value, error):
     """
     Validate MAC address

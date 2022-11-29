@@ -212,7 +212,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/vagrant/boxes/juniper/vmx
 cd ~/vagrant/boxes/juniper/vmx</code></pre>
     </div>
@@ -235,7 +235,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp ~/Downloads/vmx-bundle-18.2R1.9.tgz .</code></pre>
     </div>
   </div>
@@ -255,7 +255,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tar -xvf vmx-bundle-18.2R1.9.tgz</code></pre>
     </div>
   </div>
@@ -277,7 +277,7 @@ cd ~/vagrant/boxes/juniper/vmx</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cp vmx/images/junos-vmx-x86-64-18.2R1.9.qcow2 vcp-hda.qcow2
 cp vmx/images/vmxhdd.img vcp-hdb.qcow2
 cp vmx/images/metadata-usb-re.img vcp-hdc.img
@@ -301,7 +301,7 @@ cp vmx/images/vFPC-20180605.img vfp-hda.img</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network&gt;
   &lt;name&gt;vmx-int&lt;/name&gt;
   &lt;bridge name='vmx-int' stp='on' delay='0'/&gt;
@@ -325,7 +325,7 @@ cp vmx/images/vFPC-20180605.img vfp-hda.img</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vmx-int.xml
 virsh net-start vmx-int</code></pre>
     </div>
@@ -347,7 +347,7 @@ virsh net-start vmx-int</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 virt-install \
@@ -375,7 +375,7 @@ virt-install \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 virt-install \
@@ -422,7 +422,7 @@ virt-install \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 FreeBSD/amd64 (Amnesiac) (ttyu0)
@@ -452,7 +452,7 @@ root> configure</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 delete chassis auto-image-upgrade
@@ -484,7 +484,7 @@ commit and-quit</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 show interfaces terse | match fxp0.0
@@ -505,7 +505,7 @@ fxp0.0                  up    up   inet     192.168.121.151/24</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 ssh root@192.168.121.151
@@ -532,7 +532,7 @@ root#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 set system login user vagrant uid 2000
@@ -565,7 +565,7 @@ commit and-quit</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 ssh vagrant@192.168.121.151 -i ~/.vagrant.d/insecure_private_key
@@ -589,7 +589,7 @@ vagrant@vmx></code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 show chassis fpc
@@ -624,7 +624,7 @@ Slot State            (C)  Total  Interrupt      1min   5min   15min  DRAM (MB) 
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VCP
 
 request system power-off
@@ -662,7 +662,7 @@ Power Off the system ? [yes,no] (no) yes</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 sed -i  's/PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -688,7 +688,7 @@ service sshd restart</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 ip addr | grep 192.168.121
@@ -707,7 +707,7 @@ ip addr | grep 192.168.121
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 ssh root@192.168.121.107
@@ -739,7 +739,7 @@ root@localhost:~#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 sed -i  's/root:x:0:0:root:\/root:\/bin\/sh/root:x:0:0:root:\/etc\/root:\/bin\/sh/' /etc/passwd
@@ -764,7 +764,7 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 crontab -e
@@ -810,7 +810,7 @@ crontab -e
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 ssh root@192.168.121.107 -i ~/.vagrant.d/insecure_private_key
@@ -834,7 +834,7 @@ root@localhost:~#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># VFP
 
 /sbin/shutdown -h now</code></pre>
@@ -870,7 +870,7 @@ root@localhost:~#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
     </div>
   </div>
@@ -891,7 +891,7 @@ root@localhost:~#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":28}' > metadata.json</code></pre>
     </div>
   </div>
@@ -911,7 +911,7 @@ root@localhost:~#</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh vcp-hda.qcow2
 
 # output
@@ -944,7 +944,7 @@ Total bytes written: 1356738560 (1.3GiB, 21MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > vcp.json
 {
   "name": "juniper/vmx-vcp",
@@ -980,7 +980,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vcp.json
 
 # output
@@ -1007,7 +1007,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -1041,7 +1041,7 @@ extreme/xos                   (libvirt, 22.4.1.4)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir /opt/vagrant/storage
 sudo chmod 0775 /opt/vagrant/storage/
 sudo chown root:libvirtd /opt/vagrant/storage/
@@ -1069,7 +1069,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":3}' > metadata.json</code></pre>
     </div>
   </div>
@@ -1091,7 +1091,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qemu-img convert -f raw -O qcow2 vfp-hda.img vfp-hda.qcow2</code></pre>
     </div>
   </div>
@@ -1111,7 +1111,7 @@ mv vcp-hdc.img /opt/vagrant/storage/vmx-vcp-hdc-18.2R1.9-base.img</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">bash create_box.sh vfp-hda.qcow2
 
 # output
@@ -1144,7 +1144,7 @@ Total bytes written: 333250560 (318MiB, 17MiB/s)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">cat << EOF > vfp.json
 {
   "name": "juniper/vmx-vfp",
@@ -1179,7 +1179,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box add vfp.json
 
 # output
@@ -1206,7 +1206,7 @@ EOF</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant box list
 
 # output
@@ -1240,7 +1240,7 @@ juniper/vmx-vcp               (libvirt, 18.2R1.9)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir ~/vmx-test && cd ~/vmx-test</code></pre>
     </div>
   </div>
@@ -1261,7 +1261,7 @@ juniper/vmx-vcp               (libvirt, 18.2R1.9)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -1395,7 +1395,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant up
 
 # output
@@ -1525,7 +1525,7 @@ Progress: 36%
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Host terminal
 
 vagrant ssh vmx-vcp-1
@@ -1589,7 +1589,7 @@ JUNOS jail runtime [20180614.6c3f819_builder_stable_11]</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># back in host shell
 
 vagrant destroy -f
@@ -1624,7 +1624,7 @@ vagrant destroy -f
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">rm -f ~/vagrant/boxes/juniper/vmx/*.{img,qcow2}
 rm -rf ~/vagrant/boxes/juniper/vmx/vmx
 
@@ -1653,7 +1653,7 @@ Domain vmx-vfp has been undefined</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-destroy vmx-int
 virsh net-undefine vmx-int</code></pre>
     </div>

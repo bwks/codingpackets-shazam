@@ -190,7 +190,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">touch db/migrations/00000000000001_enable_pgcrypto.cr</code></pre>
     </div>
   </div>
@@ -211,7 +211,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b">class EnablePgcrypto::V00000000000001 < Avram::Migrator::Migration::V1
   def migrate
     execute "CREATE EXTENSION IF NOT EXISTS pgcrypto"
@@ -241,7 +241,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mv db/migrations/00000000000001_create_users.cr db/migrations/00000000000002_create_users.cr</code></pre>
     </div>
   </div>
@@ -265,7 +265,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># db/migrations/00000000000002_create_users.cr
 # class CreateUsers::V00000000000001 < Avram::Migrator::Migration::V1
 class CreateUsers::V00000000000002 < Avram::Migrator::Migration::V1
@@ -314,7 +314,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># src/models/base_model.cr
 abstract class BaseModel < Avram::Model
   # Add this macro
@@ -351,7 +351,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># src/pages/password_resets/new_page.cr
 class PasswordResets::NewPage < AuthLayout
   needs operation : ResetPassword
@@ -396,7 +396,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># src/actions/password_resets/create.cr
 class PasswordResets::Create < BrowserAction
   include Auth::PasswordResets::Base
@@ -440,7 +440,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># src/actions/password_resets/edit.cr
 class PasswordResets::Edit < BrowserAction
   include Auth::PasswordResets::Base
@@ -476,7 +476,7 @@ end</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># src/models/user_token.cr
 # Generates and decodes JSON Web Tokens for Authenticating users.
 class UserToken

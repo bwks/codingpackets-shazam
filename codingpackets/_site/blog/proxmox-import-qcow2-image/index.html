@@ -155,7 +155,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh list --all
 
 # Output
@@ -178,7 +178,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh shutdown 2
 
 # Output
@@ -205,7 +205,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">scp /opt/libvirt/vm/uctl01.qcow2 root@&lt;target-ip&gt;:/tmp/uctl01.qcow2</code></pre>
     </div>
   </div>
@@ -234,7 +234,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm create 101 \
   --name uctl01 --numa 0 --ostype l26 \
   --cpu cputype=host --cores 2 --sockets 1 \
@@ -258,7 +258,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm list 
 
 # Output
@@ -284,7 +284,7 @@ VMID NAME                 STATUS     MEM(MB)    BOOTDISK(GB) PID
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm importdisk 101 /tmp/uctl01.qcow2 local-lvm
 
 # Output
@@ -306,7 +306,7 @@ Successfully imported disk as 'unused0:local-lvm:vm-101-disk-0</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm set 101 --scsi0 local-lvm:vm-101-disk-0
 
 # Output
@@ -328,7 +328,7 @@ update VM 101: -scsi0 local-lvm:vm-101-disk-0</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm set 101 --boot c --bootdisk scsi0
 
 # Output
@@ -370,7 +370,7 @@ update VM 101: -boot c -bootdisk scsi0</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">qm terminal 101
 
 # Output
@@ -393,7 +393,7 @@ starting serial terminal on interface serial0 (press Ctrl+O to exit)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ip addr
 
 # Output
@@ -418,7 +418,7 @@ starting serial terminal on interface serial0 (press Ctrl+O to exit)
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /etc/netplan/01-netcfg.yaml
 network:
   version: 2
@@ -449,7 +449,7 @@ network:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo netplan apply</code></pre>
     </div>
   </div>

@@ -195,7 +195,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># tree ~/ansible/
 
 ~/ansible/
@@ -234,7 +234,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/inventory
 [server]
 lab-centos-01
@@ -281,7 +281,7 @@ remote_user=cumulus</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/ansible.cfg
 [defaults]
 hostfile=inventory
@@ -349,7 +349,7 @@ become_ask_pass=True</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m ping
 SSH password:
 SUDO password[defaults to SSH password]:
@@ -398,7 +398,7 @@ lab-leaf-02 | SUCCESS => {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-spine-01
 ---
 interfaces:
@@ -431,7 +431,7 @@ ospf_networks:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
@@ -461,7 +461,7 @@ ospf_networks:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
@@ -491,7 +491,7 @@ ospf_networks:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
@@ -522,7 +522,7 @@ ospf_networks:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-02
 ---
 interfaces:
@@ -561,7 +561,7 @@ ospf_networks:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/templates/quagga.conf.j2
 username cumulus nopassword
 !
@@ -628,7 +628,7 @@ line vty
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/configure-devices.yml
 ---
 - hosts: network
@@ -736,7 +736,7 @@ state=restarted</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook configure-devices.yml
 SSH password:
 SUDO password[defaults to SSH password]:
@@ -850,7 +850,7 @@ lab-spine-02               : ok=10   changed=10    unreachable=0    failed=0</co
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show interface"
 SSH password:
 SUDO password[defaults to SSH password]:
@@ -912,7 +912,7 @@ UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.9/31</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show ospf neighbor"
 SSH password:
 SUDO password[defaults to SSH password]:
@@ -964,7 +964,7 @@ Neighbor ID     Pri State           Dead Time Address         Interface         
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show route ospf"
 ansible network -m command -a "ping 10.100.0.1 -c 1"
 ansible network -m command -a "cat /etc/hosts"

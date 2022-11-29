@@ -151,7 +151,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">DEVICE="eth0"
 BOOTPROTO="dhcp"
 ONBOOT="yes"
@@ -180,7 +180,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart network</code></pre>
     </div>
   </div>
@@ -202,7 +202,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y git java-1.8.0-openjdk.x86_64</code></pre>
     </div>
   </div>
@@ -221,7 +221,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo curl -o /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</code></pre>
     </div>
@@ -241,7 +241,7 @@ sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum update -y</code></pre>
     </div>
   </div>
@@ -260,7 +260,7 @@ sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y jenkins</code></pre>
     </div>
   </div>
@@ -279,7 +279,7 @@ sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start jenkins
 sudo systemctl enable jenkins</code></pre>
     </div>
@@ -300,7 +300,7 @@ sudo systemctl enable jenkins</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo bash -c 'echo 2.0 >> /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion'
 sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion</code></pre>
     </div>
@@ -323,7 +323,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo sed -i 's/.*passwordHash.*/      &lt;passwordHash&gt;#jbcrypt:$2a$10$29oSBz38iNlRhmyl7qx7..yhQlzkoLjne\/.galQ5QwA3wA3jJLdFa&lt;\/passwordHash>/' /var/lib/jenkins/users/admin/config.xml</code></pre>
     </div>
   </div>
@@ -343,7 +343,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">curl -O http://localhost:8080/jnlpJars/jenkins-cli.jar</code></pre>
     </div>
   </div>
@@ -365,7 +365,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("vagrant", "Vagrant123")' |
 > java -jar jenkins-cli.jar -s http://admin:Vagrant123@localhost:8080 groovy =</code></pre>
     </div>
@@ -386,7 +386,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart jenkins</code></pre>
     </div>
   </div>
@@ -406,7 +406,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">java -jar jenkins-cli.jar -s http://admin:Vagrant123@localhost:8080 install-plugin {git,gitlab-plugin,job-dsl,workflow-aggregator,workflow-cps,slack,webhook-step,blueocean}</code></pre>
     </div>
   </div>
@@ -426,7 +426,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart jenkins</code></pre>
     </div>
   </div>
@@ -454,7 +454,7 @@ sudo chown jenkins:jenkins /var/lib/jenkins/jenkins.install.InstallUtil.lastExec
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># /etc/yum.repos.d/nginx.repo
 
 [nginx]
@@ -481,7 +481,7 @@ enabled=1</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum update -y && sudo yum install -y nginx</code></pre>
     </div>
   </div>
@@ -503,7 +503,7 @@ enabled=1</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd /etc/ssl/certs/
 
 sudo openssl genrsa -out jenkins.lab.local.key 2048
@@ -528,7 +528,7 @@ sudo openssl req -new -key jenkins.lab.local.key \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chmod 0400 jenkins.lab.local.key</code></pre>
     </div>
   </div>
@@ -554,7 +554,7 @@ sudo openssl req -new -key jenkins.lab.local.key \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># on the root CA host.
 
 cd /etc/ssl/certs
@@ -575,7 +575,7 @@ sudo openssl x509 -req -in jenkins.lab.local.csr \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># on the jenkins host.
 
 [vagrant@localhost certs]$ ls /etc/ssl/certs/ | grep jenkins
@@ -605,7 +605,7 @@ jenkins.lab.local.key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir -p /etc/nginx/ssl
 sudo chmod 700 /etc/nginx/ssl
 sudo ln -s /etc/ssl/certs/jenkins.lab.local.key  /etc/nginx/ssl/jenkins.lab.local.key
@@ -631,7 +631,7 @@ sudo ln -s /etc/ssl/certs/jenkins.lab.local.crt  /etc/nginx/ssl/jenkins.lab.loca
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir /etc/nginx/sites-available/</code></pre>
     </div>
   </div>
@@ -653,7 +653,7 @@ sudo ln -s /etc/ssl/certs/jenkins.lab.local.crt  /etc/nginx/ssl/jenkins.lab.loca
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-nginx hljs px-5 dark:opacity-80 rounded-b">server {
     listen 443 ssl;
     server_name jenkins.lab.local;
@@ -691,7 +691,7 @@ sudo ln -s /etc/ssl/certs/jenkins.lab.local.crt  /etc/nginx/ssl/jenkins.lab.loca
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo ln -s /etc/nginx/sites-available/jenkins.conf /etc/nginx/conf.d/jenkins.conf</code></pre>
     </div>
   </div>
@@ -712,7 +712,7 @@ sudo ln -s /etc/ssl/certs/jenkins.lab.local.crt  /etc/nginx/ssl/jenkins.lab.loca
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart nginx</code></pre>
     </div>
   </div>

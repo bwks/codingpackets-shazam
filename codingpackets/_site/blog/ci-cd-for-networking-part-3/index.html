@@ -153,7 +153,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b">DEVICE="eth0"
 BOOTPROTO="dhcp"
 ONBOOT="yes"
@@ -182,7 +182,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl restart network</code></pre>
     </div>
   </div>
@@ -201,7 +201,7 @@ PEERDNS=no</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-shell hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y epel-release
 sudo yum install -y pygpgme yum-utils</code></pre>
     </div>
@@ -224,7 +224,7 @@ sudo yum install -y pygpgme yum-utils</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># /etc/yum.repos.d/gitlab_gitlab-ce.repo
 
 [gitlab_gitlab-ce]
@@ -267,7 +267,7 @@ metadata_expire=300</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum -q makecache -y --disablerepo="*" --enablerepo="gitlab_gitlab-ce"
 sudo yum update -y</code></pre>
     </div>
@@ -288,7 +288,7 @@ sudo yum update -y</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y gitlab-ce</code></pre>
     </div>
   </div>
@@ -310,7 +310,7 @@ sudo yum update -y</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.old</code></pre>
     </div>
   </div>
@@ -331,7 +331,7 @@ sudo yum update -y</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ruby hljs px-5 dark:opacity-80 rounded-b"># /etc/gitlab/gitlab.rb
 
 external_url 'https://gitlab.lab.local'
@@ -353,7 +353,7 @@ nginx['redirect_http_to_https'] = true</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cd /etc/ssl/certs/
 
 sudo openssl genrsa -out gitlab.lab.local.key 2048
@@ -378,7 +378,7 @@ sudo openssl req -new -key gitlab.lab.local.key \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chmod 0400 gitlab.lab.local.key</code></pre>
     </div>
   </div>
@@ -404,7 +404,7 @@ sudo openssl req -new -key gitlab.lab.local.key \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># on the root CA host.
 
 cd /etc/ssl/certs
@@ -425,7 +425,7 @@ sudo openssl x509 -req -in gitlab.lab.local.csr \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># on the gitlab host.
 
 [vagrant@localhost certs]$ ls /etc/ssl/certs/ | grep gitlab
@@ -457,7 +457,7 @@ gitlab.lab.local.key</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mkdir -p /etc/gitlab/ssl
 sudo chmod 700 /etc/gitlab/ssl
 sudo ln -s /etc/ssl/certs/gitlab.lab.local.key  /etc/gitlab/ssl/gitlab.lab.local.key
@@ -479,7 +479,7 @@ sudo ln -s /etc/ssl/certs/gitlab.lab.local.crt  /etc/gitlab/ssl/gitlab.lab.local
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo gitlab-ctl reconfigure</code></pre>
     </div>
   </div>
@@ -534,7 +534,7 @@ sudo ln -s /etc/ssl/certs/gitlab.lab.local.crt  /etc/gitlab/ssl/gitlab.lab.local
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">GITLAB_ACCESS_TOKEN=zqKexEe4jrWeg2aBR5bv
 
 curl -k -H "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" \
@@ -558,7 +558,7 @@ curl -k -H "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" \
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">json</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{"id":2,"name":"vagrant","username":"vagrant","state":"active","avatar_url":"https://secure.gravatar.com/avatar/3270062999aa91fd69f46b48af76fd3b?s=80&d=identicon","web_url":"https://gitlab.lab.local/vagrant","created_at":"2018-02-25T22:23:42.434Z","bio":null,"location":null,"skype":"","linkedin":"","twitter":"","website_url":"","organization":null,"last_sign_in_at":null,"confirmed_at":"2018-02-25T22:23:42.406Z","last_activity_on":null,"email":"vagrant@lab.local","theme_id":1,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":null,"identities":[],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false}</code></pre>
     </div>
   </div>

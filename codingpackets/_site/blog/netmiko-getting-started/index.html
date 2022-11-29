@@ -175,7 +175,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo yum install -y epel-release
 sudo yum group install -y "Development tools"
 sudo yum install -y gcc libffi-devel python2-pip python-devel openssl-devel sshpass python-setuptools python-virtualenv</code></pre>
@@ -195,7 +195,7 @@ sudo yum install -y gcc libffi-devel python2-pip python-devel openssl-devel sshp
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo pip install -U pip setuptools</code></pre>
     </div>
   </div>
@@ -213,7 +213,7 @@ sudo yum install -y gcc libffi-devel python2-pip python-devel openssl-devel sshp
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># as normal user
 
 mkdir envs
@@ -241,7 +241,7 @@ pip install netmiko</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># import library
 
 from netmiko import ConnectHandler
@@ -278,7 +278,7 @@ asa = {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># the ** unpacks a dictionary
 
 csr_session = ConnectHandler(**csr)
@@ -301,7 +301,7 @@ asa_session = ConnectHandler(**asa)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">print(csr_session.send_command('show ip int brief'))
 # output
 
@@ -332,7 +332,7 @@ Management0/0              10.0.2.15       YES DHCP   up                    up</
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">commands = [
     'show nameif',
     'show hostname',
@@ -367,7 +367,7 @@ asa</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">commands = [
     'ntp server 8.8.8.8',
     'logging host 10.10.10.10',

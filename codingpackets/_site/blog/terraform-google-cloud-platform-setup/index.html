@@ -166,7 +166,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud -v
 
 # Output
@@ -202,7 +202,7 @@ gsutil 5.8</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform -v    
 
 # Output
@@ -308,7 +308,7 @@ on linux_amd64</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod 0600 ~/.gcp/terraform.json</code></pre>
     </div>
   </div>
@@ -327,7 +327,7 @@ on linux_amd64</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud auth activate-service-account &lt;service-account-email&gt; --key-file=/path/to/.gcp/terraform.json
 
 # Output
@@ -373,7 +373,7 @@ Activated service account credentials for: [&lt;service-account-email&gt;]</code
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud services enable compute.googleapis.com --project test-project-&lt;id&gt;
 
 # Output
@@ -441,7 +441,7 @@ Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">~/.zshrc</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">export GOOGLE_APPLICATION_CREDENTIALS="/path/to/.gcp/terraform.json"</code></pre>
     </div>
   </div>
@@ -459,7 +459,7 @@ Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">chmod 0600 ~/.zshrc</code></pre>
     </div>
   </div>
@@ -477,7 +477,7 @@ Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">source ~/.zshrc</code></pre>
     </div>
   </div>
@@ -499,7 +499,7 @@ Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir -p ~/code/terraform/gcp-test/ && cd ~/code/terraform/gcp-test/</code></pre>
     </div>
   </div>
@@ -519,7 +519,7 @@ Operation "operations/acf.p2-&lt;some-id&gt;" finished successfully.</code></pre
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">main.tf</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-terraform hljs px-5 dark:opacity-80 rounded-b">provider "google" {
   project = "test-project-&lt;id&gt;"
   region  = "australia-southeast1"
@@ -582,7 +582,7 @@ resource "google_compute_network" "vpc_network" {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform init
 
 # Output
@@ -630,7 +630,7 @@ commands will detect it and remind you to do so if necessary.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform plan
 
 # Output
@@ -742,7 +742,7 @@ you run "terraform apply" now.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform apply -auto-approve
 
 # Output
@@ -855,7 +855,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud compute instances list --project test-project-&lt;id&gt
 
 # Output
@@ -889,7 +889,7 @@ terraform-instance  australia-southeast1-a  f1-micro                   10.152.0.
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">terraform destroy
 
 # Output
@@ -990,7 +990,7 @@ Destroy complete! Resources: 1 destroyed.</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">gcloud compute instances list --project test-project-&lt;id&gt
 
 # Output

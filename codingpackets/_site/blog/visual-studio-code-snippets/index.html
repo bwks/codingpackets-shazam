@@ -90,12 +90,12 @@
 
   <div class="col-span-12 px-5 md:col-span-6">
     <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-      <h1 class="pb-1 sm:pb-2">Add Bootstrap 5 to a Rails 6 App</h1>
+      <h1 class="pb-1 sm:pb-2">Visual Studio Code Snippets</h1>
       <div class="">
         
         
           <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
-            published: 19th of December 2020
+            published: 30th of November 2022
           </p>
         
       </div>
@@ -122,63 +122,88 @@
         <div class="col-span-12 px-5 md:col-span-6">
           <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
-
 <h3 id="intro">Intro</h3>
 <p>
-  In this post I will show you how to add the
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://getbootstrap.com/docs/5.0/getting-started/introduction/" target=_blank>Bootstrap</a>
- 
-  CSS framework to your Rails 6 application.
-</p>
-<p>
-  Bootstrap is a solid CSS framework that allows us to make 
-  our app look really nice and work across a multitude of 
-  device types and browsers without having to get bogged down 
-  in the details.
+  I mainly use Visual Studio Code for my code editing and I have 
+  recently discovered how to create custom snippets which are a 
+  really hand feature. Snippets are shortcuts that generate code 
+  and help you save time. In this post, I will show you how you can 
+  create them too. 
 </p>
 
-
-<!-- NOTE BLOCK START -->
-<div id="note-block" class="pt-2 pb-4">
-  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">
-  This post assumes that you already have Rails 6 installed
-  and ready to go.
-</div>
-  </div>
-</div>
-<!-- NOTE BLOCK END -->
-
-
-<h3 id="software">Software</h3>
-<p>
-  The following software versions were used in this post.
-</p>
+<h3>Software Used</h3>
 <ul>
-  <li>Rails - 6.0.3.4</li>
-  <li>Popper.js - core/2.5.4</li>
-  <li>Bootstrap - 5.0.0-beta1</li>
+  <li>VS Code 1.73.1</li>
 </ul>
 
-<h3 id="installation">Installation</h3>
+<h3 id="snippets-location">Snippets Location</h3>
 <p>
-  Add the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">popper.js</span>
- and 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">bootstrap</span>
- packages through 
-  yarn.
+  You create snippets based on the files language type.
+  The language type can be found in the bottom right of the VSCode window. 
+  In this example I am creating snippets for the 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Jinja HTML</span> language. 
+</p>
+<p>
+  To create a snippet, browse to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">File</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Preferences</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Configure User Snippets</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">jinja-html</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  This will open up the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">jinja-html.json</span>
+  file.
+</p>
+
+<h3 id="snippets-creation">Snippets Creation</h3>
+<p>
+  Snippets are defined in <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">json</span> documents
+  with the following schema.
 </p>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">cmd</span>
+      <span class="">json</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">yarn add @popperjs/core@^2.5.4
-yarn add bootstrap@5.0.0-beta1</code></pre>
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
+  "&lt;snippet-name&gt;": {
+    "prefix": "&lt;snippet-key&gt;",
+    "body": [
+      "&lt;snippet-code&gt;"
+    ],
+    "description": "&lt;snippet-description&gt;"
+  }
+}</code></pre>
     </div>
   </div>
 </div>
@@ -186,23 +211,170 @@ yarn add bootstrap@5.0.0-beta1</code></pre>
 
 
 <p>
-  Add the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stylesheet_pack_tag</span>
- tag 
-  to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">views/layouts/application.html.erb</span>
-  file in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">&lt;head&gt;&lt;/head&gt;</span>
- section.
+  To create a snippet you define the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">prefix</span> which is
+  used to invoke the snippet and the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">body</span> which is 
+  the code that is generated.
+</p>
+
+<p>
+  The below code block shows the snippets I have configured to aid 
+  me in writing blogs for this site.
 </p>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
+      <span class="">jinja-html.json</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-rails hljs px-5 dark:opacity-80 rounded-b"><%# views/layouts/application.html.erb %>
+      <pre><code class="language-json hljs px-5 dark:opacity-80 rounded-b">{
+  // Place your snippets for jinja here. Each snippet is defined under a snippet name and has a prefix, body and 
+  // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+  // same ids are connected.
+  // Example:
+  "New Blog": {
+    "prefix": "newblog",
+    "body": [
+      "{% extends \"_layouts/blog.jinja\" %}\n\n{% block page_content %}\n\n<h3 id=\"intro\">Intro</h3>\n<p>\n  \n</p>\n\n<h3 id=\"outro\">Outro</h3>\n<p>\n  \n</p>\n\n{% endblock page_content %}"
+    ],
+    "description": "New Blog"
+  },
+  "New Section": {
+    "prefix": "newsection",
+    "body": [
+      "<h3 id=\"$1\">$2</h3>\n<p>\n  $3\n</p>\n"
+    ],
+    "description": "New Section"
+  },
+  "Link Internal": {
+    "prefix": "linki",
+    "body": [
+      "{{ link::i(path=\"$1\", description=\"$2\") }}"
+    ],
+    "description": "Internal HTML link"
+  },
+  "Link External": {
+    "prefix": "linke",
+    "body": [
+      "{{ link::e(path=\"$1\", description=\"$2\") }}"
+    ],
+    "description": "External HTML link"
+  },
+  "Note Block": {
+    "prefix": "blocknote",
+    "body": [
+      "{{ text::note_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Note Block"
+  },
+  "Warning Block": {
+    "prefix": "blockwarn",
+    "body": [
+      "{{ text::warning_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Warning Block"
+  },
+  "Tip Block": {
+    "prefix": "blocktip",
+    "body": [
+      "{{ text::tip_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Tip Block"
+  },
+  "Important Block": {
+    "prefix": "blockimportant",
+    "body": [
+      "{{ text::important_block(text=\"\n  $1\n\") }}"
+    ],
+    "description": "Important Block"
+  },
+  "Emphasize Text": {
+    "prefix": "emphasize",
+    "body": [
+      "{{ text::emphasize(text=\"$1\") }}"
+    ],
+    "description": "Emphasize Text"
+  },
+  "Keyboard": {
+    "prefix": "keyb",
+    "body": [
+      "{{ text::kbd(text=\"$1\") }}"
+    ],
+    "description": "Keyboard"
+  },
+  "Code": {
+    "prefix": "codeinline",
+    "body": [
+      "{{ text::code(text=\"$1\") }}"
+    ],
+    "description": "Code"
+  },
+  "Code Block": {
+    "prefix": "codeblock",
+    "body": [
+      "{{ text::code_block(\n  header=\"$1\",\n  language=\"$2\",\n  code=&#96;$3&#96;\n) }}"
+    ],
+    "description": "Code Block"
+  },
+  "Breadcrumbs": {
+    "prefix": "breadcrumbs",
+    "body": [
+      "{{ text::breadcrumbs(items=[\n  \"$1\",\n  \"$2\",\n]) }}"
+    ],
+    "description": "Breadcrumbs"
+  },
+  "Table Default": {
+    "prefix": "tabledefault",
+    "body": [
+      "{{ table::default(\n  header=[\"$1\"],\n  rows=[\"$2\"],\n) }}"
+    ],
+    "description": "Default table"
+  }
+}</code></pre>
+    </div>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
 
-<%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %></code></pre>
+
+<h3 id="snippets-usage">Snippets Usage</h3>
+<p>
+  To use a snippet you start typing the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">prefix</span>
+  you definned and it will appear in the contet menu.
+</p>
+
+<p>
+  For example, to stub out a new blog I type 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">newblog</span> which generates the 
+  following code.
+</p>
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="pt-2 pb-4">
+  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+      <span class="">jinja-html</span>
+    </div>
+    <div class="font-mono leading-tight">
+      <pre><code class="language-jinja hljs px-5 dark:opacity-80 rounded-b">{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+&lt;h3 id="intro"&gt;Intro&lt;/h3&gt;
+&lt;p&gt;
+  
+&lt;/p&gt;
+
+&lt;h3 id="ontro"&gt;Outro&lt;/h3&gt;
+&lt;p&gt;
+  
+&lt;/p&gt;
+
+{% endblock page_content %}</code></pre>
     </div>
   </div>
 </div>
@@ -210,91 +382,8 @@ yarn add bootstrap@5.0.0-beta1</code></pre>
 
 
 <p>
-  Also, remove the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">stylesheet_link_tag</span>
- tag 
-  from the same
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">views/layouts/application.html.erb</span>
- file.
-</p>
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rails hljs px-5 dark:opacity-80 rounded-b"><%# views/layouts/application.html.erb %>
-
-<%# Delete me %>
-<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %></code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
-<p>
-  In the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">app/assets/stylesheets/application.css</span>
-  file add the following contents.
-</p>
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-css hljs px-5 dark:opacity-80 rounded-b">/* app/assets/stylesheets/application.css */
-
-/* import the bootstrap library */
-@import "bootstrap"
-
-/* import other css files below. */</code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
-<p>
-  In the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">app/javascript/packs/application.js</span>
-
-  file, add the following contents at the end.
-</p>
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-javascript hljs px-5 dark:opacity-80 rounded-b">// app/javascript/packs/application.js
-
-// import the bootsrap library.
-import "bootstrap;"
-
-// import the app/assets/stylesheets/application.css 
-// file from the previous step.
-import "../../assets/stylesheets/application;"</code></pre>
-    </div>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
-<p>
-  Now restart your server and fingers crossed you should be good to go. 
-</p>
-
-<h3 id="usage">Usage</h3>
-<p>
-  For detailed usage, check the 
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://getbootstrap.com/docs/5.0/getting-started/introduction/" target=_blank>docs</a>. 
-  But as an example, to add a nicely styled button, 
-  add the bootstrap CSS classes to the tag.
+  Or to hightlight some text I type <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">emphasize</span>
+  to generate this:
 </p>
 
 
@@ -302,10 +391,10 @@ import "../../assets/stylesheets/application;"</code></pre>
 <div id="code-block" class="pt-2 pb-4">
   <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
-      <span class="">file</span>
+      <span class="">html-jinja</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-html hljs px-5 dark:opacity-80 rounded-b">&lt;button type="button" class="btn btn-primary"&gtPrimary&lt;/button&gt</code></pre>
+      <pre><code class="language-jinja hljs px-5 dark:opacity-80 rounded-b">{{ text::emphasize(text="") }}</code></pre>
     </div>
   </div>
 </div>
@@ -314,9 +403,10 @@ import "../../assets/stylesheets/application;"</code></pre>
 
 <h3 id="outro">Outro</h3>
 <p>
-  In this post we added Bootstrap 5 to our Rails 6 application. 
-  Behold the beauty of Bootstrap 5.
+  I have found that snippets are saving me time in writing blogs. 
+  I hope you have found this useful and can save some of your precious time as well.
 </p>
+
 
 
             
@@ -335,19 +425,7 @@ import "../../assets/stylesheets/application;"</code></pre>
     <h3 id="links">Links</h3>
       
         <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://getbootstrap.com/docs/5.0/getting-started/introduction/" target=_blank>https://getbootstrap.com/docs/5.0/getting-started/introduction/</a>
-        </p>
-      
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://medium.com/daily-web-dev/use-bootstrap-4-with-ruby-on-rails-6-and-webpack-fe7300604267" target=_blank>https://medium.com/daily-web-dev/use-bootstrap-4-with-ruby-on-rails-6-and-webpack-fe7300604267</a>
-        </p>
-      
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://blog.makersacademy.com/how-to-install-bootstrap-and-jquery-on-rails-6-da6e810c1b87" target=_blank>https://blog.makersacademy.com/how-to-install-bootstrap-and-jquery-on-rails-6-da6e810c1b87</a>
-        </p>
-      
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://medium.com/@coorasse/goodbye-sprockets-welcome-webpacker-3-0-ff877fb8fa79" target=_blank>https://medium.com/@coorasse/goodbye-sprockets-welcome-webpacker-3-0-ff877fb8fa79</a>
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://code.visualstudio.com/docs/editor/userdefinedsnippets" target=_blank>https://code.visualstudio.com/docs/editor/userdefinedsnippets</a>
         </p>
       
   </div>
@@ -363,14 +441,9 @@ import "../../assets/stylesheets/application;"</code></pre>
   <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
-        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#rails" class="text-xl">rails</a>        
-        </div>
-      
         <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#bootstrap" class="text-xl">bootstrap</a>        
+          <a href="/blog/tag/#vscode" class="text-xl">vscode</a>        
         </div>
       
     </div>
@@ -485,24 +558,24 @@ import "../../assets/stylesheets/application;"</code></pre>
     
       
         <div class="px-1">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#software">
-            Software
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#snippets-location">
+            Snippets Location
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#installation">
-            Installation
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#snippets-creation">
+            Snippets Creation
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#usage">
-            Usage
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#snippets-usage">
+            Snippets Usage
           </a>
         </div>
       

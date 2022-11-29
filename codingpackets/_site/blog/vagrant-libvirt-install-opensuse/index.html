@@ -151,7 +151,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo zypper refresh && sudo zypper update</code></pre>
     </div>
   </div>
@@ -173,7 +173,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo zypper install qemu-kvm
 sudo zypper install libvirt libvirt-daemon libvirt-client libvirt-devel ruby-devel gcc</code></pre>
     </div>
@@ -193,7 +193,7 @@ sudo zypper install libvirt libvirt-daemon libvirt-client libvirt-devel ruby-dev
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.rpm
 sudo zypper install vagrant_2.1.2_x86_64.rpm</code></pre>
     </div>
@@ -215,7 +215,7 @@ sudo zypper install vagrant_2.1.2_x86_64.rpm</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start libvirtd.service
 sudo systemctl enable libvirtd.service</code></pre>
     </div>
@@ -236,7 +236,7 @@ sudo systemctl enable libvirtd.service</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo usermod -aG libvirt $USER</code></pre>
     </div>
   </div>
@@ -260,7 +260,7 @@ sudo systemctl enable libvirtd.service</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo sh -c 'echo LIBVIRT_DEFAULT_URI=qemu:///system >> /etc/environment'
 source /etc/environment</code></pre>
     </div>
@@ -283,7 +283,7 @@ source /etc/environment</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-xml hljs px-5 dark:opacity-80 rounded-b">&lt;network connections='1'&gt;
   &lt;name&gt;vagrant-libvirt&lt;/name&gt;
   &lt;forward mode='nat'&gt;
@@ -315,7 +315,7 @@ source /etc/environment</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">virsh net-define vagrant-libvirt.xml
 virsh net-start vagrant-libvirt
 virsh net-autostart vagrant-libvirt</code></pre>
@@ -341,7 +341,7 @@ virsh net-autostart vagrant-libvirt</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">Installing the 'vagrant-libvirt' plugin. This can take a few minutes...
 Fetching: excon-0.62.0.gem (100%)
 Fetching: formatador-0.2.5.gem (100%)
@@ -415,7 +415,7 @@ Results logged to /home/bradmin/.vagrant.d/gems/2.4.4/extensions/x86_64-linux/2.
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">"gcc -o conftest -I/opt/vagrant/embedded/include/ruby-2.4.0/x86_64-linux -I/opt/vagrant/embedded/include/ruby-2.4.0/ruby/backward -I/opt/vagrant/embedded/include/ruby-2.4.0 -I.  -I/opt/vagrant/embedded/include   -I/opt/vagrant/embedded/include -I/vagrant-substrate/cache/ruby-2.4.4/include -O3 -fPIC  conftest.c  -L. -L/opt/vagrant/embedded/lib -Wl,-rpath,/opt/vagrant/embedded/lib -L/opt/vagrant/embedded/lib -Wl,-rpath,/opt/vagrant/embedded/lib -L. -L/opt/vagrant/embedded/lib -Wl,-rpath=XORIGIN/../lib:/opt/vagrant/embedded/lib -fstack-protector -rdynamic -Wl,-export-dynamic -L/opt/vagrant/embedded/lib  -Wl,-rpath,/opt/vagrant/embedded/lib     -Wl,-rpath,'/../lib' -Wl,-rpath,'/../lib' -lruby  -lpthread -lrt -lgmp -ldl -lcrypt -lm   -lc "
 sh: /opt/vagrant/embedded/lib/libreadline.so.7: no version information available (required by sh)
 sh: symbol lookup error: /opt/vagrant/embedded/lib/libreadline.so.7: undefined symbol: PC
@@ -452,7 +452,7 @@ checked program was:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo mv /opt/vagrant/embedded/lib/libreadline.so.7 /opt/vagrant/embedded/lib/libreadline.so.7.disabled</code></pre>
     </div>
   </div>
@@ -468,7 +468,7 @@ checked program was:
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">vagrant plugin install vagrant-libvirt
 
 # output

@@ -139,7 +139,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method that accepts no arguments.
 def print_stuff
   puts "stuff"
@@ -182,7 +182,7 @@ do_stuff(what: "Say hello", how: "speak")</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method and explicity define the types that are accepted.
 def do_stuff(what : String, how : String)
   puts "#{what} #{how}"
@@ -214,7 +214,7 @@ do_stuff(1, 2)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method with default parameters.
 def do_stuff(x : Int32, y : Int32 = 1)
   puts x + y
@@ -244,7 +244,7 @@ do_stuff(1)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method with splat parameter.
 # The splat items can be optionally type annotated.
 def do_stuff(*args : String)
@@ -282,7 +282,7 @@ do_stuff(*stuff_and_things)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a double splat method
 def do_stuff(**kwargs)
   kwargs.each do |key, value|
@@ -313,7 +313,7 @@ do_stuff(**stuff_and_things)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a methods return type as a String.
 def do_stuff(what : String, how : String) : String
   "#{what} #{how}"
@@ -344,7 +344,7 @@ what, how = do_stuff("call glass guy", "on phone")</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Example of using block.
 stuff_and_things.map{ |item| item.upcase }
 
@@ -372,7 +372,7 @@ stuff_and_things.map(&.upcase)</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">crystal</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define an anonymous function and assign it to a 
 # variable named fn.
 fn = ->(stuff : String, things : String) { "#{stuff} - #{things}" }

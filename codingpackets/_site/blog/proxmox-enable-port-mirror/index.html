@@ -261,7 +261,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">/usr/bin/ovs-vsctl \\
   -- --id=@p get port tap201i1 \\
   -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
@@ -307,7 +307,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
     </div>
   </div>
@@ -332,7 +332,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /root/scripts/</code></pre>
     </div>
   </div>
@@ -362,7 +362,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#! /usr/bin/env bash
 # /root/scripts/proxmox-eda-span.sh
 # This script is used to create a port mirror from 
@@ -421,7 +421,7 @@ EDA_LOG=/root/scripts/proxmox-eda-span.log
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#!/usr/bin/env bash
 # /root/scripts/check-eda-status.sh
 # This script is used to restart the packet capture
@@ -461,7 +461,7 @@ fi</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># EDA Port Mirror
 */2 * * * * /root/scripts/check-eda-status.sh</code></pre>
     </div>
@@ -486,7 +486,7 @@ fi</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Port mirror sources
 set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/4.0
 set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/4.0

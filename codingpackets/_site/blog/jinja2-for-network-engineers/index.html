@@ -155,7 +155,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># create virtual environment
 
 python3.6 -m venv ~/envs/jinja2-env/
@@ -210,7 +210,7 @@ pip install jinja2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">jinja</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b">{{ some_variable }}</code></pre>
     </div>
   </div>
@@ -233,7 +233,7 @@ pip install jinja2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">jinja</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># example
 
 {% for stuff in things %}
@@ -262,7 +262,7 @@ pip install jinja2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">jinja</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco
 
 {% if stuff in things %}
@@ -300,7 +300,7 @@ pip install jinja2</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># cisco
 
 interface = {
@@ -329,7 +329,7 @@ interface = {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">jinja</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco interface template
 
 interface_template = '''
@@ -370,7 +370,7 @@ interface {{ interface.name }}
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">from jinja2 import Template
 
 template = Template(interface_template)
@@ -408,7 +408,7 @@ no shutdown
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">interfaces = [
     {'description': 'Uplink to WAN',
      'ip_address': '10.10.10.1 255.255.255.0',
@@ -436,7 +436,7 @@ no shutdown
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># cisco interface template
 interfaces_template = '''
 {% for interface in interfaces %}
@@ -464,7 +464,7 @@ interface {{ interface.name }}
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">template = Template(interfaces_template)
 template.render(interfaces=interfaces)
 
@@ -499,7 +499,7 @@ interface gigabitethernet0/1
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b"># juniper interface template
 
 interfaces_template = '''
@@ -536,7 +536,7 @@ interfaces {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">interfaces = [
     {'description': 'Uplink to WAN',
      'ip_address': '10.10.10.1/24',
@@ -563,7 +563,7 @@ interfaces {
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">python</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-python hljs px-5 dark:opacity-80 rounded-b">template = Template(interfaces_template)
 template.render(interfaces=interfaces)
 

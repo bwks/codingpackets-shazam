@@ -164,7 +164,7 @@
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo apt update
 sudo apt install -y ruby ruby-dev libsqlite3-dev libssl-dev pkg-config cmake libssh2-1-dev</code></pre>
     </div>
@@ -181,7 +181,7 @@ sudo apt install -y ruby ruby-dev libsqlite3-dev libssl-dev pkg-config cmake lib
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo gem install oxidized</code></pre>
     </div>
   </div>
@@ -205,7 +205,7 @@ sudo apt install -y ruby ruby-dev libsqlite3-dev libssl-dev pkg-config cmake lib
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo useradd oxidized
 sudo chsh -s /usr/sbin/nologin oxidized
 sudo mkdir -p /opt/oxidized/{output,.config/oxidized/}
@@ -230,7 +230,7 @@ sudo usermod -m -d /opt/oxidized oxidized</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "OXIDIZED_HOME=/opt/oxidized" | sudo tee --append /etc/environment</code></pre>
     </div>
   </div>
@@ -253,7 +253,7 @@ sudo usermod -m -d /opt/oxidized oxidized</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># /opt/oxidized/.config/oxidized/config
 
 ---
@@ -357,7 +357,7 @@ models: {}</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-csv hljs px-5 dark:opacity-80 rounded-b"># /opt/oxidized/.config/oxidized/router.db
 
 # name:ip:model:group
@@ -392,7 +392,7 @@ srx1:192.168.121.91:juniper:junipers</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo chown -R oxidized:oxidized /opt/oxidized</code></pre>
     </div>
   </div>
@@ -420,7 +420,7 @@ srx1:192.168.121.91:juniper:junipers</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">file</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># /lib/systemd/system/oxidized.service
 
 [Unit]
@@ -452,7 +452,7 @@ WantedBy=multi-user.target</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">sudo systemctl start oxidized.service
 sudo systemctl enable oxidized.service</code></pre>
     </div>
@@ -488,7 +488,7 @@ sudo systemctl enable oxidized.service</code></pre>
     <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
       <span class="">cmd</span>
     </div>
-    <div class="font-mono">
+    <div class="font-mono leading-tight">
       <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">tree /opt/oxidized/output/
 
 # output
