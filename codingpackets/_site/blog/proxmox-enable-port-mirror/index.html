@@ -14,7 +14,7 @@
     
     
     
-      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
       <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
     
 
@@ -23,7 +23,7 @@
     
 
     
-      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
       <script defer src="/js/fontawesome/js/all.js"></script>
     
@@ -257,12 +257,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">/usr/bin/ovs-vsctl \\
+      <pre><code class="language-text hljs px-5 rounded-b">/usr/bin/ovs-vsctl \\
   -- --id=@p get port tap201i1 \\
   -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
   -- set bridge vmbr1 mirrors=@m</code></pre>
@@ -303,12 +303,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
+      <pre><code class="language-text hljs px-5 rounded-b">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
     </div>
   </div>
 </div>
@@ -328,12 +328,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">mkdir /root/scripts/</code></pre>
+      <pre><code class="language-text hljs px-5 rounded-b">mkdir /root/scripts/</code></pre>
     </div>
   </div>
 </div>
@@ -358,12 +358,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#! /usr/bin/env bash
+      <pre><code class="language-bash hljs px-5 rounded-b">#! /usr/bin/env bash
 # /root/scripts/proxmox-eda-span.sh
 # This script is used to create a port mirror from 
 # a Proxmox host to a VMs virtual NIC. 
@@ -417,12 +417,12 @@ EDA_LOG=/root/scripts/proxmox-eda-span.log
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 dark:opacity-80 rounded-b">#!/usr/bin/env bash
+      <pre><code class="language-bash hljs px-5 rounded-b">#!/usr/bin/env bash
 # /root/scripts/check-eda-status.sh
 # This script is used to restart the packet capture
 # to the Extrahop EDA if the VM reboots for some reason.
@@ -457,12 +457,12 @@ fi</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># EDA Port Mirror
+      <pre><code class="language-text hljs px-5 rounded-b"># EDA Port Mirror
 */2 * * * * /root/scripts/check-eda-status.sh</code></pre>
     </div>
   </div>
@@ -482,12 +482,12 @@ fi</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># Port mirror sources
+      <pre><code class="language-text hljs px-5 rounded-b"># Port mirror sources
 set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/4.0
 set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/4.0
 set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/9.0

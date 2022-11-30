@@ -14,7 +14,7 @@
     
     
     
-      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
       <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
     
 
@@ -23,7 +23,7 @@
     
 
     
-      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
       <script defer src="/js/fontawesome/js/all.js"></script>
     
@@ -191,12 +191,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">cat /sys/module/kvm/parameters/halt_poll_ns
+      <pre><code class="language-text hljs px-5 rounded-b">cat /sys/module/kvm/parameters/halt_poll_ns
 
 # output
 200000</code></pre>
@@ -215,12 +215,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo 0 | sudo tee /sys/module/kvm/parameters/halt_poll_ns
+      <pre><code class="language-text hljs px-5 rounded-b">echo 0 | sudo tee /sys/module/kvm/parameters/halt_poll_ns
 
 # output
 0</code></pre>
@@ -284,12 +284,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">echo "options kvm halt_poll_ns=0" | sudo tee --append /etc/modprobe.d/qemu-system-x86.conf
+      <pre><code class="language-text hljs px-5 rounded-b">echo "options kvm halt_poll_ns=0" | sudo tee --append /etc/modprobe.d/qemu-system-x86.conf
 
 # output
 options kvm halt_poll_ns=0</code></pre>

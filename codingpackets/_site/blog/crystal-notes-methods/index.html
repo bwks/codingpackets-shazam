@@ -14,7 +14,7 @@
     
     
     
-      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
       <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
     
 
@@ -23,7 +23,7 @@
     
 
     
-      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
       <script defer src="/js/fontawesome/js/all.js"></script>
     
@@ -135,12 +135,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method that accepts no arguments.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method that accepts no arguments.
 def print_stuff
   puts "stuff"
 end
@@ -178,12 +178,12 @@ do_stuff(what: "Say hello", how: "speak")</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method and explicity define the types that are accepted.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method and explicity define the types that are accepted.
 def do_stuff(what : String, how : String)
   puts "#{what} #{how}"
 end
@@ -210,12 +210,12 @@ do_stuff(1, 2)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method with default parameters.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method with default parameters.
 def do_stuff(x : Int32, y : Int32 = 1)
   puts x + y
 end
@@ -240,12 +240,12 @@ do_stuff(1)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a method with splat parameter.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method with splat parameter.
 # The splat items can be optionally type annotated.
 def do_stuff(*args : String)
   args.each do |a|
@@ -278,12 +278,12 @@ do_stuff(*stuff_and_things)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a double splat method
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a double splat method
 def do_stuff(**kwargs)
   kwargs.each do |key, value|
     puts "Key: #{key} - Value: #{value}"
@@ -309,12 +309,12 @@ do_stuff(**stuff_and_things)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define a methods return type as a String.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a methods return type as a String.
 def do_stuff(what : String, how : String) : String
   "#{what} #{how}"
 end
@@ -340,12 +340,12 @@ what, how = do_stuff("call glass guy", "on phone")</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Example of using block.
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Example of using block.
 stuff_and_things.map{ |item| item.upcase }
 
 # (&) is syntastic sugar used to defind the captured object.
@@ -368,12 +368,12 @@ stuff_and_things.map(&.upcase)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">crystal</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 dark:opacity-80 rounded-b"># Define an anonymous function and assign it to a 
+      <pre><code class="language-crystal hljs px-5 rounded-b"># Define an anonymous function and assign it to a 
 # variable named fn.
 fn = ->(stuff : String, things : String) { "#{stuff} - #{things}" }
 

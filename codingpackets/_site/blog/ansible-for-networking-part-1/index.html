@@ -14,7 +14,7 @@
     
     
     
-      <link rel="stylesheet" href="/css/highlightjs/highlightjs-xt256.css">
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
       <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
     
 
@@ -23,7 +23,7 @@
     
 
     
-      <script src="/js/highlightjs/highlightjs-11.5.0.min.js"></script>
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
       <script defer src="/js/fontawesome/js/all.js"></script>
     
@@ -191,12 +191,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b"># tree ~/ansible/
+      <pre><code class="language-text hljs px-5 rounded-b"># tree ~/ansible/
 
 ~/ansible/
 ├── ansible.cfg
@@ -230,12 +230,12 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/inventory
+      <pre><code class="language-ini hljs px-5 rounded-b"># ~/ansible/inventory
 [server]
 lab-centos-01
 
@@ -277,12 +277,12 @@ remote_user=cumulus</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/ansible.cfg
+      <pre><code class="language-ini hljs px-5 rounded-b"># ~/ansible/ansible.cfg
 [defaults]
 hostfile=inventory
 host_key_checking=False
@@ -345,12 +345,12 @@ become_ask_pass=True</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m ping
+      <pre><code class="language-text hljs px-5 rounded-b">ansible network -m ping
 SSH password:
 SUDO password[defaults to SSH password]:
 
@@ -394,12 +394,12 @@ lab-leaf-02 | SUCCESS => {
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-spine-01
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/host_vars/lab-spine-01
 ---
 interfaces:
   - { int_name: swp1, ip_address: 10.100.0.0/31, description: to lab-spine-02 swp1}
@@ -427,12 +427,12 @@ ospf_networks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
   - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
@@ -457,12 +457,12 @@ ospf_networks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
   - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
@@ -487,12 +487,12 @@ ospf_networks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-01
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/host_vars/lab-leaf-01
 ---
 interfaces:
   - { int_name: swp1, ip_address: 10.100.0.3/31, description: to lab-spine-01 swp1 }
@@ -518,12 +518,12 @@ ospf_networks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/host_vars/lab-leaf-02
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/host_vars/lab-leaf-02
 ---
 interfaces:
   - { int_name: swp1, ip_address: 10.100.0.5/31, description: to lab-spine-01 swp2 }
@@ -557,12 +557,12 @@ ospf_networks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-django hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/templates/quagga.conf.j2
+      <pre><code class="language-django hljs px-5 rounded-b"># ~/ansible/templates/quagga.conf.j2
 username cumulus nopassword
 !
 service integrated-vtysh-config
@@ -624,12 +624,12 @@ line vty
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">file</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 dark:opacity-80 rounded-b"># ~/ansible/configure-devices.yml
+      <pre><code class="language-yaml hljs px-5 rounded-b"># ~/ansible/configure-devices.yml
 ---
 - hosts: network
 
@@ -732,12 +732,12 @@ state=restarted</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible-playbook configure-devices.yml
+      <pre><code class="language-text hljs px-5 rounded-b">ansible-playbook configure-devices.yml
 SSH password:
 SUDO password[defaults to SSH password]:
 
@@ -846,12 +846,12 @@ lab-spine-02               : ok=10   changed=10    unreachable=0    failed=0</co
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show interface"
+      <pre><code class="language-text hljs px-5 rounded-b">ansible network -m command -a "net show interface"
 SSH password:
 SUDO password[defaults to SSH password]:
 
@@ -908,12 +908,12 @@ UP  swp2    1G        1500  Interface/L3  IP: 10.100.0.9/31</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show ospf neighbor"
+      <pre><code class="language-text hljs px-5 rounded-b">ansible network -m command -a "net show ospf neighbor"
 SSH password:
 SUDO password[defaults to SSH password]:
 
@@ -960,12 +960,12 @@ Neighbor ID     Pri State           Dead Time Address         Interface         
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-900 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-900">
+  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
+    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
       <span class="">cmd</span>
     </div>
     <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 dark:opacity-80 rounded-b">ansible network -m command -a "net show route ospf"
+      <pre><code class="language-text hljs px-5 rounded-b">ansible network -m command -a "net show route ospf"
 ansible network -m command -a "ping 10.100.0.1 -c 1"
 ansible network -m command -a "cat /etc/hosts"
 ansible network -m command -a "cat /etc/hostname"
