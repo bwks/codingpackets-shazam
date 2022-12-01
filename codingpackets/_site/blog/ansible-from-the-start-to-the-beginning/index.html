@@ -205,15 +205,13 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo yum install epel-release
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo yum install epel-release
 sudo yum install ansible</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -227,17 +225,15 @@ sudo yum install ansible</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo apt-get install software-properties-common
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install ansible</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -252,13 +248,12 @@ sudo apt-get install ansible</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># root user or user with sudo privileges
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># root user or user with sudo privileges
 sudo yum install -y epel-release python-virtualenv gcc libffi-devel python-devel openssl-devel sshpass
 sudo yum group install -y "Development Tools"
 curl -O https://bootstrap.pypa.io/get-pip.py
@@ -274,7 +269,6 @@ pip install ansible
 # create ansible directory for configuration management
 mkdir ~/ansible
 cd ~/ansible</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -289,13 +283,12 @@ cd ~/ansible</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 rounded-b"># ~/ansible/inventory
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ini hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># ~/ansible/inventory
 [server]
 lab-centos-01
 
@@ -305,7 +298,6 @@ lab-cumulus-01
 [lab:children]
 server
 network</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -333,18 +325,16 @@ network</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 rounded-b"># ~/ansible/ansible.cfg
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ini hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># ~/ansible/ansible.cfg
 [defaults]
 hostfile=inventory
 host_key_checking=False
 retry_files_enabled=False</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -361,17 +351,15 @@ retry_files_enabled=False</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># ~/ansible
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># ~/ansible
 ansible
 ├── ansible.cfg
 └── inventory</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -386,13 +374,12 @@ ansible
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-json hljs px-5 rounded-b">ansible lab-cumulus-01 -m ping -u cumulus -k
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-json hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ansible lab-cumulus-01 -m ping -u cumulus -k
 SSH password:
 
 # output
@@ -400,7 +387,6 @@ lab-cumulus-01 | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -439,13 +425,12 @@ lab-cumulus-01 | SUCCESS => {
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ansible lab-cumulus-01 -m command -a "net show interface" -u cumulus -k
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ansible lab-cumulus-01 -m command -a "net show interface" -u cumulus -k
 SSH password:
 
 # output
@@ -455,7 +440,6 @@ lab-cumulus-01 | SUCCESS | rc=0 >>
 --  ------  -------  -----  --------  --------------------------
 UP  lo      N/A      65536  Loopback  IP: 127.0.0.1/8, ::1/128
 UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -476,13 +460,12 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">---
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">---
 # ~/ansible/show-interfaces.yml
 - hosts: network
 
@@ -493,7 +476,6 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
   - name: Print output of net show interface from {{ inventory_hostname }}
     debug: var=show_interface["stdout"]</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -532,13 +514,12 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ansible-playbook show-interfaces.yml -u cumulus -k
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ansible-playbook show-interfaces.yml -u cumulus -k
 SSH password:
 
 # output
@@ -557,7 +538,6 @@ ok: [lab-cumulus-01] => {
 
 PLAY RECAP *********************************************************************
 lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

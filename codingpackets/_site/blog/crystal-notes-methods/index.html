@@ -134,13 +134,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method that accepts no arguments.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a method that accepts no arguments.
 def print_stuff
   puts "stuff"
 end
@@ -159,7 +158,6 @@ do_stuff("Say hello", "speak")
 
 # Call a method with named parameter arguments.
 do_stuff(what: "Say hello", how: "speak")</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -177,13 +175,12 @@ do_stuff(what: "Say hello", how: "speak")</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method and explicity define the types that are accepted.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a method and explicity define the types that are accepted.
 def do_stuff(what : String, how : String)
   puts "#{what} #{how}"
 end
@@ -197,7 +194,6 @@ def do_stuff(x : Int32, y : Int32)
 end
 
 do_stuff(1, 2)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -209,20 +205,18 @@ do_stuff(1, 2)</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method with default parameters.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a method with default parameters.
 def do_stuff(x : Int32, y : Int32 = 1)
   puts x + y
 end
 
 # Call a method with default parameters.
 do_stuff(1)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -239,13 +233,12 @@ do_stuff(1)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a method with splat parameter.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a method with splat parameter.
 # The splat items can be optionally type annotated.
 def do_stuff(*args : String)
   args.each do |a|
@@ -259,7 +252,6 @@ do_stuff("stuff", "things")
 # A Tuple can be splatted into a method
 stuff_and_things = {"stuff", "things"}
 do_stuff(*stuff_and_things)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -277,13 +269,12 @@ do_stuff(*stuff_and_things)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a double splat method
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a double splat method
 def do_stuff(**kwargs)
   kwargs.each do |key, value|
     puts "Key: #{key} - Value: #{value}"
@@ -296,7 +287,6 @@ do_stuff(stuff: "my stuff", things: "my things")
 # A NamedTuple can be double splatted into a method.
 stuff_and_things = {stuff: "my stuff", things: "my things"}
 do_stuff(**stuff_and_things)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -308,13 +298,12 @@ do_stuff(**stuff_and_things)</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a methods return type as a String.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a methods return type as a String.
 def do_stuff(what : String, how : String) : String
   "#{what} #{how}"
 end
@@ -326,7 +315,6 @@ end
 
 # Unpack multiple return values
 what, how = do_stuff("call glass guy", "on phone")</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -339,18 +327,16 @@ what, how = do_stuff("call glass guy", "on phone")</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Example of using block.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Example of using block.
 stuff_and_things.map{ |item| item.upcase }
 
 # (&) is syntastic sugar used to defind the captured object.
 stuff_and_things.map(&.upcase)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -367,19 +353,17 @@ stuff_and_things.map(&.upcase)</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define an anonymous function and assign it to a 
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define an anonymous function and assign it to a 
 # variable named fn.
 fn = ->(stuff : String, things : String) { "#{stuff} - #{things}" }
 
 # Call anonymous function
 fn.call("my stuff", "my things") # => my stuff - my things</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

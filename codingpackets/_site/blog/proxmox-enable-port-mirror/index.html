@@ -256,17 +256,15 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">/usr/bin/ovs-vsctl \\
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">/usr/bin/ovs-vsctl \\
   -- --id=@p get port tap201i1 \\
   -- --id=@m create mirror name=eda-mirror select-all=true output-port=@p \\
   -- set bridge vmbr1 mirrors=@m</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -302,14 +300,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ovs-vsctl list interface tap201i1 | grep _uuid | awk '{print $3}'</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -327,14 +323,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mkdir /root/scripts/</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mkdir /root/scripts/</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -357,13 +351,12 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 rounded-b">#! /usr/bin/env bash
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">#! /usr/bin/env bash
 # /root/scripts/proxmox-eda-span.sh
 # This script is used to create a port mirror from 
 # a Proxmox host to a VMs virtual NIC. 
@@ -394,7 +387,6 @@ EDA_LOG=/root/scripts/proxmox-eda-span.log
 /usr/bin/ovs-vsctl list Mirror >> $EDA_LOG
 
 /usr/bin/echo "####################" >> $EDA_LOG</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -416,13 +408,12 @@ EDA_LOG=/root/scripts/proxmox-eda-span.log
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 rounded-b">#!/usr/bin/env bash
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">#!/usr/bin/env bash
 # /root/scripts/check-eda-status.sh
 # This script is used to restart the packet capture
 # to the Extrahop EDA if the VM reboots for some reason.
@@ -438,7 +429,6 @@ if [[ $VM_STATUS == "running" ]]; then
     /usr/bin/bash /root/scripts/proxmox-eda-span.sh;
   fi
 fi</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -456,15 +446,13 @@ fi</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># EDA Port Mirror
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># EDA Port Mirror
 */2 * * * * /root/scripts/check-eda-status.sh</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -481,13 +469,12 @@ fi</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Port mirror sources
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Port mirror sources
 set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/4.0
 set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface ge-0/0/4.0
 set ethernet-switching-options analyzer NETWORK-ANALYZER input ingress interface ge-0/0/9.0
@@ -497,7 +484,6 @@ set ethernet-switching-options analyzer NETWORK-ANALYZER input egress interface 
 
 # Port mirror destination
 set ethernet-switching-options analyzer NETWORK-ANALYZER output interface ge-0/0/6.0</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

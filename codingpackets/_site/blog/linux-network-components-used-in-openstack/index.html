@@ -250,16 +250,14 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># On both guest machines
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># On both guest machines
 
 sudo apt install -y bridge-utils</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -274,13 +272,12 @@ sudo apt install -y bridge-utils</code></pre>
 <h4><b>node01 configuration</b></h4>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Create a network namespace for both companies
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Create a network namespace for both companies
 
 sudo ip netns add microsoft
 sudo ip netns add apple
@@ -341,7 +338,6 @@ sudo ip link set dev aapl-br up
 
 sudo ip link set dev msft-vxl-10 up
 sudo ip link set dev aapl-vxl-20 up</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -352,13 +348,12 @@ sudo ip link set dev aapl-vxl-20 up</code></pre>
 <h4><b>node02 configuration</b></h4>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Create network namespace for both companies
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Create network namespace for both companies
 
 sudo ip netns add microsoft
 sudo ip netns add apple
@@ -419,7 +414,6 @@ sudo ip link set dev aapl-br up
 
 sudo ip link set dev msft-vxl-10 up
 sudo ip link set dev aapl-vxl-20 up</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -442,13 +436,12 @@ sudo ip link set dev aapl-vxl-20 up</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Microsoft Namespace
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Microsoft Namespace
 
 sudo ip netns exec microsoft ping -c 3 10.1.0.5
 
@@ -477,7 +470,6 @@ PING 10.1.0.5 (10.1.0.5) 56(84) bytes of data.
 --- 10.1.0.5 ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 1999ms
 rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -496,13 +488,12 @@ rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo ip -d link show msft-vxl-10
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo ip -d link show msft-vxl-10
 
 # output
 
@@ -510,7 +501,6 @@ rtt min/avg/max/mdev = 0.527/0.657/0.825/0.127 ms</code></pre>
 link/ether 52:21:24:75:0a:bc brd ff:ff:ff:ff:ff:ff promiscuity 1
 vxlan id 10 remote 10.10.10.20 dev eth1 srcport 0 0 dstport 8472 ageing 300
 bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_block off fastleave off learning on flood on addrgenmode eui64</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -524,14 +514,12 @@ bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_bl
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo ip netns exec microsoft tcpdump -e -n -l -i msft-veth1</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo ip netns exec microsoft tcpdump -e -n -l -i msft-veth1</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->

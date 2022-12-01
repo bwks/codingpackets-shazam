@@ -156,15 +156,13 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">~/.zshrc</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 rounded-b">export UID=$(id -u)
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">~/.zshrc</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">export UID=$(id -u)
 export GID=$(id -g)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -180,13 +178,12 @@ export GID=$(id -g)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">Dockerfile.rails</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-Dockerfile hljs px-5 rounded-b">################## RAILS BUILD IMAGE ################## 
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">Dockerfile.rails</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-Dockerfile hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">################## RAILS BUILD IMAGE ################## 
 # Use this to generate a new rails application
 FROM ruby:3.1.2-alpine3.16 AS build
 
@@ -278,7 +275,6 @@ USER ${APP_USER}
 # Add a script to be executed every time the container starts.
 EXPOSE 3000
 CMD ["bin/dev"]</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -293,13 +289,12 @@ CMD ["bin/dev"]</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">docker-compose.yaml</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">version: "3.9"
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">docker-compose.yaml</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">version: "3.9"
 services:
   db:
     image: postgres:14.1
@@ -326,7 +321,6 @@ services:
       - "PGS_USER=${PGS_USER}"
       - "PGS_PASS=${PGS_PASS}"
       - "RAILS_ENV=${RAILS_ENV}"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -340,20 +334,18 @@ services:
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">docker-compose-dev.yaml</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">version: "3.9"
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">docker-compose-dev.yaml</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">version: "3.9"
 services:
   app:
     user: ${APP_USER_ID}:${APP_GROUP_ID}
     command: sh -c "bin/rails db:create && bin/rails db:migrate && rm -f tmp/pids/server.pid && bundle exec bin/dev"
     ports:
       - "3000:3000"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -366,13 +358,12 @@ services:
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">.env.dev</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-bash hljs px-5 rounded-b">APP_NAME=&lt;app-name&gt;
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">.env.dev</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">APP_NAME=&lt;app-name&gt;
 APP_USER=$USER
 APP_USER_ID=$UID
 APP_GROUP_ID=$GID
@@ -380,7 +371,6 @@ PGS_HOST=db
 PGS_USER=$USER
 PGS_PASS=$USER
 RAILS_ENV=development</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -407,16 +397,14 @@ RAILS_ENV=development</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">Gemfile</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ruby hljs px-5 rounded-b">source "https://rubygems.org"
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">Gemfile</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ruby hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">source "https://rubygems.org"
 gem "foreman", "~> 0.87.2"
 # ... rest of file</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -429,13 +417,12 @@ gem "foreman", "~> 0.87.2"
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">config/database.yml</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ruby hljs px-5 rounded-b">default: &default
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">config/database.yml</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ruby hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">default: &default
   adapter: postgresql
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
@@ -456,7 +443,6 @@ test:
 production:
   <<: *default
   database: <%= "#{ENV.fetch('APP_NAME')}_production" %></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -469,13 +455,12 @@ production:
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">config/application-development.rb</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ruby hljs px-5 rounded-b">Rails.application.configure do
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">config/application-development.rb</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ruby hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">Rails.application.configure do
 
   # Allow access from any IPv4/6 address
   config.web_console.whitelisted_ips = ['0.0.0.0/0', '::/0']
@@ -485,7 +470,6 @@ production:
 
   # ... rest of file
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -502,15 +486,13 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">bin/dev</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-shell hljs px-5 rounded-b">#!/usr/bin/env sh
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">bin/dev</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-shell hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">#!/usr/bin/env sh
 # ... rest of file</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -524,15 +506,13 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">Procfile.dev</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">web: bin/rails server -b "0.0.0.0" -p 3000
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">Procfile.dev</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">web: bin/rails server -b "0.0.0.0" -p 3000
 # ... rest of file</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -545,13 +525,12 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">docker compose \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
@@ -560,7 +539,6 @@ end</code></pre>
     --build-arg APP_USER_ID=$UID \
     --build-arg APP_GROUP_ID=$GID \
     --build-arg APP_USER=$USER</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -573,18 +551,16 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">export APP_NAME="&lt;app-name&gt;" \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">export APP_NAME="&lt;app-name&gt;" \
   && docker container run -itd --name=rails-tmp rails-base sh \
   && docker container cp rails-tmp:/opt/$APP_NAME $APP_NAME \
   && docker container kill rails-tmp \
   && docker container rm rails-tmp</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -601,18 +577,16 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">docker compose \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
   up</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -623,18 +597,16 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">docker compose \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">docker compose \
   -f docker-compose.yaml \
   -f docker-compose-dev.yaml \
   --env-file .env.dev \
   down</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -643,17 +615,15 @@ end</code></pre>
 <p>Run a generator.</p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">docker compose run \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">docker compose run \
   --user $UID:$GID \
   app \
   bin/rails generate scaffold device name:string</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

@@ -137,18 +137,16 @@
 <h3 id="tcp">TCP</h3>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">nc -v www.google.com  80
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">nc -v www.google.com  80
 
 # success
 Ncat: Version 6.40 ( http://nmap.org/ncat )
 Ncat: Connected to 216.58.200.100:80.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -159,18 +157,16 @@ Ncat: Connected to 216.58.200.100:80.</code></pre>
 <p>UDP tests will always appear successful. You need to run tcp dump and/or check firewall sessions to confirm UDP ports.</p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">nc -vu 8.8.8.8 53
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">nc -vu 8.8.8.8 53
 
 # success ... maybe ? Check firewall sessions if dont have access to end host for TCPDUMP
 Ncat: Version 6.40 ( http://nmap.org/ncat )
 Ncat: Connected to 8.8.8.8:53.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -183,18 +179,16 @@ Ncat: Connected to 8.8.8.8:53.</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># TCP
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># TCP
 sudo nc -l 10.1.1.10 80
 
 # UDP
 sudo nc -l 10.1.1.10 -u 53</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

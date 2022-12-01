@@ -150,13 +150,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Create the file repository configuration:
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Create the file repository configuration:
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
 # Import the repository signing key:
@@ -168,7 +167,6 @@ sudo apt update
 # Install the latest version of PostgreSQL along with development libraries.
 # If you want a specific version, use 'postgresql-12' or similar instead of 'postgresql':
 sudo apt -y install postgresql postgresql-contrib libpq-dev</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -183,13 +181,12 @@ sudo apt -y install postgresql postgresql-contrib libpq-dev</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Install the repository RPM:
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Install the repository RPM:
 sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
 # Disable the built-in PostgreSQL module:
@@ -197,7 +194,6 @@ sudo dnf -qy module disable postgresql
 
 # Install PostgreSQL and the development libraries:
 sudo dnf install -y postgresql13-server postgresql13-devel postgresql13-contrib libpq-devel</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -211,13 +207,12 @@ sudo dnf install -y postgresql13-server postgresql13-devel postgresql13-contrib 
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># Ubuntu
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Ubuntu
 
 /usr/lib/postgresql/13/bin/postgres -V
 postgres (PostgreSQL) 13.1 (Ubuntu 13.1-1.pgdg20.04+1)
@@ -226,7 +221,6 @@ postgres (PostgreSQL) 13.1 (Ubuntu 13.1-1.pgdg20.04+1)
 
 /usr/pgsql-13/bin/postgres -V
 postgres (PostgreSQL) 13.1</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -244,13 +238,12 @@ postgres (PostgreSQL) 13.1</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">systemctl status postgresql.service
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">systemctl status postgresql.service
 
 # output 
 
@@ -264,7 +257,6 @@ postgres (PostgreSQL) 13.1</code></pre>
 
 Nov 20 22:59:44 devbox systemd[1]: Starting PostgreSQL RDBMS...
 Nov 20 22:59:44 devbox systemd[1]: Finished PostgreSQL RDBMS.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -282,18 +274,16 @@ Nov 20 22:59:44 devbox systemd[1]: Finished PostgreSQL RDBMS.</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
 
 # output 
 
 Initializing database ... OK</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -304,19 +294,17 @@ Initializing database ... OK</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo systemctl start postgresql-13
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo systemctl start postgresql-13
 sudo systemctl enable postgresql-13
 
 # output 
 
 Created symlink /etc/systemd/system/multi-user.target.wants/postgresql-13.service → /usr/lib/systemd/system/postgresql-13.service.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -328,13 +316,12 @@ Created symlink /etc/systemd/system/multi-user.target.wants/postgresql-13.servic
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">systemctl status postgresql-13.service
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">systemctl status postgresql-13.service
 
 # output 
 
@@ -360,7 +347,6 @@ Nov 23 14:38:14 centos8.homelab.local systemd[1]: Starting PostgreSQL 13 databas
 Nov 23 14:38:14 centos8.homelab.local postmaster[8096]: 2020-11-23 14:38:14.921 AEST [8096] LOG:  redirecting log output to logging collector process
 Nov 23 14:38:14 centos8.homelab.local postmaster[8096]: 2020-11-23 14:38:14.921 AEST [8096] HINT:  Future log output will appear in directory "log".
 Nov 23 14:38:14 centos8.homelab.local systemd[1]: Started PostgreSQL 13 database server.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -380,18 +366,16 @@ Nov 23 14:38:14 centos8.homelab.local systemd[1]: Started PostgreSQL 13 database
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ss -tunlap | grep 5432
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ss -tunlap | grep 5432
 
 # output 
 
 tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -420,14 +404,12 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo -u postgres psql</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo -u postgres psql</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -442,14 +424,12 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">create database testing123_db template template1;</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">create database testing123_db template template1;</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -462,14 +442,12 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">create user user_name with encrypted password "mypassword";</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">create user user_name with encrypted password "mypassword";</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -484,14 +462,12 @@ tcp   LISTEN     0      244             127.0.0.1:5432             0.0.0.0:*</co
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">grant all privileges on database testing123_db to user_name;</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">grant all privileges on database testing123_db to user_name;</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->

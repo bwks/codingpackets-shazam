@@ -146,14 +146,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo yum install gcc krb5-devel</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo yum install gcc krb5-devel</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -168,13 +166,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo st2 auth st2admin -p SuperSecretPassword
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo st2 auth st2admin -p SuperSecretPassword
 
 # output
 
@@ -185,7 +182,6 @@
 | token    | AUTHENTICATION-TOKEN             |
 | expiry   | 2019-04-29T04:41:47.655393Z      |
 +----------+----------------------------------+</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -200,13 +196,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">st2 pack install ansible -t AUTHENTICATION-TOKEN
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">st2 pack install ansible -t AUTHENTICATION-TOKEN
 
 # output
 
@@ -233,7 +228,6 @@ Installation may take a while for packs with many items.
 | version     | 0.5.7                                            |
 | author      | StackStorm, Inc.                                 |
 +-------------+--------------------------------------------------+</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -245,13 +239,12 @@ Installation may take a while for packs with many items.
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">st2 action list -t AUTHENTICATION-TOKEN | grep ansible
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">st2 action list -t AUTHENTICATION-TOKEN | grep ansible
 
 # output
 
@@ -263,7 +256,6 @@ Installation may take a while for packs with many items.
 | ansible.playbook                | ansible     | Run ansible playbook                               |
 | ansible.vault.decrypt           | ansible     | Decrypt ansible data files                         |
 | ansible.vault.encrypt           | ansible     | Encrypt ansible data files                         |</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -280,13 +272,12 @@ Installation may take a while for packs with many items.
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">st2 run ansible.command hosts=localhost args="hostname -A" -t AUTHENTICATION-TOKEN
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">st2 run ansible.command hosts=localhost args="hostname -A" -t AUTHENTICATION-TOKEN
 
 # output
 
@@ -307,7 +298,6 @@ that the implicit localhost does not match 'all'"
  <span class="hljs-string"> stdout: 'localhost | CHANGED | rc=0 >>
     st2.lab.local '
   succeeded: true</span></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -321,13 +311,12 @@ that the implicit localhost does not match 'all'"
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo ssh-copy-id ansible-node01
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo ssh-copy-id ansible-node01
 
 # output
 
@@ -344,7 +333,6 @@ Number of key(s) added: 1
 
 Now try logging into the machine, with:   "ssh 'ansible-node01'"
 and check to make sure that only the key(s) you wanted were added.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -365,15 +353,13 @@ and check to make sure that only the key(s) you wanted were added.</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">sudo mkdir -p /opt/stackstorm/packs/cp_ansible/actions/workflows/
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo mkdir -p /opt/stackstorm/packs/cp_ansible/actions/workflows/
 cd /opt/stackstorm/packs/cp_ansible/</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -394,13 +380,12 @@ cd /opt/stackstorm/packs/cp_ansible/</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">---
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">---
 # /opt/stackstorm/packs/cp_ansible/playbook.yaml
 - name: "Cowsay Playbook"
   hosts: all
@@ -408,7 +393,6 @@ cd /opt/stackstorm/packs/cp_ansible/</code></pre>
     - yum:
         name: "cowsay"
         state: latest</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -425,16 +409,14 @@ cd /opt/stackstorm/packs/cp_ansible/</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 rounded-b"># /opt/stackstorm/packs/cp_ansible/inventory
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ini hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># /opt/stackstorm/packs/cp_ansible/inventory
 [nodes]
 ansible-node01.lab.local</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -450,13 +432,12 @@ ansible-node01.lab.local</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">---
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">---
 # /opt/stackstorm/packs/cp_ansible/pack.yaml
 ref: "cp_ansible"
 name: "cp_ansible"
@@ -466,7 +447,6 @@ keywords:
 version: "0.1.0"
 author: "Brad Searle"
 email: "bradsearle@lab.local"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -482,13 +462,12 @@ email: "bradsearle@lab.local"</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">---
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">---
 # /opt/stackstorm/packs/cp_ansible/actions/cowsay.yaml
 description: "Cowsay action for ansible pack"
 enabled: True
@@ -496,7 +475,6 @@ entry_point: "workflows/cowsay.yaml"
 name: "cowsay"
 pack: "cp_ansible"
 runner_type: "mistral-v2"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -524,13 +502,12 @@ runner_type: "mistral-v2"</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-yaml hljs px-5 rounded-b">---
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">---
 # /opt/stackstorm/packs/cp_ansible/actions/workflows/cowsay.yaml
 version: "2.0"
 cp_ansible.cowsay:
@@ -550,7 +527,6 @@ cp_ansible.cowsay:
         args: "cowsay 'Ansible cow says: MOOOOOO!'"
         inventory_file: "inventory"
         hosts: "all"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -564,13 +540,12 @@ cp_ansible.cowsay:
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">st2 action create actions/cowsay.yaml -t AUTHENTICATION-TOKEN
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">st2 action create actions/cowsay.yaml -t AUTHENTICATION-TOKEN
 
 # output
 
@@ -592,7 +567,6 @@ cp_ansible.cowsay:
 | tags          |                                |
 | uid           | action:cp_ansible:cowsay       |
 +---------------+--------------------------------+</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -607,13 +581,12 @@ cp_ansible.cowsay:
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">st2 run cp_ansible.cowsay -t AUTHENTICATION-TOKEN
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">st2 run cp_ansible.cowsay -t AUTHENTICATION-TOKEN
 
 # output
 
@@ -647,7 +620,6 @@ end_timestamp: Sun, 28 Apr 2019 10:23:28 UTC
 | 5cc57f1e52364c0905697b7f | succeeded (1s elapsed) | task2 | ansible.command  | Sun, 28 Apr 2019 10:23:26  |
 |                          |                        |       |                  | UTC                        |
 +--------------------------+------------------------+-------+------------------+----------------------------+</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

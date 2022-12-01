@@ -166,13 +166,12 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.tar.gz
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.tar.gz
 
 # output
 eda-1100v-kvm/
@@ -182,7 +181,6 @@ eda-1100v-kvm/eda-1100v.xml.md5
 eda-1100v-kvm/extrahop-data.qcow2.md5
 eda-1100v-kvm/eda-1100v.xml
 eda-1100v-kvm/extrahop-data.qcow2</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -195,13 +193,12 @@ eda-1100v-kvm/extrahop-data.qcow2</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm create 201 \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm create 201 \
   --name eda01 --numa 0 --ostype l26 \
   --cpu cputype=host --cores 2 --sockets 1 \
   --memory 4096  \
@@ -209,7 +206,6 @@ eda-1100v-kvm/extrahop-data.qcow2</code></pre>
   --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
   --net1 virtio,bridge=vmbr1,firewall=0, \
   --serial0 socket</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -220,17 +216,15 @@ eda-1100v-kvm/extrahop-data.qcow2</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-boot.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-boot.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused0:local-lvm:vm-201-disk-0'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -241,14 +235,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-201-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 201 --scsi0 local-lvm:vm-201-disk-0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 201 --scsi0 local-lvm:vm-201-disk-0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -259,14 +251,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-201-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 201 --boot c --bootdisk scsi0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 201 --boot c --bootdisk scsi0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -277,17 +267,15 @@ Successfully imported disk as 'unused0:local-lvm:vm-201-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-data.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 201 /tmp/eda-1100v-kvm/extrahop-data.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused1:local-lvm:vm-201-disk-1'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -298,14 +286,12 @@ Successfully imported disk as 'unused1:local-lvm:vm-201-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 201 --scsi1 local-lvm:vm-201-disk-1</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 201 --scsi1 local-lvm:vm-201-disk-1</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -316,18 +302,16 @@ Successfully imported disk as 'unused1:local-lvm:vm-201-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 201 -scsi2 qnap-nfs1:50,format=qcow2
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 201 -scsi2 qnap-nfs1:50,format=qcow2
 
 # output
 update VM 201: -scsi2 qnap-nfs1:50,format=qcow2
 Formatting '/mnt/pve/qnap-nfs1/images/201/vm-201-disk-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off preallocation=metadata compression_type=zlib size=53687091200 lazy_refcounts=off refcount_bits=16</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -338,14 +322,12 @@ Formatting '/mnt/pve/qnap-nfs1/images/201/vm-201-disk-0.qcow2', fmt=qcow2 cluste
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm start 201</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm start 201</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -357,13 +339,12 @@ Formatting '/mnt/pve/qnap-nfs1/images/201/vm-201-disk-0.qcow2', fmt=qcow2 cluste
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm terminal 201
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm terminal 201
   
 # Username: shell
 # Password: default
@@ -376,7 +357,6 @@ interface 1
  running_config save
  y
 exit</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -399,13 +379,12 @@ exit</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">tar -xvf extrahop-exa-5100v-xs-kvm-8.6.2.1446.tar.gz
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">tar -xvf extrahop-exa-5100v-xs-kvm-8.6.2.1446.tar.gz
 
 # output
 exa-5100v-xs-kvm/
@@ -413,7 +392,6 @@ exa-5100v-xs-kvm/exa-5100v-xs.xml
 exa-5100v-xs-kvm/exa-5100v-xs.xml.md5
 exa-5100v-xs-kvm/extrahop-boot.qcow2
 exa-5100v-xs-kvm/extrahop-boot.qcow2.md5</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -424,20 +402,18 @@ exa-5100v-xs-kvm/extrahop-boot.qcow2.md5</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm create 202 \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm create 202 \
   --name exa01 --numa 0 --ostype l26 \
   --cpu cputype=host --cores 4 --sockets 1 \
   --memory 8192  \
   --scsihw virtio-scsi-pci \
   --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
   --serial0 socket</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -448,17 +424,15 @@ exa-5100v-xs-kvm/extrahop-boot.qcow2.md5</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 202 /tmp/exa-5100v-xs-kvm/extrahop-boot.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 202 /tmp/exa-5100v-xs-kvm/extrahop-boot.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused0:local-lvm:vm-202-disk-0'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -469,14 +443,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-202-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 202 --scsi0 local-lvm:vm-202-disk-0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 202 --scsi0 local-lvm:vm-202-disk-0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -487,14 +459,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-202-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 202 --boot c --bootdisk scsi0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 202 --boot c --bootdisk scsi0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -505,18 +475,16 @@ Successfully imported disk as 'unused0:local-lvm:vm-202-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 202 -scsi1 local-lvm:100,format=raw
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 202 -scsi1 local-lvm:100,format=raw
 
 # output
 update VM 202: -scsi1 local-lvm:100,format=raw
   Logical volume "vm-202-disk-1" created.</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -527,14 +495,12 @@ update VM 202: -scsi1 local-lvm:100,format=raw
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm start 202</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm start 202</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -546,13 +512,12 @@ update VM 202: -scsi1 local-lvm:100,format=raw
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm terminal 202
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm terminal 202
   
 # Username: shell
 # Password: default
@@ -565,7 +530,6 @@ interface 1
  running_config save
  y
 exit</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -590,13 +554,12 @@ exit</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mkdir /tmp/eta-1150v/
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mkdir /tmp/eta-1150v/
 tar -xvf extrahop-eda-1100v-kvm-8.6.2.1446.ova -C /tmp/eta-1150v/
 
 # output
@@ -604,7 +567,6 @@ extrahop-eta-1150v-vmware.ovf
 extrahop-eta-1150v-vmware.mf
 extrahop-eta-1150v-vmware-disk1.vmdk
 extrahop-eta-1150v-vmware-disk2.vmdk</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -623,15 +585,13 @@ extrahop-eta-1150v-vmware-disk2.vmdk</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">/usr/bin/qemu-img convert -p -f vmdk -O qcow2 /tmp/eta-1150v/extrahop-eta-1150v-vmware-disk1.vmdk /tmp/eta-1150v/extrahop-boot.qcow2
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">/usr/bin/qemu-img convert -p -f vmdk -O qcow2 /tmp/eta-1150v/extrahop-eta-1150v-vmware-disk1.vmdk /tmp/eta-1150v/extrahop-boot.qcow2
 /usr/bin/qemu-img convert -p -f vmdk -O qcow2 /tmp/eta-1150v/extrahop-eta-1150v-vmware-disk2.vmdk /tmp/eta-1150v/extrahop-data.qcow2</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -644,13 +604,12 @@ extrahop-eta-1150v-vmware-disk2.vmdk</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm create 203 \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm create 203 \
   --name eta01 --numa 0 --ostype l26 \
   --cpu cputype=host --cores 2 --sockets 1 \
   --memory 16384  \
@@ -658,7 +617,6 @@ extrahop-eta-1150v-vmware-disk2.vmdk</code></pre>
   --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
   --net1 virtio,bridge=vmbr1,firewall=0, \
   --serial0 socket</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -669,17 +627,15 @@ extrahop-eta-1150v-vmware-disk2.vmdk</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 203 /tmp/eta-1150v/extrahop-boot.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 203 /tmp/eta-1150v/extrahop-boot.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused0:local-lvm:vm-203-disk-0'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -690,14 +646,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-203-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 203 --scsi0 local-lvm:vm-203-disk-0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 203 --scsi0 local-lvm:vm-203-disk-0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -708,14 +662,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-203-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 203 --boot c --bootdisk scsi0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 203 --boot c --bootdisk scsi0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -726,17 +678,15 @@ Successfully imported disk as 'unused0:local-lvm:vm-203-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 203 /tmp/eta-1150v/extrahop-data.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 203 /tmp/eta-1150v/extrahop-data.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused1:local-lvm:vm-203-disk-1'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -747,14 +697,12 @@ Successfully imported disk as 'unused1:local-lvm:vm-203-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 203 --scsi1 local-lvm:vm-203-disk-1</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 203 --scsi1 local-lvm:vm-203-disk-1</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -765,18 +713,16 @@ Successfully imported disk as 'unused1:local-lvm:vm-203-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 203 -scsi2 qnap-nfs1:100,format=qcow2
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 203 -scsi2 qnap-nfs1:100,format=qcow2
 
 # output
 update VM 203: -scsi2 qnap-nfs1:100,format=qcow2
 Formatting '/mnt/pve/qnap-nfs1/images/203/vm-203-disk-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off preallocation=metadata compression_type=zlib size=53687091200 lazy_refcounts=off refcount_bits=16</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -787,14 +733,12 @@ Formatting '/mnt/pve/qnap-nfs1/images/203/vm-203-disk-0.qcow2', fmt=qcow2 cluste
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm start 203</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm start 203</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -806,13 +750,12 @@ Formatting '/mnt/pve/qnap-nfs1/images/203/vm-203-disk-0.qcow2', fmt=qcow2 cluste
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm terminal 203
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm terminal 203
   
 # Username: shell
 # Password: default
@@ -825,7 +768,6 @@ interface 1
  running_config save
  y
 exit</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -856,13 +798,12 @@ exit</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">tar -xvf extrahop-eca-kvm-8.6.2.1446.tar.gz
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">tar -xvf extrahop-eca-kvm-8.6.2.1446.tar.gz
 
 # output
 eca-kvm/
@@ -872,7 +813,6 @@ eca-kvm/eca.xml
 eca-kvm/extrahop-data.qcow2.md5
 eca-kvm/extrahop-data.qcow2
 eca-kvm/eca.xml.md5</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -883,20 +823,18 @@ eca-kvm/eca.xml.md5</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm create 204 \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm create 204 \
   --name eca01 --numa 0 --ostype l26 \
   --cpu cputype=host --cores 2 --sockets 1 \
   --memory 4096  \
   --scsihw virtio-scsi-pci \
   --net0 virtio,bridge=vmbr0,tag=20,firewall=0, \
   --serial0 socket</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -907,17 +845,15 @@ eca-kvm/eca.xml.md5</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 204 /tmp/eca-kvm/extrahop-boot.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 204 /tmp/eca-kvm/extrahop-boot.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused0:local-lvm:vm-204-disk-0'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -928,14 +864,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-204-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 204 --scsi0 local-lvm:vm-204-disk-0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 204 --scsi0 local-lvm:vm-204-disk-0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -946,14 +880,12 @@ Successfully imported disk as 'unused0:local-lvm:vm-204-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 204 --boot c --bootdisk scsi0</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 204 --boot c --bootdisk scsi0</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -964,17 +896,15 @@ Successfully imported disk as 'unused0:local-lvm:vm-204-disk-0'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm importdisk 204 /tmp/eca-kvm/extrahop-data.qcow2 local-lvm
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm importdisk 204 /tmp/eca-kvm/extrahop-data.qcow2 local-lvm
 
 # output
 Successfully imported disk as 'unused1:local-lvm:vm-204-disk-1'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -985,14 +915,12 @@ Successfully imported disk as 'unused1:local-lvm:vm-204-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm set 204 --scsi1 local-lvm:vm-204-disk-1</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm set 204 --scsi1 local-lvm:vm-204-disk-1</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1004,14 +932,12 @@ Successfully imported disk as 'unused1:local-lvm:vm-204-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm start 204</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm start 204</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1023,13 +949,12 @@ Successfully imported disk as 'unused1:local-lvm:vm-204-disk-1'</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qm terminal 204
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qm terminal 204
   
 # Username: shell
 # Password: default
@@ -1042,7 +967,6 @@ interface 1
  running_config save
  y
 exit</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

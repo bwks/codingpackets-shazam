@@ -138,13 +138,12 @@
 <h3 id="module-definition">Module Definition</h3>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a module that wraps a class.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a module that wraps a class.
 module Stuff
   class Things
   end
@@ -153,7 +152,6 @@ end
 # Access a class from within a module.
 s = Stuff::Things.new
 puts typeof(s) # => Stuff::Things</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -165,20 +163,18 @@ puts typeof(s) # => Stuff::Things</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a module with a top level variable.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a module with a top level variable.
 module Things
   THINGS = "things"
 end
 
 # Access the top level variable.
 puts Things::THINGS # => things</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -190,13 +186,12 @@ puts Things::THINGS # => things</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a module with a top level method.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a module with a top level method.
 module Things
   # Avoid having to define self.method_name
   # by extending self.
@@ -210,7 +205,6 @@ end
 
 # Access the top level method.
 Things.stuff # => stuff</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -222,13 +216,12 @@ Things.stuff # => stuff</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">crystal</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># Define a module
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">crystal</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># Define a module
 module Stuff
   extend self
   def stuff
@@ -243,7 +236,6 @@ end
 
 # Access the behaviour from the Stuff module in Things.
 Things.new.stuff</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

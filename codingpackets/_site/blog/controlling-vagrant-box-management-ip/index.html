@@ -165,13 +165,12 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virsh net-list --all
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh net-list --all
 
 # output
 
@@ -179,7 +178,6 @@ Name                 State      Autostart     Persistent
 ---------------------------------------------------------
 default              active     yes           yes
 <span class="hljs-string">vagrant-libvirt      active     yes           yes</span></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -196,13 +194,12 @@ default              active     yes           yes
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-xml hljs px-5 rounded-b">virsh net-dumpxml vagrant-libvirt
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-xml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh net-dumpxml vagrant-libvirt
 
 # output
 
@@ -222,7 +219,6 @@ default              active     yes           yes
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -269,13 +265,12 @@ default              active     yes           yes
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ruby hljs px-5 rounded-b"># -*- mode: ruby -*-
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ruby hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
@@ -292,7 +287,6 @@ Vagrant.configure("2") do |config|
     end
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -307,20 +301,18 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-xml hljs px-5 rounded-b">virsh net-update vagrant-libvirt add-last ip-dhcp-host \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-xml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh net-update vagrant-libvirt add-last ip-dhcp-host \
       '&lt;host mac="52:54:00:00:01:01" ip="192.168.121.111"/&gt;' \
       --live --config --parent-index 0
 
 # output
 
 Updated network vagrant-libvirt persistent config and live state</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -334,13 +326,12 @@ Updated network vagrant-libvirt persistent config and live state</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-xml hljs px-5 rounded-b">virsh net-dumpxml vagrant-libvirt
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-xml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh net-dumpxml vagrant-libvirt
 
 # output
 
@@ -362,7 +353,6 @@ Updated network vagrant-libvirt persistent config and live state</code></pre>
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -379,13 +369,12 @@ Updated network vagrant-libvirt persistent config and live state</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vagrant up --provider=libvirt
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vagrant up --provider=libvirt
 
 # output
 
@@ -397,7 +386,6 @@ Bringing machine 'spine01' up with 'libvirt' provider...
 ..
 ==> spine01: Setting hostname...
 ==> spine01: Configuring and enabling network interfaces...</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -407,13 +395,12 @@ Bringing machine 'spine01' up with 'libvirt' provider...
 <p>Login to the box and confirm the intended IP address was assigned to the management interface.</p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vagrant@spine01:~$ sudo net show int eth0
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vagrant@spine01:~$ sudo net show int eth0
 
 # output
 
@@ -427,7 +414,6 @@ IP Details
 IP:                        <span class="hljs-string">192.168.121.111/24</span>
 
 IP Neighbor(ARP) Entries:  1</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -441,13 +427,12 @@ IP Neighbor(ARP) Entries:  1</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-json hljs px-5 rounded-b">cat /var/lib/libvirt/dnsmasq/virbr1.status
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-json hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cat /var/lib/libvirt/dnsmasq/virbr1.status
 
 # output
 
@@ -459,7 +444,6 @@ IP Neighbor(ARP) Entries:  1</code></pre>
       "expiry-time": 1508917500
   }
 ]</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -478,20 +462,18 @@ IP Neighbor(ARP) Entries:  1</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-xml hljs px-5 rounded-b">virsh net-update vagrant-libvirt delete ip-dhcp-host \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-xml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh net-update vagrant-libvirt delete ip-dhcp-host \
       '&lt;host mac="52:54:00:00:01:01" ip="192.168.121.111"/&gt;' \
       --live --config --parent-index 0
 
 # output
 
 Updated network vagrant-libvirt persistent config and live state</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

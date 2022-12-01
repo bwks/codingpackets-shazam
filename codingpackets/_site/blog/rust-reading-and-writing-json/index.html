@@ -148,17 +148,15 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">Cargo.toml</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ini hljs px-5 rounded-b">[dependencies]
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">Cargo.toml</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ini hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">[dependencies]
 serde = "1.0.136"
 serde_derive = "1.0.136"
 serde_json = "1.0.79"</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -185,13 +183,12 @@ serde_json = "1.0.79"</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">rust</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">pub enum Value {
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">rust</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">pub enum Value {
     Null,
     Bool(bool),
     Number(Number),
@@ -199,7 +196,6 @@ serde_json = "1.0.79"</code></pre>
     Array(Vec<Value>),
     Object(Map<String, Value>),
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -212,13 +208,12 @@ serde_json = "1.0.79"</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">main.rs</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">use serde_json::Value;
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">main.rs</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">use serde_json::Value;
 use std::process::exit;
 
 fn main() {
@@ -250,7 +245,6 @@ fn main() {
     );
     // => hostname "rt01" has these IPv4 addresses ["10.1.1.1/24","172.16.1.1/24"]
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -265,13 +259,12 @@ fn main() {
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">main.rs</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">use serde_derive::Deserialize;
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">main.rs</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">use serde_derive::Deserialize;
 use std::process::exit;
 
 // Annotate the struct with the Deserialize macro.
@@ -313,7 +306,6 @@ fn main() {
     );
     //  => hostname rt01 has these IPv4 addresses 10.1.1.1/24, 172.16.1.1/24
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -329,13 +321,12 @@ fn main() {
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">main.rs</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">use serde_derive::Serialize;
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">main.rs</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">use serde_derive::Serialize;
 use std::process::exit;
 
 // Annotate the struct with the Serialize macro.
@@ -368,7 +359,6 @@ fn main() {
     println!("{}", j);
     // => {"hostname":"rt01","ipv4_addresses":["10.1.1.1/24","172.16.1.1/24"]}
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

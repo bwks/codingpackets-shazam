@@ -182,15 +182,13 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mkdir -p ~/vagrant/boxes/viptela
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mkdir -p ~/vagrant/boxes/viptela
 cd ~/vagrant/boxes/viptela</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -205,14 +203,12 @@ cd ~/vagrant/boxes/viptela</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">cp ~/Downloads/viptela-vmanage-genericx86-64.qcow2 .</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cp ~/Downloads/viptela-vmanage-genericx86-64.qcow2 .</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -227,18 +223,16 @@ cd ~/vagrant/boxes/viptela</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">qemu-img create -f qcow2 vmanage-disk2-base.qcow2 100G
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">qemu-img create -f qcow2 vmanage-disk2-base.qcow2 100G
 
 # output
 
 Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off refcount_bits=16</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -265,13 +259,12 @@ Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=of
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virt-install \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virt-install \
     --name vmanage-base \
     --os-type linux \
     --os-variant ubuntu14.04 \
@@ -285,7 +278,6 @@ Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=of
     --network=network:vagrant-libvirt,model=virtio \
     --graphics none \
     --import</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -301,19 +293,17 @@ Formatting 'vmanage-disk2-base.qcow2', fmt=qcow2 size=107374182400 encryption=of
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">Starting install...
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">Starting install...
 Creating domain...                                                                                                                                                                          |    0 B  00:00:01
 Connected to domain vmanage-base
 Escape character is ^]
 viptela 16.3.2
 vmanage login:</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -332,13 +322,12 @@ vmanage login:</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">Welcome to Viptela CLI
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">Welcome to Viptela CLI
 admin connected from 127.0.0.1 using console on vmanage
 Available storage devices:
 hdb	100GB
@@ -353,7 +342,6 @@ kernel.hung_task_panic = 0
 mke2fs 1.42.9 (28-Dec-2013)
 /dev/hdb is entire device, not just one partition!
 Proceed anyway? (y,n) <span class="hljs-string">y</span></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -366,13 +354,12 @@ Proceed anyway? (y,n) <span class="hljs-string">y</span></code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">Filesystem label=
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">Filesystem label=
 OS type: Linux
 Block size=4096 (log=2)
 Fragment size=4096 (log=2)
@@ -394,7 +381,6 @@ Creating journal (32768 blocks): done
 Writing superblocks and filesystem accounting information: done
 
 vmanage# The system is going down for reboot NOW!</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -409,13 +395,12 @@ vmanage# The system is going down for reboot NOW!</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">config
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">config
 system
  aaa
   user vagrant
@@ -433,7 +418,6 @@ system
   !
   commit and-quit
 !</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -454,20 +438,18 @@ system
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># viptela_cli
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># viptela_cli
 
 vmanage# vshell
 
 # Now in vshell
 
 vmanage:~$</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -480,19 +462,17 @@ vmanage:~$</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">su vagrant
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">su vagrant
 password: &lt;vagrant&gt;
 
 # log back into vshell
 
 vmanage# vshell</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -506,14 +486,12 @@ vmanage# vshell</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mkdir /home/vagrant/.ssh && cd /home/vagrant/.ssh</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mkdir /home/vagrant/.ssh && cd /home/vagrant/.ssh</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -528,16 +506,14 @@ vmanage# vshell</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">/home/vagrant/.ssh/authorized_keys
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">/home/vagrant/.ssh/authorized_keys
 
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -554,13 +530,12 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vshell
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vshell
 
 vsmart:/home/vagrant/.ssh$ exit
 
@@ -575,7 +550,6 @@ viptela_cli
 VPN  INTERFACE  TYPE  IP ADDRESS         STATUS  STATUS  TYPE   TYPE  MTU  HWADDR             MBPS   DUPLEX  ADJUST  UPTIME  PACKETS  PACKETS
 -----------------------------------------------------------------------------------------------------------------------------------------------
 512  eth0       ipv4  192.168.121.55/24  Up      Up      null   mgmt  -    52:54:00:4b:b8:a4  -      -       -       -       447      102</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -590,20 +564,18 @@ VPN  INTERFACE  TYPE  IP ADDRESS         STATUS  STATUS  TYPE   TYPE  MTU  HWADD
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ssh vagrant@192.168.121.55 -i ~/.vagrant.d/insecure_private_key
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ssh vagrant@192.168.121.55 -i ~/.vagrant.d/insecure_private_key
 
 # Success
 
 Welcome to Viptela CLI
 vagrant connected from 192.168.121.1 using ssh on vmanage
 vmanage#</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -615,15 +587,13 @@ vmanage#</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vmanage# poweroff
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vmanage# poweroff
 Are you sure you want to power off the system? [yes,NO] <span class="hljs-string">yes</span></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -650,14 +620,12 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">curl -O https://raw.githubusercontent.com/vagrant-libvirt/vagrant-libvirt/master/tools/create_box.sh</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -670,14 +638,12 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-json hljs px-5 rounded-b">echo '{"provider":"libvirt","format":"qcow2","virtual_size":16}' > metadata.json</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-json hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">echo '{"provider":"libvirt","format":"qcow2","virtual_size":16}' > metadata.json</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -692,13 +658,12 @@ Are you sure you want to power off the system? [yes,NO] <span class="hljs-string
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">bash create_box.sh viptela-vmanage-genericx86-64.qcow2
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">bash create_box.sh viptela-vmanage-genericx86-64.qcow2
 
 # output
 
@@ -711,7 +676,6 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
 ==> viptela-vmanage-genericx86-64.box created
 ==> You can now add the box:
 ==>   'vagrant box add viptela-vmanage-genericx86-64.box --name viptela-vmanage-genericx86-64'</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -741,13 +705,12 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-json hljs px-5 rounded-b">{
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-json hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">{
   "name": "viptela/vmanage",
   "description": "Viptela vManage",
   "versions": [
@@ -762,7 +725,6 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
     }
   ]
 }</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -775,13 +737,12 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vagrant box add vmanage.json
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vagrant box add vmanage.json
 
 # output
 
@@ -790,7 +751,6 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
 ==> box: Adding box 'viptela/vmanage' (v16.3.2) for provider: libvirt
     box: Unpacking necessary files from: file:///home/bradmin/vagrant/boxes/viptela/viptela-vmanage-genericx86-64.box
 ==> box: Successfully added box 'viptela/vmanage' (v16.3.2) for 'libvirt'!</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -802,13 +762,12 @@ Total bytes written: 1005465600 (959MiB, 38MiB/s)
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vagrant box list
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vagrant box list
 
 # output
 
@@ -819,7 +778,6 @@ CumulusCommunity/cumulus-vx          (libvirt, 3.4.1)
 <span class="hljs-string">viptela/vmanage                      (libvirt, 16.3.2)</span>
 
 vyos/current                         (libvirt, 999.201712301253)</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -849,14 +807,12 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mkdir ~/vagrant/boxes/viptela/storage</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mkdir ~/vagrant/boxes/viptela/storage</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -871,13 +827,12 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-xml hljs px-5 rounded-b">&lt;pool type='dir'&gt;
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-xml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">&lt;pool type='dir'&gt;
   &lt;name&gt;viptela-storage&lt;/name&gt;
   &lt;capacity unit='bytes'&gt;950504235008&lt;/capacity&gt;
   &lt;allocation unit='bytes'&gt;680520564736&lt;/allocation&gt;
@@ -893,7 +848,6 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
     &lt;/permissions&gt;
   &lt;/target&gt;
 &lt;/pool&gt;</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -906,18 +860,16 @@ vyos/current                         (libvirt, 999.201712301253)</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virsh pool-create viptela-storage.xml
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh pool-create viptela-storage.xml
 
 # output
 
 Pool viptela-storage created from viptela-storage.xml</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -930,13 +882,12 @@ Pool viptela-storage created from viptela-storage.xml</code></pre>
  to test out the new vManage Vagrant box.</p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-ruby hljs px-5 rounded-b"># -*- mode: ruby -*-
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-ruby hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
@@ -966,7 +917,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "169.254.1.12", auto_config: false
 
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -981,14 +931,12 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">cp vmanage-disk2-base.qcow2 storage/vmanage-disk2.qcow2</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cp vmanage-disk2-base.qcow2 storage/vmanage-disk2.qcow2</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1002,18 +950,16 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virsh pool-refresh viptela-storage
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh pool-refresh viptela-storage
 
 # output
 
 Pool viptela-storage refreshed</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1027,13 +973,12 @@ Pool viptela-storage refreshed</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">vagrant up
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">vagrant up
 
 # output
 
@@ -1078,7 +1023,6 @@ Vagrant requires this knowledge to perform specific tasks such
 as mounting shared folders and configuring networks. Please add
 the ability to detect this guest operating system to Vagrant
 by creating a plugin or reporting a bug.</span></code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1110,13 +1054,12 @@ by creating a plugin or reporting a bug.</span></code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># from host shell
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># from host shell
 
 vagrant ssh
 
@@ -1126,7 +1069,6 @@ Welcome to Viptela CLI
 vagrant connected from 192.168.121.1 using ssh on vmanage
 vmanage# show version
 16.3.2</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1139,20 +1081,18 @@ vmanage# show version
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b"># from host shell
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># from host shell
 
 vagrant destroy -f
 
 # output
 
 ==> default: Removing domain...</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1166,18 +1106,16 @@ vagrant destroy -f
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virsh vol-delete vmanage-disk2.qcow2 --pool viptela-storage
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh vol-delete vmanage-disk2.qcow2 --pool viptela-storage
 
 # output
 
 Vol vmanage-disk2.qcow2 deleted</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -1190,18 +1128,16 @@ Vol vmanage-disk2.qcow2 deleted</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">virsh pool-destroy viptela-storage
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">virsh pool-destroy viptela-storage
 
 # output
 
 Pool viptela-storage destroyed</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

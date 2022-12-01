@@ -138,13 +138,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">Get-ADUser -Filter 'Name -like "some_user"' -SearchBase "DC=example,DC=com"
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">Get-ADUser -Filter 'Name -like "some_user"' -SearchBase "DC=example,DC=com"
 
 DistinguishedName : CN=some_user,OU=some,OU=group,DC=example,DC=com
 Enabled           : True
@@ -156,7 +155,6 @@ SamAccountName    : some_user
 SID               : S-1-5-21-1263631716-347569959-4351110812-1290
 Surname           : User
 UserPrincipalName : some_user@example.com</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -178,17 +176,15 @@ UserPrincipalName : some_user@example.com</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">ldapsearch \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ldapsearch \
     -H ldaps://ad01.example.com -x \
     -b "OU=some,OU=group,DC=example,DC=com" \
     -D "CN=some_user,OU=some,OU=group,DC=example,DC=com" -W</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -204,17 +200,15 @@ UserPrincipalName : some_user@example.com</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">LDAPTLS_REQCERT=never ldapsearch \
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">LDAPTLS_REQCERT=never ldapsearch \
     -H ldaps://ad01.example.com -x \
     -b "OU=some,OU=group,DC=example,DC=com" \
     -D "some_user@example.com" -W</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -239,15 +233,13 @@ UserPrincipalName : some_user@example.com</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">memberOf: CN=networks,OU=some,OU=group,DC=example,DC=com
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">memberOf: CN=networks,OU=some,OU=group,DC=example,DC=com
 memberOf: CN=automation,OU=some,OU=group,DC=example,DC=com</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

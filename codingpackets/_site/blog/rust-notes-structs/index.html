@@ -140,13 +140,12 @@
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">rust</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">// Example struct definition.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">rust</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">// Example struct definition.
 struct StuffAndThings {
     stuff: String, // struct field
     things: u8,
@@ -172,7 +171,6 @@ sat1.things = 42;
 // Access the structs fields.
 println!("{}", sat1.stuff); // => blah
 println!("{}", sat1.things); // => 42</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -187,13 +185,12 @@ println!("{}", sat1.things); // => 42</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">rust</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">// Implement a `new` associated funtion that is 
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">rust</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">// Implement a `new` associated funtion that is 
 // used to instatiate `StuffAndThings` with default values.
 impl StuffAndThings {
     // `Self` is syntastic sugar in-place of the struct 
@@ -212,7 +209,6 @@ let sat = StuffAndThings::new();
 // Access a structs fields.
 println!("{}", sat.stuff); // => no stuff
 println!("{}", sat.things); // => 0</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -225,13 +221,12 @@ println!("{}", sat.things); // => 0</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">rust</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-rust hljs px-5 rounded-b">// Implement a `show` method on the `StuffAndThings` struct.
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">rust</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-rust hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">// Implement a `show` method on the `StuffAndThings` struct.
 impl StuffAndThings {
     // `&self` is syntastic sugar for `self: &Self`
     // `StuffAndThings` is the (&self) caller object.
@@ -245,7 +240,6 @@ let sat = StuffAndThings::new();
 
 // Call the method.
 println!("{}", sat.show()); // => stuff: no stuff | things: 0</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->

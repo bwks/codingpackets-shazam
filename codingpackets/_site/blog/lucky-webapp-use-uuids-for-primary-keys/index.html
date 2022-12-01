@@ -185,14 +185,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">touch db/migrations/00000000000001_enable_pgcrypto.cr</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">touch db/migrations/00000000000001_enable_pgcrypto.cr</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -206,13 +204,12 @@
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b">class EnablePgcrypto::V00000000000001 < Avram::Migrator::Migration::V1
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">class EnablePgcrypto::V00000000000001 < Avram::Migrator::Migration::V1
   def migrate
     execute "CREATE EXTENSION IF NOT EXISTS pgcrypto"
   end
@@ -221,7 +218,6 @@
     execute "DROP EXTENSION pgcrypto"
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -236,14 +232,12 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">cmd</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-text hljs px-5 rounded-b">mv db/migrations/00000000000001_create_users.cr db/migrations/00000000000002_create_users.cr</code></pre>
-    </div>
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">mv db/migrations/00000000000001_create_users.cr db/migrations/00000000000002_create_users.cr</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -260,13 +254,12 @@ end</code></pre>
 </p>
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># db/migrations/00000000000002_create_users.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># db/migrations/00000000000002_create_users.cr
 # class CreateUsers::V00000000000001 < Avram::Migrator::Migration::V1
 class CreateUsers::V00000000000002 < Avram::Migrator::Migration::V1
   def migrate
@@ -286,7 +279,6 @@ class CreateUsers::V00000000000002 < Avram::Migrator::Migration::V1
     disable_extension "citext"
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -309,13 +301,12 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># src/models/base_model.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># src/models/base_model.cr
 abstract class BaseModel < Avram::Model
   # Add this macro
   macro default_columns
@@ -326,7 +317,6 @@ abstract class BaseModel < Avram::Model
     AppDatabase
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -346,13 +336,12 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># src/pages/password_resets/new_page.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># src/pages/password_resets/new_page.cr
 class PasswordResets::NewPage < AuthLayout
   needs operation : ResetPassword
   # needs user_id : Int64
@@ -372,7 +361,6 @@ class PasswordResets::NewPage < AuthLayout
     end
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -391,13 +379,12 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># src/actions/password_resets/create.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># src/actions/password_resets/create.cr
 class PasswordResets::Create < BrowserAction
   include Auth::PasswordResets::Base
   include Auth::PasswordResets::TokenFromSession
@@ -416,7 +403,6 @@ class PasswordResets::Create < BrowserAction
     end
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -435,13 +421,12 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># src/actions/password_resets/edit.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># src/actions/password_resets/edit.cr
 class PasswordResets::Edit < BrowserAction
   include Auth::PasswordResets::Base
   include Auth::PasswordResets::TokenFromSession
@@ -451,7 +436,6 @@ class PasswordResets::Edit < BrowserAction
     html NewPage, operation: ResetPassword.new, user_id: UUID.new(user_id)
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -471,13 +455,12 @@ end</code></pre>
 
 
 <!-- CODE BLOCK START -->
-<div id="code-block" class="pt-2 pb-4">
-  <div class="rounded-lg border-4 border-zinc-800 shadow-md shadow-zinc-400 dark:shadow-none">
-    <div class="py-1 text-center font-bold font-mono border-b-4 border-zinc-800 dark:bg-[#1a1b26]">
-      <span class="">file</span>
-    </div>
-    <div class="font-mono leading-tight">
-      <pre><code class="language-crystal hljs px-5 rounded-b"># src/models/user_token.cr
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">file</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-crystal hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg"># src/models/user_token.cr
 # Generates and decodes JSON Web Tokens for Authenticating users.
 class UserToken
   Habitat.create { setting stubbed_token : String? }
@@ -510,7 +493,6 @@ class UserToken
     end
   end
 end</code></pre>
-    </div>
   </div>
 </div>
 <!-- CODE BLOCK END -->
