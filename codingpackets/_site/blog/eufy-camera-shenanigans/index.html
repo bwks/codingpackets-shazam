@@ -1,0 +1,590 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black tracking-wide ">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
+      <h1 class="pb-1 sm:pb-2">Eufy Camera Shenanigans</h1>
+      <div class="">
+        
+        
+          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
+            published: 1st of December 2022
+          </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchsed some external Eufy cameras to monitor 
+  the outside of my house. I got both the 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Eufy Security Floodlight Pro 2K</span> 
+  and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Floodlight Camera 2K HD</span> 
+  models. I went with Eufy, since I already have some cameras 
+  for the indoor areas and had a pretty good experience with them.
+</p>
+<p>
+  Unfortunately the external cameras have some unfortunate features. 
+  I am not sure who is running product over at Eufy, but they must 
+  have rocks in their head. 
+</p>
+<p>
+  In this post, I will outline how to get them working and the things 
+  that make the cameras a huge failure compared to the indoor models. 
+</p>
+
+<h3 id="storage">Storage</h3>
+<p>
+  The first things that is really piss poor is that these devices 
+  do not connect or record to the home base like the indoor cameras. 
+  They have a small amount of non-upgradable onboard storage. 0/10
+</p>
+
+<h3 id="management">Management</h3>
+<p>
+  Because these devices do not connect to the home base they are managed 
+  individually in the app. That means you need to upgrade the firware seperately 
+  and you cannot set them to away all at once. You need to do them all 
+  individually. Mega UX miss 0/10
+</p>
+
+<h3 id="firewall-rules">Firewall Rules</h3>
+<p>
+  Perhaps the worst thing about these devices is they require connectivity to 
+  Google DNS servers <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">8.8.8.8</span> and 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">8.8.4.4</span> as well as unknown/documented NTP 
+  servers before they can record. If you block access to google DNS and 
+  unknown NTP servers in your network like I do, then you are shit out of luck.
+  IMO this is a pretty dangerous design decision. If you loose access to 
+  to these services, the cameras simply will not record. 0/10.
+</p>
+<p>
+  I raised a case with Eufy to ask why the cameras do not take the DNS/NTP 
+  settings from DHCP. They confirmed (after 5 or 6 emails persisting for the 
+  information) that they are hard coded in the firmware 
+  and must be accessable to work. They confirmed the Google DNS IP's but 
+  they would not confirm the NTP pools that they use. 
+</p>
+
+<p>
+  The most they would give me is "TCP ports 80 and 443 and UDP 0~65535. 
+  As well as google DNS."
+</p>
+<p>
+  LORD HAVE MERCY! 
+</p>
+
+<p>
+  From my firewall logs, I can see the following ports/protocols are in use. 
+  It looks like the IP's all belong to Amazon, so likely the infra is hosted 
+  in AWS so not easy to pinpoint a range of IP's.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+        
+          
+            <th class="py-1 px-2 border-b border-r border-zinc-800">Protocol</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b border-r border-zinc-800">Port</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b border-zinc-800">Destination</th>
+          
+        
+        </tr>
+      </thead>
+      <tbody>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">TCP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 80 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> MANY</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">TCP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 443 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> MANY</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">UDP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 53 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 8.8.8.8<br>8.8.4.4</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">UDP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 123 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> MANY</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">UDP </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 49152 - 65535 </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> MANY</td>
+            
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  This 
+<a class="text-sky-600 no-underline hover:text-sky-900" href="https://community.security.eufy.com/t/limit-the-firewall-ports-ips-needed-to-be-opened-to-the-outside-world/634201/2" target=_blank>post</a>
+  narrowed down the UDP high port range to something sane.
+</p>
+
+<h3 id="workaround">Workaround</h3>
+<p>
+  To get around these limitations I create a dedicated 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">internet of shit</span> secuity zone and network 
+  for the Eufy cameras. I permit the above rules outbound and keep 
+  them well away from the rest of my network.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  For a so called security company. The product and design decision made 
+  are frankly mind boggoling. 0/10 for Eufy, don't recommend. If I had 
+  not already had them installed by an electrician by the time I found this 
+  out I would have sent them back for a refund. 
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl">
+          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://community.security.eufy.com/t/limit-the-firewall-ports-ips-needed-to-be-opened-to-the-outside-world/634201" target=_blank>https://community.security.eufy.com/t/limit-the-firewall-ports-ips-needed-to-be-opened-to-the-outside-world/634201</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex flex-wrap justify-center">
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#iot" class="text-xl">iot</a>        
+        </div>
+      
+        <div class="pr-2 text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#eufy" class="text-xl">eufy</a>        
+        </div>
+      
+        <div class=" text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#rant" class="text-xl">rant</a>        
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#storage">
+            Storage
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#management">
+            Management
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#firewall-rules">
+            Firewall Rules
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#workaround">
+            Workaround
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#links">
+            Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="text-sky-600 font-normal text-xl no-underline hover:text-sky-800" href="#tags">
+            Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

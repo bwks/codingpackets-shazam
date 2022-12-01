@@ -1,0 +1,103 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchsed some external Eufy cameras to monitor 
+  the outside of my house. I got both the 
+  {{ text::emphasize(text="Eufy Security Floodlight Pro 2K")}} 
+  and {{ text::emphasize(text="Floodlight Camera 2K HD")}} 
+  models. I went with Eufy, since I already have some cameras 
+  for the indoor areas and had a pretty good experience with them.
+</p>
+<p>
+  Unfortunately the external cameras have some unfortunate features. 
+  I am not sure who is running product over at Eufy, but they must 
+  have rocks in their head. 
+</p>
+<p>
+  In this post, I will outline how to get them working and the things 
+  that make the cameras a huge failure compared to the indoor models. 
+</p>
+
+<h3 id="storage">Storage</h3>
+<p>
+  The first things that is really piss poor is that these devices 
+  do not connect or record to the home base like the indoor cameras. 
+  They have a small amount of non-upgradable onboard storage. 0/10
+</p>
+
+<h3 id="management">Management</h3>
+<p>
+  Because these devices do not connect to the home base they are managed 
+  individually in the app. That means you need to upgrade the firware seperately 
+  and you cannot set them to away all at once. You need to do them all 
+  individually. Mega UX miss 0/10
+</p>
+
+<h3 id="firewall-rules">Firewall Rules</h3>
+<p>
+  Perhaps the worst thing about these devices is they require connectivity to 
+  Google DNS servers {{ text::emphasize(text="8.8.8.8") }} and 
+  {{ text::emphasize(text="8.8.4.4") }} as well as unknown/documented NTP 
+  servers before they can record. If you block access to google DNS and 
+  unknown NTP servers in your network like I do, then you are shit out of luck.
+  IMO this is a pretty dangerous design decision. If you loose access to 
+  to these services, the cameras simply will not record. 0/10.
+</p>
+<p>
+  I raised a case with Eufy to ask why the cameras do not take the DNS/NTP 
+  settings from DHCP. They confirmed (after 5 or 6 emails persisting for the 
+  information) that they are hard coded in the firmware 
+  and must be accessable to work. They confirmed the Google DNS IP's but 
+  they would not confirm the NTP pools that they use. 
+</p>
+
+<p>
+  The most they would give me is "TCP ports 80 and 443 and UDP 0~65535. 
+  As well as google DNS."
+</p>
+<p>
+  LORD HAVE MERCY! 
+</p>
+
+<p>
+  From my firewall logs, I can see the following ports/protocols are in use. 
+  It looks like the IP's all belong to Amazon, so likely the infra is hosted 
+  in AWS so not easy to pinpoint a range of IP's.
+</p>
+
+{{ table::default(
+  header=["Protocol", "Port", "Destination"],
+  rows=[
+    "TCP | 80 | MANY",
+    "TCP | 443 | MANY",
+    "UDP | 53 | 8.8.8.8<br>8.8.4.4",
+    "UDP | 123 | MANY",
+    "UDP | 49152 - 65535 | MANY"
+  ],
+) }}
+
+<p>
+  This 
+{{ link::e(path="https://community.security.eufy.com/t/limit-the-firewall-ports-ips-needed-to-be-opened-to-the-outside-world/634201/2", description="post") }}
+  narrowed down the UDP high port range to something sane.
+</p>
+
+<h3 id="workaround">Workaround</h3>
+<p>
+  To get around these limitations I create a dedicated 
+  {{ text::emphasize(text="internet of shit") }} secuity zone and network 
+  for the Eufy cameras. I permit the above rules outbound and keep 
+  them well away from the rest of my network.
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  For a so called security company. The product and design decision made 
+  are frankly mind boggoling. 0/10 for Eufy, don't recommend. If I had 
+  not already had them installed by an electrician by the time I found this 
+  out I would have sent them back for a refund. 
+</p>
+
+{% endblock page_content %}
