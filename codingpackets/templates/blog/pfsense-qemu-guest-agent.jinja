@@ -29,10 +29,17 @@
 {{ text::code_block(
   header="cmd",
   language="text",
-  code='pkg install -y qemu-guest-agent
-  
-# Output
-=======================================================
+  code='pkg install -y qemu-guest-agent'
+) }}
+
+<p>
+  Once installed, there is a note on how to setup the agent.
+</p>
+
+{{ text::code_block(
+  header="text",
+  language="text",
+  code='=======================================================
 Modify your `/etc/rc.conf` by adding these settings
 
 qemu_guest_agent_enable="YES"
@@ -44,11 +51,6 @@ and run
 For detailed help use `qemu-ga -h`
 ======================================================='
 ) }}
-
-<p>
-  Once installed, there is a note on how to setup the 
-  agent.
-</p>
 
 <h3 id="configure">Configure</h3>
 <p>
@@ -62,7 +64,7 @@ For detailed help use `qemu-ga -h`
 </p>
 {{ text::code_block(
   header="cmd",
-  language="text",
+  language="shell",
   code='cat >> /etc/rc.conf.local << EOF
 qemu_guest_agent_enable="YES"
 qemu_guest_agent_flags="-d -v -l /var/log/qemu-ga.log"
@@ -76,7 +78,7 @@ EOF'
 
 {{ text::code_block(
   header="cmd",
-  language="text",
+  language="shell",
   code='cat > /usr/local/etc/rc.d/qemu-agent.sh << EOF
 #!/bin/sh
 sleep 3
@@ -145,7 +147,7 @@ qemu_guest_agent is running as pid 85066.`
   "Datacenter",
   "&lt;host&gt;",
   "&lt;vm&gt;",
-  "Summmary",
+  "Summary",
 ]) }}
 
 

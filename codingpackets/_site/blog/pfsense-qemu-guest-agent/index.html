@@ -154,10 +154,24 @@
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">pkg install -y qemu-guest-agent
-  
-# Output
-=======================================================
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">pkg install -y qemu-guest-agent</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Once installed, there is a note on how to setup the agent.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">text</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">=======================================================
 Modify your `/etc/rc.conf` by adding these settings
 
 qemu_guest_agent_enable="YES"
@@ -172,11 +186,6 @@ For detailed help use `qemu-ga -h`
 </div>
 <!-- CODE BLOCK END -->
 
-
-<p>
-  Once installed, there is a note on how to setup the 
-  agent.
-</p>
 
 <h3 id="configure">Configure</h3>
 <p>
@@ -195,7 +204,7 @@ For detailed help use `qemu-ga -h`
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cat >> /etc/rc.conf.local << EOF
+    <pre class=""><code class="language-shell hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cat >> /etc/rc.conf.local << EOF
 qemu_guest_agent_enable="YES"
 qemu_guest_agent_flags="-d -v -l /var/log/qemu-ga.log"
 #virtio_console_load="YES"
@@ -216,7 +225,7 @@ EOF</code></pre>
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cat > /usr/local/etc/rc.d/qemu-agent.sh << EOF
+    <pre class=""><code class="language-shell hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">cat > /usr/local/etc/rc.d/qemu-agent.sh << EOF
 #!/bin/sh
 sleep 3
 service qemu-guest-agent start
@@ -352,7 +361,7 @@ qemu_guest_agent is running as pid 85066.</code></pre>
           <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
         
       
-        <li class="text-sky-600 dark:text-sky-800">Summmary</li>
+        <li class="text-sky-600 dark:text-sky-800">Summary</li>
         
       
     </ol>
