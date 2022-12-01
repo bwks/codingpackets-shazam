@@ -1,0 +1,158 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I use Proxmox for my hypervsior and recently installed pfSense 
+  as a firewall. I use the QEMU Guest Agent to get more detailed 
+  info about the VM's that are running in the Proxmox console.
+</p>
+<p>
+  This post shows the process to get the QEMU Guest Agent running  
+  on a pfSense firewall.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li>pfSense Community Edition - 2.6.0</li>
+  <li>QEMU Guest Agent - 5.0.1</li>
+</ul>
+
+<h3 id="install">Install</h3>
+<p>
+  Install the {{ text::emphasize(text="qemu-guest-agent") }} package.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='pkg install -y qemu-guest-agent
+  
+# Output
+=======================================================
+Modify your `/etc/rc.conf` by adding these settings
+
+qemu_guest_agent_enable="YES"
+qemu_guest_agent_flags="-d -v -l /var/log/qemu-ga.log"
+
+and run
+# service qemu-guest-agent start
+
+For detailed help use `qemu-ga -h`
+======================================================='
+) }}
+
+<p>
+  Once installed, there is a note on how to setup the 
+  agent.
+</p>
+
+<h3 id="configure">Configure</h3>
+<p>
+  I am following the steps in the script
+  {{ link::e(path="https://github.com/Weehooey/pfSense-scripts/blob/main/install-qemu-guest-agent.sh", description="here") }}
+  (with slight modifications). 
+</p>
+
+<p>
+  Append to the {{ text::emphasize(text="/etc/rc.conf.local") }} file.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cat >> /etc/rc.conf.local << EOF
+qemu_guest_agent_enable="YES"
+qemu_guest_agent_flags="-d -v -l /var/log/qemu-ga.log"
+#virtio_console_load="YES"
+EOF'
+) }}
+
+<p>
+  Create the {{ text::emphasize(text="/usr/local/etc/rc.d/qemu-agent.sh") }} file.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='cat > /usr/local/etc/rc.d/qemu-agent.sh << EOF
+#!/bin/sh
+sleep 3
+service qemu-guest-agent start
+EOF'
+) }}
+
+<p>
+  Make the {{ text::emphasize(text="/usr/local/etc/rc.d/qemu-agent.sh") }} file
+  executable.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code='chmod +x /usr/local/etc/rc.d/qemu-agent.sh'
+) }}
+
+<p>
+  Start the QEMU Guest Agent service.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`service qemu-guest-agent start`
+) }}
+
+<p>
+  Confirm the QEMU Guest Agent service is running.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`service qemu-guest-agent status
+
+# Output
+qemu_guest_agent is running as pid 85066.`
+) }}
+
+<h3 id="proxmox">Proxmox</h3>
+<p>
+  If you have not done so already, you need to enable the guest agent 
+  of the VM in Proxmox. Navigate to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Datacenter",
+  "&lt;host&gt;",
+  "&lt;vm&gt;",
+  "Options",
+  "QEMU Guest Agent",
+]) }}
+
+<p>
+  If you just enabled the QEMU Guest Agent, the final step is the reboot the VM. 
+  This is required to get the QEMU Guest Agent working with Proxmox.
+</p>
+
+<h3 id="verify">Verify</h3>
+<p>
+  Confirm that the VM's IP address information is available in the Proxmox console 
+  by browsing to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Datacenter",
+  "&lt;host&gt;",
+  "&lt;vm&gt;",
+  "Summmary",
+]) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I showed you how to configure the QEMU Guest Agent 
+  on a pfSense firewall for use on a Proxmox hypervisor.
+</p>
+
+{% endblock page_content %}
