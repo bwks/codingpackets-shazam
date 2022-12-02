@@ -70,11 +70,14 @@
 {{ table::default(
   header=["Protocol", "Port", "Destination"],
   rows=[
-    "TCP | 80 | MANY",
-    "TCP | 443 | MANY",
-    "UDP | 53 | 8.8.8.8<br>8.8.4.4",
-    "UDP | 123 | MANY",
-    "UDP | 49152 - 65535 | MANY"
+    "TCP | 80 | ANY",
+    "TCP | 443 | ANY",
+    "UDP | 53 | 8.8.8.8<br>8.8.4.4",  
+    "ICMP | ANY | 8.8.8.8<br>8.8.4.4",  
+    "UDP | 123 | ANY",
+    "UDP | 8006 | ANY",
+    "UDP | 32100 | ANY",
+    "UDP | 49152 - 65535 | ANY"
   ],
 ) }}
 
