@@ -72,19 +72,18 @@
   rows=[
     "TCP | 80 | ANY",
     "TCP | 443 | ANY",
+    "ICMP | ANY | 8.8.8.8<br>8.8.4.4",
     "UDP | 53 | 8.8.8.8<br>8.8.4.4",  
-    "ICMP | ANY | 8.8.8.8<br>8.8.4.4",  
     "UDP | 123 | ANY",
-    "UDP | 8006 | ANY",
-    "UDP | 32100 | ANY",
-    "UDP | 49152 - 65535 | ANY"
+    "UDP | 1024 - 65535 | ANY"
   ],
 ) }}
 
 <p>
   This 
 {{ link::e(path="https://community.security.eufy.com/t/limit-the-firewall-ports-ips-needed-to-be-opened-to-the-outside-world/634201/2", description="post") }}
-  narrowed down the UDP high port range to something sane.
+  narrowed down the UDP high port range to something sane. But I found that port numbers all over 
+  the high port number range are used. Le-Sigh.
 </p>
 
 <h3 id="workaround">Workaround</h3>
@@ -98,7 +97,7 @@
 <h3 id="outro">Outro</h3>
 <p>
   For a so called security company. The product and design decision made 
-  are frankly mind boggoling. 0/10 for Eufy, don't recommend. If I had 
+  are frankly mind boggling. 0/10 for Eufy, don't recommend. If I had 
   not already had them installed by an electrician by the time I found this 
   out I would have sent them back for a refund. 
 </p>
