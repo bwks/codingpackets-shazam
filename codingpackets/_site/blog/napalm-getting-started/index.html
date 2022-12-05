@@ -89,16 +89,14 @@
   </div>
 
   <div class="col-span-12 px-5 md:col-span-6">
-    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-      <h1 class="pb-1 sm:pb-2">Napalm Getting Started</h1>
-      <div class="">
-        
-        
-          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
-            published: 15th of September 2017
-          </p>
-        
-      </div>
+    <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
+      <h1 class="pb-1 md:pb-2">Napalm Getting Started</h1>
+      
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          published: 15th of September 2017
+        </p>
+      
     </div>
   </div>
 
@@ -125,14 +123,14 @@
 
 <h3 id="intro">Intro</h3>
 <p>
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/" target=_blank>Napalm</a> is a network automation library written in python that
-  abstracts the differences between libraries such as Juniper's <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/Juniper/py-junos-eznc" target=_blank>pyez</a>
-  and Arista's <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/arista-eosplus/pyeapi" target=_blank>pyeapi</a> bringing a common interface across many API's.
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/" target=_blank>Napalm</a> is a network automation library written in python that
+  abstracts the differences between libraries such as Juniper's <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/Juniper/py-junos-eznc" target=_blank>pyez</a>
+  and Arista's <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/arista-eosplus/pyeapi" target=_blank>pyeapi</a> bringing a common interface across many API's.
 </p>
 <p>
   Napalm is well supported in the network community, originally started by David Barroso and Elisa Jasinska Napalm now has
-  a long list of contributors. Napalm supports a large number of <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html" target=_blank>device types</a>
-  and configuration <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#available-configuration-templates" target=_blank>methods</a>.
+  a long list of contributors. Napalm supports a large number of <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html" target=_blank>device types</a>
+  and configuration <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#available-configuration-templates" target=_blank>methods</a>.
   Be sure the check the documentation to ensure your devices are supported.
 </p>
 
@@ -169,11 +167,11 @@
  module.
   The default python install on centos 7 is <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python 2.7.5</span>
  which is quite old
-  and was the source of the problems. See the following <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/jerearista/vagrant-veos/issues/5" target=_blank>link</a>
+  and was the source of the problems. See the following <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/jerearista/vagrant-veos/issues/5" target=_blank>link</a>
   for a workaround if you insist on using <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">python 2.7.5</span>
 .
   You can follow
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal">this</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="/blog/install-python-2-7-13-and-3-6-2-on-centos-7-minimal">this</a>
   post to upgrade the python install to a modern version on Centos 7 minimal.
 </p>
 <p>
@@ -202,7 +200,7 @@ sudo yum install -y gcc libffi-devel libxml2-devel libxslt-devel python2-pip pyt
   Dependancy installation instructions for <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">yum</span>
  and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">apt</span>
  based systems can be found in
-  the <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/installation/#dependencies" target=_blank>official docs</a>.
+  the <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/installation/#dependencies" target=_blank>official docs</a>.
 </p>
 
 <p>
@@ -296,7 +294,7 @@ interface mgmt 0
 <h3 id="connecting-to-devices">Connecting To Devices</h3>
 <p>
   Connecting to a device requires you to know a few things about the device. IE the device type and the login
-  credentials. Each supported <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#general-support-matrix" target=_blank>device</a>
+  credentials. Each supported <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#general-support-matrix" target=_blank>device</a>
   type has a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">driver</span>
  that is used to setup the connection and perform actions on the devices.
 </p>
@@ -349,7 +347,7 @@ eos.open()</code></pre>
 <p>
   Each driver has a number of methods for retrieving data from and configuring devices. View the list of supported
   methods for each device type in the
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix" target=_blank>docs</a>.
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#getters-support-matrix" target=_blank>docs</a>.
 </p>
 <p>
   Now that we are connected its time to use some of the available methods.
@@ -696,7 +694,7 @@ eos.get_arp_table()
   changes.
 </p>
 <p>
-  Be sure the check the configuration support <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix" target=_blank>matrix</a>
+  Be sure the check the configuration support <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/support/index.html#configuration-support-matrix" target=_blank>matrix</a>
   for the methods supported by your devices.
 </p>
 
@@ -810,7 +808,7 @@ line vty</code></pre>
   Napalm is a fantastic library with a broad range of supported devices across multiple vendors. The library
   is well maintained and the developers are very helpful. I suggest reading over the official documentation
   and having a play around with the library to see how it can add value to your organisation. If you have questions
-  the best place to ask is over at the <a class="text-sky-600 no-underline hover:text-sky-900" href="https://networktocode.herokuapp.com/" target=_blank>network.toCode()</a> slack
+  the best place to ask is over at the <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://networktocode.herokuapp.com/" target=_blank>network.toCode()</a> slack
   channel.
 </p>
 
@@ -831,28 +829,28 @@ line vty</code></pre>
   <div class="pb-2">
     <h3 id="links">Links</h3>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/" target=_blank>http://napalm.readthedocs.io/en/latest/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://napalm.readthedocs.io/en/latest/" target=_blank>http://napalm.readthedocs.io/en/latest/</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/napalm-automation/napalm" target=_blank>https://github.com/napalm-automation/napalm</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/napalm-automation/napalm" target=_blank>https://github.com/napalm-automation/napalm</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://eos.arista.com/arista-eapi-101/" target=_blank>https://eos.arista.com/arista-eapi-101/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://eos.arista.com/arista-eapi-101/" target=_blank>https://eos.arista.com/arista-eapi-101/</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/6-x/programmability/guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Configuration_Guide_chapter_0101.html" target=_blank>https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/6-x/programmability/guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Configuration_Guide_chapter_0101.html</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/6-x/programmability/guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Configuration_Guide_chapter_0101.html" target=_blank>https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/6-x/programmability/guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Configuration_Guide_chapter_0101.html</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="http://www.juniper.net/documentation/en_US/junos/topics/topic-map/netconf-ssh-connection.html" target=_blank>http://www.juniper.net/documentation/en_US/junos/topics/topic-map/netconf-ssh-connection.html</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://www.juniper.net/documentation/en_US/junos/topics/topic-map/netconf-ssh-connection.html" target=_blank>http://www.juniper.net/documentation/en_US/junos/topics/topic-map/netconf-ssh-connection.html</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/jerearista/vagrant-veos/issues/5" target=_blank>https://github.com/jerearista/vagrant-veos/issues/5</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/jerearista/vagrant-veos/issues/5" target=_blank>https://github.com/jerearista/vagrant-veos/issues/5</a>
         </p>
       
   </div>

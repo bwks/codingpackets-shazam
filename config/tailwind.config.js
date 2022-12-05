@@ -3,6 +3,7 @@ module.exports = {
   darkMode: 'class',
   content: [
     'codingpackets/_site/js/custom/*.js',
+    'codingpackets/_site/index.html',
     'codingpackets/_site/blog/**/*.html'
   ],
   safelist: [],

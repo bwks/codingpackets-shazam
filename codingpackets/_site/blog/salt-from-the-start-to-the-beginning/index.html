@@ -89,16 +89,14 @@
   </div>
 
   <div class="col-span-12 px-5 md:col-span-6">
-    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-      <h1 class="pb-1 sm:pb-2">Salt From The Start To The Beginning</h1>
-      <div class="">
-        
-        
-          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
-            published: 14th of January 2018
-          </p>
-        
-      </div>
+    <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
+      <h1 class="pb-1 md:pb-2">Salt From The Start To The Beginning</h1>
+      
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          published: 14th of January 2018
+        </p>
+      
     </div>
   </div>
 
@@ -124,7 +122,7 @@
             
 <h3 id="intro">Intro</h3>
 <p>
-  As described by their website; <i><a class="text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/" target=_blank>Salt</a>
+  As described by their website; <i><a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/" target=_blank>Salt</a>
  is
   "Event-driven automation for a software-defined world"</i>. You gotta love marketing :)
   Salt is a large project with many features including; configuration management, an event
@@ -205,7 +203,7 @@
 <p>
   The process of installing Salt and its dependencies differs from system to system, for the
   most accurate information refer to the specific instructions per
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/installation/#platform-specific-installation-instructions" target=_blank>platform</a>.
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/installation/#platform-specific-installation-instructions" target=_blank>platform</a>.
 </p>
 <h4><b>Centos 7</b></h4>
 
@@ -356,10 +354,10 @@ sudo apt-key add SALTSTACK-GPG-KEY.pub</code></pre>
 
 <h3 id="configuration">Configuration</h3>
 <p>
-  Salt daemon configuration files use a <a class="text-sky-600 no-underline hover:text-sky-900" href="http://yaml.org/start.html" target=_blank>YAML</a>
+  Salt daemon configuration files use a <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="http://yaml.org/start.html" target=_blank>YAML</a>
  syntax.
   If you are not familiar with YAML there is a good overview
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/yaml/" target=_blank>here</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/yaml/" target=_blank>here</a>
 
 </p>
 <h4><b>Master</b></h4>
@@ -772,7 +770,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
 <H3 id="salt-command">Salt Command</H3>
 <p>
   Performing actions against minions with Salt from the CLI is done with the
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/cli/salt.html" target=_blank>salt</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/cli/salt.html" target=_blank>salt</a>
 
   command. The <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">salt</span>
  command has the following structure.
@@ -821,7 +819,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
 
 <h3 id="grains">Grains</h3>
 <p>
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/grains/index.html" target=_blank>Grain</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/grains/index.html" target=_blank>Grain</a>
 
   data is collected from the minions by <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">salt</span>
  automatically
@@ -891,7 +889,7 @@ Key for minion 192.168.121.202 accepted.</span></code></pre>
 
 <h3 id="pillar">Pillar</h3>
 <p>
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/pillar/" target=_blank>Pillar</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/topics/pillar/" target=_blank>Pillar</a>
  data is static variables that relate to minions
   and is defined by the Salt administrator. The location of the
   <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pillar</span>
@@ -965,7 +963,7 @@ data_centre: nyc</code></pre>
     By default <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.sls</span>
  files are a combination of YAML
     and Jinja2 data. This means they use the YAML syntax but it's also possible to use
-    <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/renderers/all/salt.renderers.jinja.html" target=_blank>Jinja2</a>
+    <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/renderers/all/salt.renderers.jinja.html" target=_blank>Jinja2</a>
     template structures to build out dynamic parts of the config file. I will not cover that
     as part of this blog but its something to be aware of.
 </div>
@@ -1090,7 +1088,7 @@ base: # environment
 
 <h3 id="states">States</h3>
 <p>
-  Salt <a class="text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/states/all/" target=_blank>states</a>
+  Salt <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://docs.saltstack.com/en/latest/ref/states/all/" target=_blank>states</a>
 
   define the configuration to apply to a minion.
   Lets create a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">motd</span>
@@ -1346,12 +1344,12 @@ data center: nyc
   <div class="pb-2">
     <h3 id="links">Links</h3>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/" target=_blank>https://saltstack.com/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/" target=_blank>https://saltstack.com/</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/salt-open-source/" target=_blank>https://saltstack.com/salt-open-source/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://saltstack.com/salt-open-source/" target=_blank>https://saltstack.com/salt-open-source/</a>
         </p>
       
   </div>

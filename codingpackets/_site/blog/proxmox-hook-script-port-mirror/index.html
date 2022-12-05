@@ -89,20 +89,18 @@
   </div>
 
   <div class="col-span-12 px-5 md:col-span-6">
-    <div id="page-header" class="pt-20 -mb-4 pb-0 px-5 text-center sm:pb-4 sm:mb-0">
-      <h1 class="pb-1 sm:pb-2">Proxmox Hook Script Port Mirror</h1>
-      <div class="">
-        
-          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
-            updated: 27th of November 2021
-          </p>
-        
-        
-          <p class="text-neutral-500 dark:text-neutral-600 text-lg italic p-0">
-            published: 26th of November 2021
-          </p>
-        
-      </div>
+    <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
+      <h1 class="pb-1 md:pb-2">Proxmox Hook Script Port Mirror</h1>
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          updated: 27th of November 2021
+        </p>
+      
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          published: 26th of November 2021
+        </p>
+      
     </div>
   </div>
 
@@ -130,7 +128,7 @@
 <h3 id="intro">Intro</h3>
 <p>
   In a previous 
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">post</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">post</a>
   I showed you how to configure a port mirror in Proxmox. 
   In that post, I used a bit of a dirty hack (bash scripts and crontab)
   to ensure the port mirror is activated if the host or the VM 
@@ -140,7 +138,7 @@
   Luckily for me, I have some really smart colleagues who mentioned 
   that in libvirt, there is a hook mechanism that can be used to 
   trigger scripts based on VM state. A quick 
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="https://duckduckgo.com/" target=_blank>duck hunt</a> revealed that 
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://duckduckgo.com/" target=_blank>duck hunt</a> revealed that 
   Proxmox has implemented this feature as well 🥳 
 </p>
 <p>
@@ -240,7 +238,7 @@
 
 <p>
   For my purposes, I will be using the bash script from the previous 
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">post</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">post</a>
   with a couple of alterations to make it more portable and useable 
   for multiple guests.
 </p>
@@ -539,7 +537,7 @@ statistics          : {tx_bytes=82511889277, tx_packets=82881722}
   automagically start/stop a port mirror destined for multiple 
   VMs connected to the same virtual bridge. I believe this method 
   is a nice improvement over my  
-  <a class="text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">previous</a>
+  <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="/blog/proxmox-enable-port-mirror/">previous</a>
   attempt and I hope you find it useful.
 </p>
 
@@ -560,24 +558,24 @@ statistics          : {tx_bytes=82511889277, tx_packets=82881722}
   <div class="pb-2">
     <h3 id="links">Links</h3>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/" target=_blank>https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/" target=_blank>https://robertbennell943285480.wordpress.com/2018/08/02/multiple-mirror-ports-using-ovs-open-vswitch/</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts" target=_blank>https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts" target=_blank>https://pve.proxmox.com/pve-docs/pve-admin-guide.html#_hookscripts</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://github.com/ayufan/pve-helpers" target=_blank>https://github.com/ayufan/pve-helpers</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://github.com/ayufan/pve-helpers" target=_blank>https://github.com/ayufan/pve-helpers</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/" target=_blank>https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/" target=_blank>https://forum.proxmox.com/threads/how-do-i-only-enable-hook-script-when-spinning-up-vms-but-not-for-snapshot-backups.83757/</a>
         </p>
       
-        <p class="text-xl">
-          <a class="text-sky-600 no-underline hover:text-sky-900" href="https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/" target=_blank>https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/</a>
+        <p class="text-xl break-words">
+          <a class="break-words text-sky-600 no-underline hover:text-sky-900" href="https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/" target=_blank>https://forum.proxmox.com/threads/change-remove-hookscript-from-lxc-container.97567/</a>
         </p>
       
   </div>
