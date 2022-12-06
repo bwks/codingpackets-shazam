@@ -2,14 +2,60 @@
 
 {% block page_content %}
 
+
 <h3>Was Ist Das?</h3>
 <p>
   Just a list of books I have read and/or listened to.
 </p>
  
+{% set_global books_2018 = [] %}
+{% set_global books_2019 = [] %}
+{% set_global books_2020 = [] %}
+{% set_global books_2021 = [] %}
+{% set_global books_2022 = [] %}
+
+{% for book in posts.data.books %}
+  {% if book.date_finished | date(format="%Y") == "2018" %}
+    {% set_global books_2018 = books_2018 | concat(with=book) %}
+  {% elif book.date_finished | date(format="%Y") == "2019" %}
+    {% set_global books_2019 = books_2019 | concat(with=book) %}
+  {% elif book.date_finished | date(format="%Y") == "2020" %}
+    {% set_global books_2020 = books_2020 | concat(with=book) %}
+  {% elif book.date_finished | date(format="%Y") == "2021" %}
+    {% set_global books_2021 = books_2021 | concat(with=book) %}
+  {% elif book.date_finished | date(format="%Y") == "2022" %}
+    {% set_global books_2022 = books_2022 | concat(with=book) %}
+  {% endif %}
+{% endfor %}
+
+<h3 id="2022">2022 - {{ books_2022 | length }} {% if books_2022 | length < 2 %}Book{% else %}Books{% endif %}</h3>
 {{ table::book(
   header=["Title", "Author", "Date Finished"],
-  rows=posts.data.books,
+  rows=books_2022,
+) }}
+ 
+<h3 id="2021">2021 - {{ books_2021 | length }} {% if books_2021 | length < 2 %}Book{% else %}Books{% endif %}</h3>
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=books_2021,
+) }}
+ 
+<h3 id="2020">2020 - {{ books_2020 | length }} {% if books_2020 | length < 2 %}Book{% else %}Books{% endif %}</h3>
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=books_2020,
+) }}
+ 
+<h3 id="2019">2019 - {{ books_2019 | length }} {% if books_2019 | length < 2 %}Book{% else %}Books{% endif %}</h3>
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=books_2019,
+) }}
+
+<h3 id="2018">2018 - {{ books_2018 | length }} {% if books_2018 | length < 2 %}Book{% else %}Books{% endif %}</h3>
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=books_2018,
 ) }}
  
 {{ text::note_block(text="
