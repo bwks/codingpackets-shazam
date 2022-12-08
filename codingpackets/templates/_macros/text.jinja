@@ -44,9 +44,9 @@
   <div id="tags" class="pb-2">
     <div class="flex flex-wrap {% if center %}justify-center{% endif %}">
       {% for tag in tags %}
-        <div class="{% if not loop.last %}pr-2{% endif %} text-rose-700 hover:text-rose-900 font-semibold italic lowercase tracking-wide">
+        <div class="{% if not loop.last %}pr-2{% endif %} font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#{{ tag | slugify }}" class="text-xl">{{ tag | slugify }}</a>        
+          <a href="/blog/tag/#{{ tag | slugify }}" class="text-xl">{{ tag | slugify }}</a>
         </div>
       {% endfor %}
     </div>
@@ -60,7 +60,7 @@
     <h3 id="links">Links</h3>
       {% for link in post.links %}
         <p class="text-xl break-words">
-          {{ link::e(path=link) }}
+          {{ link::e(path=link, color="sky") }}
         </p>
       {% endfor %}
   </div>

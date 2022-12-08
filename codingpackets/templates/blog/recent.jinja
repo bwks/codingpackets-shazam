@@ -12,13 +12,15 @@
         <div class="pb-2">
           <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-zinc-900">
             <div class="">
-              <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title }}</a>
+              {% set title_slug = post.title | slugify %}
+              {% set blog_path = "/blog/" ~ title_slug %}
+              <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="sky") }}</span>
               <p class="font-medium text-xl">
                 {% for post_title, content in posts.content %}
                   {% if post.title | slugify == post_title %}
                     {% set array = content | split(pat="<!-- COLUMN 2 START -->") %}
                     {{ array[1] | spaceless | striptags | replace(from="Intro", to="") | truncate(length=300) }}
-                    <i>{{ link::i(path="/blog/$1", description="continue reading") | replace(from="$1", to=post_title) }}</i>
+                    <i>{{ link::i(path=blog_path, description="continue reading") }}</i>
                   {% endif %}
                 {% endfor %}
               </p>
@@ -36,10 +38,10 @@
   <div class="pb-2">
     <p>
       Looking for more? Browse posts by 
-      {{ link::i(path="/blog/", description="category") }} or
-      {{ link::i(path="/blog/tag/", description="tag") }}
+      {{ link::i(path="/blog/", description="category", color="sky") }} or
+      {{ link::i(path="/blog/tag/", description="tag", color="sky") }}
       or search the blog
-      {{ link::i(path="/blog/archive/", description="archives") }}.
+      {{ link::i(path="/blog/archive/", description="archives", color="sky") }}.
     </p>
   </div>
 {% endblock page_content %}

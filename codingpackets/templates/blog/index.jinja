@@ -12,7 +12,9 @@
           {% if post.publish %}
             <div class="py-2 px-4 border-4 border-zinc-900 {% if not loop.last %}border-b-0 rounded-b-none{% else %}rounded-b-lg{% endif %}">
               <div class="">
-                <a class="text-sky-600 font-semibold text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title }}</a>
+                {% set title_slug = post.title | slugify %}
+                {% set blog_path = "/blog/" ~ title_slug %}
+                <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="sky") }}</span>
                 <p class="font-medium text-xl">
                   {{ post.description }}
                 </p>

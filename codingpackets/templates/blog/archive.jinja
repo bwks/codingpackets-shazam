@@ -27,8 +27,10 @@
             <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-zinc-900">
               {% for post in published_posts %}
                 <div class="font-medium text-xl">
+                  {% set title_slug = post.title | slugify %}
+                  {% set blog_path = "/blog/" ~ title_slug %}
                   <span class="pr-2">{{ post.published_date }}</span>
-                  <span><a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title }}</a></span>
+                  <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", color="sky") }}</span>
                 </div>
               {% endfor %}
             </div>

@@ -64,10 +64,10 @@
 
   {{ image::boxed(path="blog/eigrp/classic-metric-composite-formula.png", width="700px") }}
 
-  <p><i>Classic Composite Metric Computation Formula <sup>{{ link::i(path="#references-1", description="[1]") }}</sup></i></p>
+  <p><i>Classic Composite Metric Computation Formula {{ link::ref(path="1") }}</i></p>
 
   {{ image::boxed(path="blog/eigrp/wide-metric-composite-formula.png", width="700px") }}
-  <p><i>Wide Composite Metric Computation Formula <sup>{{ link::i(path="#references-2", description="[2]") }}</sup></i></p>
+  <p><i>Wide Composite Metric Computation Formula {{ link::ref(path="2") }}</i></p>
 
   {{ text::important_block(text="
     <p>
@@ -223,11 +223,11 @@
   header=["Mechanism", "Description"],
   rows=[
       "Feasibility Condition | Neighbors reported distance to a destination is lower than the current feasible distance.",
-      "Split horizon with poison reverse <i><sup>$1</sup></i> | Routes learned from an interface are re-advertised out the same interface with an infinite metric.",
+      "Split horizon with poison reverse $1 | Routes learned from an interface are re-advertised out the same interface with an infinite metric.",
       "Hop Count | Used to limit the maximum size of a EIGRP AS. The default is 100.",
   ],
 ) 
-  | replace(from="$1", to=link::i(path="#references-3", description="[3]"))
+  | replace(from="$1", to=link::ref(path="3"))
 }}
 
   <h3 id="authentication">Authentication</h3>
