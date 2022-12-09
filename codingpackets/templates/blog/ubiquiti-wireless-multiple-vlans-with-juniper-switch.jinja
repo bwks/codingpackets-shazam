@@ -1,0 +1,253 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  Have you ever wanted to add multiple VLANs to your 
+  Ubiquiti WiFi network? Me too! I did this recently 
+  and in this blog I will explain the process to make it 
+  work when you have Juniper switches. 
+</p>
+
+<h3 id="hardware-and-software">Hardware and Software</h3>
+<p>
+  The following Hardware and Software was used in this post.
+</p>
+<ul>
+  <li>Juniper EX2200 - 15.1R6-S3</li>
+  <li>Ubiquiti UAP-AC-Pro - 6.2.44</li>
+  <li>Unifi Controller (VM) - 6.5.55</li>
+</ul>
+
+<h3 id="change-plan">Change Plan</h3>
+<p>
+  The target state configration is as follows.
+</p>
+
+<ul>
+  <li>Configure 2x wireless networks.</li>
+  <li>VLAN 10 - AP Management (No WLAN).</li>
+  <li>VLAN 20 - IOT (IOT WLAN).</li>
+  <li>Enable Trunk between Ubiquiti AP and Juniper switch.</li>
+  <li>Verify Operation.</li>
+</ul>
+
+<p>
+  The change manager has approved, let's go!!!
+</p>
+
+<h3 id="ubiquiti">Ubiquiti</h3>
+
+<h4>AP Management</h4>
+<p>
+  On the Unifi controller, there is a default network. 
+  I set this up some time ago and it might be called 
+  {{ text::emphasize(text="LAN") }}. I have forgotten 
+  if that is the default name, or I changed it to that. 
+  You can tell it's the default network because it cannot 
+  be deleted. Furthermore, you cannot set a VLAN ID on 
+  the default network.
+</p>
+
+{{ text::important_block(text="
+  I found that when APs boot up they 
+  use the default network and it's not possible to set 
+  a VLAN ID for this network. So the AP management 
+  traffic is $1.
+") 
+  | replace(from="$1", to=text::emphasize(text="untagged"))
+}}
+
+<p>
+  First, let's update the default network.
+  Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Settings",
+  "Networks",
+  "&lt;DEFAULT-NETWORK&gt;",
+]) }}
+
+<p>
+  The following table lists the AP Mangement networks 
+  configuration parameters.
+</p>
+
+{{ table::default(
+  header=["Parameter", "Value"],
+  rows=[
+    "Enable Network | On",
+    "Network Name | AP-MANAGEMENT",
+    "<b>Advanced v</b>",
+    "VLAN ID | &lt;blank&gt;",
+    "DHCP Mode | None",
+  ],
+) }}
+
+<p>
+  I am also disabling the default WiFi Network. Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Settings",
+  "WiFi",
+  "&lt;DEFAULT-NETWORK&gt;",
+]) }}
+
+<p>
+  Turn the {{ text::emphasize(text="Enable") }} switch to {{ text::emphasize(text="off") }} 
+  and click {{ text::emphasize(text="Apply Changes") }}.
+</p>
+
+<h4>Internet of Things (IOT)</h4>
+<p>
+  Now let's configure the IOT network. Browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Settings",
+  "Networks",
+  "Add New Network",
+]) }}
+
+<p>
+  The following table lists the IOT networks 
+  configuration parameters.
+</p>
+{{ table::default(
+  header=["Parameter", "Value"],
+  rows=[
+    "Enable Network | On",
+    "Network Name | INTERNET-OF-THINGS",
+    "<b>Advanced v</b>",
+    "VLAN ID | 20",
+    "DHCP Mode | None",
+  ],
+) }}
+
+<p>
+  Now configure the WiFi network, browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "Settings",
+  "WiFi",
+  "Add New WiFi Network",
+]) }}
+
+<p>
+  The following table lists the IOT WLAN 
+  configuration parameters.
+</p>
+{{ table::default(
+  header=["Parameter", "Value"],
+  rows=[
+    "Enable Network | On",
+    "Name | iot",
+    "Password | &lt;super-secret-password&gt;",
+    "Network | INTERNET-OF-THINGS",
+  ],
+) }}
+
+{{ text::note_block(text="
+  I have a seperate firewall that is used for the Layer3 configuration. 
+  The configs for that are out of scope for this post.
+") }}
+
+<h3 id="juniper">Juniper</h3>
+<p>
+  Ok, now for the Juniper configs, first let's create the VLANS.
+</p>
+
+{{ text::code_block(
+  header="junos-config",
+  language="text",
+  code=`VLAN10 {
+    description AP-MANAGEMENT;
+    vlan-id 10;
+}
+VLAN20 {
+    description INTERNET-OF-THINGS;
+    vlan-id 20;
+}`
+) }}
+
+<p>
+  Now, for each interface connected to an AP, configure the following 
+  to make the interface a trunk port.
+</p>
+
+{{ text::code_block(
+  header="junos-config",
+  language="text",
+  code=`ge-0/0/10 {
+    description "to AP01";
+    unit 0 {
+        family ethernet-switching {
+            port-mode trunk;
+            vlan {
+                members VLAN20;
+            }
+            native-vlan-id 10;
+        }
+    }
+}`
+) }}
+<p>
+  The above config creates a trunk port and permits frames 
+  {{ text::emphasize(text="tagged") }} with VLAN 20. Any  
+  {{ text::emphasize(text="untagged") }} frames will be placed in VLAN 10, 
+  which we defined as the native VLAN. 
+</p>
+
+<h3 id="verification">Verification</h3>
+<h4>Juniper</h4>
+<p>
+  Confirm that the VLANs can be seen on the trunk port.
+  VLAN 10 should be {{ text::emphasize(text="untagged") }} and 
+  VLAN 20 should be {{ text::emphasize(text="tagged") }}.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ethernet-switching interfaces ge-0/0/10
+
+Interface    State  VLAN members        Tag   Tagging  Blocking
+ge-0/0/10.0  up     VLAN10              10    untagged unblocked
+                    VLAN20              20    tagged   unblocked`
+) }}
+
+<p>
+  Now, confirm that you are learning MAC addresses on each 
+  VLAN.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`show ethernet-switching table interface ge-0/0/10
+
+Ethernet-switching table: 26 unicast entries
+  VLAN              MAC address       Type         Age Interfaces
+  VLAN10            0e:92:a0:69:ec:c7 Learn          0 ge-0/0/10.0
+  VLAN20            34:7e:5c:3e:6a:c8 Learn          0 ge-0/0/10.0`
+) }}
+
+<h4>Ubiquiti</h4>
+<p>
+  On the Unifi controller, Browse to {{ text::emphasize(text="Client Devices") }} 
+  and confirm that the devices have an IP address in the correct subnet.
+</p>
+
+<p>
+  That's it! Adrian!!!! We did it!!!!
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Thanks for tuning in. In this post, I showed you how to configure your 
+  Ubiquiti AP's and Juniper swithces to carry multiple VLANs for your WiFi networks.
+</p>
+
+{% endblock page_content %}

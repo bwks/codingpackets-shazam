@@ -1,0 +1,986 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+
+    
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-50 dark:bg-black tracking-wide">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
+      <h1 class="pb-1 md:pb-2">Ubiquiti Wireless Multiple VLANS with Juniper Switch</h1>
+      
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          published: 8th of December 2022
+        </p>
+      
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6">
+          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  Have you ever wanted to add multiple VLANs to your 
+  Ubiquiti WiFi network? Me too! I did this recently 
+  and in this blog I will explain the process to make it 
+  work when you have Juniper switches. 
+</p>
+
+<h3 id="hardware-and-software">Hardware and Software</h3>
+<p>
+  The following Hardware and Software was used in this post.
+</p>
+<ul>
+  <li>Juniper EX2200 - 15.1R6-S3</li>
+  <li>Ubiquiti UAP-AC-Pro - 6.2.44</li>
+  <li>Unifi Controller (VM) - 6.5.55</li>
+</ul>
+
+<h3 id="change-plan">Change Plan</h3>
+<p>
+  The target state configration is as follows.
+</p>
+
+<ul>
+  <li>Configure 2x wireless networks.</li>
+  <li>VLAN 10 - AP Management (No WLAN).</li>
+  <li>VLAN 20 - IOT (IOT WLAN).</li>
+  <li>Enable Trunk between Ubiquiti AP and Juniper switch.</li>
+  <li>Verify Operation.</li>
+</ul>
+
+<p>
+  The change manager has approved, let's go!!!
+</p>
+
+<h3 id="ubiquiti">Ubiquiti</h3>
+
+<h4>AP Management</h4>
+<p>
+  On the Unifi controller, there is a default network. 
+  I set this up some time ago and it might be called 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">LAN</span>. I have forgotten 
+  if that is the default name, or I changed it to that. 
+  You can tell it's the default network because it cannot 
+  be deleted. Furthermore, you cannot set a VLAN ID on 
+  the default network.
+</p>
+
+
+<!-- IMPORTANT BLOCK START -->
+<div id="important-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  I found that when APs boot up they 
+  use the default network and it's not possible to set 
+  a VLAN ID for this network. So the AP management 
+  traffic is <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">untagged</span>.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<p>
+  First, let's update the default network.
+  Browse to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Networks</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">&lt;DEFAULT-NETWORK&gt;</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  The following table lists the AP Mangement networks 
+  configuration parameters.
+</p>
+
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+        
+          
+            <th class="py-1 px-2 border-b border-r border-zinc-800">Parameter</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b border-zinc-800">Value</th>
+          
+        
+        </tr>
+      </thead>
+      <tbody>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Enable Network </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> On</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Network Name </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> AP-MANAGEMENT</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Advanced v</b></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">VLAN ID </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> &lt;blank&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">DHCP Mode </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> None</td>
+            
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  I am also disabling the default WiFi Network. Browse to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">WiFi</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">&lt;DEFAULT-NETWORK&gt;</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  Turn the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Enable</span> switch to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">off</span> 
+  and click <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Apply Changes</span>.
+</p>
+
+<h4>Internet of Things (IOT)</h4>
+<p>
+  Now let's configure the IOT network. Browse to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Networks</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add New Network</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  The following table lists the IOT networks 
+  configuration parameters.
+</p>
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+        
+          
+            <th class="py-1 px-2 border-b border-r border-zinc-800">Parameter</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b border-zinc-800">Value</th>
+          
+        
+        </tr>
+      </thead>
+      <tbody>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Enable Network </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> On</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Network Name </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> INTERNET-OF-THINGS</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Advanced v</b></td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">VLAN ID </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 20</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">DHCP Mode </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> None</td>
+            
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+<p>
+  Now configure the WiFi network, browse to:
+</p>
+
+
+<!-- BREADCRUMBS START -->
+<div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+    <ol class="list-none py-0 pl-0 flex flex-wrap">
+      
+        <li class="text-sky-600 dark:text-sky-800">Settings</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">WiFi</li>
+        
+          <li><span class="mx-2 font-extrabold text-zinc-800 dark:text-inherit">&gt;</span></li>
+        
+      
+        <li class="text-sky-600 dark:text-sky-800">Add New WiFi Network</li>
+        
+      
+    </ol>
+  </nav>
+</div>
+<!-- BREADCRUMBS END -->
+
+
+<p>
+  The following table lists the IOT WLAN 
+  configuration parameters.
+</p>
+
+<!-- TABLE DEFAULT START -->
+<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
+  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
+    <table class="table-auto w-full">
+      <thead class="text-center">
+        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+        
+          
+            <th class="py-1 px-2 border-b border-r border-zinc-800">Parameter</th>
+          
+        
+          
+            <th class="py-1 px-2 border-b border-zinc-800">Value</th>
+          
+        
+        </tr>
+      </thead>
+      <tbody>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Enable Network </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> On</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Name </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> iot</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="border-b border-zinc-800">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Password </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> &lt;super-secret-password&gt;</td>
+            
+          
+        </tr>
+      
+        
+        
+          <tr class="">
+        
+          
+            
+              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Network </td>
+            
+          
+            
+              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> INTERNET-OF-THINGS</td>
+            
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- TABLE DEFAULT END -->
+
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  I have a seperate firewall that is used for the Layer3 configuration. 
+  The configs for that are out of scope for this post.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="juniper">Juniper</h3>
+<p>
+  Ok, now for the Juniper configs, first let's create the VLANS.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">junos-config</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">VLAN10 {
+    description AP-MANAGEMENT;
+    vlan-id 10;
+}
+VLAN20 {
+    description INTERNET-OF-THINGS;
+    vlan-id 20;
+}</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now, for each interface connected to an AP, configure the following 
+  to make the interface a trunk port.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">junos-config</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">ge-0/0/10 {
+    description "to AP01";
+    unit 0 {
+        family ethernet-switching {
+            port-mode trunk;
+            vlan {
+                members VLAN20;
+            }
+            native-vlan-id 10;
+        }
+    }
+}</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+<p>
+  The above config creates a trunk port and permits frames 
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tagged</span> with VLAN 20. Any  
+  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">untagged</span> frames will be placed in VLAN 10, 
+  which we defined as the native VLAN. 
+</p>
+
+<h3 id="verification">Verification</h3>
+<h4>Juniper</h4>
+<p>
+  Confirm that the VLANs can be seen on the trunk port.
+  VLAN 10 should be <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">untagged</span> and 
+  VLAN 20 should be <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tagged</span>.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">show ethernet-switching interfaces ge-0/0/10
+
+Interface    State  VLAN members        Tag   Tagging  Blocking
+ge-0/0/10.0  up     VLAN10              10    untagged unblocked
+                    VLAN20              20    tagged   unblocked</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Now, confirm that you are learning MAC addresses on each 
+  VLAN.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">show ethernet-switching table interface ge-0/0/10
+
+Ethernet-switching table: 26 unicast entries
+  VLAN              MAC address       Type         Age Interfaces
+  VLAN10            0e:92:a0:69:ec:c7 Learn          0 ge-0/0/10.0
+  VLAN20            34:7e:5c:3e:6a:c8 Learn          0 ge-0/0/10.0</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h4>Ubiquiti</h4>
+<p>
+  On the Unifi controller, Browse to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Client Devices</span> 
+  and confirm that the devices have an IP address in the correct subnet.
+</p>
+
+<p>
+  That's it! Adrian!!!! We did it!!!!
+</p>
+
+<h3 id="outro">Outro</h3>
+<p>
+  Thanks for tuning in. In this post, I showed you how to configure your 
+  Ubiquiti AP's and Juniper swithces to carry multiple VLANs for your WiFi networks.
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links">Links</h3>
+      
+        <p class="text-xl break-words">
+          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.reddit.com/r/Juniper/comments/72g4lb/vlans_unifi_access_point/" target=_blank>https://www.reddit.com/r/Juniper/comments/72g4lb/vlans_unifi_access_point/</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex flex-wrap justify-center">
+      
+        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#networking" class="text-xl">networking</a>
+        </div>
+      
+        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#ubiquiti" class="text-xl">ubiquiti</a>
+        </div>
+      
+        <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#juniper" class="text-xl">juniper</a>
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#intro">
+            Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#hardware-and-software">
+            Hardware and Software
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#change-plan">
+            Change Plan
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#ubiquiti">
+            Ubiquiti
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#juniper">
+            Juniper
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#verification">
+            Verification
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#outro">
+            Outro
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>
