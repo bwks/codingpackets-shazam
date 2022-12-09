@@ -1,0 +1,440 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently purchased a Mikrotik switch for my lab network 
+  to replace my ageing Juniper switches. I am documenting the 
+  process to get connected and configure common scenarios here 
+  for future Brad and anyone else that might be Mikrotik curious.
+</p>
+
+<h3 id="lab-environment">Lab Environment</h3>
+<p>
+  The following harware and software was used in this post.
+</p>
+<ul>
+  <li>Mikrotik CRS326-24G-2S+ - RouterOS 7.6</li>
+</ul>
+
+<h3 id="administration">Administration</h3>
+
+<h4>Connectivity</h4>
+<p>
+  Default connectivity options to configure the device are via 
+  the {{ text::emphasize(text="serial console") }} port or by 
+  IP with one of the {{ text::emphasize(text="ethernet") }} ports.
+</p>
+<p>
+  The console settings for the {{ text::emphasize(text="CRS326") }} are as follows:
+</p>
+{{ table::default(
+  header=["Parameter", "Value"],
+  rows=[
+    "Speed | 115200",
+    "Data Bits | 8",
+    "Stop Bits | 1",
+    "Parity | None",
+    "Flow Control | RTS/CTS"
+    ],
+) }}
+
+<p>
+  There is a default network configured that allows you to connect 
+  by IP. The default network is {{ text::emphasize(text="192.168.88.0/24") }}
+  and the devices IP address is {{ text::emphasize(text="192.168.88.1") }}.
+</p>
+
+<h4>Management Tools</h4>
+<p>
+  There are a number of tools available to manage Mikrotik devices.
+</p>
+<ul>
+  <li>CLI via {{ text::emphasize(text="Telnet") }} or {{ text::emphasize(text="SSH") }}.</li>
+  <li>HTTP via {{ text::emphasize(text="WebFig") }} and {{ text::emphasize(text="REST API") }}.</li>
+  <li>On Windows, the {{ text::emphasize(text="Winbox") }} application (PC Master Race FTW).</li>
+</ul>
+
+<h4>Default Credentials</h4>
+<p>
+  The default username is {{ text::emphasize(text="admin") }} with no password.
+</p>
+
+<h3 id="software-update">Software Update</h3>
+<p>
+  Upgrading the software is pretty straight forward. Copy the desired image to 
+  the root of the file system and reboot. 
+  I used the {{ text::emphasize(text="Winbox") }} GUI tool to copy the image to 
+  the device and also reboot. A detailed process can be found in the docs 
+  {{ link::e(path="https://wiki.mikrotik.com/wiki/Manual:Upgrading_RouterOS", description="here") }}.
+</p>
+
+<h3 id="hostname">Hostname</h3>
+<p>
+  The hostname configuration is set in the 
+  {{ text::code(text="system/identity/") }} section.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`system/identity/set name=&lt;hostname&gt;`
+) }}
+
+<p>
+  Confirm the {{ text::emphasize(text="hostname") }} with the 
+  {{ text::code(text="system/identity/print") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`system/identity/print 
+
+name: &lt;hostname&gt;`
+) }}
+
+<h3 id="bridge">Bridge</h3>
+<p>
+  In Mikrotik land, a {{ text::emphasize(text="bridge") }} is a 
+  logical grouping of interfaces. 
+  Bridge config lives in the {{ text::code(text="interface/bridge/") }} section.
+  
+</p>
+<p>
+  The below example creates a bridge, enables VLAN filtering and sets the 
+  native VLAN.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/bridge/add name=&lt;bridge-name&gt; vlan-filtering=yes pvid=&lt;vlan-id&gt;`
+) }}
+
+<h3 id="vlan">VLAN</h3>
+<p>
+  VLAN's are added to bridges and are configured under the 
+  {{ text::code(text="interface/bridge/vlan/") }} section.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/bridge/vlan/add name=&lt;bridge-name&gt; vlan-ids=&lt;vlan-id&gt;`
+) }}
+
+<h3 id="access-port">Access Port</h3>
+<p>
+  {{ text::emphasize(text="Access") }} ports are defined by applying the {{ text::emphasize(text="untagged") }} 
+  property to an interface.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/bridge/vlan/add bridge=&lt;bridge-name&gt; untagged=&lt;interface-name&gt;,&lt;interface-name&gt; vlan-ids=&lt;vlan-id&gt;`
+) }}
+
+<p>
+  It's possible to also set the native VLAN for an interface.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/bridge/port/add bridge=&lt;bridge-name&gt; interface=&lt;interface-name&gt; pvid=&lt;vlan-id&gt;`
+) }}
+
+<h3 id="trunk-port">Trunk Port</h3>
+<p>
+  {{ text::emphasize(text="Trunk") }} ports are defined by applying the {{ text::emphasize(text="tagged") }} 
+  property to an interface.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/bridge/vlan/add bridge=&lt;bridge-name&gt; tagged=ether15 vlan-ids=&lt;vlan-ids&gt;`
+) }}
+
+
+<h3 id="vlan-interface">VLAN Interface</h3>
+<p>
+  VLAN interfaces are logical Layer 3 interface assigned to 
+  a VLAN that have an IP address and are similar to SVI's or IRB's 
+  on other vendor platforms.
+</p>
+
+<p>
+  The below example configures a VLAN interface and assigns and IP address.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`interface/vlan/add interface=&lt;bridge-name&gt; name=&lt;vlan-name&gt; vlan-id=&lt;vlan-id&gt;
+ip/address/add address=&lt;ip-address&gt;/&lt;prefix-length&gt; interface=&lt;vlan-name&gt; network=&lt;network-address&gt;`
+) }}
+
+<p>
+  Create a VLAN interface.
+</p>
+
+<h3 id="static-route">Static Route</h3>
+<p>
+  Create a static default route. Routes are configured under the 
+  {{ text::code(text="ip/route/") }} section.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/route/add disabled=no dst-address=0.0.0.0/0 gateway=&lt;gateway-ip&gt; routing-table=main suppress-hw-offload=no`
+) }}
+
+<h3 id="dns-client">DNS Client</h3>
+<p>
+  DNS servers are set under the {{ text::code(text="ip/dns/") }} section.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/dns/set servers=&lt;server-1&gt;,&lt;server-2&gt;`
+) }}
+
+<p>
+  Confirm the DNS configuration with the {{ text::code(text="ip/dns/print") }}
+  command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/dns/print
+
+                    servers: &lt;server-1&gt;,&lt;server-2&gt;
+            dynamic-servers: 
+             use-doh-server: 
+            verify-doh-cert: no
+      allow-remote-requests: no
+        max-udp-packet-size: 4096
+       query-server-timeout: 2s
+        query-total-timeout: 10s
+     max-concurrent-queries: 100
+max-concurrent-tcp-sessions: 20
+                 cache-size: 2048KiB
+              cache-max-ttl: 1w
+                 cache-used: 28KiB`
+) }}
+
+<p>
+  Confirm name resolution works by {{ text::emphasize(text="pinging") }} 
+  a host by domain name.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ping codingpackets.com
+
+SEQ HOST                                     SIZE TTL TIME       STATUS                                              
+  0 13.224.174.66                              56 245 24ms339us 
+  1 13.224.174.66                              56 245 22ms431us 
+  2 13.224.174.66                              56 245 19ms577us 
+  sent=3 received=3 packet-loss=0% min-rtt=19ms577us avg-rtt=22ms115us max-rtt=24ms339us`
+) }}
+
+<h3 id="ntp-client">NTP Client</h3>
+<p>
+  NTP servers are set under the {{ text::code(text="system/ntp/client/") }} section.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`system/ntp/client/set enabled=yes mode=unicast servers=&lt;server-1&gt;,&lt;server-2&gt;`
+) }}
+
+<p>
+  Confirm the NTP configuration with the {{ text::code(text="system/ntp/client/print") }}
+  command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`system/ntp/client/print
+
+       enabled: yes
+          mode: unicast
+       servers: &lt;server-1&gt;,&lt;server-2&gt;
+           vrf: main
+    freq-drift: 0 PPM
+        status: synchronized
+ synced-server: &lt;server-1&gt;
+synced-stratum: 2
+ system-offset: 1.474 ms`
+) }}
+
+<p>
+  See the current time with the {{ text::code(text="system/clock/print") }}
+  command
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`system/clock/print
+
+                time: 21:07:48
+                date: dec/08/2022
+time-zone-autodetect: yes
+      time-zone-name: Australia/Brisbane
+          gmt-offset: +10:00
+          dst-active: no`
+) }}
+
+<h3 id="lldp-client">LLDP Client</h3>
+<p>
+  LLDP is configured under the {{ text::code(text="ip/neighbor/discovery-settings/") }}
+  section.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/neighbor/discovery-settings/set protocol=lldp`
+) }}
+
+<p>
+  Confirm the LLDP configuration with the {{ text::code(text="ip/neighbor/discovery-settings/print") }}
+  command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/neighbor/discovery-settings/print 
+
+ discover-interface-list: static
+lldp-med-net-policy-vlan: disabled
+                protocol: cdp,lldp,mndp`
+) }}
+
+<p>
+  See the LLDP neighbors with the {{ text::code(text="ip/neighbor/print") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/neighbor/print
+
+Columns: INTERFACE, MAC-ADDRESS, IDENTITY
+#  INTERFACE  MAC-ADDRESS        IDENTITY
+0  ether1     88:C9:B3:B0:DE:5F          
+   bridge1                               
+1  ether23    54:4B:22:11:AA:BB  sw01    
+   bridge1`
+) }}
+
+{{ text::note_block(text="
+  Detailed output can be obtained by adding the $1 
+  keyword to the command.
+") 
+  | replace(from="$1", to=text::emphasize(text="detail"))
+}}
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/neighbor/print detail
+ 
+0 interface=ether1,bridge1 mac-address=88:C9:B3:B0:DE:5F identity="" platform="" version="" unpack=none age=2m40s 
+  system-caps=other,repeater system-caps-enabled=router 
+
+1 interface=ether23,bridge1 mac-address=54:4B:22:11:AA:BB identity="sw01" platform="" version="" unpack=none age=24s 
+  interface-name="ge-0/0/7.0" system-description="Juniper Networks, Inc. ex2200-c-12p-2g Ethernet Switch, kernel 
+                  JUNOS 15.1R6-S3, Build date: 2017-08-11 09:23:44 UTC Copyright (c) 1996-2017 Juniper Networks, 
+                  Inc." 
+  system-caps=bridge,router system-caps-enabled=bridge,router`
+) }}
+
+<h3 id="http-server">HTTP Server</h3>
+<p>
+  Generate a TLS cert to assign to the HTTPS web server. I 
+  am using a self-signed cert in the below example.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`# Create and sign a Root Cert
+certificate/add name=root-cert common-name=&lt;hostname&gt; days-valid=365 key-usage=key-cert-sign,crl-sign, key-size=4096
+certificate/sign root-cert
+
+# Create and sign a HTTPS cert
+certificate/add name=https-cert common-name=&lt;hostname&gt;.&lt;domain&gt; subject-alt-name=IP:&lt;mgmt-ip&gt,DNS:&lt;hostname&gt; days-valid=365 key-usage=tls-server key-size=4096
+certificate/sign ca=root-cert https-cert`
+) }}
+
+<p>
+  Apply the certificate to the HTTP server for both the {{ text::emphasize(text="www-ssl") }}
+  and {{ text::emphasize(text="api-ssl") }} services. 
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/service/set www-ssl certificate=https-cert disabled=no tls-version=only-1.2
+ip/service/set api-ssl certificate=https-cert disabled=no tls-version=only-1.2`
+) }}
+
+
+<h3 id="disable-services">Disable Services</h3>
+<p>
+  Out of the box, device have alot of services enabled. Disable the unused/insecure ones.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/service/disable www
+ip/service/disable ftp
+ip/service/disable telnet
+ip/service/disable api`
+) }}
+
+<h3 id="service-status">Service Status</h3>
+<p>
+  You can view the service status with the {{ text::code(text="ip/service/print") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`ip/service/print
+
+Flags: X, I - INVALID
+Columns: NAME, PORT, ADDRESS, CERTIFICATE, VRF
+#   NAME     PORT  ADDRESS      CERTIFICATE  VRF
+0 X telnet     23                             main
+1 X ftp        21    
+2 X www        80                             main
+3   ssh        22                             main
+4   www-ssl   443                https-cert   main
+5 X api      8728                             main
+6   winbox   8291                             main
+7   api-ssl  8729                https-cert   main`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post I showed you how to configure common network scenarios 
+  on a Mikrotik switch running Router OS. I am pretty happy with the 
+  decision to go with a Mikrotik switch. For ~$350 AUD, it's a very 
+  capable device that supports a ton of features.
+</p>
+
+{% endblock page_content %}
