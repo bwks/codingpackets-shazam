@@ -1,0 +1,131 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  I recently moved onto my new house and I finally got the chance 
+  to mount the wireless access points that I had in storage for 
+  a couple of years. When I connected them, the Unifi controller 
+  said they are managed by another controller. Since I last used these 
+  access points, I had re-built the controller so this makes sense. 
+</p>
+<p>
+  Getting the APs under management of the Unifi controller was frustraighting 
+  and not very straight forward. This post covers the issues I enountered and 
+  the eventual fix to get the APs managed.
+</p>
+
+<h3 id="software">Software</h3>
+<p>
+  The following software was used in this post.
+</p>
+<ul>
+  <li>Ubiquiti UAP-AC-Pro - 6.2.44</li>
+  <li>Unifi Controller (VM) - 6.5.55</li>
+</ul>
+
+<h3 id="factory-reset">Factory Reset</h3>
+<p>
+  The first thing I tried was to factory reset the APs. When I did this 
+  the APs connected, but I got the error that the {{ text::emphasize(text="Adoption Failed") }}.
+  At this point, there was no way to remove the AP from the UI.
+</p>
+
+<h3 id="inform-url">Inform URL</h3>
+<p>
+  The {{ text::emphasize(text="Inform URL") }} is used to tell the controller 
+  about the Access point. Alot of forum posts and aritcles pointed to manually 
+  set this to restart the adoptiopn procees. The default inform URL is:
+  {{ text::emphasize(text="http://unifi:8080/inform") }}. I SSH'd to the AP using 
+  the default credentials {{ text::emphasize(text="ubnt/ubnt") }} and set the inform URL 
+  with the {{ text::code(text="set-inform http://&lt;controller-ip&gt;:8080/inform") }}.
+</p>
+<p>
+  Unfortunately, this did not help and the AP was still stuck in the 
+  {{ text::emphasize(text="Adoption Failed") }} state.
+</p>
+
+<h3 id="logs">Logs</h3>
+<p>
+  At this point, I started looking at the log files. The log on the APs is 
+  located here: {{ text::emphasize(text="/var/log/messages") }}. The log 
+  had some errors relating to the inform process failing. 
+</p>
+
+{{ text::code_block(
+  header="log",
+  language="text",
+  code=`Fri Dec  9 11:11:50 2022 daemon.err mcad: mcad[1235]: ace_reporter.reporter_fail(): Server Reject (http://&lt;controller-ip&gt;:8080/inform)`
+) }}
+
+<p>
+  On the controller, the logs are located here:
+  {{ text::emphasize(text="/var/log/unifi/server.log") }}. I found numerous 
+  errors relating to AP adoption.
+</p>
+
+{{ text::code_block(
+  header="log",
+  language="text",
+  code=`[2022-12-09T21:17:36,471] &lt;inform-2&gt; WARN inform - dev[78:8a:20:80:2b:e6] used default key in ADOPT_FAILED state, reject it!
+[2022-12-09T22:09:47,258] Detected duplicated uap[78:8a:20:80:2b:e6] while fetching site and pending adoption devices
+[2022-12-09T22:09:47,258] &lt;ubnt/tcp4&gt; ERROR dev - SSH adopt failed adopt_state[2],prev_state[2],firmware[6.2.44.14098],model[U7PG2],uses_default_credentials[false]`
+) }}
+
+<h3 id="solution">Solution</h3>
+<p>
+  The solution to this problem involves a few steps:
+</p>
+<ul>
+  <li>Connect to the Mongo DB database on the Unifi Controller.</li>
+  <li>Delete the access points from the database.</li>
+  <li>Restart the Unifi Controller.</li>
+  <li>Factory Reset the Access Points.</li>
+</ul>
+
+<p>
+  To connect to Mongo DB, I needed to install the {{ text::emphasize(text="mongodb-clients") }} 
+  package.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo apt install -y mongodb-clients`
+) }}
+
+<p>
+  Next, connect to Mongo DB and delete the offending AP's.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`sudo mongo --port 27117
+use ace
+db.device.remove({"mac":"&lt;mac-address&gt;"});
+exit`
+) }}
+
+
+<p>
+  Finally, restart the controller and 
+  {{ link::e(path="https://help.ui.com/hc/en-us/articles/205143490-UniFi-How-to-Reset-Devices-to-Factory-Defaults", description="factory reset the APs") }}. 
+  The APs will be removed from the Unifi controller and you will be able 
+  to start the adoption process again. Fingers crossed, this works, I had 
+  to do this multiple times for some APs, but eventually, I get them all 
+  connected again.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  In this post, I covered the process to recover an Ubiquiti AP that is 
+  stuck in the {{ text::emphasize(text="Adoption Failed") }} state. It 
+  was a bit painful, but I got there in the end, if you faced the same issue 
+  I did and found this post, I hope it helped you get to the solution faster 
+  than I did ✌️
+</p>
+
+{% endblock page_content %}
