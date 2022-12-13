@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -153,13 +153,13 @@
 
   <b>Proxy ARP Operation</b>
   <p>
-    In the below example, the outside host <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.200</span>
- is configured with a <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">/24</span>
+    In the below example, the outside host <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.200</span>
+ is configured with a <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">/24</span>
  so it believes
-    it is in the same broadcast domain as the inside host on <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.10</span>
+    it is in the same broadcast domain as the inside host on <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.10</span>
 . The outside host will not perform
     a route lookup and instead go straigt to an arp request. Since proxy arp is enabled on R1, the router will reply
-    with its own mac address for <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.10</span>
+    with its own mac address for <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">10.1.1.10</span>
 .
   </p>
 
@@ -204,9 +204,9 @@
     There are two types of gratuitous ARP.
   </p>
   <ul>
-    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">GARP request</span>
+    <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">GARP request</span>
  Source and destination IP set to the sending host and destination mac is ff:ff:ff:ff:ff:ff.</li>
-    <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">GARP reply</span>
+    <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">GARP reply</span>
  An ARP reply where no request was made. May be a broadcast or unicast.</li>
   </ul>
 

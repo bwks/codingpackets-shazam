@@ -146,11 +146,11 @@ melbourne"
   <p>
     <b>Dynamic Inventory</b><br>
     A dynamic inventory script can be written in any language as long as it returns valid JSON.
-    The script must support two arguments: <code>--list</code> and <code>--host</code> and
+    The script must support two arguments: {{ text::code(text="--list") }} and {{ text::code(text="--host") }} and
     must be executable.
   </p>
   <p>
-    The <code>--list</code> argument must return a key/value pair of group to host mappings.
+    The {{ text::code(text="--list") }} argument must return a key/value pair of group to host mappings.
   </p>
 
   {{ text::code_block(
@@ -165,7 +165,7 @@ melbourne"
 
 
   <p>
-    The <code>--host</code> argument must return a key/value pair of host to variable mappings
+    The {{ text::code(text="--host") }} argument must return a key/value pair of host to variable mappings
     or an empty dictionary.
   </p>
 
@@ -184,6 +184,7 @@ melbourne"
     The inventory that will be used can be defined in the following two ways from highest to
     lowest preference.
   </p>
+  
   <ul>
     <li><b>-i /path/to/inventory</b> argument at playbook runtime</li>
     <li><b>inventory=/path/to/inventory</b> variable in the {{ text::emphasize(text="ansible.cfg") }} file</li>
@@ -274,7 +275,7 @@ melbourne"
 
   <p>
     Modules are where the magic happens in ansible. Modules are invoked with tasks in playbooks
-    or with the <code>ansible</code> ad hoc command {{ text::emphasize(text="-m") }} argument.
+    or with the {{ text::code(text="ansible") }} ad hoc command {{ text::emphasize(text="-m") }} argument.
   </p>
   <p>
     There are three types of modules in ansible.
@@ -285,7 +286,7 @@ melbourne"
     <li>{{ text::emphasize(text="3rd Party") }} anisble galaxy, maintained by community</li>
   </ul>
   An example is the {{ link::e(path="http://docs.ansible.com/ansible/yum_module.html", description="yum") }} module
-  that can be used to perform yum related task such as <code>yum install</code>.
+  that can be used to perform yum related task such as {{ text::code(text="yum install") }}.
 
 
   <p>
@@ -342,7 +343,7 @@ melbourne"
     From ansible 2.x the variable precedence is as follows from most to least preferred
   </p>
   <ul>
-    <li>{{ text::emphasize(text="-e") }} extra vars argument with <code>ansible</code> ad-hoc command</li>
+    <li>{{ text::emphasize(text="-e") }} extra vars argument with {{ text::code(text="ansible") }} ad-hoc command</li>
     <li>{{ text::emphasize(text="task vars") }} task scope only</li>
     <li>{{ text::emphasize(text="block vars") }} task block scope</li>
     <li>{{ text::emphasize(text="role vars") }} and {{ text::emphasize(text="include_vars") }}</li>
@@ -489,7 +490,7 @@ long list of values
   </p>
   <p>
     Roles can be uploaded to ansible galaxy and shared with the community. To create a role
-    there is a nice helper command <code>anisble-galaxy init <i>role_name</i></code> which
+    there is a nice helper command {{ text::code(text="anisble-galaxy init <i>role_name</i>") }} which
     will build out the directory structure required for a role.
   </p>
   <p>

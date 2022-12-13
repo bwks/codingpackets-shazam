@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Bree Serif"],
+        serif: ["Alegreya"],
         mono: ["Ubuntu Mono"],
       },
     },

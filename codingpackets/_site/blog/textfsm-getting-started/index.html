@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -129,7 +129,7 @@
 </p>
 
 <p>
-  This post will show how to extract interesting data from the output of the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</span>
+  This post will show how to extract interesting data from the output of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</span>
  command on a
   Cisco ASA using TextFSM. For reference the software versions used in this post are below.
 </p>
@@ -141,7 +141,7 @@
 
 <h3 id="installation">Installation</h3>
 <p>
-  Create a virtual environment and install <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">textfsm</span>
+  Create a virtual environment and install <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">textfsm</span>
 .
 </p>
 
@@ -171,8 +171,8 @@ pip install textfsm</code></pre>
   using the library.
 </p>
 <p>
-  Use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">curl</span>
- to download the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
+  Use <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">curl</span>
+ to download the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
  template.
 </p>
 
@@ -246,9 +246,9 @@ Start
 
 
 <p>
-  Lets fire up a python interpreter and create an <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</span>
+  Lets fire up a python interpreter and create an <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</span>
  variable with the output of the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">show interface</span>
  command from a Cisco ASA.
 </p>
 
@@ -324,8 +324,8 @@ Interface Management0/0 "management", is up, line protocol is up
 
 
 <p>
-  Next up we will open the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
- file and run the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</span>
+  Next up we will open the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
+ file and run the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">interfaces</span>
 
   data through the parser.
 </p>
@@ -406,7 +406,7 @@ template.ParseText(interfaces)
 
 <p>
   As you can see above, the parser returns a list of lists where each list contains the values defined
-  in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
+  in the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cisco_asa_show_interface.template</span>
 .
 </p>
 

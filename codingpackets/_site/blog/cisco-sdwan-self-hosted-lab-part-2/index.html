@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -151,14 +151,14 @@
 
 <h3 id="pre-requisites">Pre Requisites</h3>
 <p>
-  This post assumes that you have the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">KVM</span>
+  This post assumes that you have the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">KVM</span>
 
   hypervisor already installed along with the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libvirt</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">libvirt</span>
  management application. Additionally
-  you will need the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virt-install</span>
+  you will need the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virt-install</span>
  and
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-localds</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">cloud-localds</span>
  CLI tools.
 </p>
 <p>
@@ -189,7 +189,7 @@
 <p>
   Over on the build server, create a working directory and copy the VM image
   files to the directory. I will be working from the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/sdwan-testlab</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/sdwan-testlab</span>
  directory which contains
   the following files.
 </p>
@@ -221,11 +221,11 @@ sdwan-testlab
 <!-- NOTE BLOCK START -->
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span> and the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> share the same image.
-    I copied the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> image twice
-    renaming it for the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>.
+    The <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span> and the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> share the same image.
+    I copied the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vEdge</span> image twice
+    renaming it for the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>.
 </div>
   </div>
 </div>
@@ -286,9 +286,9 @@ Formatting 'vmanage-disk2.qcow2', fmt=qcow2 size=107374182400 cluster_size=65536
 
 <p>
   This will start the VM and attach to a virtual console. Once you see the message
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
  login with the username/password
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 . You will then need to follow the prompts
   to initialize the database.
 </p>
@@ -358,9 +358,9 @@ commit and-quit
 
 <p>
   While here, generate the Root CA certificate. First login to the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
  which is a Unix
-  like shell. Login with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vshell</span>
+  like shell. Login with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vshell</span>
  command.
 </p>
 
@@ -423,15 +423,15 @@ e is 65537 (0x10001)</code></pre>
 
 <p>
   This will create a Root CA cert named
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
- <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
+ <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
 
   the file contents so you can copy and paste them in an
   upcoming step.
 </p>
 
 <p>
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">exit</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">exit</span>
  back to the cli shell and find the IP address of the
   vpn512 interface.
 </p>
@@ -460,9 +460,9 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 <p>
   Once you have the IP address browse to the URL
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;ip-address&gt;</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">https://&lt;ip-address&gt;</span>
  and login with the
-  username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  username/password <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 .
 </p>
 
@@ -516,7 +516,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Enter the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Organization Name</span>
+  Enter the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Organization Name</span>
  and click Save.
   This field must match what you used when creating the vBond profile.
 </p>
@@ -532,7 +532,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Enter the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>
+  Enter the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vBond</span>
  IP Address and click Save.
 </p>
 
@@ -546,10 +546,10 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Change the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Controller Certificate Authorization</span>
+  Change the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Controller Certificate Authorization</span>
 
   to use Enterprise Root Certificate. Paste in the contents of the generated
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
  file from the previous step and
   click Import & Save.
 </p>
@@ -564,7 +564,7 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
 
 
 <p>
-  Keep the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">WAN Edge Cloud Certificate Authorization</span>
+  Keep the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">WAN Edge Cloud Certificate Authorization</span>
 
   method as Automated (vManage - signed Certificate). This way the vManage will automatically
   signed the cloud edge certs when they connect to the vManage.
@@ -638,13 +638,13 @@ VPN  INTERFACE  TYPE  IP ADDRESS          STATUS  STATUS  STATUS   TYPE   PORT T
   A window will popup with the CSR text. This can be ignored for the vManage.
 </p>
 <p>
-  Back in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
+  Back in the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
  there will be a file
-  called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage_csr</span>
+  called <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage_csr</span>
 . Sign this file with
-  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.key</span>
+  the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.key</span>
  and
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ROOTCA.pem</span>
 .
 </p>
 
@@ -669,15 +669,15 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This creates a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
+  This creates a file called <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
  the file in order to copy and paste it into the
   web interface in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the certificate by
-  pasting the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
+  pasting the contents of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vmanage.crt</span>
  file
   and click Install.
 </p>
@@ -781,9 +781,9 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -943,7 +943,7 @@ commit and-quit
 
 
 <p>
-  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
+  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
 
   to generate the certificate.
 </p>
@@ -958,9 +958,9 @@ commit and-quit
 
 
 <p>
-  Use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
+  Use <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
  to create a file called
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.csr</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.csr</span>
  with the contents of
   the vBond CSR from the previous step. Then sign the CSR with the Root
   CA certificate.
@@ -989,16 +989,16 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
+  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
 .
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
- the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+ the contents of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
 
   file in order to copy and past the contents to the vManage in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the vBond certificate by
-  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
+  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vbond.crt</span>
  file
   and click Install.
 </p>
@@ -1057,9 +1057,9 @@ Getting CA Private Key</code></pre>
 <!-- IMAGE END -->
 
 <p>
-  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
+  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
 
-  on the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ge0/0</span>
+  on the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ge0/0</span>
  interface.
 </p>
 
@@ -1149,9 +1149,9 @@ INSTANCE TYPE     PROTOCOL SYSTEM IP        ID          ID          PRIVATE IP  
 
 
 <p>
-  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -1309,7 +1309,7 @@ commit and-quit
 
 
 <p>
-  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
+  Copy the CSR text and go to the vManage <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vshell</span>
 
   to generate the certificate.
 </p>
@@ -1324,9 +1324,9 @@ commit and-quit
 
 
 <p>
-  Use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
+  Use <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vim</span>
  to create a file called
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.csr</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.csr</span>
  with the contents of
   the vSmart CSR from the previous step. Then sign the CSR with the Root
   CA certificate.
@@ -1355,16 +1355,16 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
+  This will create a certificate file called <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
 .
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
- the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+ the contents of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
 
   file in order to copy and past the contents to the vManage in the next step.
 </p>
 <p>
   Navigate to the certificates page and install the vSmart certificate by
-  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
+  pasting in the contents of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vsmart.crt</span>
  file
   and click Install.
 </p>
@@ -1424,9 +1424,9 @@ Getting CA Private Key</code></pre>
 
 
 <p>
-  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
+  Finally activate the control plane <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">tunnel</span>
 
-  on the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">eth1</span>
+  on the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">eth1</span>
  interface.
 </p>
 
@@ -1620,7 +1620,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  For KVM select <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
+  For KVM select <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
 . (VMWare uses Encoded String). Then
   click OK.
 </p>
@@ -1650,7 +1650,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 <p>
   On the host server, create and ISO image from the cloud-init file that can be mounted to
-  the vEdge on boot. I named the file <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vedge.cfg</span>
+  the vEdge on boot. I named the file <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vedge.cfg</span>
  and
   copied it to the working directory.
 </p>
@@ -1669,7 +1669,7 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  Boot the vEdge with the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">config.iso</span>
+  Boot the vEdge with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">config.iso</span>
  disk attached.
   This will ensure that the image boots with the correct chassis number.
 </p>
@@ -1701,9 +1701,9 @@ INDEX TYPE    PROT SYSTEM IP       ID         ID     PRIVATE IP                 
 
 
 <p>
-  Once you see the message <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
+  Once you see the message <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">System Ready</span>
 
-  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 
   and apply the following bootstrap config.
 </p>
@@ -1901,7 +1901,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 
 
 <p>
-  For KVM select <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
+  For KVM select <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Cloud-Init</span>
 . (VMWare uses Encoded String). Then
   click OK.
 </p>
@@ -1932,7 +1932,7 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 <p>
   Unlike the vEdge it does not look like you can mount a cloud-init ISO to set the
   initial boot parameters. The cloud-init config file will need to be named
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  and copied via SCP to the cEdge
   after it boots up.
 </p>
@@ -1968,14 +1968,14 @@ vmanage dtls 1.1.1.1         1000       0      172.16.255.1                     
 
 <p>
   Once you see the VM is booted up
-  login with the username/password <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
+  login with the username/password <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">admin</span>
 .
 </p>
 
 <p>
-  Find the IP address of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
+  Find the IP address of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
  so
-  you can SCP the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
+  you can SCP the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to the device.
 </p>
 
@@ -1999,7 +1999,7 @@ Loopback65528          192.168.1.1     YES other  up                    up</code
 
 
 <p>
-  From the host SCP the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
+  From the host SCP the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to
   the cEdge.
 </p>
@@ -2024,7 +2024,7 @@ ciscosdwan.cfg                                                                  
 
 <p>
   Reset the SDWAN software in order for the chassis serial number from the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
  file to be
   applied to the device.
 </p>
@@ -2044,7 +2044,7 @@ ciscosdwan.cfg                                                                  
 
 <p>
   Once the router is back online, login and confirm that the chassis number
-  is the same as the one from the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
+  is the same as the one from the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ciscosdwan.cfg</span>
 
   config.
 </p>
@@ -2117,7 +2117,7 @@ end
 
 <p>
   Install the Root CA cert by SCPing it from the vManage via the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">GigabitEthernet1</span>
  interface.
 </p>
 

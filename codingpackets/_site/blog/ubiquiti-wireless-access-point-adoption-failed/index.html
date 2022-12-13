@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -147,28 +147,28 @@
 <h3 id="factory-reset">Factory Reset</h3>
 <p>
   The first thing I tried was to factory reset the APs. When I did this 
-  the APs connected, but I got the error that the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span>.
+  the APs connected, but I got the error that the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span>.
   At this point, there was no way to remove the AP from the UI.
 </p>
 
 <h3 id="inform-url">Inform URL</h3>
 <p>
-  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Inform URL</span> is used to tell the controller 
+  The <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Inform URL</span> is used to tell the controller 
   about the Access point. Alot of forum posts and aritcles pointed to manually 
   set this to restart the adoptiopn procees. The default inform URL is:
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">http://unifi:8080/inform</span>. I SSH'd to the AP using 
-  the default credentials <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ubnt/ubnt</span> and set the inform URL 
-  with the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">set-inform http://&lt;controller-ip&gt;:8080/inform</span>.
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">http://unifi:8080/inform</span>. I SSH'd to the AP using 
+  the default credentials <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">ubnt/ubnt</span> and set the inform URL 
+  with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">set-inform http://&lt;controller-ip&gt;:8080/inform</span>.
 </p>
 <p>
   Unfortunately, this did not help and the AP was still stuck in the 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span> state.
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span> state.
 </p>
 
 <h3 id="logs">Logs</h3>
 <p>
   At this point, I started looking at the log files. The log on the APs is 
-  located here: <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/messages</span>. The log 
+  located here: <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/messages</span>. The log 
   had some errors relating to the inform process failing. 
 </p>
 
@@ -187,7 +187,7 @@
 
 <p>
   On the controller, the logs are located here:
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/unifi/server.log</span>. I found numerous 
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/unifi/server.log</span>. I found numerous 
   errors relating to AP adoption.
 </p>
 
@@ -218,7 +218,7 @@
 </ul>
 
 <p>
-  To connect to Mongo DB, I needed to install the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">mongodb-clients</span> 
+  To connect to Mongo DB, I needed to install the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">mongodb-clients</span> 
   package.
 </p>
 
@@ -269,7 +269,7 @@ exit</code></pre>
 <h3 id="outro">Outro</h3>
 <p>
   In this post, I covered the process to recover an Ubiquiti AP that is 
-  stuck in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span> state. It 
+  stuck in the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Adoption Failed</span> state. It 
   was a bit painful, but I got there in the end, if you faced the same issue 
   I did and found this post, I hope it helped you get to the solution faster 
   than I did ✌️

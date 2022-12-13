@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -147,25 +147,25 @@
 
 <h4>Breakdown</h4>
 <ul>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">find _site/</span>
- - Recursively traverse the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_site</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">find _site/</span>
+ - Recursively traverse the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_site</span>
  directory tree</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-type f -name '*.html'</span>
- - Mathing all files of the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">html</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-type f -name '*.html'</span>
+ - Mathing all files of the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">html</span>
  file type</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-print0</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-print0</span>
  - Print the full file name to standard output</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">| xargs -0</span>
- - Pipe the result to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">xargs</span>
- which passes the filenames to <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">sed</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">| xargs -0</span>
+ - Pipe the result to <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">xargs</span>
+ which passes the filenames to <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">sed</span>
  one by one.</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sed -i</span>
- - Use <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">sed</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sed -i</span>
+ - Use <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">sed</span>
  to replace pattern in place with no backup</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">'/^[[:space:]]*$/d'</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">'/^[[:space:]]*$/d'</span>
  - Matching lines in the file with only whitespace</li>
-  <li><span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">$1</span>
- - In the file fed in from <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">xargs</span>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">$1</span>
+ - In the file fed in from <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">xargs</span>
 </li>
 </ul>
 
@@ -173,7 +173,7 @@
 <!-- WARNING BLOCK START -->
 <div id="warning-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-rose-100 rounded border-l-8 border-l-rose-700 dark:bg-rose-800 dark:border-l-rose-600 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fas fa-fire-alt" aria-hidden="true"></i><b class="pl-1.5">Warning</b></div>
+    <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fas fa-fire-alt" aria-hidden="true"></i><b class="pl-1.5 text-rose-700 dark:text-zinc-900">Warning</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
   <p>
     This command will alter the files in place without creating a backup. Use at your own risk.
@@ -188,8 +188,8 @@
 <h3 id="outro">Outro</h3>
 <p>
   In this post we covered how to remove the white space from all files in a 
-  directory tree using <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">find</span>
- and <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sed</span>
+  directory tree using <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">find</span>
+ and <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sed</span>
 
 </p>
 

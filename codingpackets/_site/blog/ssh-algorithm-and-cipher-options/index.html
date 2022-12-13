@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -125,14 +125,14 @@
 <p>
   Have you ever tried to SSH to a network device and 
   received the dreaded 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">Unable to negotiate with &lt;user&gt; port 22: no matching key exchange method found. Their offer: &lt;key-algorithm&gt;</span>.
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">Unable to negotiate with &lt;user&gt; port 22: no matching key exchange method found. Their offer: &lt;key-algorithm&gt;</span>.
   In this post ill cover how to work around this issue.
 </p> 
 
 <h3 id="key-algorithms">Key Algorithms</h3>
 <p>
   Specify the Key Algorithms with the 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-o KexAlgorithms=</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-o KexAlgorithms=</span>
  flag 
   followed by a comma seperated list of algorithms.
 </p>
@@ -152,7 +152,7 @@
 <h3 id="ciphers">Ciphers</h3>
 <p>
   Specify the ciphers with the 
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-c</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-c</span>
  flag 
   followed by a comma seperated list of ciphers.
   The ciphers should be listed in the prefered order.

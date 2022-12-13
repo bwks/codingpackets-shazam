@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -277,7 +277,7 @@ sudo net commit</code></pre>
 
 <h3 id="frr-installation">FRR Installation</h3>
 <p>
-  Alright, lets move onto the host machine. I had to do an <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">apt update</span>
+  Alright, lets move onto the host machine. I had to do an <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">apt update</span>
  otherwise I
   would get an error when installing the required packages.
 </p>
@@ -340,7 +340,7 @@ sudo dpkg -i frr_3.0.2-1-ubuntu16.04.1_amd64.deb</code></pre>
 
 <h3 id="frr-configuration">FRR Configuration</h3>
 <p>
-  Add the uplink interfaces to the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces</span>
+  Add the uplink interfaces to the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces</span>
  config file.
 </p>
 
@@ -363,7 +363,7 @@ iface eth2 inet manual</code></pre>
 
 
 <p>
-  Enable the routing daemons in the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/daemons</span>
+  Enable the routing daemons in the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/daemons</span>
  config file.
 </p>
 
@@ -385,7 +385,7 @@ bgpd=yes</code></pre>
 
 
 <p>
-  Create a file called <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/frr.conf</span>
+  Create a file called <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/frr/frr.conf</span>
  for the BGP configurations
   with the the following contents.
 </p>
@@ -448,8 +448,8 @@ end</code></pre>
 
 
 <p>
-  Restart the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">networking</span>
- and <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">frr</span>
+  Restart the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">networking</span>
+ and <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">frr</span>
  services.
 </p>
 

@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -127,12 +127,12 @@
 
 <h3 id="intro">Intro</h3>
 <p>
-  A <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">closure</span>
+  A <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">closure</span>
  in 
   Rust is an anonymous function. An anonymous function 
   is a function without a name. A closure is defined 
   with parameters between two pipes and expressions 
-  between curly braces <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">|| {}</span>
+  between curly braces <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">|| {}</span>
 .
 </p>
 
@@ -164,7 +164,7 @@ add(1, 2); // => 3</code></pre>
 <p>
   Unlike functions, closures CAN capture variables from 
   their enclosing scope.
-  By default, closures <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">borrow</span>
+  By default, closures <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">borrow</span>
 
   a reference to variables from their enclosing scope.
 </p>
@@ -188,7 +188,7 @@ f(); // => one</code></pre>
 
 
 <p>
-  Implement <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">move</span>
+  Implement <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">move</span>
  semantics 
   on a closure, to move the variable ownership to the closure.
 </p>
@@ -223,8 +223,8 @@ println!("{}", one) // => error: value borrowed after move</code></pre>
   <li>Closures can be assigned to a variable and called like a normal function.</li>
   <li>Closures can be passed around like a variable as an argument to other functions.</li>
   <li>By default, closures borrow a reference to values in their enclosing scope.</li>
-  <li>Some types implement the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">copy</span>
- trait, so they will be copied into a closure even with <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">move</span>
+  <li>Some types implement the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">copy</span>
+ trait, so they will be copied into a closure even with <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">move</span>
  symantics.</li>
 </ul>
 

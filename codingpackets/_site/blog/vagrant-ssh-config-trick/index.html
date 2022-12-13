@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -143,7 +143,7 @@
 <h3 id="dependencies">Dependencies</h3>
 <p>
   In order to utilize this method you will need to have openssh version
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
  or greater. If you are not
   sure what an SSH config file is or does, go on a quick
   <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://duckduckgo.com/" target=_blank>duck hunt</a>
@@ -155,7 +155,7 @@
 <!-- NOTE BLOCK START -->
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     If you are running an openssh version < 7.3p1 there is an alternate
     method at the bottom of this post.
@@ -168,14 +168,14 @@
 <h3 id="ssh-the-vagrant-way">SSH The Vagrant Way</h3>
 <p>
   Usually when working with Vagrant you access a VM by using the command
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh &lt;vm-name&gt;</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh &lt;vm-name&gt;</span>
 . This is fine, but things
   start to get messy when you want to use Ansible or Puppet Bolt etc.. to
   apply config to the VMs. You either need to use Vagrants config to apply
   your inventory groupings or twiddle around with your inventory files.
 </p>
 <p>
-  Vagrant has a command <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh-config</span>
+  Vagrant has a command <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh-config</span>
  that will spit out
   a valid openssh config file. This file can be used with openssh to define
   ssh connection parameters for your Vagrant VMs.
@@ -184,7 +184,7 @@
 <h3 id="prepare-host">Prepare Host</h3>
 <p>
   First up be sure you have at least openssh version
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
 
 </p>
 
@@ -223,11 +223,11 @@ OpenSSH_7.6p1 Ubuntu-4ubuntu0.1, OpenSSL 1.0.2n  7 Dec 2017</code></pre>
 
 
 <p>
-  The <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Include</span>
+  The <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Include</span>
  parameter was added to
-  openssh in version <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
+  openssh in version <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">7.3p1</span>
 .
-  Add the following to your <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/.ssh/config</span>
+  Add the following to your <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">~/.ssh/config</span>
 
   file.
 </p>
@@ -269,13 +269,13 @@ OpenSSH_7.6p1 Ubuntu-4ubuntu0.1, OpenSSL 1.0.2n  7 Dec 2017</code></pre>
 
 <h3 id="test">Test</h3>
 <p>
-  Now instead of using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh &lt;vm-name&gt;</span>
+  Now instead of using the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh &lt;vm-name&gt;</span>
 
-  command to access your VMs you can just use <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ssh &lt;vm-name&gt;</span>
+  command to access your VMs you can just use <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">ssh &lt;vm-name&gt;</span>
 .
-  Not only will this be alot faster than using the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh</span>
+  Not only will this be alot faster than using the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh</span>
 
-  you wont have to mess around with <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/hosts</span>
+  you wont have to mess around with <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/hosts</span>
 
   file or do funny tricks with your configuration management inventory files.
 </p>
@@ -338,15 +338,15 @@ Host lab-spine01
 <h3 id="alternate-method">Alternate Method</h3>
 <p>
   There is an alternate method which is not as seamless but is available
-  if you are running <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">openssh < 7.3p1</span>
+  if you are running <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">openssh < 7.3p1</span>
 
   or prefer not to alter your user ssh config.
 </p>
 <p>
-  This method involves redirecting the <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh-config</span>
+  This method involves redirecting the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant ssh-config</span>
 
   command output to a local directory file
-  (<span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.sshconfig</span>
+  (<span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">.sshconfig</span>
  in the below example).
 </p>
 
@@ -365,7 +365,7 @@ Host lab-spine01
 
 
 <p>
-  Then use the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-F</span>
+  Then use the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">-F</span>
  flag to
   specify the ssh config file for the ssh connection.
 </p>

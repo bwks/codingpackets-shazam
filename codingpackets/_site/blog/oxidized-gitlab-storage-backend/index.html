@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -135,7 +135,7 @@
 <!-- NOTE BLOCK START -->
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     This post assumes you already have Oxidized installed and have either an on-premises Gitlab
     instance or Gitlab cloud account.
@@ -192,7 +192,7 @@
 <h3 id="configuration">Configuration</h3>
 <h4><b>Oxidized User Configuration</b></h4>
 <p>
-  In order to push to git the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
+  In order to push to git the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
  users git
   config parameters need to be set.
 </p>
@@ -213,9 +213,9 @@ sudo -H -u oxidized bash -c 'git config --global user.email "oxidized@oxidized.l
 
 <p>
   Oxidized will push configs to Gitlab via ssh. In order for this to happen the
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
  users public SSH key needs to be uploaded to
-  gitlab. First create SSH keys for the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
+  gitlab. First create SSH keys for the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
  user.
 </p>
 
@@ -237,7 +237,7 @@ Enter file in which to save the key (/opt/oxidized/.ssh/id_rsa): # press enter</
 
 
 <p>
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">cat</span>
  the oxidized users public ssh key. The output will be added to the oxidized
   user account in gitlab in a later step.
 </p>
@@ -260,7 +260,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 <h4><b>Gitlab User Configuration</b></h4>
 <p>
-  Create an <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
+  Create an <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
  user in Gitlab.
   Filling in the name, username and email then press the save button.
 </p>
@@ -309,7 +309,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 <h4><b>Gitlab Project</b></h4>
 <p>
   Create a project in order to store the device configurations. Fill in the required details.
-  I am calling this project <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">configs</span>
+  I am calling this project <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">configs</span>
 .
 </p>
 
@@ -345,16 +345,16 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 <h4><b>Oxidized Config File</b></h4>
 <p>
-  Back on the Oxidzied server, edit the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/oxidized/.config/oxidized/config</span>
+  Back on the Oxidzied server, edit the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/oxidized/.config/oxidized/config</span>
 
   file. I will be using the configuration file from my getting started
   <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/blog/oxidized-getting-started">post</a>.
 </p>
 
 <p>
-  Edit the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">output</span>
+  Edit the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">output</span>
  section adding the following
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">git</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">git</span>
  config.
 </p>
 
@@ -382,7 +382,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 
 <p>
-  Add a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">hooks</span>
+  Add a <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">hooks</span>
  section that defines the details
   of the Gitlab repo url from a previous step. The below config will attempt to push
   to the remote repo when a diff in a devices configuration is detected.
@@ -489,7 +489,7 @@ hooks:
 
 
 <p>
-  Restart the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
+  Restart the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">oxidized</span>
  service to load the changes into
   the running application.
 </p>
@@ -510,7 +510,7 @@ hooks:
 <p>
   Oxidized will attempt to fetch the configuration from all
   the devices in the data file. Confirm that the configuration was backed up by inspecting
-  the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">output</span>
+  the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">output</span>
  directory.
 </p>
 
@@ -571,7 +571,7 @@ hooks:
 <!-- NOTE BLOCK START -->
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     Oxidized creates a bare repo so there is no working directory.
 </div>
@@ -581,7 +581,7 @@ hooks:
 
 
 <p>
-  Check the <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/syslog</span>
+  Check the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/var/log/syslog</span>
  for the status of the git push.
 </p>
 

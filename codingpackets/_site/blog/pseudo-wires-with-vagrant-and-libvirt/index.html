@@ -50,7 +50,7 @@
 
     <!-- NAVBAR START -->
 <nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
-  <div class="flex justify-center items-center py-1">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
     </div>
@@ -129,12 +129,12 @@
 </p>
 <p>
   Virtualbox has an annoying trait of stripping vlan tags on interfaces which are
-  not of the type <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virtio</span>
+  not of the type <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">virtio</span>
 . Since some network device Vagrant boxes do not support
   virtio interfaces you are not able to test alot of switching related technologies.
 </p>
 <p>
-  This post will cover how to define a UDP connection between nodes in a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
+  This post will cover how to define a UDP connection between nodes in a <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
 .
   For reference the following software will be used in this post.
 </p>
@@ -283,8 +283,8 @@
 
 
 <p>
-  Tunnel interfaces are defined in a <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagranfile</span>
- under the network type <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">private_network</span>.
+  Tunnel interfaces are defined in a <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagranfile</span>
+ under the network type <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">private_network</span>.
   There are a number of configuration parameters that need to be configured, let go through them.
 </p>
 <ul>
@@ -298,7 +298,7 @@
 </ul>
 
 <h3 id="vagrantfile">Vagrantfile</h3>
-<p>Use this <span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
+<p>Use this <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Vagrantfile</span>
  to build the above topology.</p>
 
 
@@ -386,7 +386,7 @@ end</code></pre>
 
 <h3 id="testing">Testing</h3>
 <p>
-  Ok <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
+  Ok <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant up</span>
  and ssh into spine01 so we can test that the interface has
   connectivity between spine01 and spine02 over the swp1 interfaces we created.
 </p>
@@ -472,7 +472,7 @@ vagrant@spine01:~$</code></pre>
 
 <p>
   Good stuff we are learning the correct MAC address over the UDP tunnel. Dont forget to
-  <span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant destroy -f</span>
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">vagrant destroy -f</span>
  to clean up the lab.
 </p>
 

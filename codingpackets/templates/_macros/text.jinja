@@ -84,9 +84,9 @@
 <!-- BREADCRUMBS END -->
 {% endmacro %}
 
-{% macro emphasize(text) %}<span class="px-2 py-1 font-mono font-semibold rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ text }}</span>{% endmacro %}
+{% macro emphasize(text) %}<span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">{{ text }}</span>{% endmacro %}
 
-{% macro code(text) %}<span class="px-2 py-1 font-mono font-semibold rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">{{ text }}</span>{% endmacro %}
+{% macro code(text) %}<span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">{{ text }}</span>{% endmacro %}
 
 {% macro kbd(text) %}<kbd class="uppercase font-mono font-semibold py-0.5 px-2 rounded-lg bg-neutral-50 border border-b-4 border-x-4 border-neutral-400 border-r-neutral-500/75 border-b-neutral-500 dark:bg-neutral-300 dark:text-zinc-900">{{ text }}</kbd>{% endmacro %}
 
@@ -94,7 +94,7 @@
 <!-- NOTE BLOCK START -->
 <div id="note-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5">Note</b></div>
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
   </div>
 </div>
@@ -105,7 +105,7 @@
 <!-- IMPORTANT BLOCK START -->
 <div id="important-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-amber-100 rounded border-l-8 border-amber-500/90 dark:bg-amber-700 dark:border-l-amber-500 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5">Important</b></div>
+    <div class="px-4 pt-4 pb-2 text-amber-500/90 dark:text-zinc-900"><i class="far fa-star" aria-hidden="true"></i><b class="pl-1.5 text-amber-500/90 dark:text-zinc-900">Important</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>
   </div>
 </div>
@@ -116,7 +116,7 @@
 <!-- WARNING BLOCK START -->
 <div id="warning-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-rose-100 rounded border-l-8 border-l-rose-700 dark:bg-rose-800 dark:border-l-rose-600 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fas fa-fire-alt" aria-hidden="true"></i><b class="pl-1.5">Warning</b></div>
+    <div class="px-4 pt-4 pb-2 text-rose-700 dark:text-zinc-900"><i class="fas fa-fire-alt" aria-hidden="true"></i><b class="pl-1.5 text-rose-700 dark:text-zinc-900">Warning</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
   </div>
 </div>
@@ -127,7 +127,7 @@
 <!-- TIP BLOCK START -->
 <div id="tip-block" class="pt-2 pb-4">
   <div class="shadow-md shadow-zinc-400 bg-lime-100 rounded border-l-8 border-l-lime-700 dark:bg-lime-800 dark:border-l-lime-600 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-lime-700 dark:text-zinc-900"><i class="far fa-lightbulb" aria-hidden="true"></i><b class="pl-1.5">Hot Tip</b></div>
+    <div class="px-4 pt-4 pb-2 text-lime-700 dark:text-zinc-900"><i class="far fa-lightbulb" aria-hidden="true"></i><b class="pl-1.5 text-lime-700 dark:text-zinc-900">Hot Tip</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">{{ text | safe }}</div>    
   </div>
 </div>
