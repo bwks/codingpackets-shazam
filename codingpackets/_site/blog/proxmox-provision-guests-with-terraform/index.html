@@ -31,6 +31,23 @@
     
       <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
+      <script defer src="/js/custom/scrollspy.min.js"></script>
+      <script defer="">
+        window.onload = function () {
+          scrollSpy('#table-of-contents', {
+            sectionClass: '.scrollspy',
+            menuActiveTarget: '.menu-item',
+            offset: 100,
+            // scrollContainer: null,
+            // smooth scroll
+            // smoothScroll: true,
+            // smoothScrollBehavior: function(element) {
+            //   console.log('run "smoothScrollBehavior"...', element)
+            //   element.scrollIntoView({ behavior: 'smooth' })
+            // }
+          })
+        }
+      </script>
     
 
     
@@ -535,7 +552,7 @@ output "vm_ipv4_addresses" {
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links">Links</h3>
+    <h3 id="links" class="scrollspy">Links</h3>
       
         <p class="text-xl break-words">
           <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.terraform.io/docs/cli/install/apt.html" target=_blank>https://www.terraform.io/docs/cli/install/apt.html</a>
@@ -575,7 +592,7 @@ output "vm_ipv4_addresses" {
   
     
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -692,40 +709,40 @@ output "vm_ipv4_addresses" {
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#intro">
-            Intro
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#intro">
+          Intro
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#pre-flight-check">
-            Pre-Flight Check
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#pre-flight-check">
+          Pre-Flight Check
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#proxmox-host">
-            Proxmox Host
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#proxmox-host">
+          Proxmox Host
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#dev-machine">
-            Dev Machine
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#dev-machine">
+          Dev Machine
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#outro">
-            Outro
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#outro">
+          Outro
           </a>
         </div>
       

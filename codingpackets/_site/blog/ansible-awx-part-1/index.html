@@ -31,6 +31,23 @@
     
       <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
+      <script defer src="/js/custom/scrollspy.min.js"></script>
+      <script defer="">
+        window.onload = function () {
+          scrollSpy('#table-of-contents', {
+            sectionClass: '.scrollspy',
+            menuActiveTarget: '.menu-item',
+            offset: 100,
+            // scrollContainer: null,
+            // smooth scroll
+            // smoothScroll: true,
+            // smoothScrollBehavior: function(element) {
+            //   console.log('run "smoothScrollBehavior"...', element)
+            //   element.scrollIntoView({ behavior: 'smooth' })
+            // }
+          })
+        }
+      </script>
     
 
     
@@ -433,7 +450,7 @@ ansible-playbook -i inventory install.yml</code></pre>
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links">Links</h3>
+    <h3 id="links" class="scrollspy">Links</h3>
       
         <p class="text-xl break-words">
           <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://github.com/ansible/awx" target=_blank>https://github.com/ansible/awx</a>
@@ -453,7 +470,7 @@ ansible-playbook -i inventory install.yml</code></pre>
   
     
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -570,128 +587,128 @@ ansible-playbook -i inventory install.yml</code></pre>
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#intro">
-            Intro
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#intro">
+          Intro
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#ansible-awx-components">
-            Ansible AWX Components
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#ansible-awx-components">
+          Ansible AWX Components
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#pre-installation-tasks">
-            Pre Installation Tasks
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#pre-installation-tasks">
+          Pre Installation Tasks
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#install-required-yum-packages">
-            Install required YUM packages
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#install-required-yum-packages">
+          Install required YUM packages
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#install-required-pip-packages">
-            Install required PIP packages
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#install-required-pip-packages">
+          Install required PIP packages
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#start-and-enable-docker-service">
-            Start and enable docker service
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#start-and-enable-docker-service">
+          Start and enable docker service
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#open-firewall-ports">
-            Open firewall ports
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#open-firewall-ports">
+          Open firewall ports
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#set-selinux-to-permissive">
-            Set SELinux to Permissive
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#set-selinux-to-permissive">
+          Set SELinux to Permissive
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#install-awx">
-            Install AWX
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#install-awx">
+          Install AWX
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#clone-awx-git-repo">
-            Clone AWX Git repo
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#clone-awx-git-repo">
+          Clone AWX Git repo
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#edit-the-inventory-file">
-            Edit the inventory file
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#edit-the-inventory-file">
+          Edit the inventory file
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#run-the-install-playbook">
-            Run the install playbook
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#run-the-install-playbook">
+          Run the install playbook
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#login-to-awx">
-            Login to AWX
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#login-to-awx">
+          Login to AWX
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#outro">
-            Outro
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#outro">
+          Outro
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#links">
-            Links
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#links">
+          Links
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#tags">
-            Tags
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#tags">
+          Tags
           </a>
         </div>
       

@@ -31,6 +31,23 @@
     
       <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
+      <script defer src="/js/custom/scrollspy.min.js"></script>
+      <script defer="">
+        window.onload = function () {
+          scrollSpy('#table-of-contents', {
+            sectionClass: '.scrollspy',
+            menuActiveTarget: '.menu-item',
+            offset: 100,
+            // scrollContainer: null,
+            // smooth scroll
+            // smoothScroll: true,
+            // smoothScrollBehavior: function(element) {
+            //   console.log('run "smoothScrollBehavior"...', element)
+            //   element.scrollIntoView({ behavior: 'smooth' })
+            // }
+          })
+        }
+      </script>
     
 
     
@@ -841,7 +858,7 @@ python-build-{{ python.release }}:
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links">Links</h3>
+    <h3 id="links" class="scrollspy">Links</h3>
       
         <p class="text-xl break-words">
           <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://saltstack.com/" target=_blank>https://saltstack.com/</a>
@@ -869,7 +886,7 @@ python-build-{{ python.release }}:
   
     
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -981,120 +998,120 @@ python-build-{{ python.release }}:
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#overview">
-            Overview
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#overview">
+          Overview
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#architecture">
-            Architecture
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#architecture">
+          Architecture
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#topologies">
-            Topologies
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#topologies">
+          Topologies
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#install">
-            Install
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#install">
+          Install
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#configuration">
-            Configuration
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#configuration">
+          Configuration
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#salt-keys">
-            Salt Keys
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#salt-keys">
+          Salt Keys
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#inventory">
-            Inventory
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#inventory">
+          Inventory
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#modules">
-            Modules
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#modules">
+          Modules
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#states">
-            States
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#states">
+          States
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#grains">
-            Grains
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#grains">
+          Grains
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#pillar">
-            Pillar
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#pillar">
+          Pillar
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#templates">
-            Templates
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#templates">
+          Templates
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#formula">
-            Formula
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#formula">
+          Formula
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#links">
-            Links
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#links">
+          Links
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#tags">
-            Tags
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#tags">
+          Tags
           </a>
         </div>
       

@@ -31,6 +31,23 @@
     
       <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
+      <script defer src="/js/custom/scrollspy.min.js"></script>
+      <script defer="">
+        window.onload = function () {
+          scrollSpy('#table-of-contents', {
+            sectionClass: '.scrollspy',
+            menuActiveTarget: '.menu-item',
+            offset: 100,
+            // scrollContainer: null,
+            // smooth scroll
+            // smoothScroll: true,
+            // smoothScrollBehavior: function(element) {
+            //   console.log('run "smoothScrollBehavior"...', element)
+            //   element.scrollIntoView({ behavior: 'smooth' })
+            // }
+          })
+        }
+      </script>
     
 
     
@@ -456,7 +473,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -568,32 +585,32 @@
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#overview">
-            Overview
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#overview">
+          Overview
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#arp">
-            ARP
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#arp">
+          ARP
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#mac">
-            MAC
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#mac">
+          MAC
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#vlan">
-            VLAN
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#vlan">
+          VLAN
           </a>
         </div>
       

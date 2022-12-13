@@ -31,6 +31,23 @@
     
       <script defer src="/js/custom/back-to-top.js"></script>
       <script defer src="/js/custom/light-switch.js"></script>
+      <script defer src="/js/custom/scrollspy.min.js"></script>
+      <script defer="">
+        window.onload = function () {
+          scrollSpy('#table-of-contents', {
+            sectionClass: '.scrollspy',
+            menuActiveTarget: '.menu-item',
+            offset: 100,
+            // scrollContainer: null,
+            // smooth scroll
+            // smoothScroll: true,
+            // smoothScrollBehavior: function(element) {
+            //   console.log('run "smoothScrollBehavior"...', element)
+            //   element.scrollIntoView({ behavior: 'smooth' })
+            // }
+          })
+        }
+      </script>
     
 
     
@@ -253,7 +270,7 @@ loop {
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links">Links</h3>
+    <h3 id="links" class="scrollspy">Links</h3>
       
         <p class="text-xl break-words">
           <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.manning.com/books/rust-in-action" target=_blank>https://www.manning.com/books/rust-in-action</a>
@@ -289,7 +306,7 @@ loop {
   
     
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -401,24 +418,24 @@ loop {
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#for-loop">
-            For Loop
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#for-loop">
+          For Loop
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#while-loop">
-            While Loop
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#while-loop">
+          While Loop
           </a>
         </div>
       
     
       
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#loop">
-            Loop
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#loop">
+          Loop
           </a>
         </div>
       

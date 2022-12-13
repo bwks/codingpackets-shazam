@@ -41,7 +41,7 @@
 
 {% macro tag_block(tags, center=false) %}
 <!-- TAGS START -->
-  <div id="tags" class="pb-2">
+  <div id="tags" class="scrollspy pb-2">
     <div class="flex flex-wrap {% if center %}justify-center{% endif %}">
       {% for tag in tags %}
         <div class="{% if not loop.last %}pr-2{% endif %} font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -57,7 +57,7 @@
 {% macro links_block(links) %}
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links">Links</h3>
+    <h3 id="links" class="scrollspy">Links</h3>
       {% for link in post.links %}
         <p class="text-xl break-words">
           {{ link::e(path=link, color="sky") }}

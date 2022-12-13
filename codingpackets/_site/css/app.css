@@ -975,6 +975,10 @@ ol {
   padding-left: 2.5rem;
 }
 
+/* active {
+    @apply underline decoration-2 underline-offset-4;
+  } */
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1647,6 +1651,10 @@ ol {
   line-height: 1.75rem;
 }
 
+.font-bold {
+  font-weight: 700;
+}
+
 .font-medium {
   font-weight: 500;
 }
@@ -1657,10 +1665,6 @@ ol {
 
 .font-normal {
   font-weight: 400;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .font-extrabold {
@@ -1842,6 +1846,12 @@ ol {
   async-threads: 1;
 }
 
+.active {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
 .hover\:bg-neutral-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
@@ -1850,6 +1860,11 @@ ol {
 .hover\:text-neutral-100:hover {
   --tw-text-opacity: 1;
   color: rgb(245 245 245 / var(--tw-text-opacity));
+}
+
+.hover\:text-sky-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(2 132 199 / var(--tw-text-opacity));
 }
 
 .hover\:text-sky-800:hover {
@@ -1871,6 +1886,11 @@ ol {
 
 .hover\:opacity-60:hover {
   opacity: 0.6;
+}
+
+.active\:text-sky-600:active {
+  --tw-text-opacity: 1;
+  color: rgb(2 132 199 / var(--tw-text-opacity));
 }
 
 .dark .dark\:border-zinc-800 {

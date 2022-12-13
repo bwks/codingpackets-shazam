@@ -51,8 +51,8 @@
     {% for row in rows %}
       {% if row != "uncategorised" %}
         <div class="px-1">
-          <a class="font-normal text-xl text-sky-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4" href="#{{ row | slugify }}">
-            {% if slug %}{{ row | slugify }}{% else %}{{ row }}{% endif %}
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline" href="#{{ row | slugify }}">
+          {% if slug %}{{ row | slugify }}{% else %}{{ row }}{% endif %}
           </a>
         </div>
       {% endif %}
