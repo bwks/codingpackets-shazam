@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 
@@ -257,7 +256,7 @@
   
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">config</span>
   </div>
   <div class="font-mono leading-tight">
@@ -288,7 +287,7 @@
   
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">config</span>
   </div>
   <div class="font-mono leading-tight">
@@ -396,7 +395,7 @@
   <h3 id="radix-tree">Radix Tree</h3>
   <p>
     A radix tree is used to match prefixes based on the route filter conditions.
-    The below diagram<sup><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#references-1">[1]</a></sup> is a sample radix tree.
+    The below diagram<sup><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="#references-1">[1]</a></sup> is a sample radix tree.
   </p>
   
 <!-- IMAGE START -->
@@ -409,7 +408,7 @@
 
 
   <p>
-    The below diagram<sup><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#references-2">[2]</a></sup>
+    The below diagram<sup><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="#references-2">[2]</a></sup>
     illustrates how route filters affect the selection
     of prefixes in the radix tree.
   </p>
@@ -432,106 +431,78 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Protocol</th>            
+          
+            <th class="px-4 py-2">Import</th>            
+          
+            <th class="px-4 py-2">Export</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Protocol</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">BGP </td>
+            
+              <td class="px-4 py-2"> Accept all received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+              <td class="px-4 py-2"> Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Import</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">OSPF/v3 </td>
+            
+              <td class="px-4 py-2"> Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. </td>
+            
+              <td class="px-4 py-2"> Reject everything. OSPF uses flooding to advertise local and learned routes.</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Export</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">BGP </td>
+              <td class="px-4 py-2">IS-IS </td>
             
-          
+              <td class="px-4 py-2"> Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> Accept all received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-4 py-2"> Reject everything. IS-IS uses flooding to advertise local and learned routes.</td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Re-advertise all IPv4/6 routes to all BGP neighbors apart from iBGP peers unless local router is a route reflector.</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">OSPF/v3 </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> Accept all OSPF received IPv4/6 routes and place them in the inet.0/6 table. </td>
+              <td class="px-4 py-2">RIP/ng </td>
             
-          
+              <td class="px-4 py-2"> Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Reject everything. OSPF uses flooding to advertise local and learned routes.</td>
+              <td class="px-4 py-2"> Reject everything. An export policy is required to export RIP/ng routes.</td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">IS-IS </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> Accept all IS-IS received IPv4/6 routes and place them in the inet.0/6 table. </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Reject everything. IS-IS uses flooding to advertise local and learned routes.</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">RIP/ng </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> Accept all RIP/ng received IPv4/6 routes and place them in the inet.0/6 table. </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Reject everything. An export policy is required to export RIP/ng routes.</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -587,18 +558,18 @@
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-overview.html</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/usage-guidelines/policy-configuring-route-lists-for-use-in-routing-policy-match-conditions.html</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html" target=_blank>https://www.juniper.net/documentation/en_US/junos/topics/concept/policy-routing-policies-actions-defaults.html</a>
         </p>
       
   </div>
@@ -611,7 +582,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -728,7 +699,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#overview">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#overview">
           Overview
           </a>
         </div>
@@ -736,7 +707,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#usage-examples">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#usage-examples">
           Usage Examples
           </a>
         </div>
@@ -744,7 +715,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#policy-application">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#policy-application">
           Policy Application
           </a>
         </div>
@@ -752,7 +723,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#policy-processing">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#policy-processing">
           Policy Processing
           </a>
         </div>
@@ -760,7 +731,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#terminating-action">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#terminating-action">
           Terminating Action
           </a>
         </div>
@@ -768,7 +739,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#action-modifiers">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#action-modifiers">
           Action Modifiers
           </a>
         </div>
@@ -776,7 +747,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#flow-control">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#flow-control">
           Flow Control
           </a>
         </div>
@@ -784,7 +755,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#policy-configuration">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#policy-configuration">
           Policy Configuration
           </a>
         </div>
@@ -792,7 +763,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#route-filters">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#route-filters">
           Route Filters
           </a>
         </div>
@@ -800,7 +771,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#radix-tree">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#radix-tree">
           Radix Tree
           </a>
         </div>
@@ -808,7 +779,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#default-routing-policy">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#default-routing-policy">
           Default Routing Policy
           </a>
         </div>
@@ -816,7 +787,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#references">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#references">
           References
           </a>
         </div>
@@ -824,7 +795,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#bibliography">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#bibliography">
           Bibliography
           </a>
         </div>
@@ -832,7 +803,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -840,7 +811,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -859,7 +830,7 @@
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -869,7 +840,7 @@
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

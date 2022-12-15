@@ -5,16 +5,16 @@
   {% for category, posts in posts.by_category %}
     {% if category and category != "uncategorised" %}
       <div class="pb-4" id="{{ category | slugify }}">
-        <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
+        <div class="text-center bg-gray-900 border-4 border-gray-900 rounded-t-lg">
           <h3 class="text-2xl font-semibold text-neutral-400 dark:text-neutral-400">{{ category | slugify }}</h3>
         </div>
         {% for post in posts %}
           {% if post.publish %}
-            <div class="py-2 px-4 border-4 border-zinc-900 {% if not loop.last %}border-b-0 rounded-b-none{% else %}rounded-b-lg{% endif %}">
+            <div class="py-2 px-4 border-4 border-gray-900 {% if not loop.last %}border-b-0 rounded-b-none{% else %}rounded-b-lg{% endif %}">
               <div class="">
                 {% set title_slug = post.title | slugify %}
-                {% set blog_path = "/blog/" ~ title_slug %}
-                <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="sky") }}</span>
+                {% set blog_path = blog_path ~ title_slug %}
+                <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}</span>
                 <p class="font-medium text-xl">
                   {{ post.description }}
                 </p>

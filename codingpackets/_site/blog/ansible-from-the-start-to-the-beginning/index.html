@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,22 +111,22 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id=intro>Intro</h3>
 <p>
   Ansible is a configuration management platform that sits in the DevOps space along with
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://puppet.com/" target=_blank>Puppet</a>
-  , <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.chef.io/" target=_blank>Chef</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://puppet.com/" target=_blank>Puppet</a>
+  , <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://www.chef.io/" target=_blank>Chef</a>
    and
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://saltstack.com/" target=_blank>Salt Stack</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://saltstack.com/" target=_blank>Salt Stack</a>
   . Touted as being 'radically simple' its possible
   to get value from Ansible quite quickly with no programming experience required.
 </p>
@@ -167,9 +166,9 @@
 </p>
 <p>
   If you are following along at home we will use a
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.centos.org/" target=_blank>Centos</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://www.centos.org/" target=_blank>Centos</a>
    7 minimal server as a control node and a
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://cumulusnetworks.com/" target=_blank>Cumulus</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://cumulusnetworks.com/" target=_blank>Cumulus</a>
    host as a managed node. For those unfamiliar
   with Cumulus Linux it is an open network operating system from the Debian family of linux.
 </p>
@@ -204,7 +203,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -224,7 +223,7 @@ sudo yum install ansible</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -247,7 +246,7 @@ sudo apt-get install ansible</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -282,7 +281,7 @@ cd ~/ansible</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -324,7 +323,7 @@ network</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -350,7 +349,7 @@ retry_files_enabled=False</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -373,7 +372,7 @@ ansible
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -424,7 +423,7 @@ lab-cumulus-01 | SUCCESS => {
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -459,7 +458,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -486,7 +485,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
   <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
-    Playbooks use <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.yaml.org/start.html" target=_blank>YAML</a>
+    Playbooks use <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.yaml.org/start.html" target=_blank>YAML</a>
      syntax and the white
     space is significant.</div>
   </div>
@@ -513,7 +512,7 @@ UP  eth0    1G        1500  Mgmt      IP: 172.16.92.133/24(DHCP)</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -571,7 +570,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -683,7 +682,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -691,7 +690,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#architecture">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#architecture">
           Architecture
           </a>
         </div>
@@ -699,7 +698,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#lab-environment">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#lab-environment">
           Lab Environment
           </a>
         </div>
@@ -707,7 +706,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#installation">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#installation">
           Installation
           </a>
         </div>
@@ -715,7 +714,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#host-inventory">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#host-inventory">
           Host Inventory
           </a>
         </div>
@@ -723,7 +722,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#anisble-configuration">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#anisble-configuration">
           Anisble Configuration
           </a>
         </div>
@@ -731,7 +730,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#directory-structure">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#directory-structure">
           Directory Structure
           </a>
         </div>
@@ -739,7 +738,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#first-steps">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#first-steps">
           First steps
           </a>
         </div>
@@ -747,7 +746,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#playbook">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#playbook">
           Playbook
           </a>
         </div>
@@ -755,7 +754,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#playbook-execution">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#playbook-execution">
           Playbook Execution
           </a>
         </div>
@@ -763,7 +762,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -771,7 +770,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -790,7 +789,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -800,7 +799,7 @@ lab-cumulus-01             : ok=3    changed=1    unreachable=0    failed=0</cod
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

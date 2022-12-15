@@ -10,11 +10,11 @@
     {% for post in posts.all %}
       {% if post.publish and count < 10 %}
         <div class="pb-2">
-          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-zinc-900">
+          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900">
             <div class="">
               {% set title_slug = post.title | slugify %}
-              {% set blog_path = "/blog/" ~ title_slug %}
-              <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="sky") }}</span>
+              {% set blog_path = blog_path ~ title_slug %}
+              <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}</span>
               <p class="font-medium text-xl">
                 {% for post_title, content in posts.content %}
                   {% if post.title | slugify == post_title %}
@@ -38,10 +38,10 @@
   <div class="pb-2">
     <p>
       Looking for more? Browse posts by 
-      {{ link::i(path="/blog/", description="category", color="sky") }} or
-      {{ link::i(path="/blog/tag/", description="tag", color="sky") }}
+      {{ link::i(path="/blog/", description="category") }} or
+      {{ link::i(path="/blog/tag/", description="tag") }}
       or search the blog
-      {{ link::i(path="/blog/archive/", description="archives", color="sky") }}.
+      {{ link::i(path="/blog/archive/", description="archives") }}.
     </p>
   </div>
 {% endblock page_content %}

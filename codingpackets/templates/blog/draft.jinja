@@ -9,8 +9,10 @@
 {% block page_content %}
   {% for post in posts.draft | sort(attribute="title") %}
     {% if not post.category == "uncategorised" %}
+      {% set title_slug = post.title | slugify %}
+      {% set blog_path = blog_path ~ title_slug %}
     <div class="font-medium text-xl">
-      <a class="text-sky-600 text-2xl no-underline hover:text-sky-800" href="/blog/{{ post.title | slugify }}">{{ post.title | title }}</a>
+      {{ link::i(path=blog_path, description=post.title, text="text-2xl", color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}
     </div>
     {% endif %}
   {% endfor %}

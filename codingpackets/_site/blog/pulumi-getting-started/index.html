@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -151,7 +150,7 @@
   Unlike other tools that have a DSL, Pulumi 
   instructions are written in a choice of supported 
   programming 
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.pulumi.com/docs/intro/languages/" target=_blank>languages</a>. 
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://www.pulumi.com/docs/intro/languages/" target=_blank>languages</a>. 
   Which, at the time of writing are as follows:
 </p>
 <ul>
@@ -164,7 +163,7 @@
   Ensure that you have a supported runtime installed.
   For this post, I will be using Node.js with Typescript.
   Instructions to install Node.js on Ubuntu 2004 can be 
-  found <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/blog/node-js-and-yarn-install-ubuntu-2004/">here</a>.
+  found <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/node-js-and-yarn-install-ubuntu-2004/">here</a>.
 </p>
 
 <h4>Environment Credentials</h4>
@@ -174,13 +173,13 @@
   I will be using AWS for this post. For instructions on 
   installing the AWS CLI and setting up your credentials 
   see this 
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/blog/aws-cli-installation-and-setup/">post</a>.
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/aws-cli-installation-and-setup/">post</a>.
 </p>
 
 <h3 id="pulumi-account">Pulumi Account</h3>
 <h4>Create Account</h4>
 <p>
-  Head <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://app.pulumi.com/signup" target=_blank>here</a> to create a Pulumi account. 
+  Head <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://app.pulumi.com/signup" target=_blank>here</a> to create a Pulumi account. 
   The account is free to use for indiviuals and is used as a storage backend for 
   your Pulumi projects state data.
 </p>
@@ -188,7 +187,7 @@
 <h4>Access Token</h4>
 <p>
   An access token is required to login and use your Pulumi account.
-  Create a token <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://app.pulumi.com/bwks/settings/tokens" target=_blank>here</a>.
+  Create a token <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://app.pulumi.com/bwks/settings/tokens" target=_blank>here</a>.
 </p>
 
 <!-- NOTE BLOCK START -->
@@ -215,7 +214,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -248,7 +247,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -273,7 +272,7 @@ v3.13.2</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -300,7 +299,7 @@ Enter your access token from https://app.pulumi.com/account/tokens
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -376,7 +375,7 @@ To perform an initial deployment, run 'pulumi up'</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -405,7 +404,7 @@ export const bucketName = bucket.id;</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -452,7 +451,7 @@ Duration: 20s</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -474,7 +473,7 @@ Duration: 20s</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -532,7 +531,7 @@ If you want to remove the stack completely, run 'pulumi stack rm dev'.</code></p
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -555,7 +554,7 @@ Stack 'dev' has been removed!</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -590,22 +589,22 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.pulumi.com/" target=_blank>https://www.pulumi.com/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.pulumi.com/" target=_blank>https://www.pulumi.com/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.pulumi.com/docs/get-started/aws/begin/" target=_blank>https://www.pulumi.com/docs/get-started/aws/begin/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.pulumi.com/docs/get-started/aws/begin/" target=_blank>https://www.pulumi.com/docs/get-started/aws/begin/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.pulumi.com/docs/get-started/aws/create-project/" target=_blank>https://www.pulumi.com/docs/get-started/aws/create-project/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.pulumi.com/docs/get-started/aws/create-project/" target=_blank>https://www.pulumi.com/docs/get-started/aws/create-project/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.pulumi.com/docs/intro/concepts/stack/" target=_blank>https://www.pulumi.com/docs/intro/concepts/stack/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.pulumi.com/docs/intro/concepts/stack/" target=_blank>https://www.pulumi.com/docs/intro/concepts/stack/</a>
         </p>
       
   </div>
@@ -618,7 +617,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -735,7 +734,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -743,7 +742,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#software">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#software">
           Software
           </a>
         </div>
@@ -751,7 +750,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#pre-requisites">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#pre-requisites">
           Pre-Requisites
           </a>
         </div>
@@ -759,7 +758,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#pulumi-account">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#pulumi-account">
           Pulumi Account
           </a>
         </div>
@@ -767,7 +766,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#install-pulumi">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#install-pulumi">
           Install Pulumi
           </a>
         </div>
@@ -775,7 +774,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#pulumi-project">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#pulumi-project">
           Pulumi Project
           </a>
         </div>
@@ -783,7 +782,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#deploy-project">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#deploy-project">
           Deploy Project
           </a>
         </div>
@@ -791,7 +790,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#destroy-project">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#destroy-project">
           Destroy Project
           </a>
         </div>
@@ -799,7 +798,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -807,7 +806,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -815,7 +814,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -834,7 +833,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -844,7 +843,7 @@ NAME  LAST UPDATE  RESOURCE COUNT  URL</code></pre>
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

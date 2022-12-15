@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
   <h3 id="overview">Overview</h3>
@@ -137,7 +136,7 @@
   <h3 id="stp">Legacy Spanning Tree Protocol (STP)</h3>
 
   <p>
-    Standardized in 1993 by the IEEE as <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://ieee802.org/1/pages/802.1D.html" target=_blank>802.1D</a>.
+    Standardized in 1993 by the IEEE as <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://ieee802.org/1/pages/802.1D.html" target=_blank>802.1D</a>.
     STP is used to create a loop free flooding domain by calculating the shortest path from
     each bridge to a single root bridge.
   </p>
@@ -254,71 +253,57 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Port Type</th>            
+          
+            <th class="px-4 py-2">Description</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Port Type</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Root Port </td>
+            
+              <td class="px-4 py-2"> Forwarding towards the root</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Description</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Root Port </td>
+              <td class="px-4 py-2">Designated Port </td>
             
-          
+              <td class="px-4 py-2"> Forwarding away from the root</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Forwarding towards the root</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Designated Port </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Forwarding away from the root</td>
+              <td class="px-4 py-2">Alternate Port </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> Blocking to prevent spanning tree loops</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Alternate Port </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Blocking to prevent spanning tree loops</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -386,125 +371,91 @@
 
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">State</th>            
+          
+            <th class="px-4 py-2">Timer</th>            
+          
+            <th class="px-4 py-2">Learns MACs</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">State</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Disabled </td>
+            
+              <td class="px-4 py-2"> N/A </td>
+            
+              <td class="px-4 py-2"> No</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Timer</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Blocking </td>
+            
+              <td class="px-4 py-2"> 20 </td>
+            
+              <td class="px-4 py-2"> No</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Learns MACs</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Disabled </td>
+              <td class="px-4 py-2">Listening </td>
             
-          
+              <td class="px-4 py-2"> 15 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> N/A </td>
+              <td class="px-4 py-2"> No</td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> No</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Blocking </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 20 </td>
+              <td class="px-4 py-2">Learning </td>
             
-          
+              <td class="px-4 py-2"> 15 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> No</td>
+              <td class="px-4 py-2"> Yes</td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Listening </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 15 </td>
+              <td class="px-4 py-2">Forwarding </td>
             
-          
+              <td class="px-4 py-2"> N/A </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> No</td>
+              <td class="px-4 py-2"> Yes</td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Learning </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 15 </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Yes</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Forwarding </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> N/A </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Yes</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -519,106 +470,78 @@
 
     
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Port Speed</th>            
+          
+            <th class="px-4 py-2">802.1D-1998 Cost</th>            
+          
+            <th class="px-4 py-2">802.1D-2004 Cost</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Port Speed</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">10 Mbps </td>
+            
+              <td class="px-4 py-2"> 100 </td>
+            
+              <td class="px-4 py-2"> 2000000</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">802.1D-1998 Cost</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">100 Mbps </td>
+            
+              <td class="px-4 py-2"> 19 </td>
+            
+              <td class="px-4 py-2"> 200000</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">802.1D-2004 Cost</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">10 Mbps </td>
+              <td class="px-4 py-2">1 Gbps </td>
             
-          
+              <td class="px-4 py-2"> 4 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 100 </td>
+              <td class="px-4 py-2"> 20000</td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 2000000</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">100 Mbps </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 19 </td>
+              <td class="px-4 py-2">10 Gbps </td>
             
-          
+              <td class="px-4 py-2"> 2 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 200000</td>
+              <td class="px-4 py-2"> 2000</td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">1 Gbps </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 4 </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 20000</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">10 Gbps </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> 2 </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 2000</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -628,8 +551,8 @@
 
   <p>
     RSTP was originally standardized by the IEEE in
-    <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1w.html" target=_blank>802.1w</a>. In 2004 RSTP was incorporated
-    into the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1D-2003.html" target=_blank>802.1D</a> standard.
+    <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.ieee802.org/1/pages/802.1w.html" target=_blank>802.1w</a>. In 2004 RSTP was incorporated
+    into the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.ieee802.org/1/pages/802.1D-2003.html" target=_blank>802.1D</a> standard.
     RSTP contains a number of enhancements over its predecessor with the main goal of improving
     the speed of convergence. Correctly design RSTP domains can achieve sub second link failover
     and convergence.
@@ -642,86 +565,68 @@
 
       
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Port Type</th>            
+          
+            <th class="px-4 py-2">Description</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Port Type</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Root Port </td>
+            
+              <td class="px-4 py-2"> Forwarding towards the root, same roles as legacy STP.</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Description</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Root Port </td>
+              <td class="px-4 py-2">Designated Port </td>
             
-          
+              <td class="px-4 py-2"> Forwarding away from the root, same roles as legacy STP.</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Forwarding towards the root, same roles as legacy STP.</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Designated Port </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Forwarding away from the root, same roles as legacy STP.</td>
+              <td class="px-4 py-2">Alternate Port </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> Potential replacement for a bridges root port. If the root port is lost the alternate port will rapidly transition (sub-second) to the forwarding state.</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Alternate Port </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Potential replacement for a bridges root port. If the root port is lost the alternate port will rapidly transition (sub-second) to the forwarding state.</td>
+              <td class="px-4 py-2">Backup Port </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> Potential replacement for a bridges designated port. Usually only found with a connection to a hub or on a shared segment (non-p2p). If a designated port is lost the transition to a forwarding state does not occur rapidly but is based on timers.</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Backup Port </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Potential replacement for a bridges designated port. Usually only found with a connection to a hub or on a shared segment (non-p2p). If a designated port is lost the transition to a forwarding state does not occur rapidly but is based on timers.</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -747,71 +652,57 @@
 
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">State</th>            
+          
+            <th class="px-4 py-2">Learns MACs</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">State</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Discarding </td>
+            
+              <td class="px-4 py-2"> No</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Learns MACs</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Discarding </td>
+              <td class="px-4 py-2">Learning </td>
             
-          
+              <td class="px-4 py-2"> Yes</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> No</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Learning </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Yes</td>
+              <td class="px-4 py-2">Forwarding </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> Yes</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Forwarding </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Yes</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -829,56 +720,46 @@
   </p>
     
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Type</th>            
+          
+            <th class="px-4 py-2">Characteristics</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Type</th>
           
-        
-          
-            <th class="py-1 px-2 border-b border-zinc-800">Characteristics</th>
-          
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Non-Edge </td>
+              <td class="px-4 py-2">Non-Edge </td>
             
-          
+              <td class="px-4 py-2"> Default port type. Connects to other switches.</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Default port type. Connects to other switches.</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Edge </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Connects to end hosts. Sends BPDUs, but does expect to received them. Reverts to a Non-Edge type if BPDUs are received.</td>
+              <td class="px-4 py-2">Edge </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> Connects to end hosts. Sends BPDUs, but does expect to received them. Reverts to a Non-Edge type if BPDUs are received.</td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -890,56 +771,46 @@
   </p>
       
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Type</th>            
+          
+            <th class="px-4 py-2">Characteristics</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Type</th>
           
-        
-          
-            <th class="py-1 px-2 border-b border-zinc-800">Characteristics</th>
-          
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Point-to-Point </td>
+              <td class="px-4 py-2">Point-to-Point </td>
             
-          
+              <td class="px-4 py-2"> Link connected to exactly one RSTP other switch. Default link type for interfaces negotiated to full-duplex.</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Link connected to exactly one RSTP other switch. Default link type for interfaces negotiated to full-duplex.</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Shared </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> Link connected to two or more RSTP switches likely via a hub. Default link type for interfaces negotiated to half-duplex.</td>
+              <td class="px-4 py-2">Shared </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> Link connected to two or more RSTP switches likely via a hub. Default link type for interfaces negotiated to half-duplex.</td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -993,8 +864,8 @@
   <h3 id="mstp">Multiple Spanning Trees (MSTP)</h3>
 
   <p>
-    MSTP was originally standardized by the IEEE in <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1s.html" target=_blank>802.1s</a>
-    in 2005 MSTP became part of the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>802.1Q</a>
+    MSTP was originally standardized by the IEEE in <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.ieee802.org/1/pages/802.1s.html" target=_blank>802.1s</a>
+    in 2005 MSTP became part of the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>802.1Q</a>
     standard.
   </p>
   <p>
@@ -1034,7 +905,7 @@
   <h3 id="packet-captures">Packet Captures</h3>
   <p>
     Various spanning tree PCAPs can be found
-    <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.dropbox.com/sh/ltg5jhol3dehea0/AADE98wX5nKlum81T_7nL8Zna?dl=0" target=_blank>here</a>.
+    <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://www.dropbox.com/sh/ltg5jhol3dehea0/AADE98wX5nKlum81T_7nL8Zna?dl=0" target=_blank>here</a>.
   </p>
 
 
@@ -1074,14 +945,14 @@
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1D-2003.html" target=_blank>http://www.ieee802.org/1/pages/802.1D-2003.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="http://www.ieee802.org/1/pages/802.1D-2003.html" target=_blank>http://www.ieee802.org/1/pages/802.1D-2003.html</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>http://www.ieee802.org/1/pages/802.1Q.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="http://www.ieee802.org/1/pages/802.1Q.html" target=_blank>http://www.ieee802.org/1/pages/802.1Q.html</a>
         </p>
       
   </div>
@@ -1094,7 +965,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -1216,7 +1087,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#overview">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#overview">
           Overview
           </a>
         </div>
@@ -1224,7 +1095,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#stp">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#stp">
           STP
           </a>
         </div>
@@ -1232,7 +1103,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#rstp">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#rstp">
           RSTP
           </a>
         </div>
@@ -1240,7 +1111,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#mstp">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#mstp">
           MSTP
           </a>
         </div>
@@ -1248,7 +1119,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#packet-captures">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#packet-captures">
           Packet Captures
           </a>
         </div>
@@ -1256,7 +1127,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#bibliography">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#bibliography">
           Bibliography
           </a>
         </div>
@@ -1264,7 +1135,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -1272,7 +1143,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -1291,7 +1162,7 @@
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -1301,7 +1172,7 @@
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

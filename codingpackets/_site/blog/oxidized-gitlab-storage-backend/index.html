@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,22 +111,22 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
 <p>
   In a previous
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/blog/oxidized-getting-started">post</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/oxidized-getting-started">post</a>
   I installed and configured Oxidized using the local file system for storage. In this post
   I will configure Oxidized to use
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://about.gitlab.com/installation/?version=ce" target=_blank>Gitlab</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://about.gitlab.com/installation/?version=ce" target=_blank>Gitlab</a>
   community edition as a storage backend.
 </p>
 
@@ -165,7 +164,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -179,7 +178,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -200,7 +199,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -222,7 +221,7 @@ sudo -H -u oxidized bash -c 'git config --global user.email "oxidized@oxidized.l
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -244,7 +243,7 @@ Enter file in which to save the key (/opt/oxidized/.ssh/id_rsa): # press enter</
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -348,7 +347,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
   Back on the Oxidzied server, edit the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/opt/oxidized/.config/oxidized/config</span>
 
   file. I will be using the configuration file from my getting started
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/blog/oxidized-getting-started">post</a>.
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/oxidized-getting-started">post</a>.
 </p>
 
 <p>
@@ -360,7 +359,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -390,7 +389,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -413,7 +412,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBvesF9+vml0YBMBIqUVYqN17ydegbG2KTZYKFRLZJ
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -496,7 +495,7 @@ hooks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -516,7 +515,7 @@ hooks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -587,7 +586,7 @@ hooks:
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -665,22 +664,22 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://github.com/ytti/oxidized" target=_blank>https://github.com/ytti/oxidized</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://github.com/ytti/oxidized" target=_blank>https://github.com/ytti/oxidized</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://github.com/ytti/oxidized/issues/1038" target=_blank>https://github.com/ytti/oxidized/issues/1038</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://github.com/ytti/oxidized/issues/1038" target=_blank>https://github.com/ytti/oxidized/issues/1038</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password" target=_blank>https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password" target=_blank>https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how" target=_blank>https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how" target=_blank>https://unix.stackexchange.com/questions/69314/automated-ssh-keygen-without-passphrase-how</a>
         </p>
       
   </div>
@@ -693,7 +692,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -805,7 +804,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -813,7 +812,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#install-dependencies">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#install-dependencies">
           Install Dependencies
           </a>
         </div>
@@ -821,7 +820,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#configuration">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#configuration">
           Configuration
           </a>
         </div>
@@ -829,7 +828,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#verification">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#verification">
           Verification
           </a>
         </div>
@@ -837,7 +836,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -845,7 +844,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -853,7 +852,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -872,7 +871,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -882,7 +881,7 @@ Jun  3 00:23:18 localhost oxidized[14751]: GithubRepo: to remote: git@gitlab:oxi
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

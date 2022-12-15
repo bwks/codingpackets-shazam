@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -157,7 +156,7 @@
 
 <p>
   Pete Lumbis of Cumulus Networks has written an excellent blog
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://cumulusnetworks.com/blog/independence-l2-data-centers/" target=_blank>post</a> describing the evolution
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://cumulusnetworks.com/blog/independence-l2-data-centers/" target=_blank>post</a> describing the evolution
   of data centre design from legacy models to the routed host model. It's a quick read that covers the topic
   very well.
 </p>
@@ -166,8 +165,8 @@
   BGP peering with Cumulus Linux switches.
 </p>
 <p>
-  Free Range Routing (<a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://frrouting.org/" target=_blank>FRR</a>) is an open source IP routing suite for linux.
-  FRR is a fork of the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="http://www.nongnu.org/quagga/" target=_blank>Quagga</a> project with over 130 contributors and support
+  Free Range Routing (<a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://frrouting.org/" target=_blank>FRR</a>) is an open source IP routing suite for linux.
+  FRR is a fork of the <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="http://www.nongnu.org/quagga/" target=_blank>Quagga</a> project with over 130 contributors and support
   from vendors such as Big Switch and Cumulus Networks. FRR aims to implement seemless integration with the native
   linux network stacks and currently supports the BGP, OSPF, ISIS, RIP routing protocols with support for EIGRP
   on the way.
@@ -196,7 +195,7 @@
 <h3 id="switch-configuration">Switch Configuration</h3>
 <p>
   First up I will configure the leaf switches, for this task I will use the network command line utiliy
-  (<a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://cumulusnetworks.com/blog/cumulus-linux-network-command-line-utlility/" target=_blank>NCLU</a>).
+  (<a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://cumulusnetworks.com/blog/cumulus-linux-network-command-line-utlility/" target=_blank>NCLU</a>).
 </p>
 
 <h4><b>leaf01</b></h4>
@@ -204,7 +203,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -242,7 +241,7 @@ sudo net commit</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -285,7 +284,7 @@ sudo net commit</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -303,7 +302,7 @@ sudo net commit</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -321,7 +320,7 @@ sudo net commit</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -347,7 +346,7 @@ sudo dpkg -i frr_3.0.2-1-ubuntu16.04.1_amd64.deb</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -370,7 +369,7 @@ iface eth2 inet manual</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -393,7 +392,7 @@ bgpd=yes</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -456,7 +455,7 @@ end</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -469,11 +468,11 @@ sudo systemctl restart frr.service</code></pre>
 
 <p>
   Did you notice that no IP addresses where configured for the BGP peering ? This is possible with the use of BGP
-  unnumbered. BGP unnumbered; specified in <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://tools.ietf.org/html/rfc5549" target=_blank>rfc5549</a>
+  unnumbered. BGP unnumbered; specified in <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://tools.ietf.org/html/rfc5549" target=_blank>rfc5549</a>
   allows for the advertising of an IPv4 route with an IPv6 next-hop. The above configuration uses
   IPv6 dynamic link local neighbor discovery for the BGP peering address. More info can be
-  found <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://docs.cumulusnetworks.com/display/DOCS/Border+Gateway+Protocol+-+BGP#BorderGatewayProtocol-BGP-unnumbered" target=_blank>here</a> and
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://support.cumulusnetworks.com/hc/en-us/articles/212561648-Configuring-BGP-Unnumbered-with-Cisco-IOS" target=_blank>here</a>.
+  found <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://docs.cumulusnetworks.com/display/DOCS/Border+Gateway+Protocol+-+BGP#BorderGatewayProtocol-BGP-unnumbered" target=_blank>here</a> and
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://support.cumulusnetworks.com/hc/en-us/articles/212561648-Configuring-BGP-Unnumbered-with-Cisco-IOS" target=_blank>here</a>.
 </p>
 <p>
   Alright, that's all the config out of the way lets move onto verifing the operation.
@@ -487,7 +486,7 @@ sudo systemctl restart frr.service</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -523,7 +522,7 @@ Total number of neighbors 2</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -559,7 +558,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -610,22 +609,22 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://frrouting.org/" target=_blank>https://frrouting.org/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://frrouting.org/" target=_blank>https://frrouting.org/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host" target=_blank>https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host" target=_blank>https://docs.cumulusnetworks.com/display/ROH/Routing+on+the+Host</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://github.com/FRRouting/frr/releases" target=_blank>https://github.com/FRRouting/frr/releases</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://github.com/FRRouting/frr/releases" target=_blank>https://github.com/FRRouting/frr/releases</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://tools.ietf.org/html/rfc5549" target=_blank>https://tools.ietf.org/html/rfc5549</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://tools.ietf.org/html/rfc5549" target=_blank>https://tools.ietf.org/html/rfc5549</a>
         </p>
       
   </div>
@@ -638,7 +637,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -760,7 +759,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -768,7 +767,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#topology">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#topology">
           Topology
           </a>
         </div>
@@ -776,7 +775,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#switch-configuration">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#switch-configuration">
           Switch Configuration
           </a>
         </div>
@@ -784,7 +783,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#frr-installation">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#frr-installation">
           FRR Installation
           </a>
         </div>
@@ -792,7 +791,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#frr-configuration">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#frr-configuration">
           FRR Configuration
           </a>
         </div>
@@ -800,7 +799,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#verification">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#verification">
           Verification
           </a>
         </div>
@@ -808,7 +807,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -816,7 +815,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -824,7 +823,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -843,7 +842,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -853,7 +852,7 @@ C>* 192.168.121.0/24 is directly connected, eth0</code></pre>
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

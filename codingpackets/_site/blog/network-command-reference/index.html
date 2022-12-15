@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
   <h3 id="overview">Overview</h3>
@@ -131,101 +130,79 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Show ARP Table</th>            
+          
+            <th class="px-4 py-2"></th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Show ARP Table</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Cisco </td>
+            
+              <td class="px-4 py-2"> show ip arp</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800"></th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cisco </td>
+              <td class="px-4 py-2">Arista </td>
             
-          
+              <td class="px-4 py-2"> show ip arp</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show ip arp</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Arista </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show ip arp</td>
+              <td class="px-4 py-2">Juniper </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> show arp</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Juniper </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show arp</td>
+              <td class="px-4 py-2">Cumulus </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> ip neighbor</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cumulus </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> ip neighbor</td>
+              <td class="px-4 py-2">Linux </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> ip neighbor</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Linux </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> ip neighbor</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -235,101 +212,79 @@
   <h3 id="mac">MAC</h3>
   
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Show MAC Table</th>            
+          
+            <th class="px-4 py-2"></th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Show MAC Table</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Cisco </td>
+            
+              <td class="px-4 py-2"> show mac address-table</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800"></th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cisco </td>
+              <td class="px-4 py-2">Arista </td>
             
-          
+              <td class="px-4 py-2"> show mac address-table</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show mac address-table</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Arista </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show mac address-table</td>
+              <td class="px-4 py-2">Juniper </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> show ether-switching table</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Juniper </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show ether-switching table</td>
+              <td class="px-4 py-2">Cumulus </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> net show bridge macs</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cumulus </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> net show bridge macs</td>
+              <td class="px-4 py-2">Linux </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> brctl showmacs &lt;bridge-name&gt;</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Linux </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> brctl showmacs &lt;bridge-name&gt;</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -338,101 +293,79 @@
   <h3 id="vlan">VLAN</h3>
     
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Show VLAN Table</th>            
+          
+            <th class="px-4 py-2"></th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Show VLAN Table</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Cisco </td>
+            
+              <td class="px-4 py-2"> show vlans</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800"></th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cisco </td>
+              <td class="px-4 py-2">Arista </td>
             
-          
+              <td class="px-4 py-2"> show vlans</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show vlans</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Arista </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show vlans</td>
+              <td class="px-4 py-2">Juniper </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> show vlans</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Juniper </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> show vlans</td>
+              <td class="px-4 py-2">Cumulus </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> net show bridge vlans</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cumulus </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> net show bridge vlans</td>
+              <td class="px-4 py-2">Linux </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> ??</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Linux </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> ??</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -456,7 +389,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -568,7 +501,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#overview">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#overview">
           Overview
           </a>
         </div>
@@ -576,7 +509,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#arp">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#arp">
           ARP
           </a>
         </div>
@@ -584,7 +517,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#mac">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#mac">
           MAC
           </a>
         </div>
@@ -592,7 +525,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#vlan">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#vlan">
           VLAN
           </a>
         </div>
@@ -611,7 +544,7 @@
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -621,7 +554,7 @@
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

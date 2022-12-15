@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -116,13 +115,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -140,7 +139,7 @@
 <h3 id="aws-services">AWS Services</h3>
 <p>
   AWS has a bajillion services and growing every year. They also have a number of
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/websites/" target=_blank>options</a> available for hosting a
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://aws.amazon.com/websites/" target=_blank>options</a> available for hosting a
   website. I am using the the following services to host my website;
 </p>
 <ul>
@@ -153,7 +152,7 @@
 <h4>Domain Name</h4>
 <p>
   Firstly some background. I was initially hosting the DNS for
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/">codingpackets.com</a> with Godaddy.
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/">codingpackets.com</a> with Godaddy.
   I was pretty happy with them but there was an issue with
   redirects and I was getting a certificate error when using a bare domain IE:
   <i>https://codingpackets.com</i> without the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">www</span>
@@ -162,7 +161,7 @@
   adding <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">www</span>
    to the domain
   and Godaddy's inability to create a DNS alias record. For this reason I transferred the
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="/">codingpackets.com</a> domain to Route 53.
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/">codingpackets.com</a> domain to Route 53.
 </p>
 
 <p>
@@ -179,8 +178,8 @@
     <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
     <div class="px-4 pb-4 dark:text-zinc-900">
     This post does not cover registering or transferring a domain to AWS. For instructions
-    to register a domain see <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/getting-started/hands-on/get-a-domain/" target=_blank>here</a>
-    and to transfer a domain see <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/premiumsupport/knowledge-center/transfer-domain-to-aws/" target=_blank>here</a>.</div>
+    to register a domain see <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://aws.amazon.com/getting-started/hands-on/get-a-domain/" target=_blank>here</a>
+    and to transfer a domain see <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://aws.amazon.com/premiumsupport/knowledge-center/transfer-domain-to-aws/" target=_blank>here</a>.</div>
   </div>
 </div>
 <!-- NOTE BLOCK END -->
@@ -197,7 +196,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -247,7 +246,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -291,7 +290,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -335,7 +334,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -405,14 +404,14 @@
 <p>
   Assuming you have generated your static site already you can upload the content to S3.
   I use the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">aws S3 sync</span> from the AWS
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/cli/" target=_blank>CLI</a> tool. My static files are stored in the
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://aws.amazon.com/cli/" target=_blank>CLI</a> tool. My static files are stored in the
   <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">_site</span>
    directory.
 </p>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -438,7 +437,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -593,7 +592,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -732,7 +731,7 @@
 
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       
         <li class="text-sky-600 dark:text-sky-800">Services</li>
@@ -834,54 +833,54 @@
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://stackoverflow.com/questions/49082709/redirect-to-index-html-for-s3-subfolder" target=_blank>https://stackoverflow.com/questions/49082709/redirect-to-index-html-for-s3-subfolder</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://stackoverflow.com/questions/49082709/redirect-to-index-html-for-s3-subfolder" target=_blank>https://stackoverflow.com/questions/49082709/redirect-to-index-html-for-s3-subfolder</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://stevepapa.com/how-to-specify-a-default-root-object-for-static-website-subdirectories-on-aws-cloudfront/" target=_blank>https://stevepapa.com/how-to-specify-a-default-root-object-for-static-website-subdirectories-on-aws-cloudfront/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://stevepapa.com/how-to-specify-a-default-root-object-for-static-website-subdirectories-on-aws-cloudfront/" target=_blank>https://stevepapa.com/how-to-specify-a-default-root-object-for-static-website-subdirectories-on-aws-cloudfront/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://medium.com/@sbuckpesch/setup-aws-s3-static-website-hosting-using-ssl-acm-34d41d32e394" target=_blank>https://medium.com/@sbuckpesch/setup-aws-s3-static-website-hosting-using-ssl-acm-34d41d32e394</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://medium.com/@sbuckpesch/setup-aws-s3-static-website-hosting-using-ssl-acm-34d41d32e394" target=_blank>https://medium.com/@sbuckpesch/setup-aws-s3-static-website-hosting-using-ssl-acm-34d41d32e394</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.davidbaumgold.com/tutorials/host-static-site-aws-s3-cloudfront/" target=_blank>https://www.davidbaumgold.com/tutorials/host-static-site-aws-s3-cloudfront/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.davidbaumgold.com/tutorials/host-static-site-aws-s3-cloudfront/" target=_blank>https://www.davidbaumgold.com/tutorials/host-static-site-aws-s3-cloudfront/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/blogs/compute/implementing-default-directory-indexes-in-amazon-s3-backed-amazon-cloudfront-origins-using-lambdaedge/" target=_blank>https://aws.amazon.com/blogs/compute/implementing-default-directory-indexes-in-amazon-s3-backed-amazon-cloudfront-origins-using-lambdaedge/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://aws.amazon.com/blogs/compute/implementing-default-directory-indexes-in-amazon-s3-backed-amazon-cloudfront-origins-using-lambdaedge/" target=_blank>https://aws.amazon.com/blogs/compute/implementing-default-directory-indexes-in-amazon-s3-backed-amazon-cloudfront-origins-using-lambdaedge/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.freecodecamp.org/news/simple-site-hosting-with-amazon-s3-and-https-5e78017f482a/" target=_blank>https://www.freecodecamp.org/news/simple-site-hosting-with-amazon-s3-and-https-5e78017f482a/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.freecodecamp.org/news/simple-site-hosting-with-amazon-s3-and-https-5e78017f482a/" target=_blank>https://www.freecodecamp.org/news/simple-site-hosting-with-amazon-s3-and-https-5e78017f482a/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html" target=_blank>https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html" target=_blank>https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/" target=_blank>https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/" target=_blank>https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://medium.com/@brodartec/hosting-a-static-site-with-https-enabled-using-aws-s3-cloudfront-and-godaddy-826dae41fdc6" target=_blank>https://medium.com/@brodartec/hosting-a-static-site-with-https-enabled-using-aws-s3-cloudfront-and-godaddy-826dae41fdc6</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://medium.com/@brodartec/hosting-a-static-site-with-https-enabled-using-aws-s3-cloudfront-and-godaddy-826dae41fdc6" target=_blank>https://medium.com/@brodartec/hosting-a-static-site-with-https-enabled-using-aws-s3-cloudfront-and-godaddy-826dae41fdc6</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://au.godaddy.com/community/Managing-Domains/CNAME-ANAME-or-ALIAS-support-for-APEX-domain/td-p/136281" target=_blank>https://au.godaddy.com/community/Managing-Domains/CNAME-ANAME-or-ALIAS-support-for-APEX-domain/td-p/136281</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://au.godaddy.com/community/Managing-Domains/CNAME-ANAME-or-ALIAS-support-for-APEX-domain/td-p/136281" target=_blank>https://au.godaddy.com/community/Managing-Domains/CNAME-ANAME-or-ALIAS-support-for-APEX-domain/td-p/136281</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://support.yondo.com/hc/en-us/articles/205794498-GoDaddy-Domain-Alias-Setup" target=_blank>https://support.yondo.com/hc/en-us/articles/205794498-GoDaddy-Domain-Alias-Setup</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://support.yondo.com/hc/en-us/articles/205794498-GoDaddy-Domain-Alias-Setup" target=_blank>https://support.yondo.com/hc/en-us/articles/205794498-GoDaddy-Domain-Alias-Setup</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://simonecarletti.com/blog/2016/08/redirect-domain-https-amazon-cloudfront/" target=_blank>https://simonecarletti.com/blog/2016/08/redirect-domain-https-amazon-cloudfront/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://simonecarletti.com/blog/2016/08/redirect-domain-https-amazon-cloudfront/" target=_blank>https://simonecarletti.com/blog/2016/08/redirect-domain-https-amazon-cloudfront/</a>
         </p>
       
   </div>
@@ -894,7 +893,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -1006,7 +1005,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -1014,7 +1013,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#aws-services">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#aws-services">
           AWS Services
           </a>
         </div>
@@ -1022,7 +1021,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#s3">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#s3">
           S3
           </a>
         </div>
@@ -1030,7 +1029,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#certificate-manager">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#certificate-manager">
           Certificate Manager
           </a>
         </div>
@@ -1038,7 +1037,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#cloud-front">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#cloud-front">
           Cloud Front
           </a>
         </div>
@@ -1046,7 +1045,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#route-53">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#route-53">
           Route 53
           </a>
         </div>
@@ -1054,7 +1053,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#testing">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#testing">
           Testing
           </a>
         </div>
@@ -1062,7 +1061,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#cost">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#cost">
           Cost
           </a>
         </div>
@@ -1070,7 +1069,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -1078,7 +1077,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -1086,7 +1085,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -1105,7 +1104,7 @@
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -1115,7 +1114,7 @@
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

@@ -21,16 +21,16 @@
 
         {% if post_tag == tag and published_posts | length > 0 %}
           <div class="pb-4">
-            <div class="text-center bg-zinc-900 border-4 border-zinc-900 rounded-t-lg">
+            <div class="text-center bg-gray-900 border-4 border-gray-900 rounded-t-lg">
               <h3 id="{{ tag | slugify }}" class="text-2xl font-semibold text-neutral-400 dark:text-neutral-400">{{ tag | slugify }} - {{ published_posts | length }} {% if published_posts | length < 2 %}Post{% else %}Posts{% endif %}</h3>
             </div>
-            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-zinc-900">
+            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-gray-900">
               {% for post in published_posts %}
                 <div class="font-medium text-xl">
                   {% set title_slug = post.title | slugify %}
-                  {% set blog_path = "/blog/" ~ title_slug %}
+                  {% set blog_path = blog_path ~ title_slug %}
                   <span class="pr-2">{{ post.published_date }}</span>
-                  <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", color="sky") }}</span>
+                  <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}</span>
                 </div>
               {% endfor %}   
             </div>

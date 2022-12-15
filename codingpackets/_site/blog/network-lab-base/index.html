@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -116,13 +115,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -193,116 +192,90 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Device Type</th>            
+          
+            <th class="px-4 py-2">Interface Numbering</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Device Type</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Juniper vSRX/vMX </td>
+            
+              <td class="px-4 py-2"> ge-0/0/0</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Interface Numbering</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Juniper vSRX/vMX </td>
+              <td class="px-4 py-2">Juniper vQFX </td>
             
-          
+              <td class="px-4 py-2"> xe-0/0/0</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> ge-0/0/0</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Juniper vQFX </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> xe-0/0/0</td>
+              <td class="px-4 py-2">Cisco IOSv </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> gig0/1</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cisco IOSv </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> gig0/1</td>
+              <td class="px-4 py-2">Cisco IOSXRv </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> gig0/0/0/0</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cisco IOSXRv </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> gig0/0/0/0</td>
+              <td class="px-4 py-2">Arista vEOS </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> eth1</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Arista vEOS </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> eth1</td>
+              <td class="px-4 py-2">Cumulus VX </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> swp1</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Cumulus VX </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> swp1</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -387,33 +360,31 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Device</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Device</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
-        
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><span class="font-mono">P&lt;local-pod&gt;&lt;device-type&gt;&lt;local-router&gt;/24</span></td>
+              <td class="px-4 py-2"><span class="font-mono">P&lt;local-pod&gt;&lt;device-type&gt;&lt;local-router&gt;/24</span></td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -457,48 +428,42 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv4</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">10.&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+              <td class="px-4 py-2"><b>IPv4</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+              <td class="px-4 py-2"> <span class="font-mono">10.&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv6</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+              <td class="px-4 py-2"><b>IPv6</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -512,103 +477,73 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2"></th>            
+          
+            <th class="px-4 py-2">IPv4</th>            
+          
+            <th class="px-4 py-2">IPv6</th>            
+          
+            <th class="px-4 py-2">Interface</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800"></th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Network</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.1.17.0/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:1:17::/64</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono"></span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv4</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>P1R1</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.1.17.1/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:1:17::1/64</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">7</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv6</th>
           
+            <tr class="">
+          
+            
+              <td class="px-4 py-2"><b>P1R7</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.1.17.7/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:1:17::7/64</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">1</span></td>
+            
+          </tr>
         
-          
-            <th class="py-1 px-2 border-b border-zinc-800">Interface</th>
-          
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Network</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.17.0/24</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">fd00:10:1:17::/64</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono"></span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R1</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.17.1/24</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">fd00:10:1:17::1/64</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">7</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R7</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.17.7/24</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">fd00:10:1:17::7/64</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">1</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -631,63 +566,53 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv4</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">10.&lt;local-pod&gt;&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+              <td class="px-4 py-2"><b>IPv4</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> <span class="font-mono">10.&lt;local-pod&gt;&lt;local-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-router&gt;/24</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv6</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:&lt;local-pod&gt;&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+              <td class="px-4 py-2"><b>IPv6</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:&lt;local-pod&gt;&lt;local-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-router&gt;/64</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>VLAN</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">&lt;pod-number&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+              <td class="px-4 py-2"><b>VLAN</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">&lt;pod-number&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -700,125 +625,91 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2"></th>            
+          
+            <th class="px-4 py-2">IPv4</th>            
+          
+            <th class="px-4 py-2">IPv6</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800"></th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Network</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.11.17.0/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:11:17::/64</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv4</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>P1R1</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.11.17.1/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:11:17::1/64</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">IPv6</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Network</b> </td>
+              <td class="px-4 py-2"><b>P1R7</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">10.11.17.7/24</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.11.17.0/24</span> </td>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:11:17::7/64</span></td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:11:17::/64</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R1</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.11.17.1/24</span> </td>
+              <td class="px-4 py-2"><b>Interface</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">9.117</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:11:17::1/64</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">9.117</span></td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R7</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.11.17.7/24</span> </td>
+              <td class="px-4 py-2"><b>VLAN</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">117</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:11:17::7/64</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">117</span></td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Interface</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">9.117</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">9.117</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>VLAN</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">117</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">117</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -831,63 +722,53 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv4</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">10.&lt;low-pod&gt;&lt;high-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-pod&gt;&lt;local-router&gt;/24</span></td>
+              <td class="px-4 py-2"><b>IPv4</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> <span class="font-mono">10.&lt;low-pod&gt;&lt;high-pod&gt;.&lt;low-router&gt;&lt;high-router&gt;.&lt;local-pod&gt;&lt;local-router&gt;/24</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv6</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:&lt;low-pod&gt;&lt;high-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-pod&gt;&lt;local-router&gt;/64</span></td>
+              <td class="px-4 py-2"><b>IPv6</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:&lt;low-pod&gt;&lt;high-pod&gt;:&lt;low-router&gt;&lt;high-router&gt;::&lt;local-pod&gt;&lt;local-router&gt;/64</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>VLAN</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">&lt;low-pod&gt;&lt;high-pod&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+              <td class="px-4 py-2"><b>VLAN</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">&lt;low-pod&gt;&lt;high-pod&gt;&lt;low-router&gt;&lt;high-router&gt;</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -900,125 +781,91 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2"></th>            
+          
+            <th class="px-4 py-2">IPv4</th>            
+          
+            <th class="px-4 py-2">IPv6</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800"></th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Network</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.13.15.0/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:13:15::/64</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv4</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>P1R1</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.13.15.11/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:13:15::11/64</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">IPv6</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Network</b> </td>
+              <td class="px-4 py-2"><b>P3R5</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">10.13.15.57/24</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.13.15.0/24</span> </td>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:13:15::57/64</span></td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:13:15::/64</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R1</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.13.15.11/24</span> </td>
+              <td class="px-4 py-2"><b>Interface</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">9.1315</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:13:15::11/64</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">9.1315</span></td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P3R5</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.13.15.57/24</span> </td>
+              <td class="px-4 py-2"><b>VLAN</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">1315</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:13:15::57/64</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">1315</span></td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Interface</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">9.1315</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">9.1315</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>VLAN</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">1315</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">1315</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1031,48 +878,42 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv4</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">10.255.&lt;local-pod&gt;.&lt;local-router&gt;/24</span></td>
+              <td class="px-4 py-2"><b>IPv4</b> </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+              <td class="px-4 py-2"> <span class="font-mono">10.255.&lt;local-pod&gt;.&lt;local-router&gt;/24</span></td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>IPv6</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:255:&lt;local-pod&gt;::&lt;local-router&gt;/64</span></td>
+              <td class="px-4 py-2"><b>IPv6</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:255:&lt;local-pod&gt;::&lt;local-router&gt;/64</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1085,49 +926,39 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2"></th>            
+          
+            <th class="px-4 py-2">IPv4</th>            
+          
+            <th class="px-4 py-2">IPv6</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800"></th>
           
-        
-          
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv4</th>
-          
-        
-          
-            <th class="py-1 px-2 border-b border-zinc-800">IPv6</th>
-          
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
-        
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R1</b> </td>
+              <td class="px-4 py-2"><b>P1R1</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">10.255.1.1/32</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.255.1.1/32</span> </td>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:10:255:1::1/128</span></td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:10:255:1::1/128</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1147,33 +978,31 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Autonomous System</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">65&lt;local-pod&gt;00</span></td>
+              <td class="px-4 py-2"><b>Autonomous System</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">65&lt;local-pod&gt;00</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1186,33 +1015,31 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Pod 1</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">65100</span></td>
+              <td class="px-4 py-2"><b>Pod 1</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">65100</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1224,33 +1051,31 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Autonomous System</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">65&lt;local-pod&gt;0&lt;local-router&gt;</span></td>
+              <td class="px-4 py-2"><b>Autonomous System</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">65&lt;local-pod&gt;0&lt;local-router&gt;</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1262,33 +1087,31 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>P1R1</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">65101</span></td>
+              <td class="px-4 py-2"><b>P1R1</b> </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> <span class="font-mono">65101</span></td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -1298,7 +1121,7 @@
 <h3 id="code">Code</h3>
 <p>
   This code for this lab is hosted on github and can be found
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://github.com/bwks/labs" target=_blank>here</a>.
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://github.com/bwks/labs" target=_blank>here</a>.
 </p>
 
 <h3 id="outro">Outro</h3>
@@ -1328,7 +1151,7 @@
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -1440,7 +1263,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -1448,7 +1271,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#goals">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#goals">
           Goals
           </a>
         </div>
@@ -1456,7 +1279,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#pods">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#pods">
           Pods
           </a>
         </div>
@@ -1464,7 +1287,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#interface-numbering">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#interface-numbering">
           Interface Numbering
           </a>
         </div>
@@ -1472,7 +1295,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#topology">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#topology">
           Topology
           </a>
         </div>
@@ -1480,7 +1303,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#device-naming">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#device-naming">
           Device Naming
           </a>
         </div>
@@ -1488,7 +1311,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#subnets">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#subnets">
           Subnets
           </a>
         </div>
@@ -1496,7 +1319,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#point-to-point-interfaces">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#point-to-point-interfaces">
           Point-to-point Interfaces
           </a>
         </div>
@@ -1504,7 +1327,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#point-to-point-sub-interfaces">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#point-to-point-sub-interfaces">
           Point-to-point Sub-interfaces
           </a>
         </div>
@@ -1512,7 +1335,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#vlans">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#vlans">
           VLANs
           </a>
         </div>
@@ -1520,7 +1343,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#loopbacks">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#loopbacks">
           Loopbacks
           </a>
         </div>
@@ -1528,7 +1351,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#non-p2p-links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#non-p2p-links">
           Non-P2P links
           </a>
         </div>
@@ -1536,7 +1359,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#bgp-autonomous-system-numbering">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#bgp-autonomous-system-numbering">
           BGP Autonomous System Numbering
           </a>
         </div>
@@ -1544,7 +1367,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#code">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#code">
           Code
           </a>
         </div>
@@ -1552,7 +1375,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -1560,7 +1383,7 @@
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -1579,7 +1402,7 @@
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -1589,7 +1412,7 @@
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

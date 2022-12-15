@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -116,13 +115,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="intro">Intro</h3>
@@ -150,71 +149,57 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Operating System</th>            
+          
+            <th class="px-4 py-2">Location</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Operating System</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Centos</b> </td>
+            
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Location</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Centos</b> </td>
+              <td class="px-4 py-2"><b>Ubuntu</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;</span></td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Ubuntu</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;</span></td>
+              <td class="px-4 py-2"><b>Cumulus</b> </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;.intf</span></td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Cumulus</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;.intf</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -229,71 +214,57 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Operating System</th>            
+          
+            <th class="px-4 py-2">Location</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Operating System</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Centos</b> </td>
+            
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart network.service</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Location</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Centos</b> </td>
+              <td class="px-4 py-2"><b>Ubuntu</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart network.service</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Ubuntu</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
+              <td class="px-4 py-2"><b>Cumulus</b> </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Cumulus</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -309,7 +280,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -333,7 +304,7 @@ DHCPV6C=yes</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -352,7 +323,7 @@ iface eth0 inet6 dhcp</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -375,125 +346,91 @@ iface eth0 inet6 dhcp</code></pre>
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2"></th>            
+          
+            <th class="px-4 py-2">IPv4</th>            
+          
+            <th class="px-4 py-2">IPv6</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800"></th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Address</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.1.1.10</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:4a26:d09b:d911::10</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">IPv4</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2"><b>Network</b> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">10.1.1.0/24</span> </td>
+            
+              <td class="px-4 py-2"> <span class="font-mono">fd00:4a26:d09b:d911::/64</span></td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">IPv6</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Address</b> </td>
+              <td class="px-4 py-2"><b>Gateway</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">10.1.1.1</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.1.10</span> </td>
+              <td class="px-4 py-2"> <span class="font-mono">fd00:4a26:d09b:d911::1</span></td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:4a26:d09b:d911::10</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Network</b> </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.1.0/24</span> </td>
+              <td class="px-4 py-2"><b>DNS</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:4a26:d09b:d911::/64</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">2001:4860:4860::8888</span><br><span class="font-mono">2001:4860:4860::8844</span></td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Gateway</b> </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">10.1.1.1</span> </td>
+              <td class="px-4 py-2"><b>Search Domain</b> </td>
             
-          
+              <td class="px-4 py-2"> <span class="font-mono">lab.local</span> </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">fd00:4a26:d09b:d911::1</span></td>
+              <td class="px-4 py-2"> <span class="font-mono">lab.local</span></td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>DNS</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">2001:4860:4860::8888</span><br><span class="font-mono">2001:4860:4860::8844</span></td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800"><b>Search Domain</b> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> <span class="font-mono">lab.local</span> </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <span class="font-mono">lab.local</span></td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -504,7 +441,7 @@ iface eth0 inet6 dhcp</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -541,7 +478,7 @@ DNS4=2001:4860:4860::8844</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -569,7 +506,7 @@ iface eth1 inet6 static
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -597,7 +534,7 @@ iface swp1 inet static
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -619,7 +556,7 @@ nameserver 2001:4860:4860::8844</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -647,7 +584,7 @@ IPV6_FAILURE_FATAL=no</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -674,7 +611,7 @@ iface lo:1 inet6 static
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -700,7 +637,7 @@ iface lo inet loopback
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -713,7 +650,7 @@ iface lo inet loopback
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -747,7 +684,7 @@ VLAN=yes</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -765,7 +702,7 @@ VLAN=yes</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
@@ -780,7 +717,7 @@ VLAN=yes</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -798,7 +735,7 @@ iface eth1 inet manual</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -827,7 +764,7 @@ iface eth1.10 inet6 static
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -847,7 +784,7 @@ iface bridge
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">file</span>
   </div>
   <div class="font-mono leading-tight">
@@ -888,10 +825,10 @@ iface vlan10
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://docs.cumulusnetworks.com/display/DOCS/Interface+Configuration+and+Management" target=_blank>https://docs.cumulusnetworks.com/display/DOCS/Interface+Configuration+and+Management</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://docs.cumulusnetworks.com/display/DOCS/Interface+Configuration+and+Management" target=_blank>https://docs.cumulusnetworks.com/display/DOCS/Interface+Configuration+and+Management</a>
         </p>
       
   </div>
@@ -904,7 +841,7 @@ iface vlan10
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -1021,7 +958,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#intro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#intro">
           Intro
           </a>
         </div>
@@ -1029,7 +966,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#interfaces">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#interfaces">
           Interfaces
           </a>
         </div>
@@ -1037,7 +974,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#dhcp-ip-address">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#dhcp-ip-address">
           DHCP IP Address
           </a>
         </div>
@@ -1045,7 +982,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#static-ip-address">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#static-ip-address">
           Static IP Address
           </a>
         </div>
@@ -1053,7 +990,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#loopback-interface">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#loopback-interface">
           Loopback Interface
           </a>
         </div>
@@ -1061,7 +998,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#vlan-l3-interface">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#vlan-l3-interface">
           VLAN L3 Interface
           </a>
         </div>
@@ -1069,7 +1006,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#outro">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#outro">
           Outro
           </a>
         </div>
@@ -1077,7 +1014,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -1085,7 +1022,7 @@ iface vlan10
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -1104,7 +1041,7 @@ iface vlan10
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -1114,7 +1051,7 @@ iface vlan10
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>

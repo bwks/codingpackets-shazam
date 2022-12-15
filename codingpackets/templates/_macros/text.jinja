@@ -29,7 +29,7 @@
 {% macro code_block(header, language, code) %}
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">{{ header }}</span>
   </div>
   <div class="font-mono leading-tight">
@@ -41,7 +41,7 @@
 
 {% macro tag_block(tags, center=false) %}
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap {% if center %}justify-center{% endif %}">
       {% for tag in tags %}
         <div class="{% if not loop.last %}pr-2{% endif %} font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -57,10 +57,10 @@
 {% macro links_block(links) %}
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       {% for link in post.links %}
         <p class="text-xl break-words">
-          {{ link::e(path=link, color="sky") }}
+          {{ link::e(path=link, color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}
         </p>
       {% endfor %}
   </div>
@@ -70,7 +70,7 @@
 {% macro breadcrumbs(items) %}
 <!-- BREADCRUMBS START -->
 <div id="breadcrumbs" class="pb-2 font-mono font-bold text-xl tracking-tight">
-  <nav class="rounded px-3 py-2 w-fit bg-zinc-200 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
+  <nav class="rounded px-3 py-2 w-fit bg-zinc-300/75 shadow-md shadow-zinc-400 dark:bg-zinc-900 dark:shadow-inner dark:shadow-black">
     <ol class="list-none py-0 pl-0 flex flex-wrap">
       {% for item in items %}
         <li class="text-sky-600 dark:text-sky-800">{{ item }}</li>

@@ -21,7 +21,6 @@
     
       <link rel="stylesheet" href="/css/app.css">
     
-
     
       <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
       <script src="/js/highlightjs/terraform.js"></script>
@@ -46,10 +45,10 @@
     <title>codingpackets.com</title>
   </head>
 
-  <body class="bg-stone-50 dark:bg-black tracking-wide">
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
 
     <!-- NAVBAR START -->
-<nav id="navbar" class="w-full py-3 bg-zinc-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
   <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
     <div>
       <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
@@ -112,13 +111,13 @@
       <div class="grid grid-cols-12 gap-8">
 
         <!-- COLUMN 1 START -->
-        <div class="invisible md:visible md:col-span-3">
+        <div class="invisible md:visible md:col-span-3 rounded-md">
         </div>
         <!-- COLUMN 1 END -->
 
         <!-- COLUMN 2 START -->
-        <div class="col-span-12 px-5 md:col-span-6">
-          <div class="text-xl text-gray-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
             
 
 <h3 id="integers">Integers</h3>
@@ -143,144 +142,104 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Length</th>            
+          
+            <th class="px-4 py-2">Unsigned</th>            
+          
+            <th class="px-4 py-2">Signed</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Length</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">8-bits </td>
+            
+              <td class="px-4 py-2"> u8 </td>
+            
+              <td class="px-4 py-2"> i8</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Unsigned</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">16-bits </td>
+            
+              <td class="px-4 py-2"> u16 </td>
+            
+              <td class="px-4 py-2"> i16</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Signed</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">8-bits </td>
+              <td class="px-4 py-2">32-bits </td>
             
-          
+              <td class="px-4 py-2"> u32 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> u8 </td>
+              <td class="px-4 py-2"> i32</td>
             
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> i8</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">16-bits </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> u16 </td>
+              <td class="px-4 py-2">64-bits </td>
             
-          
+              <td class="px-4 py-2"> u64 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> i16</td>
+              <td class="px-4 py-2"> i64</td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">32-bits </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> u32 </td>
+              <td class="px-4 py-2">128-bits </td>
             
-          
+              <td class="px-4 py-2"> u128 </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> i32</td>
+              <td class="px-4 py-2"> i128</td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">64-bits </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> u64 </td>
+              <td class="px-4 py-2">CPU Architecture </td>
             
-          
+              <td class="px-4 py-2"> usize </td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> i64</td>
+              <td class="px-4 py-2"> isize</td>
             
-          
-        </tr>
-      
+          </tr>
         
-        
-          <tr class="border-b border-zinc-800">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">128-bits </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> u128 </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> i128</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">CPU Architecture </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-r border-zinc-800"> usize </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> isize</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -293,101 +252,79 @@
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Literal</th>            
+          
+            <th class="px-4 py-2">Example</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Literal</th>
           
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+          
+            
+              <td class="px-4 py-2">Decimal </td>
+            
+              <td class="px-4 py-2"> 42</td>
+            
+          </tr>
         
           
-            <th class="py-1 px-2 border-b border-zinc-800">Example</th>
           
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Decimal </td>
+              <td class="px-4 py-2">Hex </td>
             
-          
+              <td class="px-4 py-2"> <b>0x</b>2a</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> 42</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Hex </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <b>0x</b>2a</td>
+              <td class="px-4 py-2">Octal </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> <b>0o</b>52</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Octal </td>
-            
+          
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <b>0o</b>52</td>
+              <td class="px-4 py-2">Binary </td>
             
-          
-        </tr>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
+              <td class="px-4 py-2"> <b>0b</b>101010</td>
+            
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Binary </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <b>0b</b>101010</td>
+              <td class="px-4 py-2">Byte (u8 only) </td>
             
-          
-        </tr>
-      
+              <td class="px-4 py-2"> <b>b</b>'Z'</td>
+            
+          </tr>
         
-        
-          <tr class="">
-        
-          
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">Byte (u8 only) </td>
-            
-          
-            
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> <b>b</b>'Z'</td>
-            
-          
-        </tr>
-      
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -397,7 +334,7 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">rust</span>
   </div>
   <div class="font-mono leading-tight">
@@ -460,56 +397,46 @@ let you_da_winnah = 1_16_32_5_12_19_40_i64; // => 116325121940</code></pre>
 
 
 <!-- TABLE DEFAULT START -->
-<div id="table-default" class="py-2 text-xl font-mono tracking-normal">
-  <div class="rounded-md shadow-md shadow-zinc-400 dark:shadow-zinc-900 overflow-auto">
-    <table class="table-auto w-full">
-      <thead class="text-center">
-        <tr class="bg-zinc-900 text-neutral-400 dark:text-neutral-400">
+<div class="py-2">
+  <div id="table-default" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+    <div class="overflow-auto">
+      <table class="table-auto w-full">
+        <thead class="text-left">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          
+            <th class="px-4 py-2">Precision</th>            
+          
+            <th class="px-4 py-2">Type</th>            
+          
+          </tr>
+        </thead>
+        <tbody class="">
         
           
-            <th class="py-1 px-2 border-b border-r border-zinc-800">Precision</th>
           
-        
-          
-            <th class="py-1 px-2 border-b border-zinc-800">Type</th>
-          
-        
-        </tr>
-      </thead>
-      <tbody>
-      
-        
-        
-          <tr class="border-b border-zinc-800">
-        
+            <tr class="border-b border-zinc-300 dark:border-zinc-900">
           
             
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">32-bits </td>
+              <td class="px-4 py-2">32-bits </td>
             
-          
+              <td class="px-4 py-2"> f32</td>
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> f32</td>
-            
-          
-        </tr>
-      
-        
-        
-          <tr class="">
+          </tr>
         
           
-            
-              <td class="px-2 pt-1 pb-2 border-r border-zinc-800">64-bits </td>
-            
+          
+            <tr class="">
           
             
-              <td class="px-2 pt-1 pb-2 border-l border-zinc-800"> f64</td>
+              <td class="px-4 py-2">64-bits </td>
             
-          
-        </tr>
-      
-      </tbody>
-    </table>
+              <td class="px-4 py-2"> f64</td>
+            
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!-- TABLE DEFAULT END -->
@@ -520,7 +447,7 @@ let you_da_winnah = 1_16_32_5_12_19_40_i64; // => 116325121940</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
     <span class="">rust</span>
   </div>
   <div class="font-mono leading-tight">
@@ -582,30 +509,30 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
     
   <!-- LINKS START -->
   <div class="pb-2">
-    <h3 id="links" class="scrollspy">Links</h3>
+    <h3 id="links" class="">Links</h3>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.manning.com/books/rust-in-action" target=_blank>https://www.manning.com/books/rust-in-action</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.manning.com/books/rust-in-action" target=_blank>https://www.manning.com/books/rust-in-action</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.udemy.com/course/ultimate-rust-crash-course/" target=_blank>https://www.udemy.com/course/ultimate-rust-crash-course/</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.udemy.com/course/ultimate-rust-crash-course/" target=_blank>https://www.udemy.com/course/ultimate-rust-crash-course/</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://www.techopedia.com/definition/16441/scalar" target=_blank>https://www.techopedia.com/definition/16441/scalar</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://www.techopedia.com/definition/16441/scalar" target=_blank>https://www.techopedia.com/definition/16441/scalar</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int" target=_blank>https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int" target=_blank>https://stackoverflow.com/questions/5739888/what-is-the-difference-between-signed-and-unsigned-int</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://doc.rust-lang.org/book/ch03-02-data-types.html" target=_blank>https://doc.rust-lang.org/book/ch03-02-data-types.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://doc.rust-lang.org/book/ch03-02-data-types.html" target=_blank>https://doc.rust-lang.org/book/ch03-02-data-types.html</a>
         </p>
       
         <p class="text-xl break-words">
-          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="https://doc.rust-lang.org/reference/types/numeric.html" target=_blank>https://doc.rust-lang.org/reference/types/numeric.html</a>
+          <a class="  break-words text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="https://doc.rust-lang.org/reference/types/numeric.html" target=_blank>https://doc.rust-lang.org/reference/types/numeric.html</a>
         </p>
       
   </div>
@@ -618,7 +545,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
   
     
 <!-- TAGS START -->
-  <div id="tags" class="scrollspy pb-2">
+  <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
@@ -730,7 +657,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#integers">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#integers">
           Integers
           </a>
         </div>
@@ -738,7 +665,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#floats">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#floats">
           Floats
           </a>
         </div>
@@ -746,7 +673,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#links">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#links">
           Links
           </a>
         </div>
@@ -754,7 +681,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4" href="#tags">
+          <a class="menu-item font-normal text-xl text-gray-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="#tags">
           Tags
           </a>
         </div>
@@ -773,7 +700,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
       <!-- CONTENT END -->
 
       <!-- BACK TO TOP START -->
-<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-zinc-900 bg-neutral-400 hover:bg-neutral-100">
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
   <button type="button" class="">
     <i class="fas fa-arrow-circle-up fa-3x"></i>
   </button>
@@ -783,7 +710,7 @@ let you_da_winnah = 420_69.1337_f64; // => 42069.1337</code></pre>
   
     <!-- FOOTER START -->
 <div id="footer" class="fixed inset-x-0 bottom-0">
-  <div class="flex justify-center w-full py-4 bg-zinc-900 shadow-lg">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
     <div class="text-center">
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
       <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
