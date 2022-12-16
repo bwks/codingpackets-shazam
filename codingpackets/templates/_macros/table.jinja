@@ -89,11 +89,11 @@
 {% macro book(header, rows) %}
 <!-- TABLE BOOK START -->
 <div class="py-2">
-  <div id="table-book" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900">
+  <div id="table-book" class="text-xl font-mono tracking-normal rounded-lg border-4 border-gray-900 dark:border-gray-800">
     <div class="overflow-auto">
       <table class="table-auto w-full">
         <thead class="text-left">
-          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400">
+          <tr class="bg-gray-900 text-neutral-400 dark:text-neutral-400 dark:bg-gray-800">
             <th class="py-2 px-4">{{ header[0] }}</th>
             <th class="py-2 px-4">{{ header[1] }}</th>
             <th class="py-2 px-4">{{ header[2] }}</th>
@@ -104,7 +104,7 @@
           {% if loop.last %}
             <tr class="">
           {% else %}
-            <tr class="border-b border-zinc-300 dark:border-zinc-900">
+            <tr class="border-b border-gray-900 dark:border-gray-800">
           {% endif %}
           <td class="px-2 py-2 ">
             <h5>{{ row.title }}</h5>
