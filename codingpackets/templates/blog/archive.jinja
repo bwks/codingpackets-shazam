@@ -21,10 +21,10 @@
 
         {% if post_year | int == year and year != 0 %}
           <div class="pb-4">
-            <div class="text-center bg-gray-900 border-4 border-gray-900 rounded-t-lg">
+            <div class="text-center bg-gray-900 border-4 border-gray-900 rounded-t-lg dark:bg-gray-800 dark:border-gray-800">
               <h3 id="{{ year }}" class="text-2xl font-semibold text-neutral-400 dark:text-neutral-400">{{ year }} - {{ published_posts | length }} {% if published_posts | length < 2 %}Post{% else %}Posts{% endif %}</h3>
             </div>
-            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-gray-900">
+            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-gray-900 dark:border-gray-800">
               {% for post in published_posts %}
                 <div class="font-medium text-xl">
                   {% set title_slug = post.title | slugify %}

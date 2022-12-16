@@ -10,7 +10,7 @@
     {% for post in posts.all %}
       {% if post.publish and count < 10 %}
         <div class="pb-2">
-          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900">
+          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900 dark:border-gray-800">
             <div class="">
               {% set title_slug = post.title | slugify %}
               {% set blog_path = blog_path ~ title_slug %}

@@ -326,11 +326,11 @@
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">bash</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">export HUBOT_NAME="bottlo"
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">export HUBOT_NAME="bottlo"
 export HUBOT_ALIAS='$bottlo'
 
 export ST2_AUTH_USERNAME="${ST2_AUTH_USERNAME:-st2admin}"
@@ -369,11 +369,11 @@ export HUBOT_SLACK_TOKEN="xoxb-BOT-TOKEN-FROM-SLACK-FROM-PREVIOUS-STEP"</code></
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo systemctl restart st2chatops</code></pre>
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">sudo systemctl restart st2chatops</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -442,11 +442,11 @@ customize it to your needs.
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo mkdir -p /opt/stackstorm/packs/bottlops/{actions,rules,sensors,aliases}</code></pre>
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">sudo mkdir -p /opt/stackstorm/packs/bottlops/{actions,rules,sensors,aliases}</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -466,11 +466,11 @@ customize it to your needs.
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">yaml</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo tee /opt/stackstorm/packs/bottlops/aliases/lldp.yaml > /dev/null << "EOF"
+    <pre class=""><code class="language-yaml hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">sudo tee /opt/stackstorm/packs/bottlops/aliases/lldp.yaml > /dev/null << "EOF"
 ---
 name: "napalm_lldp"
 action_ref: "napalm.get_lldp_neighbors"
@@ -491,11 +491,11 @@ EOF</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo st2ctl reload --register-aliases
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">sudo st2ctl reload --register-aliases
 sudo systemctl restart st2chatops</code></pre>
   </div>
 </div>
@@ -510,11 +510,11 @@ sudo systemctl restart st2chatops</code></pre>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26]">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg">sudo st2 action-alias list
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">sudo st2 action-alias list
 
 # output
 
