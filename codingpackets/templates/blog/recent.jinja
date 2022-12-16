@@ -5,21 +5,21 @@
 {% endblock page_header %}
 
 {% block page_content %}
-  <div class="">
+  <div class="text-center">
     {% set_global count = 0 %}
     {% for post in posts.all %}
       {% if post.publish and count < 10 %}
-        <div class="pb-2">
+        <div class="pb-4">
           <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900 dark:border-gray-800">
             <div class="">
               {% set title_slug = post.title | slugify %}
               {% set blog_path = blog_path ~ title_slug %}
               <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", weight="font-semibold", color="gray", color_weight="600", dark_color="gray", dark_color_weight="400") }}</span>
-              <p class="font-medium text-xl">
+              <p class="font-medium text-xl text-justify">
                 {% for post_title, content in posts.content %}
                   {% if post.title | slugify == post_title %}
                     {% set array = content | split(pat="<!-- COLUMN 2 START -->") %}
-                    {{ array[1] | spaceless | striptags | replace(from="Intro", to="") | truncate(length=300) }}
+                    {{ array[1] | spaceless | striptags | replace(from="Intro", to="") | truncate(length=500) }}
                     <i>{{ link::i(path=blog_path, description="continue reading") }}</i>
                   {% endif %}
                 {% endfor %}
@@ -27,7 +27,7 @@
             </div>
             {% include "_includes/dates.jinja" %}
             <div class="">
-              {{ text::tag_block(tags=post.tags) }}
+              {{ text::tag_block(tags=post.tags, center=true) }}
             </div>
           </div>
         </div>
