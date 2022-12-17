@@ -82,12 +82,12 @@
 {{ table::default(
   header=["Next-Hop Option", "Description", "Application"],
   rows=[
-      "<b>Directly Connected IP Address</b> | An adjacent IP address on a physically connected subnet. | Static",
-      "<b>Remote IP Address</b> | A non-adjacent IP address. A recursive looking will be performed to determine the interface leading towards the IP address. | Static",
-      "<b>reject</b> | Assigns the route as a Null route and lookup matching the route are dropped. If packets are dropped due to a rejected route the router will send an ICMP 'Destination Host Unreachable' back to the source. | Static <br>Aggregate",
-      "<b>discard</b> | Same as reject routes except no ICMP messages are sent and the routes are silently dropped. | Static <br> Aggregate",
-      "<b>Qualified Next-Hop</b> | Allows the assignment of multiple next-hop addresses for a prefix. Used with a preference value and equivalent to a floating static routes. | Static",
-      "<b>Label Switched Path (LSP)</b> | Enables the assignment of and MPLS label as a next-hop. Matching route lookups are forwarded with a label value instead of an IP address. | Static",
+      "<strong>Directly Connected IP Address</strong> | An adjacent IP address on a physically connected subnet. | Static",
+      "<strong>Remote IP Address</strong> | A non-adjacent IP address. A recursive looking will be performed to determine the interface leading towards the IP address. | Static",
+      "<strong>reject</strong> | Assigns the route as a Null route and lookup matching the route are dropped. If packets are dropped due to a rejected route the router will send an ICMP 'Destination Host Unreachable' back to the source. | Static <br>Aggregate",
+      "<strong>discard</strong> | Same as reject routes except no ICMP messages are sent and the routes are silently dropped. | Static <br> Aggregate",
+      "<strong>Qualified Next-Hop</strong> | Allows the assignment of multiple next-hop addresses for a prefix. Used with a preference value and equivalent to a floating static routes. | Static",
+      "<strong>Label Switched Path (LSP)</strong> | Enables the assignment of and MPLS label as a next-hop. Matching route lookups are forwarded with a label value instead of an IP address. | Static",
   ],
 ) }}
 
@@ -104,18 +104,18 @@
 {{ table::default(
   header=["Attribute", "Description"],
   rows=[
-    "<b>active</b> | Default attribute. Removes a route from the routing table if the next-hop become unavailable.",
-    "<b>passive</b> | Opposite of active, allows a route to stay in the routing table if the next-hop become unavailable.",
-    "<b>install</b> | Default attribute. Installs a usable static route into the PFE.",
-    "<b>no-install</b> | Opposite of the install attribute. A usable static route is not installed into the PFE.",
-    "<b>as-path</b> | Manual assignment of BGP AS path attributes to the route.",
-    "<b>community</b> | Manual assignment of BGP communities to the route.",
-    "<b>metric</b> | Use the determine route preference when multiple next-hops to the same destination exist.",
-    "<b>readvertise</b> | Default attribute. Allows a route to be exported from the routing table and redistributed into another routing protocol.",
-    "<b>no-readvertise</b> | Opposite of advertise. Prevents the route from being exported from the routing table and redistributed into another routing protocol.",
-    "<b>preference</b> | Alters the default preference value of a route.",
-    "<b>no-retain</b> | Default attribute. Route is removed from the forwarding table if the routing process is shutdown.",
-    "<b>retain</b> | Opposite of retain. Route will remain in the forwarding table if the routing process is shutdown.",
+    "<strong>active</strong> | Default attribute. Removes a route from the routing table if the next-hop become unavailable.",
+    "<strong>passive</strong> | Opposite of active, allows a route to stay in the routing table if the next-hop become unavailable.",
+    "<strong>install</strong> | Default attribute. Installs a usable static route into the PFE.",
+    "<strong>no-install</strong> | Opposite of the install attribute. A usable static route is not installed into the PFE.",
+    "<strong>as-path</strong> | Manual assignment of BGP AS path attributes to the route.",
+    "<strong>community</strong> | Manual assignment of BGP communities to the route.",
+    "<strong>metric</strong> | Use the determine route preference when multiple next-hops to the same destination exist.",
+    "<strong>readvertise</strong> | Default attribute. Allows a route to be exported from the routing table and redistributed into another routing protocol.",
+    "<strong>no-readvertise</strong> | Opposite of advertise. Prevents the route from being exported from the routing table and redistributed into another routing protocol.",
+    "<strong>preference</strong> | Alters the default preference value of a route.",
+    "<strong>no-retain</strong> | Default attribute. Route is removed from the forwarding table if the routing process is shutdown.",
+    "<strong>retain</strong> | Opposite of retain. Route will remain in the forwarding table if the routing process is shutdown.",
   ],
 ) }}
 
@@ -174,7 +174,6 @@
     routing protocols will be ignored.
   </p>
   {{ text::note_block(text='
-    <p>
       RFC 1918 IP block are excluded from the martian routes
       filtering policy.
   ') }}
@@ -190,16 +189,16 @@
 {{ table::default(
   header=["Table", "Description"],
   rows=[
-      "<b>inet.0</b> | IPv4 unicast routes.",
-      "<b>inet.1</b> | IPv4 multicast forwarding cache.",
-      "<b>inet.2</b> | IPv4 unicast routes for the purpose of Reverse Path Forwarding (RPF) check.",
-      "<b>inet.3</b> | MPLS LSP egress IP addresses",
-      "<b>inet.4</b> | Information learned using the multicast source discovery protocol (MSDP).",
-      "<b>inet6.0</b> | IPv6 unicast routes.",
-      "<b>inet6.1</b> | IPv6 multicast forwarding cache.",
-      "<b>mpls.0</b> | Actually a switching table storing MPLS label values.",
-      "<b>bgp.l3vpn.0</b> | Routing information for BGP L3VPNs.",
-      "<b>bgp.l2vpn.0</b> | Routing information for BGP L2VPNs.",
+      "<strong>inet.0</strong> | IPv4 unicast routes.",
+      "<strong>inet.1</strong> | IPv4 multicast forwarding cache.",
+      "<strong>inet.2</strong> | IPv4 unicast routes for the purpose of Reverse Path Forwarding (RPF) check.",
+      "<strong>inet.3</strong> | MPLS LSP egress IP addresses",
+      "<strong>inet.4</strong> | Information learned using the multicast source discovery protocol (MSDP).",
+      "<strong>inet6.0</strong> | IPv6 unicast routes.",
+      "<strong>inet6.1</strong> | IPv6 multicast forwarding cache.",
+      "<strong>mpls.0</strong> | Actually a switching table storing MPLS label values.",
+      "<strong>bgp.l3vpn.0</strong> | Routing information for BGP L3VPNs.",
+      "<strong>bgp.l2vpn.0</strong> | Routing information for BGP L2VPNs.",
   ],
 ) }}
 
@@ -220,22 +219,22 @@
 {{ table::default(
   header=["Source", "Preference"],
   rows=[
-      "<b>Direct</b> | 0",
-      "<b>Local</b> | 0",
-      "<b>Static</b> | 5",
-      "<b>RSVP</b> | 7",
-      "<b>LDP</b> | 9",
-      "<b>OSPF Internal</b> | 10",
-      "<b>IS-IS Level 1 Internal</b> | 15",
-      "<b>IS-IS Level 2 Internal</b> | 18",
-      "<b>RIP / RIPNG</b> | 100",
-      "<b>PIM</b> | 105",
-      "<b>Aggregate / Generated</b> | 130",
-      "<b>OSPF External</b> | 150",
-      "<b>IS-IS Level 1 External</b> | 160",
-      "<b>IS-IS Level 2 External</b> | 165",
-      "<b>BGP</b> | 170",
-      "<b>MSDP</b> | 175",
+      "<strong>Direct</strong> | 0",
+      "<strong>Local</strong> | 0",
+      "<strong>Static</strong> | 5",
+      "<strong>RSVP</strong> | 7",
+      "<strong>LDP</strong> | 9",
+      "<strong>OSPF Internal</strong> | 10",
+      "<strong>IS-IS Level 1 Internal</strong> | 15",
+      "<strong>IS-IS Level 2 Internal</strong> | 18",
+      "<strong>RIP / RIPNG</strong> | 100",
+      "<strong>PIM</strong> | 105",
+      "<strong>Aggregate / Generated</strong> | 130",
+      "<strong>OSPF External</strong> | 150",
+      "<strong>IS-IS Level 1 External</strong> | 160",
+      "<strong>IS-IS Level 2 External</strong> | 165",
+      "<strong>BGP</strong> | 170",
+      "<strong>MSDP</strong> | 175",
   ],
 ) }}
 

@@ -19,7 +19,7 @@
 
 <h3 id="interfaces">Interfaces</h3>
 
-<h4><b>Configuration Files</b></h4>
+<h4>Configuration Files</h4>
 <p>
   Network interface configurations are stored in files in the following locations.
 </p>
@@ -28,9 +28,9 @@
 {{ table::default(
   header=["Operating System", "Location"],
   rows=[
-    "<b>Centos</b> | $1",
-    "<b>Ubuntu</b> | $2",
-    "<b>Cumulus</b> | $3",
+    "<strong>Centos</strong> | $1",
+    "<strong>Ubuntu</strong> | $2",
+    "<strong>Cumulus</strong> | $3",
   ],
 ) 
   | replace(from="$1", to=text::emphasize(text="/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;"))
@@ -39,7 +39,7 @@
 }}
 
 
-<h4><b>Apply Configuration</b></h4>
+<h4>Apply Configuration</h4>
 <p>
   After interface configuration files are updated the network service needs to be reloaded for the configuration
   to be applied.
@@ -48,9 +48,9 @@
 {{ table::default(
   header=["Operating System", "Location"],
   rows=[
-    "<b>Centos</b> | $1",
-    "<b>Ubuntu</b> | $2",
-    "<b>Cumulus</b> | $2",
+    "<strong>Centos</strong> | $1",
+    "<strong>Ubuntu</strong> | $2",
+    "<strong>Cumulus</strong> | $2",
   ],
 ) 
   | replace(from="$1", to=text::code(text="sudo systemctl restart network.service"))
@@ -62,7 +62,7 @@
   DHCP v4/6 is used to automatically assign IP address and related information such as default gatway, search domains
   and DNS servers to a host.
 </p>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 
 {{ text::code_block(
   header="file",
@@ -79,7 +79,7 @@ DHCPV6C=yes`
 ) }}
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 
 {{ text::code_block(
   header="file",
@@ -92,7 +92,7 @@ iface eth0 inet6 dhcp`
 ) }}
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 {{ text::code_block(
   header="file",
   language="text",
@@ -108,22 +108,22 @@ iface eth0 inet6 dhcp`
 <p>
   The following table defines static IPv4/6 configuration to be applied to the network interfaces.
 </p>
-<h4><b>IP Address Configuration</b></h4>
+<h4>IP Address Configuration</h4>
 
 {{ table::default(
   header=["", "IPv4", "IPv6"],
   rows=[
-    '<b>Address</b> | <span class="font-mono">10.1.1.10</span> | <span class="font-mono">fd00:4a26:d09b:d911::10</span>',
-    '<b>Network</b> | <span class="font-mono">10.1.1.0/24</span> | <span class="font-mono">fd00:4a26:d09b:d911::/64</span>',
-    '<b>Gateway</b> | <span class="font-mono">10.1.1.1</span> | <span class="font-mono">fd00:4a26:d09b:d911::1</span>',
-    '<b>DNS</b> | <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> | <span class="font-mono">2001:4860:4860::8888</span><br><span class="font-mono">2001:4860:4860::8844</span>',
-    '<b>Search Domain</b> | <span class="font-mono">lab.local</span> | <span class="font-mono">lab.local</span>',
+    '<strong>Address</strong> | <span class="font-mono">10.1.1.10</span> | <span class="font-mono">fd00:4a26:d09b:d911::10</span>',
+    '<strong>Network</strong> | <span class="font-mono">10.1.1.0/24</span> | <span class="font-mono">fd00:4a26:d09b:d911::/64</span>',
+    '<strong>Gateway</strong> | <span class="font-mono">10.1.1.1</span> | <span class="font-mono">fd00:4a26:d09b:d911::1</span>',
+    '<strong>DNS</strong> | <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> | <span class="font-mono">2001:4860:4860::8888</span><br><span class="font-mono">2001:4860:4860::8844</span>',
+    '<strong>Search Domain</strong> | <span class="font-mono">lab.local</span> | <span class="font-mono">lab.local</span>',
   ],
 ) 
 }}
 
 
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 {{ text::code_block(
   header="file",
   language="ini",
@@ -153,7 +153,7 @@ DNS4=2001:4860:4860::8844`
 ) }}
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 {{ text::code_block(
   header="file",
   language="text",
@@ -174,7 +174,7 @@ iface eth1 inet6 static
 ) }}
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 {{ text::code_block(
   header="file",
   language="text",
@@ -210,7 +210,7 @@ nameserver 2001:4860:4860::8844`
 
 
 <h3 id="loopback-interface">Loopback Interface</h3>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 {{ text::code_block(
   header="file",
   language="ini",
@@ -231,7 +231,7 @@ IPV6_FAILURE_FATAL=no`
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 {{ text::code_block(
   header="file",
   language="text",
@@ -246,7 +246,7 @@ iface lo:1 inet6 static
 ) }}
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 <p>
   Loopback IP Addresses in Cumulus Linux should be configured in the
   {{ text::emphasize(text="/etc/network/interfaces") }}
@@ -266,7 +266,7 @@ iface lo inet loopback
 
 
 <h3 id="vlan-l3-interface">VLAN L3 Interface</h3>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 <p>
   Load the {{ text::emphasize(text="8021q") }}
  kernel module.
@@ -298,7 +298,7 @@ VLAN=yes`
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 <p>
   Install {{ text::emphasize(text="vlan") }}
  package to enable {{ text::emphasize(text="802.1q") }}
@@ -349,7 +349,7 @@ iface eth1.10 inet6 static
 ) }}
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 <p>
   Cumulus Linux has the option of using a <a href="https://docs.cumulusnetworks.com/display/DOCS/VLAN-aware+Bridge+Mode+for+Large-scale+Layer+2+Environments">
   vlan-aware</a> bridge which reduces the configuration required for large layer 2 networks. Note: Only one

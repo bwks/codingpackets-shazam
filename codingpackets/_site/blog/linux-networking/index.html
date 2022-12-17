@@ -141,7 +141,7 @@
 
 <h3 id="interfaces">Interfaces</h3>
 
-<h4><b>Configuration Files</b></h4>
+<h4>Configuration Files</h4>
 <p>
   Network interface configurations are stored in files in the following locations.
 </p>
@@ -169,7 +169,7 @@
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Centos</b> </td>
+              <td class="px-4 py-2"><strong>Centos</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/sysconfig/network-scripts/ifcfg-&lt;ifname&gt;</span></td>
             
@@ -180,7 +180,7 @@
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Ubuntu</b> </td>
+              <td class="px-4 py-2"><strong>Ubuntu</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;</span></td>
             
@@ -191,7 +191,7 @@
             <tr class="">
           
             
-              <td class="px-4 py-2"><b>Cumulus</b> </td>
+              <td class="px-4 py-2"><strong>Cumulus</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces.d/&lt;ifname&gt;.intf</span></td>
             
@@ -206,7 +206,7 @@
 
 
 
-<h4><b>Apply Configuration</b></h4>
+<h4>Apply Configuration</h4>
 <p>
   After interface configuration files are updated the network service needs to be reloaded for the configuration
   to be applied.
@@ -234,7 +234,7 @@
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Centos</b> </td>
+              <td class="px-4 py-2"><strong>Centos</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart network.service</span></td>
             
@@ -245,7 +245,7 @@
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Ubuntu</b> </td>
+              <td class="px-4 py-2"><strong>Ubuntu</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
             
@@ -256,7 +256,7 @@
             <tr class="">
           
             
-              <td class="px-4 py-2"><b>Cumulus</b> </td>
+              <td class="px-4 py-2"><strong>Cumulus</strong> </td>
             
               <td class="px-4 py-2"> <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">sudo systemctl restart networking.service</span></td>
             
@@ -275,7 +275,7 @@
   DHCP v4/6 is used to automatically assign IP address and related information such as default gatway, search domains
   and DNS servers to a host.
 </p>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 
 
 <!-- CODE BLOCK START -->
@@ -299,7 +299,7 @@ DHCPV6C=yes</code></pre>
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 
 
 <!-- CODE BLOCK START -->
@@ -319,7 +319,7 @@ iface eth0 inet6 dhcp</code></pre>
 
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -342,7 +342,7 @@ iface eth0 inet6 dhcp</code></pre>
 <p>
   The following table defines static IPv4/6 configuration to be applied to the network interfaces.
 </p>
-<h4><b>IP Address Configuration</b></h4>
+<h4>IP Address Configuration</h4>
 
 
 <!-- TABLE DEFAULT START -->
@@ -368,7 +368,7 @@ iface eth0 inet6 dhcp</code></pre>
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Address</b> </td>
+              <td class="px-4 py-2"><strong>Address</strong> </td>
             
               <td class="px-4 py-2"> <span class="font-mono">10.1.1.10</span> </td>
             
@@ -381,7 +381,7 @@ iface eth0 inet6 dhcp</code></pre>
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Network</b> </td>
+              <td class="px-4 py-2"><strong>Network</strong> </td>
             
               <td class="px-4 py-2"> <span class="font-mono">10.1.1.0/24</span> </td>
             
@@ -394,7 +394,7 @@ iface eth0 inet6 dhcp</code></pre>
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>Gateway</b> </td>
+              <td class="px-4 py-2"><strong>Gateway</strong> </td>
             
               <td class="px-4 py-2"> <span class="font-mono">10.1.1.1</span> </td>
             
@@ -407,7 +407,7 @@ iface eth0 inet6 dhcp</code></pre>
             <tr class="border-b border-zinc-300 dark:border-gray-800">
           
             
-              <td class="px-4 py-2"><b>DNS</b> </td>
+              <td class="px-4 py-2"><strong>DNS</strong> </td>
             
               <td class="px-4 py-2"> <span class="font-mono">8.8.8.8</span><br><span class="font-mono">8.8.4.4</span> </td>
             
@@ -420,7 +420,7 @@ iface eth0 inet6 dhcp</code></pre>
             <tr class="">
           
             
-              <td class="px-4 py-2"><b>Search Domain</b> </td>
+              <td class="px-4 py-2"><strong>Search Domain</strong> </td>
             
               <td class="px-4 py-2"> <span class="font-mono">lab.local</span> </td>
             
@@ -437,7 +437,7 @@ iface eth0 inet6 dhcp</code></pre>
 
 
 
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -474,7 +474,7 @@ DNS4=2001:4860:4860::8844</code></pre>
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -502,7 +502,7 @@ iface eth1 inet6 static
 
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -552,7 +552,7 @@ nameserver 2001:4860:4860::8844</code></pre>
 
 
 <h3 id="loopback-interface">Loopback Interface</h3>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -580,7 +580,7 @@ IPV6_FAILURE_FATAL=no</code></pre>
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 
 <!-- CODE BLOCK START -->
 <div id="code-block" class="py-2">
@@ -602,7 +602,7 @@ iface lo:1 inet6 static
 
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 <p>
   Loopback IP Addresses in Cumulus Linux should be configured in the
   <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">/etc/network/interfaces</span>
@@ -629,7 +629,7 @@ iface lo inet loopback
 
 
 <h3 id="vlan-l3-interface">VLAN L3 Interface</h3>
-<h4><b>Centos</b></h4>
+<h4>Centos</h4>
 <p>
   Load the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">8021q</span>
  kernel module.
@@ -675,7 +675,7 @@ VLAN=yes</code></pre>
 
 
 
-<h4><b>Ubuntu</b></h4>
+<h4>Ubuntu</h4>
 <p>
   Install <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">vlan</span>
  package to enable <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">802.1q</span>
@@ -754,7 +754,7 @@ iface eth1.10 inet6 static
 
 
 
-<h4><b>Cumulus</b></h4>
+<h4>Cumulus</h4>
 <p>
   Cumulus Linux has the option of using a <a href="https://docs.cumulusnetworks.com/display/DOCS/VLAN-aware+Bridge+Mode+for+Large-scale+Layer+2+Environments">
   vlan-aware</a> bridge which reduces the configuration required for large layer 2 networks. Note: Only one

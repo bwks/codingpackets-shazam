@@ -32,14 +32,14 @@
       {{ table::default(
   header=["", "RIP", "RIPv2", "RIPng"],
   rows=[
-      "<b>Update Type</b> | Broadcast | Multicast | Multicast",
-      "<b>Update Interval</b> | 30 seconds | 30 seconds | 30 seconds",
-      "<b>Update Address</b> | <span class='font-mono'>255.255.255.255</span> | <span class='font-mono'>224.0.0.9</span> | <span class='font-mono'>FF02",
-      "<b>Update Contents</b> | Full update at each interval period.",
-      "<b>Triggered Update</b> | Immediate partial update when routing information changes. Only contains changed routes.",
-      "<b>Invalid After Timer</b> | If a route stops being received, it will be declared invalid after 180 seconds.",
-      "<b>Holddown Timer</b> | Once the $1 expires the route will be advertised as unreachable for 180 seconds.",
-      "<b>Flushed After Timer</b> | Starts at the same time as the $1. If no updates are received for the route in 240 seconds the route is flushed from the routing table.",
+      "<strong>Update Type</strong> | Broadcast | Multicast | Multicast",
+      "<strong>Update Interval</strong> | 30 seconds | 30 seconds | 30 seconds",
+      "<strong>Update Address</strong> | <span class='font-mono'>255.255.255.255</span> | <span class='font-mono'>224.0.0.9</span> | <span class='font-mono'>FF02",
+      "<strong>Update Contents</strong> | Full update at each interval period.",
+      "<strong>Triggered Update</strong> | Immediate partial update when routing information changes. Only contains changed routes.",
+      "<strong>Invalid After Timer</strong> | If a route stops being received, it will be declared invalid after 180 seconds.",
+      "<strong>Holddown Timer</strong> | Once the $1 expires the route will be advertised as unreachable for 180 seconds.",
+      "<strong>Flushed After Timer</strong> | Starts at the same time as the $1. If no updates are received for the route in 240 seconds the route is flushed from the routing table.",
   ],
 ) 
   | replace(from="$1", to=text::emphasize(text="invalid after timer"))
