@@ -24,13 +24,17 @@
             <div class="text-center bg-gray-900 border-4 border-gray-900 rounded-t-lg dark:bg-gray-800 dark:border-gray-800">
               <h3 id="{{ year }}" class="text-2xl font-semibold text-neutral-400 dark:text-neutral-400">{{ year }} - {{ published_posts | length }} {% if published_posts | length < 2 %}Post{% else %}Posts{% endif %}</h3>
             </div>
-            <div class="block py-2 px-4 shadow-lg border-4 rounded-b-lg border-gray-900 dark:border-gray-800">
+            <div class="font-medium text-xl border-4 rounded-b-lg border-gray-900 dark:border-gray-800">
               {% for post in published_posts %}
-                <div class="font-medium text-xl">
-                  {% set title_slug = post.title | slugify %}
-                  {% set blog_path = blog_path ~ title_slug %}
-                  <span class="pr-2">{{ post.published_date }}</span>
-                  <span>{{ link::i(path=blog_path, description=post.title, text="text-2xl", color="sky", color_weight="700", dark_color="gray", dark_color_weight="400") }}</span>
+                {% set title_slug = post.title | slugify %}
+                {% set blog_path = blog_path ~ title_slug %}
+                <div class="flex flex-row px-4 {% if published_posts | length == 1 %}py-2{% elif loop.first %}pt-2 pb-1{% elif loop.last %}pt-1 pb-2{% else %}py-1{% endif %}">
+                  <div class="flex-none w-32">
+                    {{ post.published_date }}
+                  </div>
+                  <div class="">
+                    {{ link::i(path=blog_path, description=post.title, text="text-xl", color="sky", color_weight="700", dark_color="gray", dark_color_weight="400") }}
+                  </div>                
                 </div>
               {% endfor %}
             </div>
