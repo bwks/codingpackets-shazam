@@ -1,0 +1,540 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth scroll-pt-[4.5rem]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+      <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    
+    
+    
+      <link rel="stylesheet" href="/css/highlightjs/tokyo-night-dark.min.css">
+      <link rel="stylesheet" href="/css/fontawesome/css/all.min.css">
+    
+
+    
+      <link rel="stylesheet" href="/css/app.css">
+    
+    
+      <script src="/js/highlightjs/highlightjs-11.7.0.min.js"></script>
+      <script src="/js/highlightjs/terraform.js"></script>
+      <script defer src="/js/fontawesome/js/all.js"></script>
+    
+
+    
+      <script defer src="/js/custom/back-to-top.js"></script>
+      <script defer src="/js/custom/light-switch.js"></script>
+    
+
+    
+      <script>
+        hljs.registerLanguage('terraform', window.hljsDefineTerraform);
+        hljs.highlightAll();
+      </script>
+    
+
+    
+    
+
+    <title>codingpackets.com</title>
+  </head>
+
+  <body class="bg-stone-100/30 dark:bg-gray-950 tracking-wide antialiased">
+
+    <!-- NAVBAR START -->
+<nav id="navbar" class="w-full py-3 bg-gray-900 text-xl shadow-lg fixed inset-x-0 top-0 z-50">
+  <div class="font-serif font-bold tracking-wide flex justify-center items-center py-1">
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100 p-0" href="/">Me</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/">Blog</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div>
+      <a class="text-neutral-400 hover:text-neutral-100" href="/blog/recent/">Recent</a>
+    </div>
+    <div class="px-4">
+      <p class="text-neutral-400 p-0">|</p>
+    </div>
+    <div class="-mt-6 -ml-1">
+      <labeL class="relative inline-block">
+        <input type="checkbox" id="light-switch" class="opacity-0 w-0 h-0">
+        <img id="light-bulb" class="opacity-90 hover:opacity-60 dark:opacity-60 dark:hover:opacity-100 p-0 w-7" src="/img/light-bulb-64-light.png" alt="on/off">
+      </labeL>
+    </div>
+  </div>  
+</nav>
+<!-- NAVBAR END -->
+
+    <div class="w-full">
+      
+  
+    
+<!-- PAGE HEADER START -->
+<div class="grid grid-cols-12 gap-8">
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+
+  <div class="col-span-12 px-5 md:col-span-6">
+    <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
+      <h1 class="pb-1 md:pb-2">Docker and PostgreSQL for Development</h1>
+      
+      
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          published: 21st of December 2022
+        </p>
+      
+    </div>
+  </div>
+
+  <div class="invisible md:visible md:col-span-3">
+  </div>
+</div>
+<!-- PAGE HEADER END -->
+
+  
+
+
+      <!-- CONTENT START -->
+      <div class="grid grid-cols-12 gap-8">
+
+        <!-- COLUMN 1 START -->
+        <div class="invisible md:visible md:col-span-3 rounded-md">
+        </div>
+        <!-- COLUMN 1 END -->
+
+        <!-- COLUMN 2 START -->
+        <div class="col-span-12 px-5 md:col-span-6 rounded-md">
+          <div class="text-xl text-neutral-800 dark:text-neutral-400 font-medium leading-relaxed md:leading-relaxed">
+            
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is a short post to show you how 
+  to run a PostgreSQL database with Docker to 
+  quickly connect to during development.
+</p>
+<p>
+  This allows you to utilize PostgreSQL without
+  installing it on your host machine and also helps
+  prevent having stale database tables laying around.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li><b>Docker Community Edition</b> - 20.10.21</li>
+  <li><b>Ubuntu</b> - 22.04.1 LTS</li>
+</ul>
+
+
+<h3 id="container-run">Container Run</h3>
+<p>
+  Start the container by running the below 
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">docker container run</span> 
+  command. This will start the PostgreSQL container 
+  based on the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgres</span> image on 
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://hub.docker.com/_/postgres" target=_blank>Docker Hub</a>.
+</p>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  If you don't already have the image, it will be downloaded.
+</div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container run \
+  --detach \
+  --rm \
+  --name pgdev \
+  --env POSTGRES_USER=postgres \
+  --env POSTGRES_PASSWORD=postgres \
+  --env POSTGRES_DB=dev \
+  `# Optionally, mount a local volume into the container` \
+  `# --volume ${PWD}/tmp/pgdata:/var/lib/postgresql/data` \
+  --publish 5432:5432 \
+  postgres</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  The above command switches are explained as follows:
+</p>
+<ul>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--detach</span> - Run the container in the background</li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--rm</span> - Delete the container once it exits (is stopped)</li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--name pgdev</span> - Name the container <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pgdev</span></li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--env POSTGRES_USER=postgres</span> - Set the admin user to <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgres</span></li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--env POSTGRES_PASSWORD=postgres</span> - Set the admin users password to <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgres</span></li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--env POSTGRES_DB=dev</span> - Create a databased named <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">dev</span></li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--volume ${PWD}/tmp/pgdata:/var/lib/postgresql/data</span> - Mount a local folder to the container</li>
+  <li><span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--publish 5432:5432</span> - Connect the host port <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">54321</span> to the container port <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">54321</span></li>
+</ul>
+
+
+<!-- NOTE BLOCK START -->
+<div id="note-block" class="pt-2 pb-4">
+  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
+    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
+    <div class="px-4 pb-4 dark:text-zinc-900">
+  If you mount a volume into the container that contains 
+  an existing database the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">POSTGRES_USER</span>, <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">POSTGRES_PASSWORD</span> and <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">POSTGRES_DB</span> environment 
+  variables will be ignored.
+  </div>
+  </div>
+</div>
+<!-- NOTE BLOCK END -->
+
+
+<h3 id="container-attach">Container Attach</h3>
+<p>
+  You can attach to the container using the 
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">docker container exec</span> command.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container exec -it pgdev bash</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="postgresql-connect">PostgreSQL Connect</h3>
+<p>
+  Connect to PostgrSQL with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">psql</span> 
+  command. Use the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">-U postgres</span> switch to 
+  connect as the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">postgres</span> user.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">psql -U postgres</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<h3 id="clean-up">Clean Up</h3>
+<p>
+  To clean up the container, use the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">docker container kill</span>
+  command. This will stop the container, and because we 
+  started the container with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">--rm</span> 
+  switch, it will be automagically deleted.
+</p>
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
+    <span class="">cmd</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container kill pgdev</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  This post is mostly documentation for future Brad so 
+  that's it for now. Keep being awesome, and say hi to 
+  your mum for me ✌️  
+</p>
+
+
+
+            
+  
+
+
+            
+  
+
+
+            
+  
+    
+  <!-- LINKS START -->
+  <div class="pb-2">
+    <h3 id="links" class="">Links</h3>
+      
+        <p class="text-xl break-words">
+          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="https://towardsdatascience.com/local-development-set-up-of-postgresql-with-docker-c022632f13ea" target=_blank>https://towardsdatascience.com/local-development-set-up-of-postgresql-with-docker-c022632f13ea</a>
+        </p>
+      
+        <p class="text-xl break-words">
+          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="https://www.code4it.dev/blog/run-postgresql-with-docker" target=_blank>https://www.code4it.dev/blog/run-postgresql-with-docker</a>
+        </p>
+      
+        <p class="text-xl break-words">
+          <a class="  break-words text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="https://hub.docker.com/_/postgres" target=_blank>https://hub.docker.com/_/postgres</a>
+        </p>
+      
+  </div>
+  <!-- LINKS END -->
+
+  
+
+
+            
+  
+    
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex flex-wrap justify-center">
+      
+        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#docker" class="text-xl">docker</a>
+        </div>
+      
+        <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#postgresql" class="text-xl">postgresql</a>
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+  
+
+
+            
+  
+<!-- BLANK PAGE START -->
+<div id="blank-page">
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+    <br>
+  
+</div>
+<!-- BLANK PAGE END -->
+
+
+          </div>
+        </div>
+        <!-- COLUMN 2 END -->
+
+        <!-- COLUMN 3 START -->
+        <div class="invisible md:visible md:col-span-3 max-h-screen sticky top-20">
+          
+  
+    
+<!-- TABLE OF CONTENTS START -->
+<div id="table-of-contents" class="invisible md:visible h-4/5 overflow-y-auto">
+  <div class="">
+    <h5 class="">On this page</h5>
+  </div>
+  <div class="">
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#intro">
+          Intro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#container-run">
+          Container Run
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#container-attach">
+          Container Attach
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#postgresql-connect">
+          PostgreSQL Connect
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#clean-up">
+          Clean Up
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#outro">
+          Outro
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#links">
+          Links
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-xl text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#tags">
+          Tags
+          </a>
+        </div>
+      
+      
+  </div>
+</div>
+<!-- TABLE OF CONTENTS END -->
+
+  
+
+        </div>
+        <!-- COLUMN 3 END -->
+
+      </div>
+      <!-- CONTENT END -->
+
+      <!-- BACK TO TOP START -->
+<div id="back-to-top" class="hidden fixed bottom-20 right-16 rounded-full font-semibold text-gray-900 bg-neutral-400 hover:bg-neutral-100">
+  <button type="button" class="">
+    <i class="fas fa-arrow-circle-up fa-3x"></i>
+  </button>
+</div>
+<!-- BACK TO TOP END -->
+    </div>
+  
+    <!-- FOOTER START -->
+<div id="footer" class="fixed inset-x-0 bottom-0">
+  <div class="flex justify-center w-full py-4 bg-gray-900 shadow-lg">
+    <div class="text-center">
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://twitter.com/codingpackets" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://www.twitch.tv/codingpackets" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="https://github.com/bwks" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+      <a class="px-2 font-semibold text-neutral-400 hover:text-neutral-100" href="/blog/feed.xml" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+    </div>
+  </div>
+</div>
+<!-- FOOTER END -->
+
+  </body>
+
+</html>

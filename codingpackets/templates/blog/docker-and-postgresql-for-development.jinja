@@ -1,0 +1,126 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This is a short post to show you how 
+  to run a PostgreSQL database with Docker to 
+  quickly connect to during development.
+</p>
+<p>
+  This allows you to utilize PostgreSQL without
+  installing it on your host machine and also helps
+  prevent having stale database tables laying around.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li><b>Docker Community Edition</b> - 20.10.21</li>
+  <li><b>Ubuntu</b> - 22.04.1 LTS</li>
+</ul>
+
+
+<h3 id="container-run">Container Run</h3>
+<p>
+  Start the container by running the below 
+  {{ text::code(text="docker container run") }} 
+  command. This will start the PostgreSQL container 
+  based on the {{ text::emphasize(text="postgres") }} image on 
+  {{ link::e(path="https://hub.docker.com/_/postgres", description="Docker Hub") }}.
+</p>
+
+{{ text::note_block(text="
+  If you don't already have the image, it will be downloaded.
+") }}
+
+{{ text::code_block(
+  header="cmd",
+  language="cmd",
+  code="docker container run \
+  --detach \
+  --rm \
+  --name pgdev \
+  --env POSTGRES_USER=postgres \
+  --env POSTGRES_PASSWORD=postgres \
+  --env POSTGRES_DB=dev \
+  `# Optionally, mount a local volume into the container` \
+  `# --volume ${PWD}/tmp/pgdata:/var/lib/postgresql/data` \
+  --publish 5432:5432 \
+  postgres"
+) }}
+
+<p>
+  The above command switches are explained as follows:
+</p>
+<ul>
+  <li>{{ text::emphasize(text="--detach") }} - Run the container in the background</li>
+  <li>{{ text::emphasize(text="--rm") }} - Delete the container once it exits (is stopped)</li>
+  <li>{{ text::emphasize(text="--name pgdev") }} - Name the container {{ text::emphasize(text="pgdev") }}</li>
+  <li>{{ text::emphasize(text="--env POSTGRES_USER=postgres") }} - Set the admin user to {{ text::emphasize(text="postgres") }}</li>
+  <li>{{ text::emphasize(text="--env POSTGRES_PASSWORD=postgres") }} - Set the admin users password to {{ text::emphasize(text="postgres") }}</li>
+  <li>{{ text::emphasize(text="--env POSTGRES_DB=dev") }} - Create a databased named {{ text::emphasize(text="dev") }}</li>
+  <li>{{ text::emphasize(text="--volume ${PWD}/tmp/pgdata:/var/lib/postgresql/data") }} - Mount a local folder to the container</li>
+  <li>{{ text::emphasize(text="--publish 5432:5432") }} - Connect the host port {{ text::emphasize(text="54321") }} to the container port {{ text::emphasize(text="54321") }}</li>
+</ul>
+
+{{ text::note_block(text="
+  If you mount a volume into the container that contains 
+  an existing database the $1, $2 and $3 environment 
+  variables will be ignored.
+  ")
+  | replace(from="$1", to=text::emphasize(text="POSTGRES_USER"))
+  | replace(from="$2", to=text::emphasize(text="POSTGRES_PASSWORD"))
+  | replace(from="$3", to=text::emphasize(text="POSTGRES_DB"))
+ }}
+
+<h3 id="container-attach">Container Attach</h3>
+<p>
+  You can attach to the container using the 
+  {{ text::code(text="docker container exec") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="cmd",
+  code=`docker container exec -it pgdev bash`
+) }}
+
+<h3 id="postgresql-connect">PostgreSQL Connect</h3>
+<p>
+  Connect to PostgrSQL with the {{ text::code(text="psql") }} 
+  command. Use the {{ text::code(text="-U postgres") }} switch to 
+  connect as the {{ text::emphasize(text="postgres") }} user.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="cmd",
+  code=`psql -U postgres`
+) }}
+
+<h3 id="clean-up">Clean Up</h3>
+<p>
+  To clean up the container, use the {{ text::code(text="docker container kill") }}
+  command. This will stop the container, and because we 
+  started the container with the {{ text::emphasize(text="--rm") }} 
+  switch, it will be automagically deleted.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="cmd",
+  code=`docker container kill pgdev`
+) }}
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  This post is mostly documentation for future Brad so 
+  that's it for now. Keep being awesome, and say hi to 
+  your mum for me ✌️  
+</p>
+
+{% endblock page_content %}

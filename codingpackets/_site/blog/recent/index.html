@@ -122,8 +122,632 @@
             <div class="">
               
               
+              <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/docker-and-postgresql-for-development">Docker and PostgreSQL for Development</a></span>
+              <p class="font-medium text-xl text-justify">
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                    
+                    
+        
+  This is a short post to show you how 
+  to run a PostgreSQL database with Docker to 
+  quickly connect to during development.
+
+  This allows you to utilize PostgreSQL without
+  installing it on your host machine and also helps
+  prevent having stale database tables laying around.
+Software Versions
+  The following software versions were used in this post.
+Docker Community Edition - 20.10.21Ubuntu - 22.04.1 LTSContainer Run
+  Start the container by running the below 
+  docker container…
+                    <i><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/docker-and-postgresql-for-development">continue reading</a></i>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </p>
+            </div>
+            <!-- DATES START -->
+<div id="dates">
+  
+    <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+      published: 2022-12-21
+    </p>
+</div>
+<!-- DATES START -->
+            <div class="">
+              
+<!-- TAGS START -->
+  <div id="tags" class="pb-2">
+    <div class="flex flex-wrap justify-center">
+      
+        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#docker" class="text-xl">docker</a>
+        </div>
+      
+        <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
+          <i class="-mr-1.5 text-2xl">#</i>
+          <a href="/blog/tag/#postgresql" class="text-xl">postgresql</a>
+        </div>
+      
+    </div>
+  </div>
+<!-- TAGS END -->
+
+            </div>
+          </div>
+        </div>
+        
+      
+    
+      
+        <div class="pb-4">
+          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900 dark:border-gray-800">
+            <div class="">
+              
+              
               <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/ubiquiti-wireless-access-point-adoption-failed">Ubiquiti Wireless Access Point Adoption Failed</a></span>
               <p class="font-medium text-xl text-justify">
+                
+                  
                 
                   
                 
@@ -1264,6 +1888,8 @@
                   
                 
                   
+                
+                  
                     
                     
         
@@ -1362,6 +1988,8 @@ Configure 2x wireless networks.VLAN 10 - AP Management (No…
               
               <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/mikrotik-config-cheatsheet">Mikrotik Config Cheatsheet</a></span>
               <p class="font-medium text-xl text-justify">
+                
+                  
                 
                   
                 
@@ -2367,6 +2995,8 @@ Mikrotik CRS326-24G-2S+ - RouterOS 7.6AdministrationConnectivity
                   
                 
                   
+                
+                  
                     
                     
         
@@ -2603,6 +3233,8 @@ cmdpkg install -y qe…
               
               <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/eufy-camera-shenanigans">Eufy Camera Shenanigans</a></span>
               <p class="font-medium text-xl text-justify">
+                
+                  
                 
                   
                 
@@ -3232,6 +3864,8 @@ cmdpkg install -y qe…
               
               <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/visual-studio-code-snippets">Visual Studio Code Snippets</a></span>
               <p class="font-medium text-xl text-justify">
+                
+                  
                 
                   
                 
@@ -4423,6 +5057,8 @@ VS Code 1.73.1Snippets Location
                 
                   
                 
+                  
+                
               </p>
             </div>
             <!-- DATES START -->
@@ -4472,6 +5108,8 @@ VS Code 1.73.1Snippets Location
               
               <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/dockerize-rails-7-app">Dockerize Rails 7 App</a></span>
               <p class="font-medium text-xl text-justify">
+                
+                  
                 
                   
                 
@@ -5279,6 +5917,8 @@ Environment Variables
                   
                 
                   
+                
+                  
                     
                     
         
@@ -5700,628 +6340,6 @@ Software
         
       
     
-      
-        <div class="pb-4">
-          <div class="block py-2 px-4 shadow-lg border-4 rounded-lg border-gray-900 dark:border-gray-800">
-            <div class="">
-              
-              
-              <span><a class="text-2xl font-semibold break-words text-sky-700 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-400" href="/blog/aws-static-website-with-pulumi">AWS Static Website with Pulumi</a></span>
-              <p class="font-medium text-xl text-justify">
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                    
-                    
-        
-  Are you tired of pointing and clicking your way through 
-  the AWS console to build out your AWS services? 
-  Me too! Fear not my lovely adventurers, in this post I 
-  will show you how to use the fantastic Infrastructure as Code (IaC) tool 
-  Pulumi. With its magic, we will build the necessary AWS infrastructure to host 
-  a static website in a far away place called "CloudLandia". 
-Note
-    The code used in this post can be found 
-    here. 
-Pre-Flight Check
-  The environment will n…
-                    <i><a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="/blog/aws-static-website-with-pulumi">continue reading</a></i>
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-              </p>
-            </div>
-            <!-- DATES START -->
-<div id="dates">
-  
-    <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
-      published: 2022-09-06
-    </p>
-</div>
-<!-- DATES START -->
-            <div class="">
-              
-<!-- TAGS START -->
-  <div id="tags" class="pb-2">
-    <div class="flex flex-wrap justify-center">
-      
-        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#aws" class="text-xl">aws</a>
-        </div>
-      
-        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#pulumi" class="text-xl">pulumi</a>
-        </div>
-      
-        <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#golang" class="text-xl">golang</a>
-        </div>
-      
-    </div>
-  </div>
-<!-- TAGS END -->
-
-            </div>
-          </div>
-        </div>
-        
       
     
       
