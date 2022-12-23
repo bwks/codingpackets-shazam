@@ -39,7 +39,7 @@
 
 {{ text::code_block(
   header="cmd",
-  language="cmd",
+  language="bash",
   code="docker container run \
   --detach \
   --rm \
@@ -85,7 +85,7 @@
 
 {{ text::code_block(
   header="cmd",
-  language="cmd",
+  language="text",
   code=`docker container exec -it pgdev bash`
 ) }}
 
@@ -98,7 +98,7 @@
 
 {{ text::code_block(
   header="cmd",
-  language="cmd",
+  language="text",
   code=`psql -U postgres`
 ) }}
 
@@ -111,10 +111,58 @@
 </p>
 {{ text::code_block(
   header="cmd",
-  language="cmd",
+  language="text",
   code=`docker container kill pgdev`
 ) }}
 
+<h3 id="bonus-round">Bonus Round</h3>
+<p>
+  I usually create a shell script that allows me to start and destroy 
+  the container without having to type so much or copy and paste.
+</p>
+<p>
+  Create a file named {{ text::emphasize(text="pgdev.sh") }} with 
+  the following contents.
+</p>
+
+{{ text::code_block(
+  header="pgdev.sh",
+  language="bash",
+  code=`#! /usr/bin/sh
+
+ACTION=$1
+
+if [ $ACTION = "up" ]; then
+  docker container run \
+    --detach \
+    --rm \
+    --name pgdev \
+    --env POSTGRES_USER=postgres \
+    --env POSTGRES_PASSWORD=postgres \
+    --env POSTGRES_DB=dev \
+    --publish 5432:5432 \
+    postgres;
+elif [ $ACTION = "rm" ]; then
+  docker container kill pgdev;
+elif [ $ACTION = "con" ]; then
+  docker container exec -it pgdev bash -c "psql -U postgres";
+else
+  echo "unknown action '$ACTION'";
+fi`
+) }}
+
+<p>
+  Then, make the file executable with the 
+  {{ text::code(text="chmod +x pgdev.sh") }} command.
+</p>
+
+<p>
+  Now you can start the container with the 
+  {{ text::code(text="./pgdev.sh up") }} command, destroy the conatiner 
+  with the {{ text::code(text="./pgdev.sh rm") }} command, and 
+  connect to the container with the {{ text::code(text="./pgdev.sh con") }}
+  command.
+</p>
 
 <h3 id="outro">Outro</h3>
 <p>

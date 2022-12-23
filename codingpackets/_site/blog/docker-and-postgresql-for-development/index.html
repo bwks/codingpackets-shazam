@@ -91,6 +91,10 @@
     <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
       <h1 class="pb-1 md:pb-2">Docker and PostgreSQL for Development</h1>
       
+        <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
+          updated: 22nd of December 2022
+        </p>
+      
       
         <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
           published: 21st of December 2022
@@ -171,7 +175,7 @@
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container run \
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container run \
   --detach \
   --rm \
   --name pgdev \
@@ -229,7 +233,7 @@
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container exec -it pgdev bash</code></pre>
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container exec -it pgdev bash</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -249,7 +253,7 @@
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">psql -U postgres</code></pre>
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">psql -U postgres</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
@@ -269,12 +273,67 @@
     <span class="">cmd</span>
   </div>
   <div class="font-mono leading-tight">
-    <pre class=""><code class="language-cmd hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container kill pgdev</code></pre>
+    <pre class=""><code class="language-text hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">docker container kill pgdev</code></pre>
   </div>
 </div>
 <!-- CODE BLOCK END -->
 
 
+<h3 id="bonus-round">Bonus Round</h3>
+<p>
+  I usually create a shell script that allows me to start and destroy 
+  the container without having to type so much or copy and paste.
+</p>
+<p>
+  Create a file named <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">pgdev.sh</span> with 
+  the following contents.
+</p>
+
+
+<!-- CODE BLOCK START -->
+<div id="code-block" class="py-2">
+  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
+    <span class="">pgdev.sh</span>
+  </div>
+  <div class="font-mono leading-tight">
+    <pre class=""><code class="language-bash hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">#! /usr/bin/sh
+
+ACTION=$1
+
+if [ $ACTION = "up" ]; then
+  docker container run \
+    --detach \
+    --rm \
+    --name pgdev \
+    --env POSTGRES_USER=postgres \
+    --env POSTGRES_PASSWORD=postgres \
+    --env POSTGRES_DB=dev \
+    --publish 5432:5432 \
+    postgres;
+elif [ $ACTION = "rm" ]; then
+  docker container kill pgdev;
+elif [ $ACTION = "con" ]; then
+  docker container exec -it pgdev bash -c "psql -U postgres";
+else
+  echo "unknown action '$ACTION'";
+fi</code></pre>
+  </div>
+</div>
+<!-- CODE BLOCK END -->
+
+
+<p>
+  Then, make the file executable with the 
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">chmod +x pgdev.sh</span> command.
+</p>
+
+<p>
+  Now you can start the container with the 
+  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">./pgdev.sh up</span> command, destroy the conatiner 
+  with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">./pgdev.sh rm</span> command, and 
+  connect to the container with the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">./pgdev.sh con</span>
+  command.
+</p>
 
 <h3 id="outro">Outro</h3>
 <p>
@@ -473,6 +532,14 @@
         <div class="px-1">
           <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#clean-up">
           Clean Up
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#bonus-round">
+          Bonus Round
           </a>
         </div>
       
