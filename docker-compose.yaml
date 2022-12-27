@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: shazam
+    image: bwks/shazam
     user: "${APP_USER_ID}:${APP_GROUP_ID}"
     volumes:
       - "./${APP_NAME}:${HOME_DIR}/${APP_NAME}"
@@ -12,8 +12,3 @@ services:
       - "./.shazam_template_hashes.json:${HOME_DIR}/.shazam_template_hashes.json"
     ports:
       - "3000:3000"
-    environment:
-      - "APP_NAME=${APP_NAME}"
-      - "APP_USER_ID=${APP_USER_ID}"
-      - "APP_GROUP_ID=${APP_GROUP_ID}"
-      - "HOME_DIR=${HOME_DIR}"

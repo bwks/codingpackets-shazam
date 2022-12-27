@@ -1,44 +1,18 @@
-FROM rust:1.64-alpine AS builder
-
-WORKDIR /opt/
-
-RUN apk add curl protoc musl-dev gzip git
-
-# tailwind
-RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
-  && chmod +x tailwindcss-linux-x64 \
-  && mv tailwindcss-linux-x64 tailwindcss
-
-# reflex
-RUN curl -sLO https://github.com/cespare/reflex/releases/latest/download/reflex_linux_amd64.tar.gz \
-  && tar -xvf reflex_linux_amd64.tar.gz \
-  && chmod +x reflex_linux_amd64/reflex \
-  && mv reflex_linux_amd64/reflex reflex
-
-# overmind
-RUN curl -sLO https://github.com/DarthSim/overmind/releases/latest/download/overmind-v2.3.0-linux-amd64.gz \
-  && gunzip overmind-v2.3.0-linux-amd64.gz \
-  && chmod +x overmind-v2.3.0-linux-amd64 \
-  && mv overmind-v2.3.0-linux-amd64 overmind
-
-# shazam
-RUN git clone https://github.com/bwks/shazam.git \
-  && cd shazam \
-  && cargo build --release
-
-#########################################################
-
-FROM alpine:3.16.2
+FROM bwks/shazam:v0.1.20
 
 ARG APP_NAME
 ARG APP_USER
 ARG APP_USER_ID
 ARG APP_GROUP_ID
+ARG APP_OWNER
+ARG APP_OWNER_EMAIL
 ARG HOME_DIR
 ENV APP_NAME ${APP_NAME}
 ENV APP_USER ${APP_USER}
 ENV APP_USER_ID ${APP_USER_ID}
 ENV APP_GROUP_ID ${APP_GROUP_ID}
+ENV APP_OWNER ${APP_OWNER}
+ENV APP_OWNER_EMAIL ${APP_OWNER_EMAIL}
 ENV HOME_DIR ${HOME_DIR}
 
 RUN apk add tmux
@@ -46,10 +20,10 @@ RUN apk add tmux
 # Create app user and group
 RUN addgroup -S ${APP_USER} -g ${APP_GROUP_ID}  && adduser -u ${APP_USER_ID} -S ${APP_USER} -G ${APP_USER} -s /bin/ash
 
-COPY --from=builder /opt/shazam/target/release/shazam ${HOME_DIR}/shazam
-COPY --from=builder /opt/tailwindcss ${HOME_DIR}/tailwindcss
-COPY --from=builder /opt/reflex ${HOME_DIR}/reflex
-COPY --from=builder /opt/overmind ${HOME_DIR}/overmind
+RUN cp /opt/shazam ${HOME_DIR}/shazam
+RUN cp /opt/tailwindcss ${HOME_DIR}/tailwindcss
+RUN cp /opt/reflex ${HOME_DIR}/reflex
+RUN cp /opt/overmind ${HOME_DIR}/overmind
 
 # Set directory ownership
 RUN chown -R ${APP_USER_ID}:${APP_GROUP_ID} ${HOME_DIR}
@@ -58,7 +32,7 @@ WORKDIR ${HOME_DIR}
 
 USER ${APP_USER}
 
-RUN ./shazam init --name ${APP_NAME} --owner 'Brad Searle' --owner-email 'bradleysearle@gmail.com'
+RUN ./shazam init --name ${APP_NAME} --owner "${APP_OWNER}" --owner-email ${APP_OWNER_EMAIL}
 
 EXPOSE 3000
 CMD ["./overmind", "s", "-f", "Procfile"]

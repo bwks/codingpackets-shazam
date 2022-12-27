@@ -1,0 +1,216 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  This year, I have been working on learning rust and as part of that 
+  process I am building a static site generator named 
+  {{ link::e(path="https://github.com/bwks/shazam", description="Shazam") }}.
+  At the moment, I am using a couple of other non-rust projects for some of the 
+  features until I can build them out in Rust.
+</p>
+<ul>
+  <li>{{ link::e(path="https://github.com/cespare/reflex", description="Reflex") }} for file watching.</li>
+  <li>{{ link::e(path="https://github.com/tailwindlabs/tailwindcss/releases", description="TailwindCSS") }} for compiling CSS.</li>
+  <li>{{ link::e(path="https://github.com/DarthSim/overmind", description="Overmind") }} to manage all the processes together.</li>
+</ul>  
+<p>
+  Using Docker to manage all of these services, seemed like the easiest way
+  to get going quickly if someone wants to use the project so I published a container image to 
+  {{ link::e(path="https://hub.docker.com/repository/docker/bwks/shazam", description="Docker Hub") }}
+  with everything packed in.
+</p>
+
+<p>
+  In this post, I will share what I learned on how to publish a container image to 
+  {{ link::e(path="https://hub.docker.com", description="Docker Hub") }}.
+</p>
+
+<h3 id="software-versions">Software Versions</h3>
+<p>
+  The following software versions were used in this post.
+</p>
+<ul>
+  <li><b>Docker Community Edition</b> - 20.10.21</li>
+  <li><b>Ubuntu</b> - 22.04.1 LTS</li>
+</ul>
+
+
+<h3 id="docker-hub-credentials">Docker Hub Credentials</h3>
+<p>
+  Firstly, you need to get your Docker Hub account setup and generate 
+  an API key. To generate an API key browse to:
+</p>
+
+{{ text::breadcrumbs(items=[
+  "&lt;Username&gt;",
+  "Account Settings",
+  "Security",
+  "New Access Token"
+]) }}
+
+<p>
+  Create an access token with {{ text::emphasize(text="Read, Write and Delete") }} 
+  permissions.
+</p>
+
+{{ text::note_block(text="
+  Take note of the API key, once you close the window, you will no 
+  longer be able to see the API key.
+") }}
+
+<p>
+  Save the credentials in your {{ text::emphasize(text="~/.zshrc") }} file.
+</p>
+
+{{ text::code_block(
+  header="~/.zshrc",
+  language="bash",
+  code=`export DOCKER_USERNAME="&lt;USERNAME&gt;"
+export DOCKER_PASSWORD="&lt;API_KEY&gt;"`
+) }}
+
+<p>
+  Don't forget to {{ text::code(text="source ~/.zshrc") }} the file to load the 
+  variables into your environment.
+</p>
+
+<p>
+  Now login to Docker Hub with the {{ text::code(text="docker login") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD`
+) }}
+
+{{ text::note_block(text="
+  I could not find a way to make the $1 command automatically 
+  use these environment variables. If I do, I will update this post.
+  If you know of a way, please feel free to reach out to me.
+") 
+  | replace(from="$1", to=text::code(text="docker login"))
+}}
+
+<p>
+  This will create the {{ text::emphasize(text="/home/bradmin/.docker/config.json") }} 
+  credential file which will be used for future logins.
+</p>
+
+<h3 id="docker-image-build">Docker Image Build</h3>
+<p>
+  Alright, now we can build the image. The below {{ text::emphasize(text="Dockerfile") }} 
+  Builds the image, first by creating a {{ text::emphasize(text="builder") }} image 
+  to compile and gather all the binaries. The binaries are then copied to the final 
+  image that is released. This results in a much smaller image that we publish to Docker hub. 
+</p>
+
+{{ text::code_block(
+  header="Dockerfile",
+  language="dockerfile",
+  code=`FROM rust:1.64-alpine as builder
+
+WORKDIR /opt/
+
+RUN apk add curl protoc musl-dev gzip git
+
+# tailwind
+RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
+  && chmod +x tailwindcss-linux-x64 \
+  && mv tailwindcss-linux-x64 tailwindcss
+
+# reflex
+RUN curl -sLO https://github.com/cespare/reflex/releases/latest/download/reflex_linux_amd64.tar.gz \
+  && tar -xvf reflex_linux_amd64.tar.gz \
+  && chmod +x reflex_linux_amd64/reflex \
+  && mv reflex_linux_amd64/reflex reflex
+
+# overmind
+RUN curl -sLO https://github.com/DarthSim/overmind/releases/latest/download/overmind-v2.3.0-linux-amd64.gz \
+  && gunzip overmind-v2.3.0-linux-amd64.gz \
+  && chmod +x overmind-v2.3.0-linux-amd64 \
+  && mv overmind-v2.3.0-linux-amd64 overmind
+
+# shazam
+RUN git clone https://github.com/bwks/shazam.git \
+  && cd shazam \
+  && cargo build --release
+
+#########################################################
+
+FROM alpine:3.16.2
+
+RUN apk add tmux
+
+COPY --from=builder /opt/shazam/target/release/shazam /opt/shazam
+COPY --from=builder /opt/tailwindcss /opt/tailwindcss
+COPY --from=builder /opt/reflex /opt/reflex
+COPY --from=builder /opt/overmind /opt/overmind
+
+RUN chown -R root:root /opt/`
+) }}
+
+<p>
+  Use the {{ text::code(text="docker image build") }} command to build the image 
+  from the {{ text::emphasize(text="Dockerfile") }}.
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`docker image build --file Dockerfile --tag bwks/shazam:v0.1.20 .`
+) }}
+<p>
+  The above command, builds the image, also tagging it with the parameters that map to 
+  the Docker hub repository. The details of the tag are as follows:
+</p>
+<ul>
+  <li><b>bwks</b> - The Docker hub account</li>
+  <li><b>shazam</b> - The name of the Repository</li>
+  <li><b>v0.1.20</b> - The image tag</li>
+</ul>
+
+<p>
+  You can use the {{ text::code(text="docker image ls") }} command to see the size 
+  of the image. 
+</p>
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`docker image ls
+
+REPOSITORY    TAG           IMAGE ID       CREATED        SIZE
+bwks/shazam   v0.1.20       a28ee56bd31a   27 hours ago   135MB`
+) }}
+<p>
+  A not-too-shabby {{ text::emphasize(text="135MB") }}. Pretty good 
+  considering the builder image is around {{ text::emphasize(text="700MB") }}.
+</p>
+
+<h3 id="docker-image-publish">Docker Image Publish</h3>
+<p>
+  The image can be published to Docker Hub with the 
+  {{ text::code(text="docker image push") }} command.
+</p>
+
+{{ text::code_block(
+  header="cmd",
+  language="text",
+  code=`docker image push bwks/shazam:v0.1.20`
+) }}
+
+<p>
+  Once the upload is complete, you can now browse to the 
+  {{ link::e(path="https://hub.docker.com/repository/docker/bwks/shazam", description="repository") }}
+  and see that the image is published.
+</p>
+
+
+<h3 id="outro">Outro</h3>
+<p>
+  And thats it, you now have a container image published to Docker hub. 
+  Party on you crazy bunch of savages 🤘
+</p>
+
+{% endblock page_content %}
