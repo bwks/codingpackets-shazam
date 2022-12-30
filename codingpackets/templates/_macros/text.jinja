@@ -39,6 +39,10 @@
 <!-- CODE BLOCK END -->
 {% endmacro %}
 
+{% macro hash_tag(tag) %}
+<span class="font-semibold italic lowercase tracking-wide text-orange-600">#{{ tag | slugify }}</span>
+{% endmacro %}
+
 {% macro tag_block(tags, center=false) %}
 <!-- TAGS START -->
   <div id="tags" class="pb-2">
