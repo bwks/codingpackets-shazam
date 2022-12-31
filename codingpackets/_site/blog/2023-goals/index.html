@@ -89,11 +89,11 @@
 
   <div class="col-span-12 px-5 md:col-span-6">
     <div id="page-header" class="text-center md:pt-20 md:pb-4 md:mb-0 pt-12 pb-0 -mb-12">
-      <h1 class="pb-1 md:pb-2">Restart VMware Network Adapters From PowerShell</h1>
+      <h1 class="pb-1 md:pb-2">2023 Goals</h1>
       
       
         <p class="text-neutral-500 dark:text-neutral-600 text-lg italic py-0">
-          published: 2nd of July 2021
+          published: 1st of January 2023
         </p>
       
     </div>
@@ -122,110 +122,98 @@
 
 <h3 id="intro">Intro</h3>
 <p>
-  I have an annoying issue. After my laptop goes to sleep, 
-  the network adapters for my VMware virtual machines stop working.
-  In this post i'll show you how to use PowerShell to kick 
-  them in the guts and get them going again.
+  The year is 2023, and after the last couple of crazy years 
+  I am looking forward to hammering out a great year in 
+  2023. This is my plan.
 </p>
 
-<h3 id="how">How?</h3>
+<h3 id="family">Family</h3>
 <p>
-  Open up a PowerShell window as Administrator and run the 
-  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">Get-NetAdapter</span>
- command to list all of your 
-  network adapters.
+  Over the last few years, I have been making a concerted 
+  effort to spend quality time with my family. This year 
+  is no different and it's top of my priority list. These are 
+  the main items:
 </p>
+<ul>
+  <li>Dinner at resturant 1x per/month with my partner</li>
+  <li>Lunch 1x per/month with adult daughter</li>
+  <li>1x family holiday</li>
+  <li>2x boys (9/6 years) playing a sport</li>
+  <li>30 minutes of outside play with my boys per day</li>
+</ul>
 
-<!-- CODE BLOCK START -->
-<div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
-    <span class="">cmd</span>
-  </div>
-  <div class="font-mono leading-tight">
-    <pre class=""><code class="language-powershell hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">Get-NetAdapter
-
-Name                      InterfaceDescription                    ifIndex Status       MacAddress             LinkSpeed
-----                      --------------------                    ------- ------       ----------             ---------
-Ethernet                  Realtek PCIe GbE Family Controller           24 Disconnected 8C-8C-AA-C7-F2-C6          0 bps
-Ethernet 2                Realtek PCIe GbE Family Controller #2        21 Disconnected 8C-8C-AA-C7-F2-C5          0 bps
-ZeroTier One [1d719394... ZeroTier Virtual Port                        20 Up           B2-2C-B9-B7-CD-F3       100 Mbps
-Wi-Fi                     Intel(R) Wi-Fi 6 AX200 160MHz                16 Up           64-BC-58-E3-4F-C7       270 Mbps
-VMware Network Adapte...8 VMware Virtual Ethernet Adapter for ...      11 Up           00-50-56-C0-00-08       100 Mbps
-VMware Network Adapte...1 VMware Virtual Ethernet Adapter for ...       6 Up           00-50-56-C0-00-01       100 Mbps
-Ethernet 3                Lenovo USB Ethernet                           4 Disconnected 48-2A-E3-AE-62-FD          0 bps
-Bluetooth Network Conn... Bluetooth Device (Personal Area Netw...       3 Disconnected 64-BC-58-E3-4F-CB         3 Mbps</code></pre>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
+<h3 id="house-renovations">House Renovations</h3>
 <p>
-  Now run the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">Restart-NetAdapter</span>
- command, 
-  specifying the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Name</span>
- of 
-  the adapter from the previous command.
+  Last year, we bought a house 🥳. It is 20+ years old and looking 
+  a bit dated, so this year we are looking to do some renovations 
+  to spruce it up a bit.
 </p>
-
-
-<!-- NOTE BLOCK START -->
-<div id="note-block" class="pt-2 pb-4">
-  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">
-    You can use wildcards such as 
-    <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">(*)</span> to perform multiple matches and or save on typing.
-</div>
-  </div>
-</div>
-<!-- NOTE BLOCK END -->
-
-
+<ul>
+  <li>Add a Patio and Deck</li>
+  <li>Renovate Kitchen</li>
+  <li>Hardwood Floors throughout (except bathrooms)</li>
+  <li>Renovate 2x Bathrooms</li>
+  <li>Paint inside walls and roof</li>
+  <li>Tidy up Front Yard</li>
+</ul>
 <p>
-  With the below command I am targetting the
-  <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">VMware Network Adapter 1</span>
-  adapter.
+  I will be doing some of these myself, so it's going to be a pretty 
+  busy year. Hopefully we can get most of it done. It's very hard to 
+  get trades at the moment, so some of it might bleed into 2024.
 </p>
 
-
-<!-- CODE BLOCK START -->
-<div id="code-block" class="py-2">
-  <div class="bg-stone-100/30 border-4 rounded-t-lg border-b-4 py-1 text-center font-bold font-mono border-zinc-800 dark:bg-[#1a1b26] dark:border-gray-200/20">
-    <span class="">cmd</span>
-  </div>
-  <div class="font-mono leading-tight">
-    <pre class=""><code class="language-powershell hljs px-5 border-b-4 border-l-4 border-r-4 border-zinc-800 rounded-b-lg dark:border-gray-200/20">Restart-NetAdapter -Name "VMw*1"</code></pre>
-  </div>
-</div>
-<!-- CODE BLOCK END -->
-
-
+<h3 id="rust">Rust</h3>
 <p>
-  Silicon gods willing, the VMs will now have functioning 
-  network adapters again.
+  Last year I started learning (and loving) Rust, This year, I will continue 
+  to dig deeper into the language. I feel like I have just scratced the 
+  surface but I am committed to getting more proficient. By the end the 
+  year I would like to be able to complete 
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://craftinginterpreters.com/" target=_blank>Crafting Interpreters</a>
+  in Rust.
 </p>
 
 
-<!-- NOTE BLOCK START -->
-<div id="note-block" class="pt-2 pb-4">
-  <div class="shadow-md shadow-zinc-400 bg-sky-100 rounded border-l-8 border-l-sky-900 dark:border-l-sky-600 dark:bg-sky-800 dark:shadow-none">
-    <div class="px-4 pt-4 pb-2 text-sky-900 dark:text-zinc-900"><i class="far fa-check-circle" aria-hidden="true"></i><b class="pl-1.5 text-sky-900 dark:text-zinc-900">Note</b></div>
-    <div class="px-4 pb-4 dark:text-zinc-900">
-    It may take multiple kicks in the guts to get the 
-    adapters functioning again.
-</div>
-  </div>
-</div>
-<!-- NOTE BLOCK END -->
+<h3 id="certifications">Certifications</h3>
+<p>
+  After a hectic last couple of years, I am feel like I have the 
+  mental energy to study again. This year I will continue to persue 
+  cloud certifications in AWS and if I can get funding and support from 
+  my company, an Offensice Security certifcation. The list of certs I am targeting is:
+</p>
+<ul>
+  <li>AWS - Advanced Networking Speciality</li>
+  <li>AWS - Security Speciality</li>
+  <li>AWS - Solutions Architect Professional</li>
+  <li>OSCP - PEN200</li>
+</ul>
+
+<h3 id="health-and-fitness">Health and Fitness</h3>
+<p>
+  Now that I have my pain cave setup it is much more convenient 
+  to get my workouts in. I am therfore setting some ambitious fitness goals 
+  this year.
+</p>
+<ul>
+  <li>Cycling - Average 200km/week</li>
+  <li>Stretching - 30 minutes/day</li>
+  <li>Flexibility - Do the splits</li>
+  <li>Body Fat - ~5%</li>
+</ul>
+
+<h3 id="books">Books</h3>
+<p>
+  Reading (and listening) to non-technical books has been a really good mental 
+  stress break for me over the last few years. This year I will continue to 
+  target reading 25 non-technical books.
+</p>
 
 
 <h3 id="outro">Outro</h3>
 <p>
-  In this post, I showed you how to use PowerShell to kick 
-  a network adapter while it is down. Whoever said never 
-  kick something while they are down didn't have to deal with 
-  VMware shenanigans.
+  That's my plan. Time for me to start make it happen.
+  Wishing you much success with your plans too ✌️
 </p>
+
 
 
             
@@ -247,14 +235,9 @@ Bluetooth Network Conn... Bluetooth Device (Personal Area Netw...       3 Discon
   <div id="tags" class="pb-2">
     <div class="flex flex-wrap justify-center">
       
-        <div class="pr-2 font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
-          <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#windows" class="text-xl">windows</a>
-        </div>
-      
         <div class=" font-semibold italic lowercase tracking-wide text-rose-600 no-underline hover:underline hover:decoration-2 hover:underline-offset-4">
           <i class="-mr-1.5 text-2xl">#</i>
-          <a href="/blog/tag/#vmware" class="text-xl">vmware</a>
+          <a href="/blog/tag/#non-technical" class="text-xl">non-technical</a>
         </div>
       
     </div>
@@ -369,8 +352,56 @@ Bluetooth Network Conn... Bluetooth Device (Personal Area Netw...       3 Discon
     
       
         <div class="px-1">
-          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#how">
-          How?
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#family">
+          Family
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#house-renovations">
+          House Renovations
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#rust">
+          Rust
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#certifications">
+          Certifications
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#health-and-fitness">
+          Health and Fitness
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#books">
+          Books
+          </a>
+        </div>
+      
+    
+      
+        <div class="px-1">
+          <a class="menu-item font-normal text-lg text-sky-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-gray-200" href="#outro">
+          Outro
           </a>
         </div>
       

@@ -43,15 +43,14 @@ Bluetooth Network Conn... Bluetooth Device (Personal Area Netw...       3 Discon
 
 {{ text::note_block(text='
     You can use wildcards such as 
-    {{ text::emphasize(text="(*)") }}
-
-    to perform multiple matches and or save on typing.
-') }}
+    $1 to perform multiple matches and or save on typing.
+') 
+  | replace(from="$1", to=text::emphasize(text="(*)"))
+}}
 
 <p>
   With the below command I am targetting the
   {{ text::emphasize(text="VMware Network Adapter 1") }}
-
   adapter.
 </p>
 
