@@ -1,0 +1,366 @@
+{% extends "_layouts/blog.jinja" %}
+
+{% block page_content %}
+
+<h3 id="intro">Intro</h3>
+<p>
+  For the last few months, I have been working on a static 
+  site generator named {{ link::e(path="https://github.com/bwks/shazam", description="shazam") }}.
+  It is written in Rust and can be compiled to binaries 
+  suitable for Linux, with Windows and MacOS coming soon.
+</p>
+<p>
+  I am all about the DevOps, so of course I wanted to use 
+  {{ link::e(path="https://github.com/features/actions", description="Github Actions") }} 
+  to automagically build and release the binary assets as well as 
+  publish a container image to {{ link::e(path="https://hub.docker.com/", description="Docker Hub") }}.
+</p>
+<p>
+  In this post, I will show you how I use Github actions to 
+  publish binaries for Shazam to Github 
+  {{ link::e(path="https://github.com/bwks/shazam/releases", description="releases") }} 
+  and container images to 
+  {{ link::e(path="https://hub.docker.com/repository/docker/bwks/shazam", description="Docker hub") }}.
+</p>
+
+{{ text::note_block(text="
+  The workflows referenced in this post can be found $1.
+") 
+  | replace(from="$1", to=link::e(path="https://github.com/bwks/shazam/tree/main/.github/workflows", description="here"))
+}}
+
+<h3 id="workflows">Workflows</h3>
+<p>
+  Github actions use {{ text::emphasize(text="workflows") }} to 
+  define {{ text::emphasize(text="continuous integration") }} 
+  tasks. For this project, I have defined 3 workflows.
+</p>
+<ul>
+  <li><b>Test Workflow</b> - Runs tests as well as style and correctness checks</li>
+  <li><b>Tag Workflow</b> - Creates release tags based on the {{ text::emphasize(text="Cargo.toml") }} package version</li>
+  <li><b>Release Workflow</b> - Creates binaries for Github releases and builds a container image for Docker Hub</li>
+</ul>
+<p>
+  The following flowchart shows the Github actions workflow.
+</p>
+
+{{ image::boxed(
+  path="/blog/rust-binary-and-docker-releases-using-github-actions/github-actions.png",
+  width="",
+  height=""
+) }}
+
+<p>
+  The following points summarize the diagram.
+</p>
+
+<ul>
+  <li>A developer creates a pull request</li>
+  <li>The {{ text::emphasize(text="Test Workflow") }} is triggered running automated tests</li>
+  <li>A project owner merges the pull request to the {{ text::emphasize(text="main") }} branch</li>
+  <li>
+    A merge into {{ text::emphasize(text="main") }} triggers the {{ text::emphasize(text="Tag Workflow") }} 
+    where a tag is generated from the projects {{ text::emphasize(text="Cargo.toml") }} version and is 
+    pushed to the repo
+    <ul>
+      <li>The {{ text::emphasize(text="tag") }} is used for both the Github release and the Docker Hub image</li>
+    </ul>
+  </li>
+  <li>A successful {{ text::emphasize(text="Tag Workflow") }} triggers the {{ text::emphasize(text="Release Workflow") }}</li>
+  <li>The {{ text::emphasize(text="Release Workflow") }} compiles binary assets and uploads them as project releases to Github</li>
+  <li>A Docker image is generated and uploaded Docker Hub.</li>
+</ul>
+
+{{ text::note_block(text="
+  I have the $1 branch protected, which prevents pushing directly into $1.
+") 
+  | replace(from="$1", to=text::emphasize(text="main"))
+}}
+
+<p>
+  Workflow files are stored in the {{ text::emphasize(text=".github/workflows/") }} 
+  directory in the root of a project.
+</p>
+
+<h3 id="test-workflow">Test Workflow</h3>
+<p>
+  The {{ text::emphasize(text="Test Workflow") }} runs the tests, 
+  checks formatting and code style correctness with clippy. The 
+  workflow runs whenever a {{ text::emphasize(text="pull request") }}
+  is created.
+</p>
+
+{{ text::code_block(
+  header="test.yml",
+  language="yaml",
+  code=`name: "Test"
+
+on:
+  pull_request:
+
+jobs:
+  check:
+    name: "Cargo check"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - uses: "actions-rs/toolchain@v1"
+        with:
+          profile: "minimal"
+          toolchain: "stable"
+          override: true
+
+      - uses: "actions-rs/cargo@v1"
+        with:
+          command: "check"
+
+  test:
+    name: "Cargo test"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - uses: "actions-rs/toolchain@v1"
+        with:
+          profile: "minimal"
+          toolchain: "stable"
+          override: true
+
+      - uses: "actions-rs/cargo@v1"
+        with:
+          command: "test"
+
+  fmt:
+    name: "Cargo format"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - uses: "actions-rs/toolchain@v1"
+        with:
+          profile: "minimal"
+          toolchain: "stable"
+          override: true
+          
+      - run: "rustup component add rustfmt"
+
+      - uses: "actions-rs/cargo@v1"
+        with:
+          command: "fmt"
+          args: "--all -- --check"
+
+  clippy:
+    name: "Cargo clippy"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - uses: "actions-rs/toolchain@v1"
+        with:
+          profile: "minimal"
+          toolchain: "stable"
+          override: true
+
+      - run: "rustup component add clippy"
+
+      - uses: "actions-rs/cargo@v1"
+        with:
+          command: "clippy"
+          args: "-- -D warnings"`
+) }}
+
+<h3 id="tag-workflow">Tag Workflow</h3>
+<p>
+  The {{ text::emphasize(text="Tag Workflow") }} runs when a 
+  pull request is merged into the {{ text::emphasize(text="main") }} 
+  branch. A tag is generated based on the project version from the 
+  {{ text::emphasize(text="Cargo.toml") }} file and pushed to the 
+  repo.
+</p>
+
+{{ text::code_block(
+  header="tag.yml",
+  language="yaml",
+  code=`name: "Tag"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  create-tag:
+    name: "Create tag"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Get tag"
+        id: "get-tag"
+        shell: "bash"
+        run: |
+          echo PKG_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml) >> $GITHUB_OUTPUT
+
+      - name: "Set Tag"
+        shell: "bash"
+        run: |
+          git tag v${{ steps.get-tag.outputs.PKG_VERSION }} && git push --tags`
+) }}
+
+<h3 id="release-workflow">Release Workflow</h3>
+<p>
+  The {{ text::emphasize(text="Release Workflow") }} is where the 
+  magic happes. Binary assets are generated and uploaded to 
+  the projects Github as
+  {{ link::e(path="https://github.com/bwks/shazam/releases", description="releases") }}. 
+  A Docker container image is generated and uploaded as a
+  {{ link::e(path="https://hub.docker.com/r/bwks/shazam/tags", description="tag") }}
+</p>
+
+<p>
+  To prevent infinite loops, workflows only trigger other workflows on limited events. 
+  One of these events is the {{ text::emphasize(text="workflow_run") }} event. 
+</p>
+
+<p>
+  The {{ text::emphasize(text="Release Workflow") }} runs when the 
+  {{ text::emphasize(text="Tag Worflow") }} is completed.
+  Additionally, the steps require that the {{ text::emphasize(text="Tag Workflow") }} 
+  completed {{ text::emphasize(text="successfuly") }}. This is defined with 
+  an {{ text::emphasize(text="if") }} condition: 
+  {{ text::code(text="if: ${{ github.event.workflow_run.conclusion == 'success' }}") }}.
+</p>
+
+<p>
+  The other thing to note, is that some steps depend on others. By default, tasks run 
+  in paralell, you can control the order tasks are run by declaring the
+  {{ text::emphasize(text="needs") }} parameter. EG: {{ text::code(text='needs: "get-tag"') }}.
+</p>
+
+{{ text::code_block(
+  header="release.yml",
+  language="yaml",
+  code=`name: "Release"
+
+permissions:
+  contents: "write"
+
+on:
+  workflow_run:
+    workflows: ["Tag"]
+    types:
+      - "completed"
+
+jobs:
+  get-tag:
+    name: "Get Tag From Package Version"
+    runs-on: "ubuntu-latest"
+    outputs:
+      pkg-version: ${{ steps.pkg-version.outputs.PKG_VERSION }} 
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Get tag"
+        id: "pkg-version"
+        shell: "bash"
+        run: |
+          echo PKG_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml) >> $GITHUB_OUTPUT
+
+  create-release:
+    name: "Create release"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: "get-tag"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+      
+      - name: "Create release"
+        uses: "taiki-e/create-gh-release-action@v1"
+        with:
+          # (optional) Path to changelog.
+          # changelog: CHANGELOG.md
+          branch: "main"
+          ref: refs/tags/v${{ needs.get-tag.outputs.pkg-version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  upload-assets:
+    name: "Upload assets to Github releases"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: 
+     - "get-tag"
+     - "create-release"
+    strategy:
+      matrix:
+        include:
+          - target: "x86_64-unknown-linux-gnu"
+            os: "ubuntu-latest"
+          - target: "x86_64-unknown-linux-musl"
+            os: "ubuntu-latest"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - name: "Upload Binaries"
+        uses: "taiki-e/upload-rust-binary-action@v1"
+        with:
+          bin: "shazam"
+          target: ${{ matrix.target }}
+          archive: $bin-${{ matrix.target }}
+          ref: refs/tags/v${{ needs.get-tag.outputs.pkg-version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  push-to-registry:
+    name: "Push Docker image to Docker Hub"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs:
+      - "get-tag"
+      - "upload-assets"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@v3
+
+      - name: "Log in to Docker Hub"
+        uses: "docker/login-action@v2"
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: "Extract metadata (tags, labels) for Docker"
+        id: "meta"
+        uses: "docker/metadata-action@v4"
+        with:
+          images: "bwks/shazam"
+      
+      - name: "Build and push Docker image"
+        uses: "docker/build-push-action@v3"
+        with:
+          context: .
+          push: true
+          tags: bwks/shazam:latest,bwks/shazam:v${{ needs.get-tag.outputs.pkg-version }}
+          labels: ${{ steps.meta.outputs.labels }}`
+) }}
+
+<h3 id="outro">Outro</h3>
+<p>
+  My friends, we have come to the end of the road. In this 
+  post, I showed you how to create Github workflows to generate 
+  binary assets, and also generate a Docker container 
+  image for a Rust project. These assets are then uploaded as Github 
+  releases and Docker hub tags.
+</p>
+
+{% endblock page_content %}

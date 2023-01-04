@@ -1,0 +1,55 @@
+#! /bin/sh
+
+# Set these
+APP_NAME="codingpackets";
+APP_OWNER="Bradley Searle";
+APP_OWNER_EMAIL="bradleysearle@gmail.com";
+
+# These should be generated automagically
+UID=$(id -u);
+GID=$(id -g);
+APP_USER=$USER;
+APP_USER_ID=$UID;
+APP_GROUP_ID=$GID;
+HOME_DIR=$HOME;
+
+# Export vars so they are passed to docker/compose
+export APP_NAME;
+export APP_OWNER;
+export APP_OWNER_EMAIL;
+export UID;
+export GID;
+export APP_USER;
+export APP_USER_ID;
+export APP_GROUP_ID;
+export HOME_DIR;
+
+CMD=$1;
+
+case $1 in
+  "up" | "")
+    docker compose \
+      --file docker-compose.yaml \
+      up;
+    ;;
+  "down" | "rm")
+    docker compose \
+      --file docker-compose.yaml \
+      down;
+    ;;
+  "init")
+    docker compose \
+      --file docker-compose.yaml \
+      build --no-cache \
+        --build-arg APP_NAME=codingpackets \
+        --build-arg APP_OWNER='Bradley Searle' \
+        --build-arg APP_OWNER_EMAIL="bradleysearle@gmail.com" \
+        --build-arg APP_USER=$USER \
+        --build-arg APP_USER_ID=$UID \
+        --build-arg APP_GROUP_ID=$GID \
+        --build-arg HOME_DIR=$HOME;
+    ;;
+  *)
+      echo "Unkown command '$1'";
+    ;;
+esac
