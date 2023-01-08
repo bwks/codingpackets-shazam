@@ -369,11 +369,11 @@ jobs:
 <h3 id="release-workflow">Release Workflow</h3>
 <p>
   The <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">Release Workflow</span> is where the 
-  magic happes. Binary assets are generated and uploaded to 
+  magic happens. Binary assets are generated and uploaded to 
   the projects Github as
   <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://github.com/bwks/shazam/releases" target=_blank>releases</a>. 
   A Docker container image is generated and uploaded as a
-  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://hub.docker.com/r/bwks/shazam/tags" target=_blank>tag</a>
+  <a class="  break-words text-rose-600 no-underline hover:decoration-2 hover:underline hover:underline-offset-4 dark:text-rose-600" href="https://hub.docker.com/r/bwks/shazam/tags" target=_blank>tag</a>.
 </p>
 
 <p>
@@ -392,8 +392,10 @@ jobs:
 
 <p>
   The other thing to note, is that some steps depend on others. By default, tasks run 
-  in paralell, you can control the order tasks are run by declaring the
+  in parallel, you can control the order tasks are run by declaring the
   <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">needs</span> parameter. EG: <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-zinc-900 border border-zinc-800 text-emerald-400 dark:text-emerald-700">needs: "get-tag"</span>.
+  In the below workflow, this creates a dependency for the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">create-release</span> 
+  task, which will wait for the <span class="px-2 py-1 font-mono font-semibold break-words rounded bg-sky-50 text-sky-900 border border-sky-200/50 dark:bg-zinc-900 dark:text-neutral-400 dark:border-zinc-800">get-tag</span> task to complete before executing.
 </p>
 
 

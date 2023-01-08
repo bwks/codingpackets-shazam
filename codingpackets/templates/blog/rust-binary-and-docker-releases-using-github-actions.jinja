@@ -219,11 +219,11 @@ jobs:
 <h3 id="release-workflow">Release Workflow</h3>
 <p>
   The {{ text::emphasize(text="Release Workflow") }} is where the 
-  magic happes. Binary assets are generated and uploaded to 
+  magic happens. Binary assets are generated and uploaded to 
   the projects Github as
   {{ link::e(path="https://github.com/bwks/shazam/releases", description="releases") }}. 
   A Docker container image is generated and uploaded as a
-  {{ link::e(path="https://hub.docker.com/r/bwks/shazam/tags", description="tag") }}
+  {{ link::e(path="https://hub.docker.com/r/bwks/shazam/tags", description="tag") }}.
 </p>
 
 <p>
@@ -242,8 +242,10 @@ jobs:
 
 <p>
   The other thing to note, is that some steps depend on others. By default, tasks run 
-  in paralell, you can control the order tasks are run by declaring the
+  in parallel, you can control the order tasks are run by declaring the
   {{ text::emphasize(text="needs") }} parameter. EG: {{ text::code(text='needs: "get-tag"') }}.
+  In the below workflow, this creates a dependency for the {{ text::emphasize(text="create-release") }} 
+  task, which will wait for the {{ text::emphasize(text="get-tag") }} task to complete before executing.
 </p>
 
 {{ text::code_block(

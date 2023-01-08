@@ -7,7 +7,7 @@
 <p>
   Just a list of books I have read and/or listened to.
 </p>
- 
+
 {{ text::note_block(text="(AB) == Audio Book.") }}
 
 {% set_global books_2018 = [] %}
@@ -15,6 +15,7 @@
 {% set_global books_2020 = [] %}
 {% set_global books_2021 = [] %}
 {% set_global books_2022 = [] %}
+{% set_global books_2023 = [] %}
 
 {% for book in posts.data.books %}
   {% if book.date_finished | date(format="%Y") == "2018" %}
@@ -27,8 +28,16 @@
     {% set_global books_2021 = books_2021 | concat(with=book) %}
   {% elif book.date_finished | date(format="%Y") == "2022" %}
     {% set_global books_2022 = books_2022 | concat(with=book) %}
+  {% elif book.date_finished | date(format="%Y") == "2023" %}
+    {% set_global books_2023 = books_2023 | concat(with=book) %}
   {% endif %}
 {% endfor %}
+
+<h3 id="2023">2023 - {{ books_2023 | length }} {% if books_2023 | length < 2 %}Book{% else %}Books{% endif %}</h3>
+{{ table::book(
+  header=["Title", "Author", "Date Finished"],
+  rows=books_2023,
+) }}
 
 <h3 id="2022">2022 - {{ books_2022 | length }} {% if books_2022 | length < 2 %}Book{% else %}Books{% endif %}</h3>
 {{ table::book(
